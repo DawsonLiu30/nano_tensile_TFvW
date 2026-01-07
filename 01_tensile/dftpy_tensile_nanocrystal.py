@@ -13,11 +13,12 @@ import numpy as np
 import ase.io
 from ase import Atoms
 from ase.constraints import FixAtoms
+from ase.geometry import conditional_find_mic
 from ase.io.trajectory import Trajectory
 
 from dftpy.config import DefaultOption, OptionFormat
 from dftpy.api.api4ase import DFTpyCalculator
-
+import conditional_strain
 
 # -----------------------------
 # CLI
@@ -74,12 +75,22 @@ def nearest_neighbor_distance_global(atoms: Atoms) -> float:
     """Return global nearest-neighbor distance (min over all atom pairs). O(N^2) but N~300 ok."""
     pos = atoms.get_positions()
     n = len(pos)
-    dmin = 1e30
-    for i in range(n - 1):
-        rij = pos[i + 1 :] - pos[i]
-        dij = np.sqrt((rij**2).sum(axis=1))
-        dmin = min(dmin, float(dij.min()))
-    return float(dmin)
+
+    # this seems like nonsense
+    #dmin = 1e30
+    #for i in range(n - 1):
+    #    rij = pos[i + 1 :] - pos[i]
+    #    dij = np.sqrt((rij**2).sum(axis=1))
+    #    dmin = min(dmin, float(dij.min()))
+
+    distance_matrix = atoms.get_distances()
+    # tmp occ diagonal
+    d_max = np.max(distance_matrix)
+    d_matrix = np.ones(distance_matrix.shape) * d_max
+    distance_matrix = distance_matrix + d_matrix
+
+    # return the nearest neighbor atom distance as minimum of each row
+    return np.min(distance_matrix,axis=1)
 
 
 def build_fixed_mask_grips(atoms: Atoms, grip_thickness: float) -> Tuple[np.ndarray, Dict[str, float]]:
@@ -143,15 +154,7 @@ def compute_gap_mid_max_dz(atoms: Atoms, fixed_mask: np.ndarray, z_mid: float, g
     return float(dz.max())
 
 
-def stretch_free_region_z(atoms: Atoms, fixed_mask: np.ndarray, z_mid: float, stretch: float) -> Atoms:
-    """
-    Scale ONLY free region along z about z_mid; grips remain unchanged.
-    """
-    pos = atoms.get_positions().copy()
-    free = ~fixed_mask
-    pos[free, 2] = z_mid + stretch * (pos[free, 2] - z_mid)
-    atoms.set_positions(pos)
-    return atoms
+
 
 
 # -----------------------------
