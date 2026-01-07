@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dftpy_tensile_nanocrystal.py", line 368, in <module>
+    main()
+  File "/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dftpy_tensile_nanocrystal.py", line 295, in main
+    atoms = relax_structure(atoms, fixed, args)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dftpy_tensile_nanocrystal.py", line 196, in relax_structure
+    ions, rho, E, nr = build_dftpy_system(atoms, args)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dftpy_tensile_nanocrystal.py", line 183, in build_dftpy_system
+    ions.set_psp({args.element: pp_path})
+    ^^^^^^^^^^^^
+AttributeError: 'Ions' object has no attribute 'set_psp'. Did you mean: 'set_pbc'?

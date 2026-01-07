@@ -1,0 +1,14 @@
+usage: dftpy_tensile_nanocrystal.py [-h] --input INPUT --outdir OUTDIR
+                                    --pppath PPPATH --ppfile PPFILE
+                                    [--element ELEMENT] [--kedf KEDF]
+                                    [--calctype CALCTYPE]
+                                    [--optimizer {BFGS,FIRE}] [--fmax FMAX]
+                                    [--relax_steps RELAX_STEPS]
+                                    [--grip_thickness GRIP_THICKNESS]
+                                    [--stretch STRETCH]
+                                    [--max_cycles MAX_CYCLES]
+                                    [--fracture_factor FRACTURE_FACTOR]
+                                    [--spacing SPACING]
+                                    [--density_tol DENSITY_TOL]
+                                    [--density_maxiter DENSITY_MAXITER]
+dftpy_tensile_nanocrystal.py: error: unrecognized arguments: --gap_window 2.0
