@@ -1,0 +1,21 @@
+# === DFTpy tensile outputs ===
+02_results/
+*.traj
+cycle_*.xyz
+tensile_log.csv
+
+# === Slurm ===
+slurm_*.out
+slurm_*.err
+
+# === Pseudopotentials ===
+PSP/*.recpot
+PSP/*.psp
+
+# === Python cache ===
+__pycache__/
+*.pyc
+
+# === Temporary ===
+error_last.txt
+

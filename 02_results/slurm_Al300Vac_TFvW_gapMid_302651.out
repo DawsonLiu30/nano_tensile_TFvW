@@ -1,9 +1,0 @@
-=== Job start: Wed Jan  7 11:17:08 CST 2026 ===
-Host: cpn3034
-PWD : /work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile
-SLURM_JOB_ID: 302651
-SLURM_CPUS_PER_TASK: 16
-SCRIPT=/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dftpy_tensile_nanocrystal.py
-INPUT =/work/dawson666/dftpy_project/nano_tensile_Al300Vac/00_gen/Al_supercell300_vac5_vacancy.xyz
-PPPATH=/work/dawson666/dftpy_project/nano_tensile_Al300Vac/PSP/al.gga.recpot
-OUTDIR=/work/dawson666/dftpy_project/nano_tensile_Al300Vac/02_results/run_Al300Vac_TFvW_gapMid

@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dftpy_tensile_nanocrystal.py", line 41, in <module>
-    from dftpy.config import DefaultOption, ReadConf, OptimizeDensityConf
-ImportError: cannot import name 'OptimizeDensityConf' from 'dftpy.config' (/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/dftpy/config/__init__.py)
