@@ -32,8 +32,6 @@ def run_dft_relax(atoms, fixed_mask, config_args, *, workdir: str | Path | None 
     conf["KEDF"]["kedf"] = config_args.kedf
     conf["GRID"]["spacing"] = config_args.spacing
 
-    if workdir is not None:
-        conf["PATH"]["workdir"] = str(Path(workdir).resolve())
 
     calc_atoms.calc = DFTpyCalculator(config=OptionFormat(conf))
 
