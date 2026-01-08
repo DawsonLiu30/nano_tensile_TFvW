@@ -20,9 +20,9 @@ echo "SLURM_JOB_ID: $SLURM_JOB_ID"
 echo "SLURM_CPUS_PER_TASK: ${SLURM_CPUS_PER_TASK}"
 
 # threads
-export OMP_NUM_THREADS=${SLURM_CPUS_PER_TASK}
-export MKL_NUM_THREADS=${SLURM_CPUS_PER_TASK}
-export OPENBLAS_NUM_THREADS=${SLURM_CPUS_PER_TASK}
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+export OPENBLAS_NUM_THREADS=4
 
 # activate env
 source ~/miniconda3/etc/profile.d/conda.sh
@@ -53,7 +53,7 @@ python3 "$SCRIPT" \
   --spacing 0.35 \
   --optimizer BFGS \
   --fmax 0.08 \
-  --grip_thickness 3.0 \
+  --grip_thickness 1.0 \
   --stretch 1.01 \
   --relax_steps 80 \
   --max_cycles 200 \
