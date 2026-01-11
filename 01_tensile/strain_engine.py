@@ -1,13 +1,7 @@
 import numpy as np
 
 def apply_strain(atoms, strain_rate, bottom_idx, top_idx, axis=2, debug=False):
-    """
-    幾何拉伸（絕對不靠 z 閾值切區，完全靠 index）：
-    - bottom grip (bottom_idx): 不動
-    - top grip (top_idx): 剛體平移 dL
-    - free region (其他原子): 線性拉伸到新長度 L*(1+strain_rate)
-    同步更新 cell[axis,axis] += dL
-    """
+
     pos = atoms.get_positions()
 
     bottom_idx = np.asarray(bottom_idx, dtype=int).ravel()
