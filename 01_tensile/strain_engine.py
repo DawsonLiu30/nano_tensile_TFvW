@@ -1,63 +1,52 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-from __future__ import annotations
-
 import numpy as np
-from ase import Atoms
 
-
-def stretch_free_region_z_by_indices(
-    atoms: Atoms,
-    bottom_idx: np.ndarray,
-    top_idx: np.ndarray,
-    free_idx: np.ndarray,
-    stretch: float,
-) -> Atoms:
+def apply_strain(atoms, strain_rate, bottom_idx, top_idx, axis=2, debug=False):
     """
-    真・拉伸（固定 index，不重切、不猜 top/bottom）：
-
-    - bottom grip：固定不動
-    - free region：以 a'（bottom grip 上緣）為錨點做 z 向縮放
-      z_new = a' + (z_old - a') * stretch
-    - top grip：整塊向上平移 elongation
-      elongation = (a'' - a') * (stretch - 1)
-    - cell 的 z 長度同步增加 elongation（scale_atoms=False）
-
-    這樣 L_grip = mean(z_top) - mean(z_bottom) 會真正變大。
+    幾何拉伸（絕對不靠 z 閾值切區，完全靠 index）：
+    - bottom grip (bottom_idx): 不動
+    - top grip (top_idx): 剛體平移 dL
+    - free region (其他原子): 線性拉伸到新長度 L*(1+strain_rate)
+    同步更新 cell[axis,axis] += dL
     """
+    pos = atoms.get_positions()
 
-    if stretch <= 0:
-        raise ValueError(f"stretch must be > 0, got {stretch}")
+    bottom_idx = np.asarray(bottom_idx, dtype=int).ravel()
+    top_idx    = np.asarray(top_idx, dtype=int).ravel()
 
-    pos = atoms.get_positions().copy()
-    z = pos[:, 2]
+    z = pos[:, axis]
+    z_bot = float(z[bottom_idx].max())
+    z_top = float(z[top_idx].min())
+    L = z_top - z_bot
+    if L <= 0:
+        raise ValueError(f"Bad free length: z_bot={z_bot}, z_top={z_top}, L={L}")
 
-    a_prime = float(z[bottom_idx].max())       # bottom grip 上緣
-    a_dprime = float(z[top_idx].min())         # top grip 下緣
+    dL = L * float(strain_rate)
 
-    L_free_old = a_dprime - a_prime
-    if L_free_old <= 0:
-        raise RuntimeError(
-            f"Invalid free length (a''-a'={L_free_old:.6f} Å). "
-            "Your grips overlap or free region is empty. Try smaller grip_thickness."
-        )
+    n = len(pos)
+    fixed = np.zeros(n, dtype=bool)
+    fixed[bottom_idx] = True
+    fixed[top_idx] = True
+    free = ~fixed
 
-    elongation = L_free_old * (stretch - 1.0)
+    # free: 線性 mapping（以 bottom 上緣為錨點）
+    t = (z[free] - z_bot) / L
+    pos[free, axis] = z_bot + t * (L + dL)
 
-    # bottom grip: do nothing
-    # free region: scale about a'
-    pos[free_idx, 2] = a_prime + (z[free_idx] - a_prime) * stretch
+    # top: 整塊平移
+    pos[top_idx, axis] += dL
 
-    # top grip: translate upward
-    pos[top_idx, 2] = z[top_idx] + elongation
-
+    # 寫回原子座標
     atoms.set_positions(pos)
 
-    # update cell length along z
+    # 更新 cell（不縮放原子，因為我們已手動移動）
     cell = atoms.get_cell().copy()
-    cell[2, 2] += elongation
+    cell[axis, axis] += dL
     atoms.set_cell(cell, scale_atoms=False)
 
-    return atoms
+    if debug:
+        z2 = atoms.get_positions()[:, axis]
+        print(f"[apply_strain] z_bot={z_bot:.6f} z_top={z_top:.6f} L={L:.6f} dL={dL:.6f}")
+        print(f"[apply_strain] top z(min/mean/max)={z2[top_idx].min():.6f}/{z2[top_idx].mean():.6f}/{z2[top_idx].max():.6f}")
+        print(f"[apply_strain] bot z(min/mean/max)={z2[bottom_idx].min():.6f}/{z2[bottom_idx].mean():.6f}/{z2[bottom_idx].max():.6f}")
 
+    return atoms

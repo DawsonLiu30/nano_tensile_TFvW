@@ -1,172 +1,166 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
 import numpy as np
-import ase.io
+from ase.io import read, write
+from scipy.spatial import cKDTree
 
-from dft_engine import run_dft_relax
-from strain_engine import stretch_free_region_z_by_indices
-
-
-AL_NN = 2.86  # 你先用這個近似（FCC Al 最近鄰距離量級）
+from strain_engine import apply_strain
+from dft_engine import relax_atoms
 
 
-def L_grip(atoms, bottom_idx: np.ndarray, top_idx: np.ndarray) -> float:
-    z = atoms.get_positions()[:, 2]
-    return float(z[top_idx].mean() - z[bottom_idx].mean())
-
-
-def gap_mid_window(atoms, bottom_idx: np.ndarray, top_idx: np.ndarray, free_idx: np.ndarray, window: float) -> float:
-    z = atoms.get_positions()[:, 2]
-    z_mid = 0.5 * (float(z[bottom_idx].mean()) + float(z[top_idx].mean()))
-    sel = free_idx[np.abs(z[free_idx] - z_mid) <= window]
-    if sel.size < 3:
+def _mean_nn_distance(atoms, mask: np.ndarray) -> float:
+    pos = atoms.get_positions()[mask]
+    if len(pos) < 2:
         return 0.0
-    zz = np.sort(z[sel])
-    return float(np.diff(zz).max())
+    tree = cKDTree(pos)
+    dists, _ = tree.query(pos, k=2)
+    return float(dists[:, 1].mean())
 
 
-def max_nn_free(atoms, free_idx: np.ndarray) -> float:
-    if free_idx.size < 2:
+def _max_nn_distance(atoms, mask: np.ndarray) -> float:
+    pos = atoms.get_positions()[mask]
+    if len(pos) < 2:
         return 0.0
-    pos = atoms.get_positions()[free_idx]  # (M,3)
-    diff = pos[:, None, :] - pos[None, :, :]
-    dist2 = np.sum(diff * diff, axis=2)
-    np.fill_diagonal(dist2, np.inf)
-    nn = np.sqrt(np.min(dist2, axis=1))
-    return float(np.max(nn))
+    tree = cKDTree(pos)
+    dists, _ = tree.query(pos, k=2)
+    return float(dists[:, 1].max())
+
+
+def _parse_stress_zz_from_out(out_file: Path) -> float | None:
+    if not out_file.exists():
+        return None
+    txt = out_file.read_text()
+    key = "TOTAL stress (GPa):"
+    i = txt.find(key)
+    if i < 0:
+        return None
+    lines = txt[i:].splitlines()
+    if len(lines) < 4:
+        return None
+    row3 = lines[3].split()
+    if len(row3) < 3:
+        return None
+    try:
+        return float(row3[2])
+    except Exception:
+        return None
+
+
+def _parse_energy_from_out(out_file: Path) -> float | None:
+    if not out_file.exists():
+        return None
+    for line in out_file.read_text().splitlines():
+        if line.startswith("total energy (eV)"):
+            try:
+                return float(line.split(":")[1].strip())
+            except Exception:
+                return None
+    return None
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--workdir", required=True)
+    ap.add_argument("--init", required=True)
+    ap.add_argument("--pp", required=True)
+    ap.add_argument("--spacing", type=float, required=True)
+    ap.add_argument("--step", type=float, default=0.005)
+    ap.add_argument("--cycles", type=int, default=200)
+    ap.add_argument("--fmax", type=float, default=0.08)
+    ap.add_argument("--relax-steps", type=int, default=80)
+    ap.add_argument("--debug-strain", action="store_true")
+    args = ap.parse_args()
 
-    # IO
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--outdir", default="results")
+    workdir = Path(args.workdir).resolve()
+    init_path = Path(args.init).resolve() if Path(args.init).is_absolute() else (workdir / args.init).resolve()
+    results = workdir / "results"
+    results.mkdir(parents=True, exist_ok=True)
 
-    # Tensile
-    parser.add_argument("--stretch", type=float, default=1.01)
-    parser.add_argument("--grip_thickness", type=float, default=1.0)
+    bottom_idx = np.load(str(workdir / "bottom_idx.npy")).astype(int).ravel()
+    top_idx = np.load(str(workdir / "top_idx.npy")).astype(int).ravel()
+    fixed_idx = np.unique(np.concatenate([bottom_idx, top_idx])).astype(int)
 
-    # DFTpy
-    parser.add_argument("--pppath", required=True)
-    parser.add_argument("--ppfile", required=True)
-    parser.add_argument("--element", default="Al")
-    parser.add_argument("--kedf", default="TFvW")
-    parser.add_argument("--spacing", type=float, default=0.35)
-    parser.add_argument("--optimizer", default="BFGS", choices=["FIRE", "BFGS"])
-    parser.add_argument("--fmax", type=float, default=0.08)
-    parser.add_argument("--relax_steps", type=int, default=80)
+    atoms0 = read(str(init_path))
 
-    # Loop
-    parser.add_argument("--max_cycles", type=int, default=200)
+    write(str(results / "cycle_000_relaxed.xyz"), atoms0)
 
-    # Fracture (新制)
-    parser.add_argument("--fracture_mode", default="gap_mid", choices=["gap_mid", "max_nn", "both"])
-    parser.add_argument("--gap_window", type=float, default=2.0)
-    parser.add_argument("--gap_break", type=float, default=None)      # 若 None → 由 fracture_factor 決定
-    parser.add_argument("--maxnn_break", type=float, default=None)    # 若 None → fracture_factor * 2.86
+    z0 = atoms0.get_positions()[:, 2]
+    zmin0 = float(z0[bottom_idx].max())
+    zmax0 = float(z0[top_idx].min())
+    if zmax0 <= zmin0:
+        raise RuntimeError(f"Bad grips: zmin={zmin0}, zmax={zmax0}")
+    free_mask = (z0 > zmin0) & (z0 < zmax0)
 
-    # Fracture (舊制相容：你之前 sbatch 用 fracture_factor=3.0)
-    parser.add_argument("--fracture_factor", type=float, default=3.0)
+    L0 = float(zmax0 - zmin0)
+    d0 = _mean_nn_distance(atoms0, free_mask)
+    th = 3.0 * d0
+    print(f"[init] L_free0={L0:.6f} Å  d0={d0:.6f} Å  fracture_th(3*d0)={th:.6f} Å")
 
-    # 舊 sbatch 可能有 calctype（不使用但吃下來避免 argparse 爆炸）
-    parser.add_argument("--calctype", default=None)
+    summary = results / "summary.csv"
+    if not summary.exists():
+        summary.write_text("cycle,strain,energy_eV,sigma_zz_GPa,max_nn_A\n")
 
-    args = parser.parse_args()
+    atoms = atoms0
 
-    outdir = Path(args.outdir)
-    outdir.mkdir(parents=True, exist_ok=True)
+    for cyc in range(1, int(args.cycles) + 1):
+        print(f"=== Cycle {cyc} ===")
 
-    atoms = ase.io.read(args.input)
+        atoms_st = atoms.copy()
+        apply_strain(
+            atoms_st,
+            strain_rate=float(args.step),
+            bottom_idx=bottom_idx,
+            top_idx=top_idx,
+            axis=2,
+            debug=bool(args.debug_strain),
+        )
+        stretched_xyz = results / f"cycle_{cyc:03d}_stretched.xyz"
+        write(str(stretched_xyz), atoms_st)
 
-    # ----- grips selection ONCE -----
-    z0 = atoms.get_positions()[:, 2]
-    zmin0, zmax0 = float(z0.min()), float(z0.max())
+        relax_log = results / f"cycle_{cyc:03d}_relax.log"
+        relax_traj = results / f"cycle_{cyc:03d}_relax.traj"
+        dftpy_out = results / f"cycle_{cyc:03d}_dftpy.out"
 
-    bottom_idx = np.where(z0 <= zmin0 + args.grip_thickness)[0]
-    top_idx = np.where(z0 >= zmax0 - args.grip_thickness)[0]
-
-    if bottom_idx.size == 0 or top_idx.size == 0:
-        raise RuntimeError(
-            f"Grip selection failed: bottom={bottom_idx.size}, top={top_idx.size}. "
-            f"Try adjusting --grip_thickness (current {args.grip_thickness} Å)."
+        atoms_rlx = relax_atoms(
+            atoms_st,
+            pp_file=args.pp,
+            spacing=float(args.spacing),
+            fixed_idx=fixed_idx,
+            fmax=float(args.fmax),
+            steps=int(args.relax_steps),
+            logfile=str(relax_log),
+            trajfile=str(relax_traj),
+            dftpy_outfile=str(dftpy_out),
         )
 
-    fixed_mask = np.zeros(len(atoms), dtype=bool)
-    fixed_mask[bottom_idx] = True
-    fixed_mask[top_idx] = True
-    free_idx = np.where(~fixed_mask)[0]
+        relaxed_xyz = results / f"cycle_{cyc:03d}_relaxed.xyz"
+        write(str(relaxed_xyz), atoms_rlx)
 
-    # Save indices for analysis (這超重要，不然你會用漂移的尺量)
-    np.save(outdir / "bottom_idx.npy", bottom_idx)
-    np.save(outdir / "top_idx.npy", top_idx)
-    np.save(outdir / "free_idx.npy", free_idx)
-    np.save(outdir / "fixed_mask.npy", fixed_mask)
+        z = atoms_rlx.get_positions()[:, 2]
+        zmin = float(z[bottom_idx].max())
+        zmax = float(z[top_idx].min())
+        L = float(zmax - zmin)
+        strain = (L - L0) / L0
 
-    # thresholds
-    gap_break = args.gap_break if args.gap_break is not None else float(args.fracture_factor)
-    maxnn_break = args.maxnn_break if args.maxnn_break is not None else float(args.fracture_factor) * AL_NN
+        E = _parse_energy_from_out(dftpy_out)
+        szz = _parse_stress_zz_from_out(dftpy_out)
 
-    print(f"=== Starting Tensile Loop: {args.input} ===")
-    print(f"total atoms: {len(atoms)}")
-    print(f"fixed atoms: {int(fixed_mask.sum())} (bottom={len(bottom_idx)}, top={len(top_idx)}), free={len(free_idx)}")
-    print(f"stretch per cycle = x{args.stretch}")
-    print(f"fracture_mode = {args.fracture_mode}")
-    print(f"gap_window={args.gap_window} Å, gap_break={gap_break} Å")
-    print(f"maxnn_break={maxnn_break:.2f} Å (fracture_factor={args.fracture_factor} * {AL_NN})")
+        max_nn = _max_nn_distance(atoms_rlx, free_mask)
+        with open(summary, "a") as f:
+            f.write(f"{cyc},{strain:.10f},{'' if E is None else f'{E:.12f}'},{'' if szz is None else f'{szz:.12f}'},{max_nn:.6f}\n")
 
-    L0 = L_grip(atoms, bottom_idx, top_idx)
-    print(f"L_grip baseline (L0) = {L0:.6f} Å")
+        print(f"[summary] cycle={cyc:03d}  strain={strain:.6e}  E={E}  szz={szz}  max_nn={max_nn:.6f}")
 
-    for cycle in range(args.max_cycles):
-        cyc = f"{cycle:03d}"
-
-        # 1) Relax
-        print(f"\nCycle {cyc}: Relaxing...")
-        atoms, energy = run_dft_relax(atoms, fixed_mask, args)
-
-        ase.io.write(str(outdir / f"cycle_{cyc}_relaxed.xyz"), atoms)
-
-        Lr = L_grip(atoms, bottom_idx, top_idx)
-        strain = (Lr - L0) / L0 if L0 != 0 else 0.0
-
-        gap = gap_mid_window(atoms, bottom_idx, top_idx, free_idx, window=float(args.gap_window))
-        maxnn = max_nn_free(atoms, free_idx)
-
-        gap_fail = gap >= gap_break
-        maxnn_fail = maxnn >= maxnn_break
-
-        if args.fracture_mode == "gap_mid":
-            fractured = gap_fail
-        elif args.fracture_mode == "max_nn":
-            fractured = maxnn_fail
-        else:
-            fractured = gap_fail and maxnn_fail
-
-        print(f"  Energy: {energy:.6f} (units follow calculator)")
-        print(f"  L_grip(relaxed) = {Lr:.6f} Å  strain={strain:.6f}")
-        print(f"  gap_mid(window={args.gap_window}Å) = {gap:.6f} Å  -> {'FAIL' if gap_fail else 'OK'}")
-        print(f"  max_nn(free) = {maxnn:.6f} Å  -> {'FAIL' if maxnn_fail else 'OK'}")
-
-        if fractured:
-            print(f"!!! FRACTURE DETECTED at cycle {cyc} !!!")
+        if d0 > 0.0 and max_nn > th:
+            print(f">>> FRACTURE: max_nn ({max_nn:.6f}) > 3*d0 ({th:.6f}), stop.")
             break
 
-        # 2) Stretch (關鍵：top grip 會真的往上推)
-        print(f"Cycle {cyc}: Stretching (x{args.stretch})...")
-        atoms = stretch_free_region_z_by_indices(atoms, bottom_idx, top_idx, free_idx, float(args.stretch))
-        ase.io.write(str(outdir / f"cycle_{cyc}_stretched.xyz"), atoms)
+        atoms = atoms_rlx
 
-        Ls = L_grip(atoms, bottom_idx, top_idx)
-        print(f"  L_grip(stretched) = {Ls:.6f} Å  ratio(stretched/relaxed)={Ls/Lr:.8f}")
-
-    print("\n=== Finished ===")
+    print(f"Done. Results in: {results}")
 
 
 if __name__ == "__main__":
