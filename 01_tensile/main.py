@@ -61,21 +61,20 @@ def _parse_energy_from_out(out_file: Path) -> float | None:
     return None
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--workdir", required=True)
-    ap.add_argument("--init", required=True)
-    ap.add_argument("--pp", required=True)
-    ap.add_argument("--spacing", type=float, required=True)
-    ap.add_argument("--step", type=float, default=0.005)
-    ap.add_argument("--cycles", type=int, default=200)
-    ap.add_argument("--fmax", type=float, default=0.08)
-    ap.add_argument("--relax-steps", type=int, default=80)
-    ap.add_argument("--debug-strain", action="store_true")
-    args = ap.parse_args()
-
-    workdir = Path(args.workdir).resolve()
-    init_path = Path(args.init).resolve() if Path(args.init).is_absolute() else (workdir / args.init).resolve()
+def run_tensile(
+    *,
+    workdir: str | Path,
+    init: str | Path,
+    pp: str | Path,
+    spacing: float,
+    step: float = 0.005,
+    cycles: int = 200,
+    fmax: float = 0.08,
+    relax_steps: int = 80,
+    debug_strain: bool = False,
+) -> None:
+    workdir = Path(workdir).resolve()
+    init_path = Path(init).resolve() if Path(init).is_absolute() else (workdir / init).resolve()
     results = workdir / "results"
     results.mkdir(parents=True, exist_ok=True)
 
@@ -105,17 +104,17 @@ def main():
 
     atoms = atoms0
 
-    for cyc in range(1, int(args.cycles) + 1):
+    for cyc in range(1, int(cycles) + 1):
         print(f"=== Cycle {cyc} ===")
 
         atoms_st = atoms.copy()
         apply_strain(
             atoms_st,
-            strain_rate=float(args.step),
+            strain_rate=float(step),
             bottom_idx=bottom_idx,
             top_idx=top_idx,
             axis=2,
-            debug=bool(args.debug_strain),
+            debug=bool(debug_strain),
         )
         stretched_xyz = results / f"cycle_{cyc:03d}_stretched.xyz"
         write(str(stretched_xyz), atoms_st)
@@ -126,11 +125,11 @@ def main():
 
         atoms_rlx = relax_atoms(
             atoms_st,
-            pp_file=args.pp,
-            spacing=float(args.spacing),
+            pp_file=str(pp),
+            spacing=float(spacing),
             fixed_idx=fixed_idx,
-            fmax=float(args.fmax),
-            steps=int(args.relax_steps),
+            fmax=float(fmax),
+            steps=int(relax_steps),
             logfile=str(relax_log),
             trajfile=str(relax_traj),
             dftpy_outfile=str(dftpy_out),
@@ -163,6 +162,31 @@ def main():
     print(f"Done. Results in: {results}")
 
 
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--workdir", required=True)
+    ap.add_argument("--init", required=True)
+    ap.add_argument("--pp", required=True)
+    ap.add_argument("--spacing", type=float, required=True)
+    ap.add_argument("--step", type=float, default=0.005)
+    ap.add_argument("--cycles", type=int, default=200)
+    ap.add_argument("--fmax", type=float, default=0.08)
+    ap.add_argument("--relax-steps", type=int, default=80)
+    ap.add_argument("--debug-strain", action="store_true")
+    args = ap.parse_args()
+
+    run_tensile(
+        workdir=args.workdir,
+        init=args.init,
+        pp=args.pp,
+        spacing=float(args.spacing),
+        step=float(args.step),
+        cycles=int(args.cycles),
+        fmax=float(args.fmax),
+        relax_steps=int(args.relax_steps),
+        debug_strain=bool(args.debug_strain),
+    )
+
+
 if __name__ == "__main__":
     main()
-
