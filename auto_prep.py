@@ -4,11 +4,11 @@ from pathlib import Path
 from ase.io import read
 
 # =========================
-# 內部工具函數
+# Internal Helper Functions
 # =========================
 
 def _unique_levels(z, eps):
-    """把 z 坐標量化成離散層（z-level）"""
+    """Quantize z-coordinates into discrete levels."""
     q = np.round(z / eps) * eps
     levels = np.unique(q)
     levels.sort()
@@ -16,10 +16,10 @@ def _unique_levels(z, eps):
 
 def _pick_levels(levels, z_min, z_max, target_thickness, min_layers, max_layers):
     """
-    依「厚度 + 層數」從底部與頂部選整層原子
+    Select atomic layers from bottom and top based on thickness and layer count.
     """
 
-    # ---- 底部（由下往上） ----
+    # ---- Bottom (bottom-up) ----
     bottom_levels = []
     for lv in levels:
         if lv <= z_min + target_thickness:
@@ -27,15 +27,15 @@ def _pick_levels(levels, z_min, z_max, target_thickness, min_layers, max_layers)
         else:
             break
 
-    # 保證至少有 min_layers
+    # Ensure minimum layers
     if len(bottom_levels) < min_layers:
         bottom_levels = list(levels[:min(min_layers, len(levels))])
 
-    # 套用 max_layers 上限
+    # Apply max_layers limit
     if max_layers is not None and max_layers > 0:
         bottom_levels = bottom_levels[:min(max_layers, len(bottom_levels))]
 
-    # ---- 頂部（由上往下） ----
+    # ---- Top (top-down) ----
     top_levels = []
     for lv in levels[::-1]:
         if lv >= z_max - target_thickness:
@@ -52,23 +52,23 @@ def _pick_levels(levels, z_min, z_max, target_thickness, min_layers, max_layers)
     return np.array(bottom_levels, dtype=float), np.array(top_levels, dtype=float)
 
 def _compute_grip_thickness(zq, bottom_idx, top_idx):
-    """回傳每側 grips 的實際厚度（Å）"""
+    """Return actual grip thickness per side (A)."""
     z = zq.astype(float)
     bot_th = float(z[bottom_idx].max() - z[bottom_idx].min()) if bottom_idx.size else 0.0
     top_th = float(z[top_idx].max() - z[top_idx].min()) if top_idx.size else 0.0
     return bot_th, top_th
 
 # =========================
-# 核心函數：依比例/厚度選 grips
+# Core Function: Select grips
 # =========================
 
 def get_grip_indices(
     atoms,
-    end_frac=0.10,          # 每側比例（預設 10%）
-    min_thickness=2.0,      # 安全下界
-    max_thickness=8.0,      # 安全上界
+    end_frac=0.10,          # Fraction per side (default 10%)
+    min_thickness=2.0,      # Safety lower bound
+    max_thickness=8.0,      # Safety upper bound
     min_layers=2,
-    max_layers=None,        # ✅預設不限制（避免把 10% 硬砍掉）
+    max_layers=None,        # Default unlimited
     eps=1e-3,
     debug=True,
 ):
@@ -84,11 +84,11 @@ def get_grip_indices(
     if z_range <= 0:
         raise ValueError("Invalid structure: z_range <= 0")
 
-    # ---- 核心：上下各 end_frac 的厚度 ----
+    # ---- Core: Target thickness for end_frac ----
     target_thickness_raw = float(z_range * float(end_frac))
     target_thickness = float(np.clip(target_thickness_raw, float(min_thickness), float(max_thickness)))
 
-    # ---- 找 z-level（整層選取） ----
+    # ---- Find z-levels ----
     zq, levels = _unique_levels(z, float(eps))
 
     if levels.size < 2:
@@ -130,18 +130,18 @@ def get_grip_indices(
     if debug:
         print(f"[AutoPrep] Atomic Z-range: {z_range:.6f} A")
         print(f"           z_min={z_min:.6f}, z_max={z_max:.6f}")
-        print(f"           End-fraction (per side): {float(end_frac):.4f}  → target_thickness_raw={target_thickness_raw:.6f} A")
-        print(f"           thickness clip: [{float(min_thickness):.3f}, {float(max_thickness):.3f}] → target_thickness={target_thickness:.6f} A")
+        print(f"           End-fraction (per side): {float(end_frac):.4f}  -> target_thickness_raw={target_thickness_raw:.6f} A")
+        print(f"           thickness clip: [{float(min_thickness):.3f}, {float(max_thickness):.3f}] -> target_thickness={target_thickness:.6f} A")
         print(f"           eps={float(eps):.6g}, distinct_z_levels={levels.size}")
         print(f"           min_layers={int(min_layers)}, max_layers={'unlimited' if (max_layers is None) else int(max_layers)}")
         print(f"[AutoPrep] Bottom: layers={bottom_levels.size}, atoms={bottom_idx.size}, "
-              f"z=[{bottom_z.min():.6f}, {bottom_z.max():.6f}], thickness≈{bot_th:.6f} A")
+              f"z=[{bottom_z.min():.6f}, {bottom_z.max():.6f}], thickness~={bot_th:.6f} A")
         print(f"[AutoPrep] Top:    layers={top_levels.size}, atoms={top_idx.size}, "
-              f"z=[{top_z.min():.6f}, {top_z.max():.6f}], thickness≈{top_th:.6f} A")
+              f"z=[{top_z.min():.6f}, {top_z.max():.6f}], thickness~={top_th:.6f} A")
         print(f"[AutoPrep] Gap (top_min - bottom_max): {top_z.min() - bottom_z.max():.6f} A")
         print(f"[AutoPrep] Total grip fraction: {grip_fraction:.6f}")
 
-        # 重要提醒：如果你想 grips 更像夾具，請優先檢查是否被 max_layers 截斷
+        # Warning about max_layers truncating the grip
         if max_layers is not None and max_layers > 0:
             print("[AutoPrep][Hint] max_layers is limiting grip thickness. "
                   "For stiffer grips, consider --max-layers 0 (unlimited).")
@@ -149,7 +149,7 @@ def get_grip_indices(
     return bottom_idx, top_idx
 
 # =========================
-# CLI 介面
+# CLI Interface
 # =========================
 
 def main():
@@ -160,7 +160,6 @@ def main():
     parser.add_argument("input_file", help="Path to the structure file (.vasp, .xyz, etc.)")
     parser.add_argument("--output-dir", default=".", help="Directory to save .npy files")
 
-    # ✅新增：end_frac 可以調（預設仍是 0.10，不破壞原本習慣）
     parser.add_argument("--end-frac", type=float, default=0.10,
                         help="Grip thickness fraction per side (default: 0.10)")
 
@@ -171,7 +170,6 @@ def main():
     parser.add_argument("--min-layers", type=int, default=2,
                         help="Minimum number of z-layers per grip")
 
-    # ✅重大：預設改成 0（unlimited），避免把 10% 硬砍掉
     parser.add_argument("--max-layers", type=int, default=0,
                         help="Maximum number of z-layers per grip (0 for unlimited)")
 
@@ -225,4 +223,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -11,7 +11,7 @@ from strain_engine import apply_strain
 from dft_engine import relax_atoms
 
 
-# ---------- Grid 換算：ecut(eV) -> spacing(Angstrom) ----------
+# ---------- Grid Conversion: ecut(eV) -> spacing(Angstrom) ----------
 # Nyquist: Gmax ~ pi / h  (h in bohr)
 # Ecut(Ha) = 0.5 * Gmax^2 = pi^2 / (2 h^2)
 # => h(bohr) = pi / sqrt(2*Ecut(Ha))
@@ -76,7 +76,7 @@ def main():
     ap.add_argument("--init", required=True)
     ap.add_argument("--pp", required=True)
 
-    # ✅ spacing / ecut 二選一
+    # Choose either spacing or ecut
     ap.add_argument("--spacing", type=float, default=None, help="Real-space grid spacing (Angstrom). If set, ecut is ignored.")
     ap.add_argument("--ecut", type=float, default=None, help="Kinetic energy cutoff (eV). Used only if spacing is not provided.")
 
@@ -90,7 +90,7 @@ def main():
     ap.add_argument("--no-pin-grips", action="store_true")
     args = ap.parse_args()
 
-    # ---------- 決定 spacing ----------
+    # ---------- Determine spacing ----------
     if args.spacing is None and args.ecut is None:
         ap.error("You must provide either --spacing or --ecut.")
     if args.spacing is not None and args.ecut is not None:
@@ -98,10 +98,10 @@ def main():
 
     if args.spacing is None:
         spacing = ecut_to_spacing_angstrom(float(args.ecut))
-        print(f"[grid] Using ecut={float(args.ecut):.6f} eV -> spacing≈{spacing:.6f} Å (DFTpy: setting spacing disables ecut)")
+        print(f"[grid] Using ecut={float(args.ecut):.6f} eV -> spacing~={spacing:.6f} A (DFTpy: setting spacing disables ecut)")
     else:
         spacing = float(args.spacing)
-        print(f"[grid] Using spacing={spacing:.6f} Å (ecut disabled by design)")
+        print(f"[grid] Using spacing={spacing:.6f} A (ecut disabled by design)")
 
     pin_grips = not bool(args.no_pin_grips)
 
@@ -128,7 +128,7 @@ def main():
             f"d0z is zero (no nonzero z-gaps). Try increasing --gap-tol. n_nonzero={n_nz0}"
         )
 
-    # ✅ 老賊聖旨：三倍準則不能改
+    # Critical rule: 3x threshold must remain
     th = 3.0 * d0z
 
     print(
@@ -176,7 +176,7 @@ def main():
         atoms_rlx, energy, stress = relax_atoms(
             atoms_st,
             pp_file=args.pp,
-            spacing=float(spacing),          # ✅統一由 spacing 控制 grid
+            spacing=float(spacing),          # Unified control by spacing
             fixed_idx=fixed_idx,
             fmax=float(args.fmax),
             steps=int(args.relax_steps),
@@ -233,4 +233,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
