@@ -1,21 +1,18 @@
-# === DFTpy tensile outputs ===
-02_results/
+# runtime outputs
+results/
+slurm/
+*.out
+*.err
 *.traj
-cycle_*.xyz
-tensile_log.csv
+*.log
 
-# === Slurm ===
-slurm_*.out
-slurm_*.err
+# numpy generated indices (regenerate via auto_prep.py)
+bottom_idx.npy
+top_idx.npy
 
-# === Pseudopotentials ===
-PSP/*.recpot
-PSP/*.psp
-
-# === Python cache ===
+# python cache
 __pycache__/
 *.pyc
 
-# === Temporary ===
-error_last.txt
-
+# misc
+.DS_Store

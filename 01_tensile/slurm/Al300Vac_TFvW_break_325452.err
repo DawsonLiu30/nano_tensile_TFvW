@@ -1,2 +1,0 @@
-/work/dawson666/dftpy_project/nano_tensile_Al300Vac/01_tensile/dft_engine.py:27: FutureWarning: Please use atoms.calc = calc
-  atoms.set_calculator(calc)
