@@ -58,6 +58,10 @@ def _compute_grip_thickness(zq, bottom_idx, top_idx):
     top_th = float(z[top_idx].max() - z[top_idx].min()) if top_idx.size else 0.0
     return bot_th, top_th
 
+def _target_thickness(z_range, end_frac, min_thickness, max_thickness):
+    raw = float(z_range * float(end_frac))
+    return float(np.clip(raw, float(min_thickness), float(max_thickness))), raw
+
 # =========================
 # Core Function: Select grips
 # =========================
@@ -85,8 +89,9 @@ def get_grip_indices(
         raise ValueError("Invalid structure: z_range <= 0")
 
     # ---- Core: Target thickness for end_frac ----
-    target_thickness_raw = float(z_range * float(end_frac))
-    target_thickness = float(np.clip(target_thickness_raw, float(min_thickness), float(max_thickness)))
+    target_thickness, target_thickness_raw = _target_thickness(
+        z_range, end_frac, min_thickness, max_thickness
+    )
 
     # ---- Find z-levels ----
     zq, levels = _unique_levels(z, float(eps))
@@ -140,11 +145,6 @@ def get_grip_indices(
               f"z=[{top_z.min():.6f}, {top_z.max():.6f}], thickness~={top_th:.6f} A")
         print(f"[AutoPrep] Gap (top_min - bottom_max): {top_z.min() - bottom_z.max():.6f} A")
         print(f"[AutoPrep] Total grip fraction: {grip_fraction:.6f}")
-
-        # Warning about max_layers truncating the grip
-        if max_layers is not None and max_layers > 0:
-            print("[AutoPrep][Hint] max_layers is limiting grip thickness. "
-                  "For stiffer grips, consider --max-layers 0 (unlimited).")
 
     return bottom_idx, top_idx
 
@@ -223,3 +223,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

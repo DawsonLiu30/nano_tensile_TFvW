@@ -1,18 +1,17 @@
-# runtime outputs
+# HPC / runtime
 results/
 slurm/
+cases/
+picked/
+vac_v2_out/
+
+# numpy / python cache
+__pycache__/
+*.npy
+
+# logs
 *.out
 *.err
-*.traj
-*.log
 
-# numpy generated indices (regenerate via auto_prep.py)
-bottom_idx.npy
-top_idx.npy
-
-# python cache
-__pycache__/
-*.pyc
-
-# misc
+# editor / system
 .DS_Store

@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import argparse
 import math
+from datetime import datetime
 from pathlib import Path
+from typing import Optional, Tuple
 
+import matplotlib.pyplot as plt
 import numpy as np
 from ase.io import read, write
 
@@ -28,15 +31,108 @@ def ecut_to_spacing_angstrom(ecut_ev: float) -> float:
     return h_bohr * BOHR_TO_ANG
 
 
-def _grip(atoms, bottom_idx, top_idx, axis=2):
+def _ensure_nonempty_idx(name: str, idx: np.ndarray) -> np.ndarray:
+    arr = np.asarray(idx, dtype=int).ravel()
+    if arr.size == 0:
+        raise RuntimeError(f"{name} is empty. Check how you generated {name}.npy")
+    return arr
+
+
+def _ts() -> str:
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+
+def _grip(
+    atoms,
+    bottom_idx,
+    top_idx,
+    axis: int = 2,
+    debug: bool = False,
+    tag: str = "",
+    outdir: Optional[Path] = None,
+) -> Tuple[float, float, float]:
+    """
+    計算夾具邊界 (zb, zt) 與夾具間距 L=zt-zb。
+
+    debug=True 時輸出 Z 分佈圖，協助驗證固定區/自由區在拉伸過程的分佈變化。
+    注意：這是「證明拉伸確實發生」的視覺證據，不是 stress-strain。
+    """
     z = atoms.get_positions()[:, axis]
+
+    bottom_idx = _ensure_nonempty_idx("bottom_idx", bottom_idx)
+    top_idx = _ensure_nonempty_idx("top_idx", top_idx)
+
     zb = float(z[bottom_idx].max())
     zt = float(z[top_idx].min())
-    return zb, zt, float(zt - zb)
+    if zt <= zb:
+        raise RuntimeError(f"Bad grips: zt ({zt}) <= zb ({zb}).")
+    L = float(zt - zb)
+
+    if debug:
+        try:
+            safe_tag = tag.replace(" ", "_") if tag else "grip"
+            filename = f"plot_dist_{safe_tag}_{_ts()}.png"
+
+            if outdir is not None:
+                outdir = Path(outdir)
+                outdir.mkdir(parents=True, exist_ok=True)
+                filepath = outdir / filename
+            else:
+                filepath = Path(filename)
+
+            n_atoms = z.size
+            mask_bottom = np.zeros(n_atoms, dtype=bool)
+            mask_top = np.zeros(n_atoms, dtype=bool)
+            mask_bottom[bottom_idx] = True
+            mask_top[top_idx] = True
+            mask_free = ~(mask_bottom | mask_top)
+
+            # 依 z 排序（視覺化用）
+            order = np.argsort(z)
+            z_sorted = z[order]
+            mb = mask_bottom[order]
+            mf = mask_free[order]
+            mt = mask_top[order]
+            x = np.arange(n_atoms)
+
+            fig, ax = plt.subplots(figsize=(7, 5))
+            ax.scatter(x[mb], z_sorted[mb], s=10, alpha=0.6, label="Fixed (Bottom)")
+            ax.scatter(x[mf], z_sorted[mf], s=10, alpha=0.6, label="Free (Middle)")
+            ax.scatter(x[mt], z_sorted[mt], s=10, alpha=0.6, label="Fixed (Top)")
+
+            # 畫出夾具界面位置
+            ax.axhline(zb, linestyle="--", linewidth=1, alpha=0.7)
+            ax.axhline(zt, linestyle="--", linewidth=1, alpha=0.7)
+            ax.text(
+                0.02,
+                0.98,
+                f"zb={zb:.3f} Å\nzt={zt:.3f} Å\nL={L:.3f} Å",
+                transform=ax.transAxes,
+                va="top",
+            )
+
+            ax.set_title(f"Atom Z-Distribution ({safe_tag})")
+            ax.set_xlabel("Atoms sorted by Z")
+            ax.set_ylabel("Z (Å)")
+            ax.grid(True, alpha=0.25)
+            ax.legend()
+            fig.tight_layout()
+            fig.savefig(str(filepath), dpi=120)
+            plt.close(fig)
+
+            print(f"[plot] Saved: {filepath}")
+
+        except Exception as e:
+            print(f"[Warning] Plotting failed: {e}")
+
+    return zb, zt, L
 
 
-def _free_mask(atoms, bottom_idx, top_idx, axis=2, eps=1e-4):
+def _free_mask(atoms, bottom_idx, top_idx, axis: int = 2, eps: float = 1e-4) -> np.ndarray:
     z = atoms.get_positions()[:, axis]
+    bottom_idx = _ensure_nonempty_idx("bottom_idx", bottom_idx)
+    top_idx = _ensure_nonempty_idx("top_idx", top_idx)
+
     zb = float(z[bottom_idx].max())
     zt = float(z[top_idx].min())
     if zt <= zb:
@@ -44,7 +140,7 @@ def _free_mask(atoms, bottom_idx, top_idx, axis=2, eps=1e-4):
     return (z > zb + eps) & (z < zt - eps)
 
 
-def _gap_stats_z(atoms, mask: np.ndarray, axis=2, tol=1e-8):
+def _gap_stats_z(atoms, mask: np.ndarray, axis: int = 2, tol: float = 1e-8) -> Tuple[float, float, int]:
     z = atoms.get_positions()[mask, axis]
     if z.size < 2:
         return 0.0, 0.0, 0
@@ -59,11 +155,13 @@ def _gap_stats_z(atoms, mask: np.ndarray, axis=2, tol=1e-8):
 def _clean(atoms):
     a = atoms.copy()
     a.calc = None
-    a.set_constraint()
+    # 明確清空 constraint（避免 ASE 版本差異造成怪行為）
+    a.set_constraint([])
     return a
 
 
 def _pin_fixed_positions(atoms_target, fixed_idx, ref_positions):
+    fixed_idx = np.asarray(fixed_idx, dtype=int).ravel()
     pos = atoms_target.get_positions()
     pos[fixed_idx] = ref_positions
     atoms_target.set_positions(pos)
@@ -77,17 +175,27 @@ def main():
     ap.add_argument("--pp", required=True)
 
     # Choose either spacing or ecut
-    ap.add_argument("--spacing", type=float, default=None, help="Real-space grid spacing (Angstrom). If set, ecut is ignored.")
-    ap.add_argument("--ecut", type=float, default=None, help="Kinetic energy cutoff (eV). Used only if spacing is not provided.")
+    ap.add_argument("--spacing", type=float, default=None,
+                    help="Real-space grid spacing (Angstrom). If set, ecut is ignored.")
+    ap.add_argument("--ecut", type=float, default=None,
+                    help="Kinetic energy cutoff (eV). Used only if spacing is not provided.")
 
     ap.add_argument("--step", type=float, default=0.005)
     ap.add_argument("--cycles", type=int, default=200)
     ap.add_argument("--fmax", type=float, default=0.08)
     ap.add_argument("--relax-steps", type=int, default=80)
+
     ap.add_argument("--debug-strain", action="store_true")
     ap.add_argument("--gap-tol", type=float, default=1e-6)
     ap.add_argument("--eps-free", type=float, default=1e-4)
     ap.add_argument("--no-pin-grips", action="store_true")
+
+    # Plot controls (proof of stretching)
+    ap.add_argument("--plot-grips", action="store_true",
+                    help="Save Z-distribution plots (fixed/free/top) into results/.")
+    ap.add_argument("--plot-every", type=int, default=20,
+                    help="Plot every N cycles (relaxed structure). Default=20. Use 0 to disable periodic plotting.")
+
     args = ap.parse_args()
 
     # ---------- Determine spacing ----------
@@ -98,10 +206,10 @@ def main():
 
     if args.spacing is None:
         spacing = ecut_to_spacing_angstrom(float(args.ecut))
-        print(f"[grid] Using ecut={float(args.ecut):.6f} eV -> spacing~={spacing:.6f} A (DFTpy: setting spacing disables ecut)")
+        print(f"[grid] Using ecut={float(args.ecut):.6f} eV -> spacing~={spacing:.6f} Å (DFTpy: setting spacing disables ecut)")
     else:
         spacing = float(args.spacing)
-        print(f"[grid] Using spacing={spacing:.6f} A (ecut disabled by design)")
+        print(f"[grid] Using spacing={spacing:.6f} Å (ecut disabled by design)")
 
     pin_grips = not bool(args.no_pin_grips)
 
@@ -114,10 +222,17 @@ def main():
 
     bottom_idx = np.load(str(workdir / "bottom_idx.npy")).astype(int).ravel()
     top_idx = np.load(str(workdir / "top_idx.npy")).astype(int).ravel()
+    bottom_idx = _ensure_nonempty_idx("bottom_idx", bottom_idx)
+    top_idx = _ensure_nonempty_idx("top_idx", top_idx)
+
     fixed_idx = np.unique(np.concatenate([bottom_idx, top_idx])).astype(int)
 
     atoms0 = read(str(init_path))
     write(str(results / "cycle_000_relaxed.xyz"), atoms0)
+
+    # Plot init once if requested
+    if args.plot_grips:
+        _grip(atoms0, bottom_idx, top_idx, axis=2, debug=True, tag="cycle_000_init", outdir=results)
 
     zb0, zt0, L0 = _grip(atoms0, bottom_idx, top_idx, axis=2)
     free0 = _free_mask(atoms0, bottom_idx, top_idx, axis=2, eps=float(args.eps_free))
@@ -192,7 +307,24 @@ def main():
 
         write(str(results / f"cycle_{cyc:03d}_relaxed.xyz"), atoms_rlx)
 
-        zb_r, zt_r, L_r = _grip(atoms_rlx, bottom_idx, top_idx, axis=2)
+        # Plot relaxed periodically if requested
+        do_plot = False
+        if args.plot_grips:
+            if int(args.plot_every) > 0 and (cyc % int(args.plot_every) == 0):
+                do_plot = True
+            if cyc in (1, 2, 5, 10):  # 前期多畫幾張，方便你/老賊確認「真的有拉」
+                do_plot = True
+
+        zb_r, zt_r, L_r = _grip(
+            atoms_rlx,
+            bottom_idx,
+            top_idx,
+            axis=2,
+            debug=do_plot,
+            tag=f"cycle_{cyc:03d}_relaxed",
+            outdir=results,
+        )
+
         strain = (L_r - L0) / L0
 
         free_now = _free_mask(atoms_rlx, bottom_idx, top_idx, axis=2, eps=float(args.eps_free))
@@ -233,3 +365,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

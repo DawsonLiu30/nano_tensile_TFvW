@@ -1,0 +1,117 @@
+import numpy as np
+from ase.build import bulk, make_supercell
+from ase.io import write
+
+# ===== 只改這裡 =====
+a0 = 4.05
+size = 6.5        # 截面尺寸(Å)：越大越粗
+length_z = 40.0    # 柱長(Å)
+vacuum = 5.0
+
+gamma100 = 1.00
+gamma110 = 1.06    # 想讓(110)更明顯 -> 往 1.00 靠；想淡化 -> 調大
+# ====================
+
+
+def normalize(v):
+    v = np.array(v, float)
+    n = np.linalg.norm(v)
+    if n == 0:
+        raise ValueError("Zero vector in normalize()")
+    return v / n
+
+
+def rotate_to_make_a3_along_z(atoms):
+    """
+    Rotate atoms so that cell[2] aligns with Cartesian z.
+    Also make ex in plane perpendicular to ez (Gram-Schmidt).
+    """
+    cell = atoms.get_cell().array
+    a1, a2, a3 = cell[0], cell[1], cell[2]
+
+    ez = normalize(a3)  # target z direction
+
+    # choose ex from a1 projected onto plane ⟂ ez
+    a1_perp = a1 - np.dot(a1, ez) * ez
+    if np.linalg.norm(a1_perp) < 1e-8:
+        # fallback: use a2 if a1 is parallel to a3
+        a2_perp = a2 - np.dot(a2, ez) * ez
+        ex = normalize(a2_perp)
+    else:
+        ex = normalize(a1_perp)
+
+    ey = np.cross(ez, ex)  # right-handed
+
+    # Rotation matrix mapping old coords -> new coords:
+    # new = [ex; ey; ez] * old
+    R = np.vstack([ex, ey, ez])
+
+    pos = atoms.get_positions()
+    pos_new = pos @ R.T
+    cell_new = cell @ R.T
+
+    atoms.set_positions(pos_new)
+    atoms.set_cell(cell_new, scale_atoms=False)
+    return atoms
+
+
+# --- Build oriented base: [111] || a3 ---
+al = bulk("Al", "fcc", a=a0)
+T = np.array([[ 1, -1,  0],
+              [ 1,  1, -2],
+              [ 1,  1,  1]], dtype=int)
+base = make_supercell(al, T)
+
+# --- IMPORTANT: rotate so periodic vector is truly along Cartesian z ---
+base = rotate_to_make_a3_along_z(base)
+
+# cell parameters (robust)
+Lx0, Ly0, Lz0, *_ = base.cell.cellpar()
+
+# repeat enough to cover size in xy and requested length in z
+min_xy = 2 * size + 6.0
+nx = int(np.ceil(min_xy / Lx0))
+ny = int(np.ceil(min_xy / Ly0))
+nz = int(np.ceil(length_z / Lz0))
+
+blk = base.repeat((nx, ny, nz))
+
+# center for cutting (use geometric center)
+cell = blk.get_cell().array
+origin = 0.5 * cell.sum(axis=0)
+r = blk.get_positions() - origin
+xy = r[:, :2]
+
+# Wulff prism side walls: {100} + {110} in xy
+n100 = np.array([[1.0, 0.0], [0.0, 1.0]])
+n110 = np.array([[1.0, 1.0], [1.0, -1.0]]) / np.sqrt(2.0)
+
+d100 = size * gamma100
+d110 = size * gamma110
+
+keep = (
+    (np.abs(xy @ n100[0]) <= d100) &
+    (np.abs(xy @ n100[1]) <= d100) &
+    (np.abs(xy @ n110[0]) <= d110) &
+    (np.abs(xy @ n110[1]) <= d110)
+)
+
+prism = blk[keep]
+prism.set_pbc((False, False, True))
+
+# Make orthorhombic box ONLY after we've rotated correctly
+p = prism.get_positions()
+Lx = (p[:, 0].max() - p[:, 0].min()) + 2 * vacuum
+Ly = (p[:, 1].max() - p[:, 1].min()) + 2 * vacuum
+Lz = np.linalg.norm(prism.get_cell().array[2])  # already aligned with z now
+
+prism.set_cell([Lx, Ly, Lz], scale_atoms=False)
+prism.center(axis=(0, 1))
+
+print(f"Supercell grid: {nx} x {ny} x {nz}")
+print("Atoms:", len(prism))
+print("Cell (Å):", prism.get_cell().lengths(), " PBC:", prism.get_pbc())
+
+write("Al_111_WulffPrism_100_110.xyz", prism)
+write("Al_111_WulffPrism_100_110.vasp", prism, vasp5=True, direct=True)
+
