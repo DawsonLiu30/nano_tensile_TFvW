@@ -1,17 +1,12 @@
-# HPC / runtime
+# ===== Runtime / HPC =====
 results/
 slurm/
 cases/
-picked/
 vac_v2_out/
 
-# numpy / python cache
+# ===== Python =====
 __pycache__/
-*.npy
+*.pyc
 
-# logs
-*.out
-*.err
-
-# editor / system
+# ===== Editors / OS =====
 .DS_Store
