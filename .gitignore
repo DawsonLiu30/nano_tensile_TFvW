@@ -10,3 +10,10 @@ __pycache__/
 
 # ===== Editors / OS =====
 .DS_Store
+# ===== Generated structures / indices =====
+*.npy
+*.xyz
+*.vasp
+
+# ===== Jupyter =====
+.ipynb_checkpoints/

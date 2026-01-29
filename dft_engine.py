@@ -24,8 +24,8 @@ def _build_dftpy_config(pp_file: str | Path, spacing: float, atoms) -> OptionFor
         conf["PP"][sym] = pp_path.name
 
     conf["JOB"]["calctype"] = "Energy Force Stress"
-    conf["KEDF"]["kedf"] = "WT"
-    conf["OPT"]["method"] = "TN"
+    conf["KEDF"]["kedf"] = "SM"
+    conf["OPT"]["method"] = "LBFGS"
     conf["GRID"]["spacing"] = float(spacing)
 
     return OptionFormat(conf)
@@ -80,4 +80,3 @@ def relax_atoms(
             f.write(f"{S[2,0]:14.6f} {S[2,1]:14.6f} {S[2,2]:14.6f}\n")
 
     return atoms, E, S
-

@@ -167,4 +167,3 @@ def apply_strain(
     if return_info:
         return atoms, info
     return atoms
-
