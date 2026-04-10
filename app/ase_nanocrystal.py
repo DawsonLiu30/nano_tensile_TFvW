@@ -1,132 +1,102 @@
 import numpy as np
-from ase.build import bulk
 from ase.io import write
+from ase.lattice.cubic import FaceCenteredCubic
 
+# 根據論文設定的預設參數
 DEFAULT_CONFIG = {
-    "a0": 4.05,
-    "size": 3.5,          
-    "length_z": 40.0,     
-    "vacuum": 5.0,        
-    "gamma100": 1.00,
-    "gamma110": 1.06,
+    "a0": 4.05,           # Al 的晶格常數
+    "diameter_nm": 2.0,   # 奈米線直徑 (論文使用 1, 2, 4, 8 nm)
+    "length_z": 20.0,     # 奈米線長度 (約 20 nm 或更短)
+    "vacuum": 5.0,        # 真空層大小，確保週期影像間至少有 10 Å 真空 (兩側各 5 Å)
 }
 
-
-def normalize(v):
-    v = np.array(v, float)
-    n = np.linalg.norm(v)
-    if n == 0:
-        raise ValueError("Zero vector in normalize()")
-    return v / n
-
-
-def rotate_to_make_a3_along_z(atoms):
-    """
-    Rotate atoms so that cell[2] aligns with Cartesian z.
-    Also make ex in plane perpendicular to ez.
-    """
-    cell = atoms.get_cell().array
-    a1, a2, a3 = cell[0], cell[1], cell[2]
-
-    ez = normalize(a3)
-    a1_perp = a1 - np.dot(a1, ez) * ez
-
-    if np.linalg.norm(a1_perp) < 1e-8:
-        a2_perp = a2 - np.dot(a2, ez) * ez
-        ex = normalize(a2_perp)
-    else:
-        ex = normalize(a1_perp)
-
-    ey = np.cross(ez, ex)
-    new_cell_basis = np.array([ex, ey, ez])
-
-    atoms.set_cell(np.dot(cell, new_cell_basis.T), scale_atoms=True)
-    atoms.rotate(a3, "z", rotate_cell=True)
-    return atoms
-
-
-def _set_cell_vacuum_xy_only(atoms, vacuum_xy):
-    pos = atoms.get_positions()
-    xmin, ymin, zmin = pos.min(axis=0)
-    xmax, ymax, zmax = pos.max(axis=0)
-
-    Lx = (xmax - xmin) + 2.0 * vacuum_xy
-    Ly = (ymax - ymin) + 2.0 * vacuum_xy
-    Lz = (zmax - zmin)  
-
-    # 設成正交盒（方便看、也符合 nanowire 設定）
-    atoms.set_cell([Lx, Ly, Lz], scale_atoms=False)
-
-    # 只在 x/y 置中；z 不動
-    pos = atoms.get_positions()
-    pos[:, 0] += (Lx / 2.0) - pos[:, 0].mean()
-    pos[:, 1] += (Ly / 2.0) - pos[:, 1].mean()
-
-    pos[:, 2] -= pos[:, 2].min()
-
-    atoms.set_positions(pos)
-    return atoms
-
-
-def build_wulff_nanocrystal(
+def build_circular_nanowire_111(
     a0=DEFAULT_CONFIG["a0"],
-    size=DEFAULT_CONFIG["size"],
+    diameter_nm=DEFAULT_CONFIG["diameter_nm"],
     length_z=DEFAULT_CONFIG["length_z"],
     vacuum=DEFAULT_CONFIG["vacuum"],
-    gamma100=DEFAULT_CONFIG["gamma100"],
-    gamma110=DEFAULT_CONFIG["gamma110"],
 ):
-
-    base = bulk("Al", "fcc", a=a0, cubic=True)
-    base = rotate_to_make_a3_along_z(base)
-
-    Lx0, Ly0, Lz0, *_ = base.cell.cellpar()
-
-    min_xy = 2 * size + 6.0
-    nx = int(np.ceil(min_xy / Lx0))
-    ny = int(np.ceil(min_xy / Ly0))
-    nz = int(np.ceil(length_z / Lz0))
-
-    blk = base.repeat((nx, ny, nz))
-
-    # 以幾何中心做裁切
-    cell = blk.get_cell().array
-    origin = 0.5 * cell.sum(axis=0)
-    r = blk.get_positions() - origin
-    xy = r[:, :2]
-
-    # Wulff prism side walls: {100}+{110}
-    n100 = np.array([[1.0, 0.0], [0.0, 1.0]])
-    n110 = np.array([[1.0, 1.0], [1.0, -1.0]]) / np.sqrt(2.0)
-
-    d100 = size * gamma100
-    d110 = size * gamma110
-
-    keep = (
-        (np.abs(xy @ n100[0]) <= d100) &
-        (np.abs(xy @ n100[1]) <= d100) &
-        (np.abs(xy @ n110[0]) <= d110) &
-        (np.abs(xy @ n110[1]) <= d110)
+    """
+    根據論文要求，建立 [111] 晶向、圓形截面的鋁奈米線。
+    """
+    # 將直徑 (nm) 轉換為半徑 (Angstrom)
+    radius = (diameter_nm * 10.0) / 2.0
+    
+    # 定義 [111] 方向的正交基礎晶胞
+    # 這樣設定能確保 Z 軸完美對齊 [111] 晶向
+    direction_x = [1, -1, 0]
+    direction_y = [1, 1, -2]
+    direction_z = [1, 1, 1]
+    
+    # 建立基礎正交晶胞
+    base_atoms = FaceCenteredCubic(
+        directions=[direction_x, direction_y, direction_z],
+        size=(1, 1, 1), 
+        symbol='Al', 
+        pbc=True, 
+        latticeconstant=a0
     )
-
-    atoms = blk[keep]
-
-    atoms = _set_cell_vacuum_xy_only(atoms, vacuum_xy=vacuum)
- 
-    atoms.pbc = (False, False, True)
-
-    return atoms
-
+    
+    # 取得基礎晶胞的尺寸
+    lx, ly, lz = base_atoms.cell.lengths()
+    
+    # 計算需要複製幾次才能涵蓋我們目標的圓柱體大小
+    nx = int(np.ceil((2.0 * radius + 5.0) / lx))
+    ny = int(np.ceil((2.0 * radius + 5.0) / ly))
+    nz = int(np.ceil(length_z / lz))
+    
+    # 確保至少複製 1 次
+    nx, ny, nz = max(1, nx), max(1, ny), max(1, nz)
+    
+    # 擴充成巨大的超晶胞
+    supercell = base_atoms.repeat((nx, ny, nz))
+    
+    # 找出 XY 平面的中心點
+    cx = supercell.cell[0, 0] / 2.0
+    cy = supercell.cell[1, 1] / 2.0
+    
+    # 取得所有原子的座標
+    pos = supercell.get_positions()
+    
+    # 計算每個原子到中心軸的距離平方 (x^2 + y^2)
+    dx = pos[:, 0] - cx
+    dy = pos[:, 1] - cy
+    dist2 = dx**2 + dy**2
+    
+    # 建立圓形遮罩：保留在半徑範圍內的原子
+    mask = dist2 <= radius**2
+    nanowire = supercell[mask]
+    
+    # 重新設定晶胞大小以加入真空層 (符合論文提到的至少 10 A 真空)
+    new_lx = 2.0 * radius + 2.0 * vacuum
+    new_ly = 2.0 * radius + 2.0 * vacuum
+    new_lz = supercell.cell[2, 2]  # Z 軸保持原本的週期長度
+    
+    # 將切出來的奈米線置中於新的晶胞內
+    wire_pos = nanowire.get_positions()
+    cur_cx = wire_pos[:, 0].mean()
+    cur_cy = wire_pos[:, 1].mean()
+    
+    wire_pos[:, 0] += (new_lx / 2.0) - cur_cx
+    wire_pos[:, 1] += (new_ly / 2.0) - cur_cy
+    
+    nanowire.set_positions(wire_pos)
+    nanowire.set_cell([new_lx, new_ly, new_lz])
+    
+    # 論文中提到「所有方向皆施加週期性邊界條件」
+    nanowire.pbc = [True, True, True] 
+    
+    return nanowire
 
 if __name__ == "__main__":
-    print(f"Building with default config: {DEFAULT_CONFIG}")
-    atoms = build_wulff_nanocrystal()
+    print(f"Building [111] Circular Nanowire with config: {DEFAULT_CONFIG}")
+    atoms = build_circular_nanowire_111()
 
-    print(f"Atoms: {len(atoms)}")
-    print(f"Cell (Å): {atoms.get_cell().lengths()}")
+    print(f"Total Atoms: {len(atoms)}")
+    print(f"Cell dimensions (Å): {atoms.get_cell().lengths()}")
     print(f"PBC: {atoms.get_pbc()}")
 
-    write("test_structure.xyz", atoms)
-    write("test_structure.vasp", atoms, vasp5=True, direct=True)
-    print("Written: test_structure.xyz, test_structure.vasp")
-    print("Done.")
+    write("init_111_nanowire.xyz", atoms)
+    write("init_111_nanowire.vasp", atoms, vasp5=True, direct=True)
+    print("Files successfully generated: init_111_nanowire.xyz, init_111_nanowire.vasp")
+    print("You're all set to reproduce the paper's geometry!")

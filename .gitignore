@@ -18,3 +18,7 @@ __pycache__/
 
 # ===== Jupyter =====
 .ipynb_checkpoints/
+.venv/
+__pycache__/
+*.npy
+results/*/cycle_*_relax.traj
