@@ -15,13 +15,13 @@ Example: larger nanocrystal + vacancy concentration.
 ```bash
 /Users/dawson666/miniforge3/envs/dftpy_env/bin/python scripts/create_case.py \
   --case nc_large_vac01 \
-  --size 6.5 \
+  --builder paper_circular \
+  --diameter-nm 2.0 \
   --length-z 60.0 \
   --vacancy \
   --vac-mode conc \
   --vac-conc-pct 0.1 \
   --vac-conc-basis free \
-  --vac-region free \
   --seed 42 \
   --write-run-script
 ```
@@ -54,3 +54,5 @@ bash /Users/dawson666/Desktop/nano_tensile_TFvW/cases/nc_large_vac01/run_main.sh
 
 - Existing root-level files are left untouched to avoid breaking ongoing jobs.
 - For new experiments, always create a new `case` folder first.
+- Vacancy generation is restricted to the tensile free region only, so the bottom and top fixed grips remain balanced.
+- `main.py` now reports free-region strain and plots stress using the DFT cell stress scaled by the free-region nanowire area.

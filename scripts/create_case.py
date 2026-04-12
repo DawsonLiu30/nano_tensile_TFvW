@@ -12,7 +12,11 @@ from pathlib import Path
 import numpy as np
 from ase.io import write
 
-from ase_nanocrystal import build_wulff_nanocrystal
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from ase_nanocrystal import build_circular_nanowire, build_wulff_nanocrystal
 from auto_prep import get_grip_indices
 
 
@@ -20,14 +24,28 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(
         description="Create a reproducible tensile case under cases/<case>/inputs."
     )
-    ap.add_argument("--case", required=True, help="Case name, e.g. nc_large_vac01")
+    ap.add_argument("--case", required=True, help="Case name, e.g. paper_111_al_vac01")
     ap.add_argument("--force", action="store_true", help="Overwrite existing case directory")
 
-    # Geometry
+    ap.add_argument(
+        "--builder",
+        choices=["paper_circular", "wulff_prism"],
+        default="paper_circular",
+        help="Geometry builder. paper_circular follows the reference paper.",
+    )
+
+    # Common geometry
     ap.add_argument("--a0", type=float, default=4.05)
+    ap.add_argument("--length-z", type=float, default=20.0)
+    ap.add_argument("--vacuum", type=float, default=10.0)
+
+    # Paper-style circular wire
+    ap.add_argument("--diameter-nm", type=float, default=2.0)
+    ap.add_argument("--radius-A", dest="radius_A", type=float, default=None)
+    ap.add_argument("--orientation", choices=["111", "100", "110"], default="111")
+
+    # Legacy Wulff-prism wire
     ap.add_argument("--size", type=float, default=3.5)
-    ap.add_argument("--length-z", type=float, default=40.0)
-    ap.add_argument("--vacuum", type=float, default=5.0)
     ap.add_argument("--gamma100", type=float, default=1.00)
     ap.add_argument("--gamma110", type=float, default=1.06)
 
@@ -39,13 +57,18 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--max-layers", type=int, default=0, help="0 means unlimited")
     ap.add_argument("--eps", type=float, default=1e-3)
 
-    # Vacancy setup (optional)
+    # Vacancy setup
     ap.add_argument("--vacancy", action="store_true", help="Enable vacancy generation")
     ap.add_argument("--vac-mode", choices=["one", "count", "conc"], default="conc")
     ap.add_argument("--vac-n", type=int, default=1)
     ap.add_argument("--vac-conc-pct", type=float, default=0.1)
     ap.add_argument("--vac-conc-basis", choices=["total", "free"], default="free")
-    ap.add_argument("--vac-region", choices=["free", "all"], default="free")
+    ap.add_argument(
+        "--vac-region",
+        choices=["free"],
+        default="free",
+        help="Vacancies are restricted to the tensile free region.",
+    )
     ap.add_argument("--seed", type=int, default=42)
 
     ap.add_argument(
@@ -60,10 +83,45 @@ def _run(cmd: list[str], cwd: Path) -> None:
     subprocess.run(cmd, cwd=str(cwd), check=True)
 
 
+def _load_idx(path: Path) -> np.ndarray:
+    return np.asarray(np.load(str(path)), dtype=int).ravel()
+
+
+def _validate_grip_balance(bottom_idx: np.ndarray, top_idx: np.ndarray, *, stage: str) -> None:
+    if bottom_idx.size == 0 or top_idx.size == 0:
+        raise RuntimeError(f"[{stage}] grip indices are empty.")
+    if bottom_idx.size != top_idx.size:
+        raise RuntimeError(
+            f"[{stage}] bottom/top grip atom counts differ: "
+            f"bottom={bottom_idx.size}, top={top_idx.size}."
+        )
+
+
+def _build_atoms(args: argparse.Namespace):
+    if args.builder == "paper_circular":
+        return build_circular_nanowire(
+            a0=float(args.a0),
+            diameter_nm=float(args.diameter_nm) if args.radius_A is None else None,
+            radius_A=None if args.radius_A is None else float(args.radius_A),
+            length_z=float(args.length_z),
+            vacuum=float(args.vacuum),
+            orientation=str(args.orientation),
+        )
+
+    return build_wulff_nanocrystal(
+        a0=float(args.a0),
+        size=float(args.size),
+        length_z=float(args.length_z),
+        vacuum=float(args.vacuum),
+        gamma100=float(args.gamma100),
+        gamma110=float(args.gamma110),
+    )
+
+
 def main() -> None:
     args = parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = ROOT
     cases_dir = root / "cases"
     case_dir = cases_dir / args.case
     inputs_dir = case_dir / "inputs"
@@ -75,19 +133,10 @@ def main() -> None:
 
     inputs_dir.mkdir(parents=True, exist_ok=True)
 
-    # 1) Build structure
-    atoms = build_wulff_nanocrystal(
-        a0=float(args.a0),
-        size=float(args.size),
-        length_z=float(args.length_z),
-        vacuum=float(args.vacuum),
-        gamma100=float(args.gamma100),
-        gamma110=float(args.gamma110),
-    )
+    atoms = _build_atoms(args)
     write(str(inputs_dir / "raw_structure.xyz"), atoms)
     write(str(inputs_dir / "raw_structure.vasp"), atoms, vasp5=True, direct=True)
 
-    # 2) Build grips
     max_layers = None if int(args.max_layers) == 0 else int(args.max_layers)
     bottom_idx, top_idx = get_grip_indices(
         atoms,
@@ -99,10 +148,11 @@ def main() -> None:
         eps=float(args.eps),
         debug=False,
     )
+    _validate_grip_balance(bottom_idx, top_idx, stage="raw_structure")
+
     np.save(str(inputs_dir / "raw_bottom_idx.npy"), bottom_idx)
     np.save(str(inputs_dir / "raw_top_idx.npy"), top_idx)
 
-    # 3) Vacancy (optional)
     if bool(args.vacancy):
         cmd = [
             sys.executable,
@@ -126,7 +176,7 @@ def main() -> None:
             "--conc-basis",
             str(args.vac_conc_basis),
             "--region",
-            str(args.vac_region),
+            "free",
         ]
         _run(cmd, cwd=inputs_dir)
         shutil.copy2(inputs_dir / "bottom_idx_init.npy", inputs_dir / "bottom_idx.npy")
@@ -137,17 +187,39 @@ def main() -> None:
         shutil.copy2(inputs_dir / "raw_bottom_idx.npy", inputs_dir / "bottom_idx.npy")
         shutil.copy2(inputs_dir / "raw_top_idx.npy", inputs_dir / "top_idx.npy")
 
+    final_bottom = _load_idx(inputs_dir / "bottom_idx.npy")
+    final_top = _load_idx(inputs_dir / "top_idx.npy")
+    _validate_grip_balance(final_bottom, final_top, stage="final_case")
+
+    geometry = {
+        "builder": args.builder,
+        "a0": args.a0,
+        "length_z": args.length_z,
+        "vacuum": args.vacuum,
+    }
+    if args.builder == "paper_circular":
+        geometry.update(
+            {
+                "orientation": args.orientation,
+                "diameter_nm": args.diameter_nm if args.radius_A is None else None,
+                "radius_A": args.radius_A,
+                "surface_symmetry": 3,
+                "source": "Hung and Carter 2011 style circular [111] nanowire",
+            }
+        )
+    else:
+        geometry.update(
+            {
+                "size": args.size,
+                "gamma100": args.gamma100,
+                "gamma110": args.gamma110,
+            }
+        )
+
     manifest = {
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "case": args.case,
-        "geometry": {
-            "a0": args.a0,
-            "size": args.size,
-            "length_z": args.length_z,
-            "vacuum": args.vacuum,
-            "gamma100": args.gamma100,
-            "gamma110": args.gamma110,
-        },
+        "geometry": geometry,
         "grips": {
             "end_frac": args.end_frac,
             "min_thickness": args.min_thickness,
@@ -155,6 +227,9 @@ def main() -> None:
             "min_layers": args.min_layers,
             "max_layers": args.max_layers,
             "eps": args.eps,
+            "bottom_atoms": int(final_bottom.size),
+            "top_atoms": int(final_top.size),
+            "balanced": bool(final_bottom.size == final_top.size),
         },
         "vacancy": {
             "enabled": bool(args.vacancy),
@@ -162,7 +237,7 @@ def main() -> None:
             "n": args.vac_n,
             "conc_pct": args.vac_conc_pct,
             "conc_basis": args.vac_conc_basis,
-            "region": args.vac_region,
+            "region": "free",
             "seed": args.seed,
         },
         "artifacts": {
@@ -202,9 +277,15 @@ def main() -> None:
         run_script.chmod(0o755)
 
     print(f"[case] Created: {case_dir}")
+    print(f"[case] Builder: {args.builder}")
     print(f"[case] Inputs : {inputs_dir}")
     print(f"[case] Init   : {inputs_dir / 'init.vasp'}")
-    print(f"[case] Grips  : {inputs_dir / 'bottom_idx.npy'} , {inputs_dir / 'top_idx.npy'}")
+    print(
+        f"[case] Grips  : bottom={final_bottom.size} atoms, top={final_top.size} atoms "
+        f"(balanced={final_bottom.size == final_top.size})"
+    )
+    if bool(args.vacancy):
+        print("[case] Vacancy: restricted to the tensile free region")
     print(f"[case] Manifest: {case_dir / 'manifest.json'}")
 
 

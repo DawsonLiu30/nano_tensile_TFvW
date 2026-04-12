@@ -15,41 +15,44 @@ def _unique_levels(z, eps):
     return q, levels
 
 def _pick_levels(levels, z_min, z_max, target_thickness, min_layers, max_layers):
-    """
-    Select atomic layers from bottom and top based on thickness and layer count.
-    """
+    """Pick a paired number of layers so bottom/top grips remain atom-count balanced."""
+    n_levels = len(levels)
+    if n_levels < 2:
+        raise ValueError("Need at least two z-levels to define grips.")
 
-    # ---- Bottom (bottom-up) ----
-    bottom_levels = []
+    layers_from_thickness_bottom = 0
     for lv in levels:
         if lv <= z_min + target_thickness:
-            bottom_levels.append(lv)
+            layers_from_thickness_bottom += 1
         else:
             break
 
-    # Ensure minimum layers
-    if len(bottom_levels) < min_layers:
-        bottom_levels = list(levels[:min(min_layers, len(levels))])
-
-    # Apply max_layers limit
-    if max_layers is not None and max_layers > 0:
-        bottom_levels = bottom_levels[:min(max_layers, len(bottom_levels))]
-
-    # ---- Top (top-down) ----
-    top_levels = []
+    layers_from_thickness_top = 0
     for lv in levels[::-1]:
         if lv >= z_max - target_thickness:
-            top_levels.append(lv)
+            layers_from_thickness_top += 1
         else:
             break
 
-    if len(top_levels) < min_layers:
-        top_levels = list(levels[-min(min_layers, len(levels)):][::-1])
-
+    min_layers_needed = max(int(min_layers), layers_from_thickness_bottom, layers_from_thickness_top)
+    max_paired_layers = n_levels // 2
     if max_layers is not None and max_layers > 0:
-        top_levels = top_levels[:min(max_layers, len(top_levels))]
+        max_paired_layers = min(max_paired_layers, int(max_layers))
 
-    return np.array(bottom_levels, dtype=float), np.array(top_levels, dtype=float)
+    if min_layers_needed > max_paired_layers:
+        raise ValueError(
+            "Cannot satisfy grip selection constraints without overlapping grips: "
+            f"min_layers_needed={min_layers_needed}, max_paired_layers={max_paired_layers}"
+        )
+
+    for paired_layers in range(min_layers_needed, max_paired_layers + 1):
+        bottom_levels = np.array(levels[:paired_layers], dtype=float)
+        top_levels = np.array(levels[-paired_layers:][::-1], dtype=float)
+        yield bottom_levels, top_levels
+
+
+def _layer_atom_count(zq, levels):
+    return int(np.isin(zq, levels).sum())
 
 def _compute_grip_thickness(zq, bottom_idx, top_idx):
     """Return actual grip thickness per side (A)."""
@@ -99,14 +102,42 @@ def get_grip_indices(
     if levels.size < 2:
         raise ValueError("Not enough distinct z-levels detected. Try increasing --eps.")
 
-    bottom_levels, top_levels = _pick_levels(
-        levels=levels,
-        z_min=z_min,
-        z_max=z_max,
-        target_thickness=target_thickness,
-        min_layers=int(min_layers),
-        max_layers=max_layers,
+    candidate_pairs = list(
+        _pick_levels(
+            levels=levels,
+            z_min=z_min,
+            z_max=z_max,
+            target_thickness=target_thickness,
+            min_layers=int(min_layers),
+            max_layers=max_layers,
+        )
     )
+
+    bottom_levels = None
+    top_levels = None
+    n_atoms = len(z)
+    for bot_levels, top_levels_candidate in candidate_pairs:
+        bottom_atoms = _layer_atom_count(zq, bot_levels)
+        top_atoms = _layer_atom_count(zq, top_levels_candidate)
+        if bottom_atoms == top_atoms and (bottom_atoms + top_atoms) < n_atoms:
+            bottom_levels = bot_levels
+            top_levels = top_levels_candidate
+            break
+
+    if bottom_levels is None or top_levels is None:
+        details = [
+            (
+                int(len(bot_levels)),
+                _layer_atom_count(zq, bot_levels),
+                _layer_atom_count(zq, top_levels_candidate),
+                len(z) - _layer_atom_count(zq, bot_levels) - _layer_atom_count(zq, top_levels_candidate),
+            )
+            for bot_levels, top_levels_candidate in candidate_pairs
+        ]
+        raise ValueError(
+            "Unable to find balanced bottom/top grips under the current thickness/layer limits. "
+            f"Candidates (layers, bottom_atoms, top_atoms, free_atoms)={details}"
+        )
 
     bottom_mask = np.isin(zq, bottom_levels)
     top_mask = np.isin(zq, top_levels)
@@ -118,6 +149,10 @@ def get_grip_indices(
         raise ValueError("No atoms selected for bottom grip.")
     if top_idx.size == 0:
         raise ValueError("No atoms selected for top grip.")
+    if bottom_idx.size != top_idx.size:
+        raise ValueError(
+            f"Balanced grip search failed unexpectedly: bottom={bottom_idx.size}, top={top_idx.size}"
+        )
 
     overlap = np.intersect1d(bottom_idx, top_idx)
     if overlap.size > 0:
@@ -125,6 +160,8 @@ def get_grip_indices(
             f"Bottom and top grips overlap (n={overlap.size}). "
             "Check eps or reduce end_frac."
         )
+    if (bottom_idx.size + top_idx.size) >= len(z):
+        raise ValueError("Selected grips leave no free atoms. Increase wire length or reduce grip thickness.")
 
     bottom_z = z[bottom_idx]
     top_z = z[top_idx]

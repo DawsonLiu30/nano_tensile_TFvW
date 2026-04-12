@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import argparse
 from pathlib import Path
 
@@ -12,8 +14,15 @@ def _ensure_nonempty(name: str, arr: np.ndarray) -> np.ndarray:
     return arr
 
 
+def _ensure_balanced_grips(bottom_idx: np.ndarray, top_idx: np.ndarray, *, stage: str) -> None:
+    if bottom_idx.size != top_idx.size:
+        raise RuntimeError(
+            f"[make_vacancy] {stage}: grip atom counts must stay balanced, "
+            f"got bottom={bottom_idx.size}, top={top_idx.size}."
+        )
+
+
 def _remap_indices_after_removals(idx: np.ndarray, removed_idx: np.ndarray, n_old: int) -> np.ndarray:
-    """Remap indices from old structure to new structure after removing many atoms."""
     idx = np.asarray(idx, dtype=int).ravel()
     removed_idx = np.unique(np.asarray(removed_idx, dtype=int).ravel())
     keep_mask = np.ones(int(n_old), dtype=bool)
@@ -46,23 +55,22 @@ def _compute_n_vacancies_from_concentration(
 def parse_args():
     ap = argparse.ArgumentParser(
         description=(
-            "Create vacancies in a structure (default: free region only), "
-            "then remap grip indices for tensile workflow."
+            "Create vacancies only inside the tensile free region and remap grip indices."
         )
     )
-    ap.add_argument("--input", default="test_structure.xyz", help="Input structure (default: test_structure.xyz)")
-    ap.add_argument("--bottom", default="bottom_idx.npy", help="Bottom grip index file (default: bottom_idx.npy)")
-    ap.add_argument("--top", default="top_idx.npy", help="Top grip index file (default: top_idx.npy)")
-    ap.add_argument("--seed", type=int, default=42, help="RNG seed (default: 42)")
-    ap.add_argument("--tag", default="vac1", help="Output tag (default: vac1) -> writes <tag>.xyz/.vasp and *_<tag>.npy")
+    ap.add_argument("--input", default="test_structure.xyz", help="Input structure")
+    ap.add_argument("--bottom", default="bottom_idx.npy", help="Bottom grip index file")
+    ap.add_argument("--top", default="top_idx.npy", help="Top grip index file")
+    ap.add_argument("--seed", type=int, default=42, help="RNG seed")
+    ap.add_argument("--tag", default="vac1", help="Output tag -> writes <tag>.xyz/.vasp and *_<tag>.npy")
 
     ap.add_argument(
         "--mode",
         choices=["one", "count", "conc"],
         default="one",
-        help="Vacancy mode: one (1 atom), count (--n), conc (--conc-pct). Default: one",
+        help="Vacancy mode: one (1 atom), count (--n), conc (--conc-pct).",
     )
-    ap.add_argument("--n", type=int, default=1, help="Number of vacancies when --mode count (default: 1)")
+    ap.add_argument("--n", type=int, default=1, help="Number of vacancies when --mode count")
     ap.add_argument(
         "--conc-pct",
         type=float,
@@ -73,13 +81,13 @@ def parse_args():
         "--conc-basis",
         choices=["total", "free"],
         default="free",
-        help="Denominator for concentration: total atoms or free-region atoms (default: free)",
+        help="Denominator for concentration: total atoms or free-region atoms",
     )
     ap.add_argument(
         "--region",
-        choices=["free", "all"],
+        choices=["free"],
         default="free",
-        help="Where to remove atoms from: free (recommended) or all (default: free)",
+        help="Vacancies are restricted to the tensile free region.",
     )
     return ap.parse_args()
 
@@ -100,18 +108,16 @@ def main():
             f"  top   : {top_path.resolve()}"
         )
 
-    # 1) Read structure
     atoms = read(str(inp))
     n0 = len(atoms)
     if n0 <= 0:
         raise RuntimeError("[make_vacancy] Empty structure: no atoms.")
 
-    # 2) Read grips (these indices are defined on THIS input structure)
     bottom_idx = _ensure_nonempty("bottom_idx", np.load(str(bottom_path)))
     top_idx = _ensure_nonempty("top_idx", np.load(str(top_path)))
+    _ensure_balanced_grips(bottom_idx, top_idx, stage="before vacancy")
 
-    # Defensive check: indices must be within range
-    if bottom_idx.max() >= n0 or top_idx.max() >= n0:
+    if int(bottom_idx.max()) >= n0 or int(top_idx.max()) >= n0:
         raise RuntimeError(
             "[make_vacancy] Grip indices out of range for the input structure.\n"
             f"  n_atoms={n0}\n"
@@ -121,15 +127,12 @@ def main():
         )
 
     fixed_idx = np.unique(np.concatenate([bottom_idx, top_idx])).astype(int)
-
-    # 3) Free region = all - fixed
     all_idx = np.arange(n0, dtype=int)
     free_idx = np.setdiff1d(all_idx, fixed_idx)
 
     if free_idx.size == 0:
-        raise RuntimeError("[make_vacancy] No free atoms available (free_idx is empty). Check grips.")
+        raise RuntimeError("[make_vacancy] No free atoms available. Check the grips.")
 
-    # 4) Decide vacancy count
     if args.mode == "one":
         n_vac = 1
         mode_note = "one"
@@ -147,14 +150,11 @@ def main():
     if n_vac < 0:
         raise RuntimeError(f"[make_vacancy] n_vac must be >= 0, got {n_vac}")
 
-    candidate_idx = free_idx if args.region == "free" else all_idx
-    if candidate_idx.size == 0:
-        raise RuntimeError("[make_vacancy] Candidate region has no atoms.")
-
+    candidate_idx = free_idx
     if n_vac > candidate_idx.size:
         print(
             f"[Vacancy] Warning: requested {n_vac} vacancies but only "
-            f"{candidate_idx.size} candidate atoms available -> clamp to {candidate_idx.size}."
+            f"{candidate_idx.size} free atoms are available -> clamp to {candidate_idx.size}."
         )
         n_vac = int(candidate_idx.size)
 
@@ -162,36 +162,39 @@ def main():
         print("[Vacancy] n_vac=0 -> no atoms removed. Writing pass-through outputs.")
         remove_idx = np.array([], dtype=int)
     else:
-        # 5) Randomly remove n_vac atoms from selected region
         rng = np.random.default_rng(int(args.seed))
         remove_idx = np.sort(rng.choice(candidate_idx, size=n_vac, replace=False).astype(int))
+
+    overlap_with_fixed = np.intersect1d(remove_idx, fixed_idx)
+    if overlap_with_fixed.size > 0:
+        raise RuntimeError(
+            "[make_vacancy] Vacancy selection touched fixed atoms, which is forbidden.\n"
+            f"  offending indices: {overlap_with_fixed.tolist()}"
+        )
 
     mask = np.ones(n0, dtype=bool)
     mask[remove_idx] = False
     atoms_vac = atoms[mask]
 
-    # 6) Remap grip indices so they match the NEW structure
     bottom_idx_new = _remap_indices_after_removals(bottom_idx, remove_idx, n0)
     top_idx_new = _remap_indices_after_removals(top_idx, remove_idx, n0)
+    _ensure_balanced_grips(bottom_idx_new, top_idx_new, stage="after vacancy")
 
-    # Defensive check: remapped indices must be within new range
     n1 = len(atoms_vac)
     if bottom_idx_new.size == 0 or top_idx_new.size == 0:
         raise RuntimeError(
             "[make_vacancy] After remapping, bottom/top became empty. "
-            "This should not happen unless grips were too small or something went very wrong."
+            "This should not happen if vacancies stay in the free region."
         )
-    if bottom_idx_new.max() >= n1 or top_idx_new.max() >= n1:
+    if int(bottom_idx_new.max()) >= n1 or int(top_idx_new.max()) >= n1:
         raise RuntimeError(
-            "[make_vacancy] Remapped indices out of range. Something is inconsistent.\n"
+            "[make_vacancy] Remapped indices out of range.\n"
             f"  new n_atoms={n1}\n"
             f"  bottom_new max={bottom_idx_new.max()}\n"
             f"  top_new    max={top_idx_new.max()}"
         )
 
-    # 7) Write outputs
     tag = str(args.tag)
-
     xyz_out = Path(f"{tag}.xyz")
     vasp_out = Path(f"{tag}.vasp")
     bottom_out = Path(f"bottom_idx_{tag}.npy")
@@ -199,16 +202,14 @@ def main():
 
     write(str(xyz_out), atoms_vac)
     write(str(vasp_out), atoms_vac, vasp5=True, direct=True)
-
     np.save(str(bottom_out), bottom_idx_new)
     np.save(str(top_out), top_idx_new)
 
-    # 8) Print summary (human-friendly)
     print(f"[Vacancy] input        : {inp.name}")
     print(f"[Vacancy] total atoms  : {n0}")
     print(f"[Vacancy] fixed atoms  : {fixed_idx.size}  free atoms : {free_idx.size}")
     print(f"[Vacancy] mode         : {mode_note}")
-    print(f"[Vacancy] remove region: {args.region}")
+    print("[Vacancy] remove region: free")
     print(f"[Vacancy] n_vacancies  : {n_vac}")
     if remove_idx.size:
         print(
@@ -216,9 +217,13 @@ def main():
             f"{' ...' if remove_idx.size > 10 else ''}"
         )
     print(f"[Vacancy] after vacancy: {n1}")
+    print(
+        f"[Vacancy] grip atoms   : bottom={bottom_idx_new.size}, "
+        f"top={top_idx_new.size} (balanced={bottom_idx_new.size == top_idx_new.size})"
+    )
     print(f"[Vacancy] Written      : {xyz_out.name}, {vasp_out.name}")
     print(f"[Vacancy] Updated idx  : {bottom_out.name}, {top_out.name}")
-    print("[Vacancy] NOTE: main.py must use the UPDATED idx files for this vac structure.")
+    print("[Vacancy] NOTE: main.py must use the updated idx files for this vacancy structure.")
 
 
 if __name__ == "__main__":
