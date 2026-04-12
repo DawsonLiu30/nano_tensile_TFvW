@@ -1,85 +1,180 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
 import subprocess
 import sys
-import os
+from pathlib import Path
 
-def run_command(cmd):
-    print(f"\n🚀 執行指令: {cmd}")
-    result = subprocess.run(cmd, shell=True)
-    if result.returncode != 0:
-        print(f"❌ 錯誤：指令執行失敗，腳本中斷！")
-        sys.exit(1)
 
-def main():
-    # 實驗矩陣 (可根據需求增減)
-    orientations = ["111", "100", "110"]
-    diameters_to_test = [1.0, 2.0]
-    
-    # 空缺設定
-    enable_vacancy = True
-    vac_conc_pct = 0.5
-    
-    for o in orientations:
-        for d in diameters_to_test:
-            print(f"\n{'='*65}")
-            print(f"🌟 開始自動化流程：[{o}] 晶向 | 直徑 {d} nm")
-            print(f"{'='*65}")
-            
-            base_vasp = f"init_{o}_Al_{d}nm.vasp"
-            
-            # --- 步驟 1: 生成完美單晶 ---
-            cmd_build = f"python app/ase_nanocrystal.py --diameter {d} --orientation {o}"
-            run_command(cmd_build)
-            
-            # --- 步驟 2: 萃取初始 Grip (厚度 4.0 Å) ---
-            cmd_prep = f"python scripts/prep_grips.py --init {base_vasp} --outdir . --thickness 4.0"
-            run_command(cmd_prep)
-            
-            final_vasp = base_vasp
-            final_bottom = "bottom_idx.npy"
-            final_top = "top_idx.npy"
-            case_name = f"Al_{o}_{d}nm_perfect"
+ROOT = Path(__file__).resolve().parents[1]
+PYTHON = sys.executable
 
-            # --- 步驟 3: 製造空缺 (修正檔案覆蓋問題) ---
-            if enable_vacancy:
-                # 這裡加入了 o 和 d，確保每個迴圈產出的 Tag 都是唯一的！
-                vac_tag = f"vac_{o}_{d}nm_{vac_conc_pct}pct"
-                case_name = f"Al_{o}_{d}nm_vac{vac_conc_pct}"
-                
-                cmd_vac = (
-                    f"PYTHONPATH=. python app/make_vacancy.py "
-                    f"--input {base_vasp} "
-                    f"--bottom bottom_idx.npy "
-                    f"--top top_idx.npy "
-                    f"--mode conc "
-                    f"--conc-pct {vac_conc_pct} "
-                    f"--tag {vac_tag}"
-                )
-                run_command(cmd_vac)
-                
-                final_vasp = f"{vac_tag}.vasp"
-                final_bottom = f"bottom_idx_{vac_tag}.npy"
-                final_top = f"top_idx_{vac_tag}.npy"
 
-            # --- 步驟 4: 啟動拉伸 ---
-            cmd_run = (
-                f"PYTHONPATH=. python app/main.py "
-                f"--case {case_name} "
-                f"--workdir . "
-                f"--init {final_vasp} "
-                f"--pp al.gga.psp "
-                f"--bottom-idx {final_bottom} "
-                f"--top-idx {final_top} "
-                f"--step 0.005 "
-                f"--cycles 40 "
-                f"--fmax 0.01 "
-                f"--relax-steps 150 "
-                f"--plot-summary"
+def _tag_float(value: float) -> str:
+    return f"{float(value):.1f}".replace(".", "p")
+
+
+def _run(cmd: list[str], cwd: Path | None = None) -> None:
+    shown = " ".join(cmd)
+    print(f"\n[run] {shown}")
+    subprocess.run(cmd, cwd=str(cwd) if cwd is not None else None, check=True)
+
+
+def _case_name(prefix: str, orientation: str, diameter_nm: float, vac_pct: float) -> str:
+    return (
+        f"{prefix}_{orientation}_d{_tag_float(diameter_nm)}nm_"
+        f"vac{_tag_float(vac_pct)}"
+    )
+
+
+def _parse_args() -> argparse.Namespace:
+    ap = argparse.ArgumentParser(
+        description="Prepare and optionally run finite-length faceted tensile cases."
+    )
+    ap.add_argument("--orientations", nargs="+", default=["111", "100", "110"])
+    ap.add_argument("--diameters", nargs="+", type=float, default=[1.0, 2.0])
+    ap.add_argument("--length-z", type=float, default=200.0)
+    ap.add_argument("--vacuum", type=float, default=10.0)
+    ap.add_argument("--gamma100", type=float, default=1.00)
+    ap.add_argument("--gamma110", type=float, default=1.06)
+    ap.add_argument("--vacancy-pct", type=float, default=0.5)
+    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--case-prefix", default="paperfinite")
+    ap.add_argument("--pp", default=str(ROOT / "al.gga.recpot"))
+    ap.add_argument(
+        "--init-name",
+        default="init.vasp",
+        help="Input structure filename under cases/<case>/inputs/ to pass to main.py.",
+    )
+
+    ap.add_argument("--step", type=float, default=0.01)
+    ap.add_argument("--cycles", type=int, default=40)
+    ap.add_argument("--ecut", type=float, default=1000.0)
+    ap.add_argument("--fmax", type=float, default=0.02)
+    ap.add_argument("--relax-steps", type=int, default=200)
+    ap.add_argument("--axial-vacuum", type=float, default=10.0)
+    ap.add_argument("--fracture-gap-factor", type=float, default=3.0)
+    ap.add_argument(
+        "--init-state",
+        choices=["auto", "raw", "relaxed", "checkpoint"],
+        default="raw",
+        help="How main.py should treat the provided --init file.",
+    )
+    ap.add_argument(
+        "--rebuild-cases",
+        action="store_true",
+        help="Force regenerate case inputs even if the case directory already exists.",
+    )
+    ap.add_argument("--prepare-only", action="store_true")
+    ap.add_argument("--plot-summary", action="store_true")
+    return ap.parse_args()
+
+
+def main() -> None:
+    args = _parse_args()
+
+    for orientation in args.orientations:
+        for diameter_nm in args.diameters:
+            size_A = float(diameter_nm) * 5.0
+            case_name = _case_name(
+                prefix=str(args.case_prefix),
+                orientation=str(orientation),
+                diameter_nm=float(diameter_nm),
+                vac_pct=float(args.vacancy_pct),
             )
-            run_command(cmd_run)
-            
-            print(f"🎉 [{o}] 直徑 {d} nm 模擬完成！")
+            case_dir = ROOT / "cases" / case_name
 
-    print("\n✅ 所有實驗矩陣處理完畢！")
+            print("\n" + "=" * 72)
+            print(
+                f"[case] orientation={orientation} diameter={diameter_nm:.1f} nm "
+                f"size_A={size_A:.3f} case={case_name}"
+            )
+            print("=" * 72)
+
+            init_input = case_dir / "inputs" / str(args.init_name)
+            need_create = bool(args.rebuild_cases) or not init_input.exists()
+            if need_create:
+                create_cmd = [
+                    PYTHON,
+                    str(ROOT / "scripts" / "create_case.py"),
+                    "--case",
+                    case_name,
+                    "--a0",
+                    "4.05",
+                    "--size",
+                    f"{size_A}",
+                    "--length-z",
+                    f"{float(args.length_z)}",
+                    "--vacuum",
+                    f"{float(args.vacuum)}",
+                    "--orientation",
+                    str(orientation),
+                    "--gamma100",
+                    f"{float(args.gamma100)}",
+                    "--gamma110",
+                    f"{float(args.gamma110)}",
+                    "--min-thickness",
+                    "4.0",
+                    "--max-thickness",
+                    "4.0",
+                    "--vacancy",
+                    "--vac-mode",
+                    "conc",
+                    "--vac-conc-pct",
+                    f"{float(args.vacancy_pct)}",
+                    "--vac-conc-basis",
+                    "free",
+                    "--vac-region",
+                    "free",
+                    "--seed",
+                    f"{int(args.seed)}",
+                ]
+                if bool(args.rebuild_cases):
+                    create_cmd.insert(4, "--force")
+                _run(create_cmd, cwd=ROOT)
+            else:
+                print(f"[case] Reusing existing inputs: {case_dir}")
+
+            if args.prepare_only:
+                continue
+
+            run_cmd = [
+                PYTHON,
+                str(ROOT / "main.py"),
+                "--case",
+                case_name,
+                "--workdir",
+                str(case_dir),
+                "--init",
+                str(init_input),
+                "--pp",
+                str(args.pp),
+                "--bottom-idx",
+                str(case_dir / "inputs" / "bottom_idx.npy"),
+                "--top-idx",
+                str(case_dir / "inputs" / "top_idx.npy"),
+                "--init-state",
+                str(args.init_state),
+                "--ecut",
+                f"{float(args.ecut)}",
+                "--step",
+                f"{float(args.step)}",
+                "--cycles",
+                f"{int(args.cycles)}",
+                "--fmax",
+                f"{float(args.fmax)}",
+                "--relax-steps",
+                f"{int(args.relax_steps)}",
+                "--axial-vacuum",
+                f"{float(args.axial_vacuum)}",
+                "--fracture-gap-factor",
+                f"{float(args.fracture_gap_factor)}",
+            ]
+            if args.plot_summary:
+                run_cmd.append("--plot-summary")
+            _run(run_cmd, cwd=ROOT)
+
 
 if __name__ == "__main__":
     main()

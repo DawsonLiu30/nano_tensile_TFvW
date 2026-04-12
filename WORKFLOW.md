@@ -35,12 +35,16 @@ Use the generated case-local inputs:
   --case nc_large_vac01 \
   --workdir /Users/dawson666/Desktop/nano_tensile_TFvW/cases/nc_large_vac01 \
   --init /Users/dawson666/Desktop/nano_tensile_TFvW/cases/nc_large_vac01/inputs/init.vasp \
-  --pp /Users/dawson666/Desktop/nano_tensile_TFvW/al.gga.psp \
+  --init-state raw \
+  --pp /Users/dawson666/Desktop/nano_tensile_TFvW/al.gga.recpot \
+  --ecut 1000 \
+  --fmax 0.02 \
   --bottom-idx /Users/dawson666/Desktop/nano_tensile_TFvW/cases/nc_large_vac01/inputs/bottom_idx.npy \
   --top-idx /Users/dawson666/Desktop/nano_tensile_TFvW/cases/nc_large_vac01/inputs/top_idx.npy \
-  --step 0.005 \
+  --step 0.01 \
   --cycles 120 \
-  --relax-steps 80 \
+  --relax-steps 200 \
+  --fracture-gap-factor 3.0 \
   --plot-summary
 ```
 

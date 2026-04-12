@@ -30,7 +30,7 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate dftpy-env
 
 echo "=== Sanity check files ==="
-ls -lh vac_one.vasp al.gga.psp bottom_idx.npy top_idx.npy main.py strain_engine.py dft_engine.py
+ls -lh vac_one.vasp al.gga.recpot bottom_idx.npy top_idx.npy main.py strain_engine.py dft_engine.py
 
 echo "=== Clean old results (fresh run) ==="
 rm -rf results
@@ -40,12 +40,14 @@ echo "=== Run tensile (1% per cycle, pinned grips by default) ==="
 python -u main.py \
   --workdir . \
   --init vac_one.vasp \
-  --pp al.gga.psp \
+  --init-state raw \
+  --pp al.gga.recpot \
   --ecut 1000 \
   --step 0.01 \
   --cycles 200 \
-  --relax-steps 80 \
-  --fmax 0.08
+  --relax-steps 200 \
+  --fmax 0.02 \
+  --fracture-gap-factor 3.0
 
 echo "=== Job end: $(date) ==="
 

@@ -10,10 +10,15 @@ from datetime import datetime
 from pathlib import Path
 
 import numpy as np
-from ase.io import write
+from ase.io import read, write
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from ase_nanocrystal import build_wulff_nanocrystal
 from auto_prep import get_grip_indices
+from app.geometry_metrics import projected_xy_geometry
 
 
 def parse_args() -> argparse.Namespace:
@@ -28,6 +33,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--size", type=float, default=3.5)
     ap.add_argument("--length-z", type=float, default=40.0)
     ap.add_argument("--vacuum", type=float, default=5.0)
+    ap.add_argument("--orientation", choices=["111", "100", "110"], default="111")
     ap.add_argument("--gamma100", type=float, default=1.00)
     ap.add_argument("--gamma110", type=float, default=1.06)
 
@@ -63,7 +69,7 @@ def _run(cmd: list[str], cwd: Path) -> None:
 def main() -> None:
     args = parse_args()
 
-    root = Path(__file__).resolve().parents[1]
+    root = ROOT
     cases_dir = root / "cases"
     case_dir = cases_dir / args.case
     inputs_dir = case_dir / "inputs"
@@ -83,6 +89,7 @@ def main() -> None:
         vacuum=float(args.vacuum),
         gamma100=float(args.gamma100),
         gamma110=float(args.gamma110),
+        orientation=str(args.orientation),
     )
     write(str(inputs_dir / "raw_structure.xyz"), atoms)
     write(str(inputs_dir / "raw_structure.vasp"), atoms, vasp5=True, direct=True)
@@ -137,6 +144,9 @@ def main() -> None:
         shutil.copy2(inputs_dir / "raw_bottom_idx.npy", inputs_dir / "bottom_idx.npy")
         shutil.copy2(inputs_dir / "raw_top_idx.npy", inputs_dir / "top_idx.npy")
 
+    init_atoms = read(str(inputs_dir / "init.vasp"))
+    geom_actual = projected_xy_geometry(init_atoms)
+
     manifest = {
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "case": args.case,
@@ -145,8 +155,17 @@ def main() -> None:
             "size": args.size,
             "length_z": args.length_z,
             "vacuum": args.vacuum,
+            "orientation": args.orientation,
             "gamma100": args.gamma100,
             "gamma110": args.gamma110,
+        },
+        "geometry_actual": {
+            "span_x_A": geom_actual["span_x_A"],
+            "span_y_A": geom_actual["span_y_A"],
+            "area_bbox_xy_A2": geom_actual["area_bbox_xy_A2"],
+            "area_hull_xy_A2": geom_actual["area_hull_xy_A2"],
+            "equiv_diameter_hull_nm": geom_actual["equiv_diameter_hull_nm"],
+            "n_hull_vertices": geom_actual["n_hull_vertices"],
         },
         "grips": {
             "end_frac": args.end_frac,
@@ -187,12 +206,16 @@ def main() -> None:
                     '  --case "$CASE" \\',
                     '  --workdir "$ROOT/cases/$CASE" \\',
                     '  --init "$ROOT/cases/$CASE/inputs/init.vasp" \\',
-                    '  --pp "$ROOT/al.gga.psp" \\',
+                    '  --pp "$ROOT/al.gga.recpot" \\',
                     '  --bottom-idx "$ROOT/cases/$CASE/inputs/bottom_idx.npy" \\',
                     '  --top-idx "$ROOT/cases/$CASE/inputs/top_idx.npy" \\',
-                    "  --step 0.005 \\",
+                    "  --init-state raw \\",
+                    "  --ecut 1000 \\",
+                    "  --step 0.01 \\",
                     "  --cycles 120 \\",
-                    "  --relax-steps 80 \\",
+                    "  --fmax 0.02 \\",
+                    "  --relax-steps 200 \\",
+                    "  --fracture-gap-factor 3.0 \\",
                     "  --plot-summary",
                     "",
                 ]
