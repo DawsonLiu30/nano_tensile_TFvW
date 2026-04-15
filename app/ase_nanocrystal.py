@@ -200,7 +200,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--diameter", type=float, default=DEFAULT_CONFIG["diameter_nm"])
     parser.add_argument("--radius-A", dest="radius_A", type=float, default=DEFAULT_CONFIG["radius_A"])
     parser.add_argument("--orientation", type=str, default=DEFAULT_CONFIG["orientation"], choices=list(ORIENTATION_DIRECTIONS))
-    parser.add_argument("--length-z", type=float, default=DEFAULT_CONFIG["length_z"])
+    parser.add_argument(
+        "--length-z",
+        type=float,
+        default=DEFAULT_CONFIG["length_z"],
+        help="Target builder length along z in Angstrom. This is not in nm.",
+    )
     parser.add_argument("--vacuum", type=float, default=DEFAULT_CONFIG["vacuum"])
     parser.add_argument("--size", type=float, default=DEFAULT_CONFIG["size"])
     parser.add_argument("--gamma100", type=float, default=DEFAULT_CONFIG["gamma100"])

@@ -1,0 +1,5 @@
+diameter_nm,case_dir,run_dir,peak_cycle,peak_strain,peak_wire_stress_ref_GPa,final_cycle,final_strain,final_wire_stress_ref_GPa
+1.0,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_1.0nm_tfvw,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_1.0nm_tfvw\results\paper_r1_short_tfvw_20260413_185333,15,0.160968955370,21.472958360510,20,0.220190039948,9.896507842387
+2.0,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_2.0nm_tfvw,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_2.0nm_tfvw\results\paper_r2_short_tfvw_20260413_214559,12,0.126825030132,19.279175368111,20,0.220190039948,5.952777442129
+3.0,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_3.0nm_tfvw,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_3.0nm_tfvw\results\paper_r3_short_tfvw_20260414_030219,15,0.160968955370,20.787724768413,20,0.220190039948,5.447481349281
+4.0,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_4.0nm_tfvw,C:\Users\dawso\nano_tensile_TFvW\cases\paper_periodic_111_4.0nm_tfvw\results\paper_r4_short_tfvw_20260414_132005,12,0.126825030132,15.967020417040,20,0.220190039948,6.675504148236

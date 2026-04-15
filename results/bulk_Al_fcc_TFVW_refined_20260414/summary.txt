@@ -1,0 +1,11 @@
+kedf=TFVW
+pp=C:\Users\dawso\nano_tensile_TFvW\al.gga.recpot
+spacing_A=0.193914971731
+a0_input_A=4.050000000000
+a0_ref_A=4.118877004246
+repeat=(1, 1, 1)
+axis=2
+n_atoms=4
+fit_max_strain=0.005000
+stress_slope_GPa=128.562001853711
+stress_intercept_GPa=0.072870350971
