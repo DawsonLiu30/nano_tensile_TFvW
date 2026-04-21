@@ -1,36 +1,51 @@
-# Professor Review
+# Current professor-review results
 
-Completed short-wire results are summarized here. The bulk reference shown below uses the latest refined TFVW scan.
+For complete raw calculation paths, see `CALCULATION_DATA_MAP.md`.
 
-## Figures
+## Bulk validation
 
-- `01_bulk_a0_scan.png`
-- `02_bulk_validation.png`
-- `10_completed_short_wire_overlay.png`
-- `11_completed_short_wire_grid.png`
-- `12_peak_strength_vs_diameter.png`
+- `00_bulk_DFT_vs_OFDFT_QE_DFTpy.png`
+- QE / KS-DFT fitted a0: 4.039721 A
+- DFTpy / OF-DFT TFvW fitted a0: 4.118921 A
+- OF-DFT vs QE relative difference: 1.9605 %
 
-## Bulk reference
+This is the preferred bulk figure because it compares DFT and OF-DFT directly.
 
-- Bulk directory: `bulk_Al_fcc_TFVW_refined_20260414`
-- Sampled minimum in `a0 scan`: `4.120 A`
-- Quadratic-fit minimum in `a0 scan`: `4.118877 A`
-- Small-strain axial slope: `128.562002 GPa`
+## Vacancy finite-grip tensile test
 
-## Individual stress-strain figures
+- `01_r1_finite_grip_vacancy_tensile_FINAL.png`
+- `01_r1_finite_grip_vacancy_tensile_FINAL.csv`
+- `02_r2_finite_grip_vacancy_tensile_FINAL.png`
+- `02_r2_finite_grip_vacancy_tensile_FINAL.csv`
 
-- `03_stress_strain_1.0nm.png`
-- `04_stress_strain_2.0nm.png`
-- `05_stress_strain_3.0nm.png`
-- `06_stress_strain_4.0nm.png`
+Status: **invalidated; do not use for professor review.**
 
-## Completed cases
+These curves were generated with an affine stretch that also elongated the fixed grip regions. A real tensile fixture should translate the top and bottom grips as rigid bodies, then relax only the mobile atoms. The tensile workflow has been corrected after this issue was identified on 2026-04-20, and these finite-grip curves must be rerun from cycle 0.
 
-- `1.0 nm`: peak `21.472958 GPa` at `16.097%` strain
-- `2.0 nm`: peak `19.279175 GPa` at `12.683%` strain
-- `3.0 nm`: peak `20.787725 GPa` at `16.097%` strain
-- `4.0 nm`: peak `15.967020 GPa` at `12.683%` strain
+Workflow summary:
 
-## Table
+- Finite Al [111] nanowire, not periodic cell stretching.
+- Bottom and top grip atoms are translated as rigid bodies during loading, then fixed during relaxation.
+- A single vacancy is placed in the middle free region, outside the fixed grips and close to the surface.
+- Each tensile cycle displaces the rigid grips by 1 percent in z, then relaxes only the non-grip region.
+- Stress is computed from grip reaction force divided by the nanowire reference cross-section.
 
-- `completed_short_wire_summary.csv`
+Invalidated r = 1.0 nm result:
+
+- Completed cycle: 20 of 20
+- Final engineering strain: 22.0190 %
+- Final grip reaction stress: 14.1593 GPa
+- Peak grip reaction stress: 23.3966 GPa at cycle 11, strain 11.5668 %
+- Fracture check was incomplete because it used only the free-region z-gap and could miss grip/free-interface separation.
+- Maximum free-region z-gap: 2.2014 A; threshold: 7.1341 A.
+
+Invalidated r = 2.0 nm result:
+
+- Completed cycle: 20 of 20
+- Final engineering strain: 22.0190 %
+- Final grip reaction stress: 7.9112 GPa
+- Peak grip reaction stress: 26.6030 GPa at cycle 17, strain 18.4304 %
+- Fracture check was incomplete because it used only the free-region z-gap and could miss grip/free-interface separation.
+- Maximum free-region z-gap: 2.6141 A; threshold: 7.1341 A.
+
+No corrected finite-grip vacancy tensile result is currently approved for use. Restart r = 1 and r = 2 from cycle 0 with the corrected rigid-grip loading code before extending to r = 3 and r = 4.
