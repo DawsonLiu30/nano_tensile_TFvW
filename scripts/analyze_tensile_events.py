@@ -58,6 +58,13 @@ def _safe_float(value, default: float = float("nan")) -> float:
         return default
 
 
+def _first_existing(paths: list[Path]) -> Path | None:
+    for path in paths:
+        if path.exists():
+            return path
+    return None
+
+
 def _sigma_cell_wire(row: dict[str, str]) -> float:
     return (
         float(row["sigma_cell_zz_GPa"])
@@ -66,11 +73,24 @@ def _sigma_cell_wire(row: dict[str, str]) -> float:
     )
 
 
-def _d111_from_case(case_dir: Path | None, fallback_a0: float | None) -> float:
+def _d111_from_case(case_dir: Path | None, result_dir: Path, fallback_a0: float | None) -> float:
     if fallback_a0 is not None:
         return float(fallback_a0) / math.sqrt(3.0)
+    fracture_csv = result_dir / "fracture_status.csv"
+    if fracture_csv.exists():
+        fracture_rows = _read_csv(fracture_csv)
+        if fracture_rows:
+            d0z = _safe_float(fracture_rows[0].get("d0z_A"))
+            if np.isfinite(d0z) and d0z > 0.0:
+                return float(d0z)
     if case_dir is not None:
-        manifest = _read_json(case_dir / "inputs" / "grip_vacancy_manifest.json")
+        manifest_path = _first_existing(
+            [
+                case_dir / "inputs" / "grip_vacancy_manifest.json",
+                case_dir / "inputs_preview" / "grip_vacancy_preview_manifest.json",
+            ]
+        )
+        manifest = _read_json(manifest_path) if manifest_path else {}
         a0 = manifest.get("geometry", {}).get("a0_input_A")
         if a0 is not None:
             return float(a0) / math.sqrt(3.0)
@@ -248,9 +268,17 @@ def main() -> None:
     if not rows:
         raise ValueError(f"No rows in {summary_csv}")
 
-    metadata = _read_json(case_dir / "inputs" / "grip_metadata.json") if case_dir else {}
+    metadata = {}
+    if case_dir:
+        metadata_path = _first_existing(
+            [
+                case_dir / "inputs" / "grip_metadata.json",
+                case_dir / "inputs_preview" / "grip_metadata_preview.json",
+            ]
+        )
+        metadata = _read_json(metadata_path) if metadata_path else {}
     fixed_idx = np.asarray(metadata.get("fixed_indices", []), dtype=int)
-    d111 = _d111_from_case(case_dir, args.a0)
+    d111 = _d111_from_case(case_dir, result_dir, args.a0)
     nn_dist = d111 * math.sqrt(3.0 / 2.0)
     bond_cutoff = float(args.bond_cutoff_factor) * nn_dist
     gap_threshold = float(args.gap_factor) * d111

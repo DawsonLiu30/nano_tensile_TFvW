@@ -12,6 +12,8 @@ __pycache__/
 .DS_Store
 .vscode/
 .mplconfig/
+logs_manual/
+tmp/
 # ===== Generated structures / indices =====
 *.npy
 *.xyz

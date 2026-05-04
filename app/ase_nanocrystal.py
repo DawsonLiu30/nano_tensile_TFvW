@@ -8,10 +8,12 @@ from ase.build import bulk
 from ase.io import write
 from ase.lattice.cubic import FaceCenteredCubic
 
+from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
+
 
 DEFAULT_CONFIG = {
     "builder": "paper_circular",
-    "a0": 4.05,
+    "a0": AL_FCC_A0_TFVW_ANG,
     "diameter_nm": 2.0,
     "radius_A": None,
     "length_z": 20.0,

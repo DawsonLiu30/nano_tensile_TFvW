@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
 from app.ase_nanocrystal import build_circular_nanowire
 from app.dft_engine import normalize_kedf_name, relax_atoms
 
@@ -243,7 +244,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--case", default="", help="Optional case name. Defaults to a timestamped name.")
     ap.add_argument("--diameter-nm", type=float, required=True, help="Nanowire diameter in nm.")
     ap.add_argument("--orientation", choices=["111", "100", "110"], default="111")
-    ap.add_argument("--a0", type=float, default=4.05, help="Starting bulk lattice constant in Angstrom.")
+    ap.add_argument(
+        "--a0",
+        type=float,
+        default=AL_FCC_A0_TFVW_ANG,
+        help="Starting bulk lattice constant in Angstrom (TFvW bulk equilibrium a0).",
+    )
     ap.add_argument("--vacuum", type=float, default=10.0, help="Vacuum padding in Angstrom.")
     ap.add_argument("--min-short-lz", type=float, default=10.0, help="Minimum short-cell z length in Angstrom.")
     ap.add_argument(

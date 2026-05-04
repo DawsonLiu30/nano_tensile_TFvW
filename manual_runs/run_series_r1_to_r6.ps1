@@ -1,5 +1,5 @@
 param(
-    [string[]]$Diameters = @("1", "2", "3", "4", "5", "6"),
+    [string[]]$Diameters = @("1", "2", "3", "4", "5", "6", "7", "8"),
     [int]$Cycles = 20,
     [switch]$ResumeLatest
 )

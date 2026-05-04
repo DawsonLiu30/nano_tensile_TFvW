@@ -11,16 +11,20 @@ import matplotlib.pyplot as plt
 import numpy as np
 from ase.build import bulk
 from ase.io import write
+from scipy.optimize import curve_fit
 
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
 from app.dft_engine import evaluate_atoms, normalize_kedf_name
 
 
 HA_TO_EV = 27.211386245988
 BOHR_TO_ANG = 0.529177210903
+EV_PER_A3_TO_GPA = 160.21766208
+GPA_TO_EV_PER_A3 = 1.0 / EV_PER_A3_TO_GPA
 
 
 def ecut_to_spacing_angstrom(ecut_ev: float) -> float:
@@ -126,13 +130,91 @@ def _read_summary(path: Path) -> dict[str, str]:
     return data
 
 
+def _fcc_volume_per_atom_from_a0(a0: np.ndarray | float) -> np.ndarray | float:
+    arr = np.asarray(a0, dtype=float)
+    result = (arr**3) / 4.0
+    if np.isscalar(a0):
+        return float(result)
+    return result
+
+
+def _birch_murnaghan_energy(v_atom: np.ndarray, e0: float, v0: float, b0_eva3: float, b0_prime: float) -> np.ndarray:
+    eta = (v0 / np.asarray(v_atom, dtype=float)) ** (2.0 / 3.0)
+    term1 = (eta - 1.0) ** 3 * b0_prime
+    term2 = (eta - 1.0) ** 2 * (6.0 - 4.0 * eta)
+    return e0 + 9.0 * v0 * b0_eva3 / 16.0 * (term1 + term2)
+
+
+def _bulk_modulus_guess_from_energy_vs_a(a0: np.ndarray, energy_per_atom: np.ndarray) -> float | None:
+    if np.asarray(a0).size < 3:
+        return None
+    coeffs = np.polyfit(a0, energy_per_atom, deg=2)
+    c2, c1 = coeffs[0], coeffs[1]
+    if c2 <= 0.0:
+        return None
+    a0_fit = float(-c1 / (2.0 * c2))
+    d2e_da2 = float(2.0 * c2)
+    b0_eva3 = (4.0 / (9.0 * a0_fit)) * d2e_da2
+    if b0_eva3 <= 0.0:
+        return None
+    return float(b0_eva3)
+
+
+def _fit_birch_murnaghan_from_a0_scan(a0: np.ndarray, energy_per_atom: np.ndarray) -> dict[str, float] | None:
+    if np.asarray(a0).size < 4:
+        return None
+
+    v_atom = np.asarray(_fcc_volume_per_atom_from_a0(a0), dtype=float)
+    e_atom = np.asarray(energy_per_atom, dtype=float)
+    idx_min = int(np.argmin(e_atom))
+
+    e0_guess = float(e_atom[idx_min])
+    v0_guess = float(v_atom[idx_min])
+    b0_guess = _bulk_modulus_guess_from_energy_vs_a(np.asarray(a0, dtype=float), e_atom)
+    if b0_guess is None:
+        b0_guess = 0.5
+    b0_prime_guess = 4.0
+
+    lower = (-np.inf, float(v_atom.min()) * 0.95, 1.0e-4, 1.0)
+    upper = (np.inf, float(v_atom.max()) * 1.05, 5.0, 12.0)
+    p0 = (e0_guess, v0_guess, float(b0_guess), b0_prime_guess)
+
+    try:
+        params, _ = curve_fit(
+            _birch_murnaghan_energy,
+            v_atom,
+            e_atom,
+            p0=p0,
+            bounds=(lower, upper),
+            maxfev=20000,
+        )
+    except Exception:
+        return None
+
+    e0, v0, b0_eva3, b0_prime = [float(x) for x in params]
+    a0_fit = float((4.0 * v0) ** (1.0 / 3.0))
+    return {
+        "e0_eV_per_atom": e0,
+        "v0_atom_A3": v0,
+        "a0_A": a0_fit,
+        "bulk_modulus_eV_per_A3": b0_eva3,
+        "bulk_modulus_GPa": b0_eva3 * EV_PER_A3_TO_GPA,
+        "bulk_modulus_prime": b0_prime,
+    }
+
+
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Low-memory bulk Al validation using DFTpy.")
     ap.add_argument("--pp", default="al.gga.recpot", help="Pseudopotential file path.")
     ap.add_argument("--ecut", type=float, default=1000.0, help="Kinetic energy cutoff (eV).")
     ap.add_argument("--spacing", type=float, default=None, help="Override grid spacing (Angstrom).")
     ap.add_argument("--kedf", default="TFVW", help="DFTpy KEDF name. Examples: TFVW, SM, WT.")
-    ap.add_argument("--a0", type=float, default=4.05, help="Reference fcc lattice constant (Angstrom).")
+    ap.add_argument(
+        "--a0",
+        type=float,
+        default=AL_FCC_A0_TFVW_ANG,
+        help="Reference fcc lattice constant (Angstrom). Defaults to the TFvW bulk equilibrium value.",
+    )
     ap.add_argument(
         "--a0-scan",
         default="",
@@ -201,6 +283,7 @@ def main() -> None:
     print("========================================")
 
     a0_fit = float("nan")
+    eos_metrics: dict[str, float] | None = None
     a0_rows: list[dict[str, float]] = []
     rows: list[dict[str, float]] = []
     csv_path = outdir / "bulk_validation.csv"
@@ -215,12 +298,22 @@ def main() -> None:
         summary_map = _read_summary(outdir / "summary.txt")
         if "a0_ref_A" in summary_map:
             a0_fit = float(summary_map["a0_ref_A"])
+        if all(key in summary_map for key in ["eos_v0_atom_A3", "eos_a0_A", "eos_bulk_modulus_GPa", "eos_bulk_modulus_prime"]):
+            eos_metrics = {
+                "v0_atom_A3": float(summary_map["eos_v0_atom_A3"]),
+                "a0_A": float(summary_map["eos_a0_A"]),
+                "bulk_modulus_GPa": float(summary_map["eos_bulk_modulus_GPa"]),
+                "bulk_modulus_prime": float(summary_map["eos_bulk_modulus_prime"]),
+                "bulk_modulus_eV_per_A3": float(summary_map.get("eos_bulk_modulus_eV_per_A3", "nan")),
+                "e0_eV_per_atom": float(summary_map.get("eos_e0_eV_per_atom", "nan")),
+            }
         elif a0_rows:
             a0_arr_tmp = np.asarray([row["a0_A"] for row in a0_rows], dtype=float)
             a0_energy_tmp = np.asarray([row["energy_per_atom_eV"] for row in a0_rows], dtype=float)
             a0_fit, _ = _quadratic_minimum(a0_arr_tmp, a0_energy_tmp)
             if not np.isfinite(a0_fit):
                 a0_fit = float(_sampled_minimum(a0_arr_tmp, a0_energy_tmp)[0])
+            eos_metrics = _fit_birch_murnaghan_from_a0_scan(a0_arr_tmp, a0_energy_tmp)
         else:
             a0_fit = float(args.a0)
     elif a0_scan.size:
@@ -259,6 +352,7 @@ def main() -> None:
         a0_arr = np.asarray([row["a0_A"] for row in a0_rows], dtype=float)
         a0_energy = np.asarray([row["energy_per_atom_eV"] for row in a0_rows], dtype=float)
         a0_fit, a0_coeffs = _quadratic_minimum(a0_arr, a0_energy)
+        eos_metrics = _fit_birch_murnaghan_from_a0_scan(a0_arr, a0_energy)
         sampled_a0, sampled_energy = _sampled_minimum(a0_arr, a0_energy)
         if not np.isfinite(a0_fit) or not (float(a0_arr.min()) <= a0_fit <= float(a0_arr.max())):
             a0_fit = sampled_a0
@@ -280,19 +374,21 @@ def main() -> None:
         ax.scatter([a0_fit], [fit_energy], color="0.35", s=48, zorder=6)
         ax.set_xlabel("Lattice constant a0 (A)")
         ax.set_ylabel("Energy / atom (eV)")
-        ax.set_title(f"Bulk fcc Al a0 scan ({kedf_name})")
+        ax.set_title(f"Bulk fcc Al EOS scan ({kedf_name})")
         ax.grid(True, alpha=0.3)
         ax.legend(loc="upper left")
         ax.margins(x=0.05, y=0.08)
+        fit_lines = [
+            f"Sampled min = {sampled_a0:.4f} A",
+            f"Quadratic min = {a0_fit:.4f} A",
+        ]
+        if eos_metrics is not None:
+            fit_lines.append(f"EOS a0 = {eos_metrics['a0_A']:.4f} A")
+            fit_lines.append(f"EOS B0 = {eos_metrics['bulk_modulus_GPa']:.1f} GPa")
         ax.text(
             0.61,
             0.86,
-            "\n".join(
-                [
-                    f"Sampled min = {sampled_a0:.4f} A",
-                    f"Fit min = {a0_fit:.4f} A",
-                ]
-            ),
+            "\n".join(fit_lines),
             transform=ax.transAxes,
             ha="left",
             va="top",
@@ -302,7 +398,14 @@ def main() -> None:
         fig.savefig(str(outdir / "a0_scan.png"), dpi=300)
         plt.close(fig)
         if not args.plot_only:
-            print(f"[bulk] Selected reference a0 from scan: {a0_fit:.6f} A")
+            if eos_metrics is not None:
+                a0_fit = float(eos_metrics["a0_A"])
+                print(
+                    f"[bulk] Selected reference a0 from EOS fit: {a0_fit:.6f} A; "
+                    f"B0 = {eos_metrics['bulk_modulus_GPa']:.6f} GPa"
+                )
+            else:
+                print(f"[bulk] Selected reference a0 from quadratic scan fit: {a0_fit:.6f} A")
     else:
         a0_fit = float(args.a0)
 
@@ -447,12 +550,25 @@ def main() -> None:
     fig.savefig(str(outdir / "bulk_validation.png"), dpi=300)
     plt.close(fig)
 
+    eos_a0 = float(eos_metrics["a0_A"]) if eos_metrics is not None else float(a0_fit)
+    eos_v0 = float(eos_metrics["v0_atom_A3"]) if eos_metrics is not None else float("nan")
+    eos_b0_eva3 = float(eos_metrics["bulk_modulus_eV_per_A3"]) if eos_metrics is not None else float("nan")
+    eos_b0_gpa = float(eos_metrics["bulk_modulus_GPa"]) if eos_metrics is not None else float("nan")
+    eos_b0_prime = float(eos_metrics["bulk_modulus_prime"]) if eos_metrics is not None else float("nan")
+    eos_e0 = float(eos_metrics["e0_eV_per_atom"]) if eos_metrics is not None else float("nan")
+
     summary_lines = [
         f"kedf={kedf_name}",
         f"pp={pp_path}",
         f"spacing_A={spacing:.12f}",
         f"a0_input_A={float(args.a0):.12f}",
-        f"a0_ref_A={float(a0_fit):.12f}",
+        f"a0_ref_A={eos_a0:.12f}",
+        f"eos_e0_eV_per_atom={eos_e0:.12f}",
+        f"eos_v0_atom_A3={eos_v0:.12f}",
+        f"eos_a0_A={eos_a0:.12f}",
+        f"eos_bulk_modulus_eV_per_A3={eos_b0_eva3:.12f}",
+        f"eos_bulk_modulus_GPa={eos_b0_gpa:.12f}",
+        f"eos_bulk_modulus_prime={eos_b0_prime:.12f}",
         f"repeat={repeat}",
         f"axis={int(args.axis)}",
         f"n_atoms={len(atoms_ref)}",
@@ -465,6 +581,11 @@ def main() -> None:
     print(f"[bulk] Wrote CSV  : {csv_path}")
     print(f"[bulk] Wrote plot : {outdir / 'bulk_validation.png'}")
     print(f"[bulk] Wrote note : {outdir / 'summary.txt'}")
+    if eos_metrics is not None:
+        print(
+            f"[bulk] EOS fit: a0 = {eos_a0:.6f} A, "
+            f"V0(atom) = {eos_v0:.6f} A^3, B0 = {eos_b0_gpa:.6f} GPa, B0' = {eos_b0_prime:.6f}"
+        )
     if np.isfinite(slope):
         print(f"[bulk] Small-strain slope d(sigma_axis)/de = {slope:.6f} GPa")
 

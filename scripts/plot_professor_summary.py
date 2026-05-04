@@ -39,6 +39,26 @@ def _read_summary_rows(path: Path) -> list[dict[str, str]]:
 
 
 def _latest_bulk_result() -> dict[str, object]:
+    comparison_dir = RESULTS_DIR / "bulk_DFT_OFDFT_QE_DFTpy_20260416"
+    comparison_summary = comparison_dir / "qe_dftpy_bulk_summary.txt"
+    comparison_table = comparison_dir / "bulk_benchmark_comparison.csv"
+    comparison_png = comparison_dir / "bulk_compare_FINAL.png"
+    if comparison_summary.exists() and comparison_table.exists() and comparison_png.exists():
+        rows = _read_summary_rows(comparison_table)
+        benchmark = next((row for row in rows if row["method"].startswith("Standard") or row["method"].startswith("Benchmark")), rows[0])
+        qe_row = next((row for row in rows if "QE" in row["method"]), None)
+        ofdft_row = next((row for row in rows if "OF-DFT" in row["method"]), None)
+        return {
+            "bulk_dir": comparison_dir,
+            "summary_txt": comparison_summary,
+            "summary": _read_key_value_summary(comparison_summary),
+            "comparison_csv": comparison_table,
+            "comparison_png": comparison_png,
+            "benchmark_row": benchmark,
+            "qe_row": qe_row,
+            "ofdft_row": ofdft_row,
+        }
+
     candidates = sorted(
         RESULTS_DIR.glob("bulk_Al_fcc_TFVW*"),
         key=lambda p: p.stat().st_mtime,
@@ -218,25 +238,26 @@ def _plot_strength_vs_diameter(path: Path, runs: list[dict[str, object]]) -> Non
 def _copy_key_images(outdir: Path, bulk: dict[str, object], runs: list[dict[str, object]]) -> None:
     for stale in outdir.glob("[0-9][0-9]_stress_strain_*.png"):
         stale.unlink()
-    shutil.copy2(Path(bulk["a0_scan_png"]), outdir / "01_bulk_a0_scan.png")
-    shutil.copy2(Path(bulk["bulk_validation_png"]), outdir / "02_bulk_validation.png")
+    if "comparison_png" in bulk:
+        shutil.copy2(Path(bulk["comparison_png"]), outdir / "00_bulk_DFT_vs_OFDFT_QE_DFTpy.png")
+    else:
+        shutil.copy2(Path(bulk["a0_scan_png"]), outdir / "01_bulk_a0_scan.png")
+        shutil.copy2(Path(bulk["bulk_validation_png"]), outdir / "02_bulk_validation.png")
     for idx, run in enumerate(runs, start=3):
         diameter = float(run["diameter_nm"])
         shutil.copy2(run["stress_png"], outdir / f"{idx:02d}_stress_strain_{diameter:.1f}nm.png")
 
 
 def _write_summary_md(path: Path, bulk: dict[str, object], runs: list[dict[str, object]]) -> None:
-    sampled_min = bulk["sampled_min"]
     summary = bulk["summary"]
     lines = [
         "# Professor Review",
         "",
-        "Completed short-wire results are summarized here. The bulk reference shown below uses the latest refined TFVW scan.",
+        "Completed short-wire results are summarized here. The bulk reference shown below uses the current EOS-style comparison requested by the professor.",
         "",
         "## Figures",
         "",
-        "- `01_bulk_a0_scan.png`",
-        "- `02_bulk_validation.png`",
+        "- `00_bulk_DFT_vs_OFDFT_QE_DFTpy.png`",
         "- `10_completed_short_wire_overlay.png`",
         "- `11_completed_short_wire_grid.png`",
         "- `12_peak_strength_vs_diameter.png`",
@@ -244,13 +265,39 @@ def _write_summary_md(path: Path, bulk: dict[str, object], runs: list[dict[str, 
         "## Bulk reference",
         "",
         f"- Bulk directory: `{Path(bulk['bulk_dir']).name}`",
-        f"- Sampled minimum in `a0 scan`: `{float(sampled_min['a0_A']):.3f} A`",
-        f"- Quadratic-fit minimum in `a0 scan`: `{float(summary['a0_ref_A']):.6f} A`",
-        f"- Small-strain axial slope: `{float(summary['stress_slope_GPa']):.6f} GPa`",
-        "",
+    ]
+    if "benchmark_row" in bulk and bulk.get("qe_row") and bulk.get("ofdft_row"):
+        benchmark_row = bulk["benchmark_row"]
+        qe_row = bulk["qe_row"]
+        ofdft_row = bulk["ofdft_row"]
+        lines.extend(
+            [
+                f"- Benchmark `a0`: `{float(benchmark_row['a0_A']):.4f} A`",
+                f"- Benchmark `B0`: `{float(benchmark_row['bulk_modulus_GPa']):.1f} GPa`",
+                f"- QE / KS-DFT `a0`: `{float(qe_row['a0_A']):.6f} A`",
+                f"- QE / KS-DFT `B0`: `{float(qe_row['bulk_modulus_GPa']):.2f} GPa`",
+                f"- OF-DFT / TFvW `a0`: `{float(ofdft_row['a0_A']):.6f} A`",
+                f"- OF-DFT / TFvW `B0`: `{float(ofdft_row['bulk_modulus_GPa']):.2f} GPa`",
+                "",
+            ]
+        )
+    else:
+        sampled_min = bulk["sampled_min"]
+        lines.extend(
+            [
+                f"- Sampled minimum in `a0 scan`: `{float(sampled_min['a0_A']):.3f} A`",
+                f"- Quadratic-fit minimum in `a0 scan`: `{float(summary['a0_ref_A']):.6f} A`",
+                f"- EOS bulk modulus: `{float(summary['eos_bulk_modulus_GPa']):.6f} GPa`",
+                f"- Small-strain axial slope: `{float(summary['stress_slope_GPa']):.6f} GPa`",
+                "",
+            ]
+        )
+    lines.extend(
+        [
         "## Individual stress-strain figures",
         "",
-    ]
+        ]
+    )
     for idx, run in enumerate(runs, start=3):
         lines.append(f"- `{idx:02d}_stress_strain_{float(run['diameter_nm']):.1f}nm.png`")
 

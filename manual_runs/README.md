@@ -18,7 +18,7 @@ Get-CimInstance Win32_Process |
 
 If a `run_grip_tensile.py` or `prepare_grip_vacancy_wire.py` process is running, do not start another case.
 
-## 1. Prepare geometry preview files for r = 1 to 6
+## 1. Prepare geometry preview files for r = 1 to 8
 
 This is fast and does not run DFT relaxation. It creates OVITO-checkable files under:
 
@@ -96,7 +96,7 @@ Run r = 6:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_one_case.ps1 -Diameter 6
 ```
 
-The r = 5 and r = 6 cases may be too large for 32 GB RAM at the current grid spacing. If Windows starts swapping heavily or the process exits, stop and run smaller cases first.
+The r = 5 through r = 8 cases may be too large for 32 GB RAM at the current grid spacing. Use ct56/HPC for these production relaxations.
 
 ## 3. Resume an interrupted case
 
@@ -119,7 +119,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_one_case.p
 ## 5. Plot only, without running DFT
 
 This is the command you want after a case finishes or while it is in progress.
-The plot uses the vacuum-corrected cell stress as the primary curve when available:
+The current finite-grip plot uses offset grip-reaction stress as the primary curve. The vacuum-corrected cell stress is retained only as a diagnostic curve:
 
 ```text
 sigma_wire = sigma_cell_zz * A_cell / A_wire
@@ -137,7 +137,7 @@ python .\scripts\plot_grip_tensile_curve.py --case-dir .\cases\finite_grip_111_1
 
 For r = 2, change both `1.0nm` and `r1` to `2.0nm` and `r2`.
 
-## 6. Run all r = 1 to 6 sequentially
+## 6. Run all r = 1 to 8 sequentially
 
 Only use this when you are ready to leave the computer running for a long time:
 
@@ -145,16 +145,18 @@ Only use this when you are ready to leave the computer running for a long time:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_series_r1_to_r6.ps1
 ```
 
+Note: this script name is historical; its default diameter list now covers r = 1 through r = 8.
+
 To start from r = 3 only:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_series_r1_to_r6.ps1 -Diameters 3,4,5,6
+powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_series_r1_to_r6.ps1 -Diameters 3,4,5,6,7,8
 ```
 
-To continue existing r = 1 and r = 2 runs and then run r = 3 and r = 4 sequentially until either fracture or 80 cycles:
+To continue existing r = 1 and r = 2 runs and then run r = 3 through r = 8 sequentially until either fracture or 80 cycles:
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_series_r1_to_r6.ps1 -Diameters 1,2,3,4 -Cycles 80 -ResumeLatest
+powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_series_r1_to_r6.ps1 -Diameters 1,2,3,4,5,6,7,8 -Cycles 80 -ResumeLatest
 ```
 
 ## 7. What the workflow is doing physically
@@ -164,7 +166,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\manual_runs\run_series_r1_
 - A single vacancy is placed in the middle free region outside the grips and close to the surface.
 - Each tensile cycle stretches z by 1 percent from the current grip separation.
 - Only the non-grip atoms relax after each imposed displacement.
-- The publication plot reports the literature-comparable wire stress as `sigma_cell_zz * A_cell / A_wire`.
-- The grip reaction stress is also plotted after subtracting the cycle-0 offset, as a mechanical cross-check.
+- The primary event-analysis stress is the offset grip-reaction stress, `grip_stress_avg_GPa - grip_stress_avg_GPa(cycle 0)`.
+- The cell-derived wire stress, `sigma_cell_zz * A_cell / A_wire`, is kept as a diagnostic stress-definition check.
 - Yield strength is the first primary-stress peak followed by irreversible plastic rearrangement.
 - Complete fracture is detected from relaxed structures using the largest z gap across the whole atomistic wire and a connectivity check.

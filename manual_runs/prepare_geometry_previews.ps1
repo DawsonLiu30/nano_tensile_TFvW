@@ -3,7 +3,7 @@ $Root = Split-Path -Parent $PSScriptRoot
 Set-Location $Root
 
 python scripts/prepare_grip_geometry_preview.py `
-    --diameters 1,2,3,4,5,6 `
+    --diameters 1,2,3,4,5,6,7,8 `
     --orientation 111 `
     --a0 4.118877004246 `
     --wire-length 21.0 `
