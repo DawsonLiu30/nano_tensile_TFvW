@@ -53,12 +53,18 @@ def _format_radius_tag(diameter_nm: float) -> str:
     return str(rounded).replace(".", "p")
 
 
-def _case_name(diameter_nm: float) -> str:
-    return f"paper_periodic_111_{float(diameter_nm):.1f}nm_vacancy_tfvw"
+def _family(shape: str) -> str:
+    return "nanocolumn" if str(shape).lower() == "circle" else "nanocrystal"
 
 
-def _run_name(diameter_nm: float) -> str:
-    return f"paper_r{_format_radius_tag(diameter_nm)}_vacancy_tfvw"
+def _case_name(diameter_nm: float, shape: str, orientation: str) -> str:
+    shape_key = str(shape).lower()
+    return f"{_family(shape_key)}_{shape_key}_periodic_{orientation}_{float(diameter_nm):.1f}nm_vacancy_tfvw"
+
+
+def _run_name(diameter_nm: float, shape: str) -> str:
+    shape_key = str(shape).lower()
+    return f"{_family(shape_key)}_{shape_key}_r{_format_radius_tag(diameter_nm)}_vacancy_tfvw"
 
 
 def _run_command(args: list[str]) -> None:
@@ -68,11 +74,18 @@ def _run_command(args: list[str]) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(
-        description="Run vacancy periodic-wire preparation and tensile cases sequentially."
+        description="Run vacancy periodic nanocolumn/nanocrystal preparation and tensile cases sequentially."
     )
     ap.add_argument("--diameters", required=True, help="Comma-separated diameters in nm, e.g. 1.0,2.0,3.0,4.0")
     ap.add_argument("--bulk-summary", default="", help="Optional bulk summary.txt used to read a0_ref_A")
     ap.add_argument("--orientation", default="111")
+    ap.add_argument(
+        "--cross-section-shape",
+        choices=["circle", "hexagon", "triangle"],
+        default="circle",
+        help="circle = nanocolumn; hexagon/triangle = nanocrystal.",
+    )
+    ap.add_argument("--shape-rotation-deg", type=float, default=0.0)
     ap.add_argument("--vacuum", type=float, default=10.0)
     ap.add_argument("--min-short-lz", type=float, default=10.0)
     ap.add_argument("--short-repeat-z", type=int, default=0)
@@ -94,14 +107,15 @@ def main() -> None:
     a0_ref = _read_a0_from_summary(bulk_summary)
 
     print(f"[{_ts()}] Sequential vacancy periodic series")
+    print(f"[{_ts()}] cross_section_shape={args.cross_section_shape}")
     print(f"[{_ts()}] diameters_nm={', '.join(f'{d:.1f}' for d in diameters)}")
     print(f"[{_ts()}] bulk_summary={bulk_summary}")
     print(f"[{_ts()}] a0_ref_A={a0_ref:.12f}")
 
     python = sys.executable
     for diameter_nm in diameters:
-        case = _case_name(diameter_nm)
-        run_name = _run_name(diameter_nm)
+        case = _case_name(diameter_nm, str(args.cross_section_shape), str(args.orientation))
+        run_name = _run_name(diameter_nm, str(args.cross_section_shape))
 
         _run_command(
             [
@@ -111,6 +125,10 @@ def main() -> None:
                 case,
                 "--diameter-nm",
                 f"{float(diameter_nm):.1f}",
+                "--cross-section-shape",
+                str(args.cross_section_shape),
+                "--shape-rotation-deg",
+                f"{float(args.shape_rotation_deg):.6f}",
                 "--orientation",
                 str(args.orientation),
                 "--a0",

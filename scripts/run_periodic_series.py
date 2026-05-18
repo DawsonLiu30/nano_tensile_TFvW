@@ -75,12 +75,18 @@ def _format_radius_tag(diameter_nm: float) -> str:
     return str(rounded).replace(".", "p")
 
 
-def _case_name(diameter_nm: float) -> str:
-    return f"paper_periodic_111_{float(diameter_nm):.1f}nm_tfvw"
+def _family(shape: str) -> str:
+    return "nanocolumn" if str(shape).lower() == "circle" else "nanocrystal"
 
 
-def _run_name(diameter_nm: float) -> str:
-    return f"paper_r{_format_radius_tag(diameter_nm)}_short_tfvw"
+def _case_name(diameter_nm: float, shape: str, orientation: str) -> str:
+    shape_key = str(shape).lower()
+    return f"{_family(shape_key)}_{shape_key}_periodic_{orientation}_{float(diameter_nm):.1f}nm_tfvw"
+
+
+def _run_name(diameter_nm: float, shape: str) -> str:
+    shape_key = str(shape).lower()
+    return f"{_family(shape_key)}_{shape_key}_r{_format_radius_tag(diameter_nm)}_tfvw"
 
 
 def _run_command(args: list[str]) -> None:
@@ -90,7 +96,7 @@ def _run_command(args: list[str]) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(
-        description="Run periodic-wire preparation and tensile cases sequentially, optionally after a PID finishes."
+        description="Run axially periodic nanocolumn/nanocrystal preparation and tensile cases sequentially."
     )
     ap.add_argument("--diameters", required=True, help="Comma-separated diameters in nm, e.g. 3.0,4.0")
     ap.add_argument("--wait-pid", type=int, default=0, help="Optional PID to wait for before starting the series")
@@ -100,6 +106,13 @@ def main() -> None:
         help="Optional bulk validation summary.txt used to read a0_ref_A; defaults to the latest TFVW bulk summary under results/",
     )
     ap.add_argument("--orientation", default="111")
+    ap.add_argument(
+        "--cross-section-shape",
+        choices=["circle", "hexagon", "triangle"],
+        default="circle",
+        help="circle = nanocolumn; hexagon/triangle = nanocrystal.",
+    )
+    ap.add_argument("--shape-rotation-deg", type=float, default=0.0)
     ap.add_argument("--vacuum", type=float, default=10.0)
     ap.add_argument("--replicate-z", type=int, default=30)
     ap.add_argument("--scan-scales", default="0.95,0.96,0.97,0.98,0.99,1.00,1.01")
@@ -119,6 +132,7 @@ def main() -> None:
     a0_ref = _read_a0_from_summary(bulk_summary)
 
     print(f"[{_ts()}] Sequential periodic series")
+    print(f"[{_ts()}] cross_section_shape={args.cross_section_shape}")
     print(f"[{_ts()}] diameters_nm={', '.join(f'{d:.1f}' for d in diameters)}")
     print(f"[{_ts()}] bulk_summary={bulk_summary}")
     print(f"[{_ts()}] a0_ref_A={a0_ref:.12f}")
@@ -128,8 +142,8 @@ def main() -> None:
 
     python = sys.executable
     for diameter_nm in diameters:
-        case = _case_name(diameter_nm)
-        run_name = _run_name(diameter_nm)
+        case = _case_name(diameter_nm, str(args.cross_section_shape), str(args.orientation))
+        run_name = _run_name(diameter_nm, str(args.cross_section_shape))
 
         _run_command(
             [
@@ -139,6 +153,10 @@ def main() -> None:
                 case,
                 "--diameter-nm",
                 f"{float(diameter_nm):.1f}",
+                "--cross-section-shape",
+                str(args.cross_section_shape),
+                "--shape-rotation-deg",
+                f"{float(args.shape_rotation_deg):.6f}",
                 "--orientation",
                 str(args.orientation),
                 "--a0",

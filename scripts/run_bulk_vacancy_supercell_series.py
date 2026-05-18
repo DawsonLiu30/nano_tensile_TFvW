@@ -91,8 +91,10 @@ def _read_dftpy_out(path: Path) -> tuple[float, np.ndarray]:
     return energy, stress
 
 
-def _build_pristine_supercell(a0: float, repeats: int):
-    return bulk("Al", "fcc", a=float(a0), cubic=True).repeat((int(repeats), int(repeats), int(repeats)))
+def _build_pristine_supercell(a0: float, repeats: int, *, cell_basis: str):
+    basis = str(cell_basis).strip().lower()
+    cubic = basis == "conventional"
+    return bulk("Al", "fcc", a=float(a0), cubic=cubic).repeat((int(repeats), int(repeats), int(repeats)))
 
 
 def _choose_vacancy_index(atoms) -> tuple[int, dict[str, float]]:
@@ -206,6 +208,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--fmax", type=float, default=0.02, help="Force convergence threshold for vacancy relaxation (eV/Angstrom).")
     ap.add_argument("--relax-steps", type=int, default=200, help="Maximum relaxation steps for vacancy structures.")
     ap.add_argument("--delta-threshold", type=float, default=0.02, help="Target |ΔE_f^vac| threshold between neighboring supercell sizes (eV/vacancy).")
+    ap.add_argument(
+        "--cell-basis",
+        choices=["primitive", "conventional"],
+        default="conventional",
+        help="Basis cell repeated to make each supercell. Use 'primitive' to follow the professor's requested primitive-cell wording.",
+    )
     ap.add_argument("--prepare-only", action="store_true", help="Only generate pristine/vacancy structures and manifests; do not run DFT calculations.")
     ap.add_argument("--plot-only", action="store_true", help="Rebuild convergence plots and summary from an existing summary.csv.")
     ap.add_argument("--outdir", default="", help="Optional output directory. Defaults to results/<series>.")
@@ -249,6 +257,7 @@ def main() -> None:
     print(f"[bulk-vacancy] supercells      : {', '.join(str(v) for v in sizes)}")
     print(f"[bulk-vacancy] bulk summary    : {bulk_summary}")
     print(f"[bulk-vacancy] a0_ref_A        : {a0_A:.12f}")
+    print(f"[bulk-vacancy] cell basis      : {args.cell_basis}")
     print(f"[bulk-vacancy] KEDF            : {args.kedf} -> {kedf_name}")
     print(f"[bulk-vacancy] delta target    : {float(args.delta_threshold):.6f} eV/vacancy")
     print(f"[bulk-vacancy] relax fmax      : {float(args.fmax):.6f} eV/Angstrom")
@@ -283,7 +292,7 @@ def main() -> None:
         subdir = outdir / f"sc_{n}x{n}x{n}"
         subdir.mkdir(parents=True, exist_ok=True)
 
-        pristine = _build_pristine_supercell(a0=float(a0_A), repeats=int(n))
+        pristine = _build_pristine_supercell(a0=float(a0_A), repeats=int(n), cell_basis=args.cell_basis)
         pristine_n_atoms = int(len(pristine))
         cell_lengths = pristine.get_cell().lengths()
         vacancy_index, vacancy_site = _choose_vacancy_index(pristine)
@@ -297,6 +306,7 @@ def main() -> None:
             "series": series_name,
             "supercell_n": int(n),
             "repeats": [int(n), int(n), int(n)],
+            "cell_basis": str(args.cell_basis),
             "a0_A": float(a0_A),
             "pp": str(pp_path),
             "kedf": kedf_name,
@@ -361,6 +371,7 @@ def main() -> None:
         row: dict[str, object] = {
             "supercell_n": int(n),
             "label": f"{n}x{n}x{n}",
+            "cell_basis": str(args.cell_basis),
             "pristine_n_atoms": pristine_n_atoms,
             "vacancy_n_atoms": int(len(vacancy_relaxed)),
             "cell_lx_A": float(cell_lengths[0]),

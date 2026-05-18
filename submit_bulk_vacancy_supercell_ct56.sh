@@ -16,6 +16,7 @@ FMAX="${FMAX:-0.02}"
 RELAX_STEPS="${RELAX_STEPS:-200}"
 DELTA_THRESHOLD="${DELTA_THRESHOLD:-0.02}"
 A0="${A0:-}"
+CELL_BASIS="${CELL_BASIS:-conventional}"
 
 IFS=',' read -r -a SUPERCELL_LIST <<< "${SUPERCELLS}"
 if (( ${#SUPERCELL_LIST[@]} == 0 )); then
@@ -40,6 +41,7 @@ echo "[SUBMIT] TIME_LIMIT   : ${TIME_LIMIT}"
 echo "[SUBMIT] ECUT/FMAX    : ${ECUT} / ${FMAX}"
 echo "[SUBMIT] SPACING      : ${SPACING:-auto-from-ecut}"
 echo "[SUBMIT] DELTA TARGET : ${DELTA_THRESHOLD} eV/vacancy"
+echo "[SUBMIT] CELL_BASIS   : ${CELL_BASIS}"
 echo "============================================================"
 
 for N in "${SUPERCELL_LIST[@]}"; do
@@ -54,6 +56,6 @@ for N in "${SUPERCELL_LIST[@]}"; do
       --cpus-per-task="${CPUS}" \
       --mem="${MEM}" \
       --time="${TIME_LIMIT}" \
-      --export=ALL,ROOT="${ROOT}",SERIES_NAME="${SERIES_NAME}",SUPERCELL="${N_CLEAN}",PP="${PP}",KEDF="${KEDF}",ECUT="${ECUT}",SPACING="${SPACING}",FMAX="${FMAX}",RELAX_STEPS="${RELAX_STEPS}",DELTA_THRESHOLD="${DELTA_THRESHOLD}",A0="${A0}" \
+      --export=ALL,ROOT="${ROOT}",SERIES_NAME="${SERIES_NAME}",SUPERCELL="${N_CLEAN}",PP="${PP}",KEDF="${KEDF}",ECUT="${ECUT}",SPACING="${SPACING}",FMAX="${FMAX}",RELAX_STEPS="${RELAX_STEPS}",DELTA_THRESHOLD="${DELTA_THRESHOLD}",A0="${A0}",CELL_BASIS="${CELL_BASIS}" \
       run_bulk_vacancy_supercell_one_ct56.sbatch
 done

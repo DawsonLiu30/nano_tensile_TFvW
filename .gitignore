@@ -3,6 +3,8 @@ results/
 slurm/
 cases/
 vac_v2_out/
+logs/
+logs_ctest/
 
 # ===== Python =====
 __pycache__/
@@ -18,6 +20,14 @@ tmp/
 *.npy
 *.xyz
 *.vasp
+
+# ===== Curated report outputs =====
+outputs/*
+!outputs/nanocolumn_nanocrystal_vacancy_audit_20260518.md
+!outputs/true_vacancy_formation_20260518/
+!outputs/true_vacancy_formation_20260518/**
+!outputs/vacancy_nanocrystal_actual_points_20260518/
+!outputs/vacancy_nanocrystal_actual_points_20260518/**
 
 # ===== Jupyter =====
 .ipynb_checkpoints/

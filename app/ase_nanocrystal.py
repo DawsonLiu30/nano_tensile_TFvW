@@ -2,23 +2,31 @@ from __future__ import annotations
 
 import argparse
 import math
+import sys
+from pathlib import Path
 
 import numpy as np
 from ase.build import bulk
 from ase.io import write
 from ase.lattice.cubic import FaceCenteredCubic
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
 
 
 DEFAULT_CONFIG = {
-    "builder": "paper_circular",
+    "builder": "periodic_prism",
     "a0": AL_FCC_A0_TFVW_ANG,
     "diameter_nm": 2.0,
     "radius_A": None,
     "length_z": 20.0,
     "vacuum": 10.0,
     "orientation": "111",
+    "cross_section_shape": "circle",
+    "shape_rotation_deg": 0.0,
     "size": 3.5,
     "gamma100": 1.00,
     "gamma110": 1.06,
@@ -29,6 +37,12 @@ ORIENTATION_DIRECTIONS = {
     "111": [[1, -1, 0], [1, 1, -2], [1, 1, 1]],
     "100": [[1, 0, 0], [0, 1, 0], [0, 0, 1]],
     "110": [[-1, 1, 0], [0, 0, 1], [1, 1, 0]],
+}
+
+
+CROSS_SECTION_SIDES = {
+    "hexagon": 6,
+    "triangle": 3,
 }
 
 
@@ -77,14 +91,83 @@ def _set_xy_vacuum_and_center(atoms, vacuum: float) -> None:
     atoms.set_positions(pos)
 
 
-def build_circular_nanowire(
+def _regular_polygon_vertices(n_sides: int, radius: float, rotation_deg: float) -> np.ndarray:
+    if int(n_sides) < 3:
+        raise ValueError(f"n_sides must be >= 3, got {n_sides}")
+    angles = np.deg2rad(float(rotation_deg)) + 2.0 * np.pi * np.arange(int(n_sides)) / int(n_sides)
+    return np.column_stack([float(radius) * np.cos(angles), float(radius) * np.sin(angles)])
+
+
+def _inside_convex_polygon(points_xy: np.ndarray, vertices_xy: np.ndarray, tol: float = 1e-10) -> np.ndarray:
+    points = np.asarray(points_xy, dtype=float)
+    vertices = np.asarray(vertices_xy, dtype=float)
+    keep = np.ones(points.shape[0], dtype=bool)
+    for i in range(len(vertices)):
+        a = vertices[i]
+        b = vertices[(i + 1) % len(vertices)]
+        edge = b - a
+        rel = points - a
+        cross_z = edge[0] * rel[:, 1] - edge[1] * rel[:, 0]
+        keep &= cross_z >= -float(tol)
+    return keep
+
+
+def _cross_section_mask(
+    positions: np.ndarray,
+    *,
+    center_xy: tuple[float, float],
+    radius_A: float,
+    shape: str,
+    rotation_deg: float = 0.0,
+) -> np.ndarray:
+    rel_xy = np.asarray(positions[:, :2], dtype=float).copy()
+    rel_xy[:, 0] -= float(center_xy[0])
+    rel_xy[:, 1] -= float(center_xy[1])
+
+    shape_key = str(shape).strip().lower()
+    if shape_key in {"circle", "circular", "nanocolumn"}:
+        radial2 = rel_xy[:, 0] ** 2 + rel_xy[:, 1] ** 2
+        return radial2 <= float(radius_A) ** 2
+    if shape_key in CROSS_SECTION_SIDES:
+        vertices = _regular_polygon_vertices(
+            CROSS_SECTION_SIDES[shape_key],
+            radius=float(radius_A),
+            rotation_deg=float(rotation_deg),
+        )
+        return _inside_convex_polygon(rel_xy, vertices)
+    raise ValueError(
+        f"Unsupported cross-section shape '{shape}'. "
+        f"Use circle, hexagon, or triangle."
+    )
+
+
+def cross_section_area_A2(shape: str, radius_A: float) -> float:
+    shape_key = str(shape).strip().lower()
+    radius = float(radius_A)
+    if shape_key in {"circle", "circular", "nanocolumn"}:
+        return float(np.pi * radius**2)
+    if shape_key in CROSS_SECTION_SIDES:
+        n_sides = CROSS_SECTION_SIDES[shape_key]
+        return float(0.5 * n_sides * radius**2 * np.sin(2.0 * np.pi / n_sides))
+    raise ValueError(f"Unsupported cross-section shape '{shape}'.")
+
+
+def build_periodic_prism(
     a0: float = DEFAULT_CONFIG["a0"],
     diameter_nm: float | None = DEFAULT_CONFIG["diameter_nm"],
     radius_A: float | None = DEFAULT_CONFIG["radius_A"],
     length_z: float = DEFAULT_CONFIG["length_z"],
     vacuum: float = DEFAULT_CONFIG["vacuum"],
     orientation: str = DEFAULT_CONFIG["orientation"],
+    cross_section_shape: str = DEFAULT_CONFIG["cross_section_shape"],
+    shape_rotation_deg: float = DEFAULT_CONFIG["shape_rotation_deg"],
 ):
+    """Build an axially periodic Al prism with a selected xy cross-section.
+
+    The model is infinite along the axial direction through PBC. ``length_z``
+    controls the axial repeat length of the simulation cell, not a finite
+    physical column length.
+    """
     radius = _resolve_radius_A(diameter_nm=diameter_nm, radius_A=radius_A)
 
     if orientation not in ORIENTATION_DIRECTIONS:
@@ -109,24 +192,58 @@ def build_circular_nanowire(
 
     cx = 0.5 * float(cell[0, 0])
     cy = 0.5 * float(cell[1, 1])
-    radial2 = (pos[:, 0] - cx) ** 2 + (pos[:, 1] - cy) ** 2
-    mask = radial2 <= radius**2
+    mask = _cross_section_mask(
+        pos,
+        center_xy=(cx, cy),
+        radius_A=radius,
+        shape=str(cross_section_shape),
+        rotation_deg=float(shape_rotation_deg),
+    )
 
-    nanowire = supercell[mask]
-    pos = nanowire.get_positions()
+    prism = supercell[mask]
+    if len(prism) == 0:
+        raise RuntimeError(
+            "Cross-section mask removed all atoms. Increase the diameter/radius "
+            "or choose a different shape rotation."
+        )
+    pos = prism.get_positions()
     pos[:, 0] += (radius + float(vacuum)) - float(pos[:, 0].mean())
     pos[:, 1] += (radius + float(vacuum)) - float(pos[:, 1].mean())
-    nanowire.set_positions(pos)
-    nanowire.set_cell(
+    prism.set_positions(pos)
+    prism.set_cell(
         [
             2.0 * radius + 2.0 * float(vacuum),
             2.0 * radius + 2.0 * float(vacuum),
             float(supercell.cell[2, 2]),
         ]
     )
-    nanowire.pbc = [True, True, True]
+    prism.pbc = [True, True, True]
+    prism.info["cross_section_shape"] = str(cross_section_shape).strip().lower()
+    prism.info["cross_section_radius_A"] = radius
+    prism.info["cross_section_area_A2"] = cross_section_area_A2(str(cross_section_shape), radius)
+    prism.info["axial_periodic"] = True
 
-    return nanowire
+    return prism
+
+
+def build_circular_nanowire(
+    a0: float = DEFAULT_CONFIG["a0"],
+    diameter_nm: float | None = DEFAULT_CONFIG["diameter_nm"],
+    radius_A: float | None = DEFAULT_CONFIG["radius_A"],
+    length_z: float = DEFAULT_CONFIG["length_z"],
+    vacuum: float = DEFAULT_CONFIG["vacuum"],
+    orientation: str = DEFAULT_CONFIG["orientation"],
+):
+    return build_periodic_prism(
+        a0=float(a0),
+        diameter_nm=diameter_nm,
+        radius_A=radius_A,
+        length_z=float(length_z),
+        vacuum=float(vacuum),
+        orientation=str(orientation),
+        cross_section_shape="circle",
+        shape_rotation_deg=0.0,
+    )
 
 
 def rotate_to_make_a3_along_z(atoms):
@@ -195,13 +312,25 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--builder",
         default=DEFAULT_CONFIG["builder"],
-        choices=["paper_circular", "wulff_prism"],
+        choices=["periodic_prism", "paper_circular", "wulff_prism"],
         help="Geometry generator to use.",
     )
     parser.add_argument("--a0", type=float, default=DEFAULT_CONFIG["a0"])
     parser.add_argument("--diameter", type=float, default=DEFAULT_CONFIG["diameter_nm"])
     parser.add_argument("--radius-A", dest="radius_A", type=float, default=DEFAULT_CONFIG["radius_A"])
     parser.add_argument("--orientation", type=str, default=DEFAULT_CONFIG["orientation"], choices=list(ORIENTATION_DIRECTIONS))
+    parser.add_argument(
+        "--cross-section-shape",
+        default=DEFAULT_CONFIG["cross_section_shape"],
+        choices=["circle", "hexagon", "triangle"],
+        help="xy cross-section shape for an axially periodic prism.",
+    )
+    parser.add_argument(
+        "--shape-rotation-deg",
+        type=float,
+        default=DEFAULT_CONFIG["shape_rotation_deg"],
+        help="Rotation of the polygonal cross-section in the xy plane.",
+    )
     parser.add_argument(
         "--length-z",
         type=float,
@@ -219,7 +348,25 @@ def parse_args() -> argparse.Namespace:
 if __name__ == "__main__":
     args = parse_args()
 
-    if args.builder == "paper_circular":
+    if args.builder == "periodic_prism":
+        atoms = build_periodic_prism(
+            a0=float(args.a0),
+            diameter_nm=float(args.diameter) if args.radius_A is None else None,
+            radius_A=None if args.radius_A is None else float(args.radius_A),
+            length_z=float(args.length_z),
+            vacuum=float(args.vacuum),
+            orientation=str(args.orientation),
+            cross_section_shape=str(args.cross_section_shape),
+            shape_rotation_deg=float(args.shape_rotation_deg),
+        )
+        shape = str(args.cross_section_shape)
+        output = args.output or f"init_{args.orientation}_Al_{shape}_{0.5 * atoms.cell[0,0] - args.vacuum:.2f}A_radius.vasp"
+        print(
+            f"[builder] periodic_prism orientation=[{args.orientation}] "
+            f"shape={shape} radius_A={atoms.info.get('cross_section_radius_A', float('nan')):.4f} "
+            f"area_A2={atoms.info.get('cross_section_area_A2', float('nan')):.4f}"
+        )
+    elif args.builder == "paper_circular":
         atoms = build_circular_nanowire(
             a0=float(args.a0),
             diameter_nm=float(args.diameter) if args.radius_A is None else None,

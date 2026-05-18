@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
-from app.ase_nanocrystal import build_circular_nanowire
+from app.ase_nanocrystal import build_periodic_prism, cross_section_area_A2
 from app.dft_engine import normalize_kedf_name, relax_atoms
 
 
@@ -60,14 +60,20 @@ def _build_short_periodic_wire(
     diameter_nm: float,
     vacuum: float,
     orientation: str,
+    cross_section_shape: str,
+    shape_rotation_deg: float,
 ):
-    # Any positive length shorter than one axial repeat produces nz=1.
-    return build_circular_nanowire(
+    # Any positive length shorter than one axial repeat produces nz=1. The
+    # returned object is still infinite along z through periodic boundary
+    # conditions; length_z only sets the simulation-cell repeat.
+    return build_periodic_prism(
         a0=float(a0),
         diameter_nm=float(diameter_nm),
         length_z=1.0,
         vacuum=float(vacuum),
         orientation=str(orientation),
+        cross_section_shape=str(cross_section_shape),
+        shape_rotation_deg=float(shape_rotation_deg),
     )
 
 
@@ -140,10 +146,20 @@ def _pick_equilibrium_scale(rows: list[dict[str, float]]) -> tuple[float, str]:
 
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(
-        description="Prepare a paper-style periodic short nanowire, relax its axial repeat, and replicate it to ~20 nm."
+        description=(
+            "Prepare an axially periodic Al prism. Nanocolumns use a circular xy cross-section; "
+            "nanocrystals use polygonal xy cross-sections such as hexagon or triangle."
+        )
     )
     ap.add_argument("--case", default="", help="Optional case name. Defaults to a timestamped name.")
-    ap.add_argument("--diameter-nm", type=float, required=True, help="Nanowire diameter in nm.")
+    ap.add_argument("--diameter-nm", type=float, required=True, help="Circumscribed cross-section diameter in nm.")
+    ap.add_argument(
+        "--cross-section-shape",
+        choices=["circle", "hexagon", "triangle"],
+        default="circle",
+        help="xy shape: circle for nanocolumn; hexagon/triangle for nanocrystal.",
+    )
+    ap.add_argument("--shape-rotation-deg", type=float, default=0.0, help="Polygon rotation in the xy plane.")
     ap.add_argument("--orientation", choices=["111", "100", "110"], default="111")
     ap.add_argument(
         "--a0",
@@ -187,7 +203,12 @@ def main() -> None:
         raise ValueError(f"replicate-z must be positive, got {args.replicate_z}")
 
     scan_scales = _parse_float_list(args.scan_scales, label="scan scale")
-    case_name = args.case or f"paper_periodic_{args.orientation}_{float(args.diameter_nm):.1f}nm_{kedf_name.lower()}_{_ts()}"
+    shape_tag = str(args.cross_section_shape).lower()
+    default_family = "nanocolumn" if shape_tag == "circle" else "nanocrystal"
+    case_name = (
+        args.case
+        or f"{default_family}_{shape_tag}_periodic_{args.orientation}_{float(args.diameter_nm):.1f}nm_{kedf_name.lower()}_{_ts()}"
+    )
     if args.outdir:
         outdir = Path(args.outdir).expanduser().resolve()
     else:
@@ -195,10 +216,11 @@ def main() -> None:
     outdir.mkdir(parents=True, exist_ok=True)
 
     print("========================================")
-    print("[paper-wire] Preparing periodic wire geometry")
+    print("[periodic-prism] Preparing axially periodic prism geometry")
     print(f"[paper-wire] case       : {case_name}")
     print(f"[paper-wire] outdir     : {outdir}")
-    print(f"[paper-wire] diameter   : {float(args.diameter_nm):.4f} nm")
+    print(f"[paper-wire] shape      : {shape_tag}")
+    print(f"[paper-wire] diameter   : {float(args.diameter_nm):.4f} nm (circumscribed)")
     print(f"[paper-wire] orientation: [{args.orientation}]")
     print(f"[paper-wire] vacuum     : {float(args.vacuum):.4f} A")
     print(f"[paper-wire] replicate  : {int(args.replicate_z)}")
@@ -211,6 +233,8 @@ def main() -> None:
         diameter_nm=float(args.diameter_nm),
         vacuum=float(args.vacuum),
         orientation=str(args.orientation),
+        cross_section_shape=shape_tag,
+        shape_rotation_deg=float(args.shape_rotation_deg),
     )
     _write_structure_pair(outdir / "short_raw", short_raw)
 
@@ -348,15 +372,19 @@ def main() -> None:
         "created_at": datetime.now().isoformat(timespec="seconds"),
         "case": case_name,
         "geometry": {
-            "builder": "paper_circular_short_to_long",
+            "builder": "periodic_prism_short_to_reference_supercell",
             "orientation": args.orientation,
+            "cross_section_shape": shape_tag,
+            "shape_rotation_deg": float(args.shape_rotation_deg),
             "diameter_nm": float(args.diameter_nm),
+            "cross_section_area_model_A2": cross_section_area_A2(shape_tag, 0.5 * float(args.diameter_nm) * 10.0),
             "vacuum_A": float(args.vacuum),
             "a0_input_A": float(args.a0),
             "short_raw_lz_A": short_lz_raw,
             "short_equilibrium_lz_A": short_lz_eq,
             "replicate_z": int(args.replicate_z),
             "long_equilibrium_lz_A": long_lz_eq,
+            "axial_boundary_condition": "periodic_infinite_z",
             "expected_layers_short": 3 if args.orientation == "111" else None,
             "expected_layers_long": 3 * int(args.replicate_z) if args.orientation == "111" else None,
         },

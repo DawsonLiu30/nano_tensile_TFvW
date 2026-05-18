@@ -23,6 +23,7 @@ FMAX="${FMAX:-0.02}"
 RELAX_STEPS="${RELAX_STEPS:-200}"
 DELTA_THRESHOLD="${DELTA_THRESHOLD:-0.02}"
 A0="${A0:-}"
+CELL_BASIS="${CELL_BASIS:-conventional}"
 
 OUTDIR="${ROOT}/results/${SERIES_NAME}"
 
@@ -39,6 +40,7 @@ echo "[INFO] PP/KEDF        : ${PP} / ${KEDF}"
 echo "[INFO] ECUT/SPACING   : ${ECUT} / ${SPACING:-auto-from-ecut}"
 echo "[INFO] FMAX/STEPS     : ${FMAX} / ${RELAX_STEPS}"
 echo "[INFO] DELTA TARGET   : ${DELTA_THRESHOLD} eV/vacancy"
+echo "[INFO] CELL_BASIS     : ${CELL_BASIS}"
 echo "============================================================"
 
 if [[ ! -d "${ROOT}" ]]; then
@@ -76,6 +78,7 @@ CMD=(
     --fmax "${FMAX}"
     --relax-steps "${RELAX_STEPS}"
     --delta-threshold "${DELTA_THRESHOLD}"
+    --cell-basis "${CELL_BASIS}"
 )
 
 if [[ -n "${A0}" ]]; then

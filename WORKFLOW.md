@@ -1,6 +1,15 @@
 # Supported Workflow
 
-This repository now uses the paper-style periodic nanowire workflow.
+This repository now uses an axially periodic prism workflow. There should be
+no finite-length tensile-machine model in the main analysis.
+
+Terminology:
+
+- `nanocolumn`: infinite along the axial direction, circular xy cross-section.
+- `nanocrystal`: infinite along the axial direction, polygonal xy cross-section
+  such as hexagon or triangle.
+- The z length in the input files is the periodic repeat/supercell length, not
+  a finite physical column length.
 
 ## Directory convention
 
@@ -19,14 +28,19 @@ python scripts/bulk_validate.py \
   --ecut 1000
 ```
 
-## 2) Prepare a paper-style periodic [111] wire
+## 2) Prepare an axially periodic [111] prism
 
-This builds a short periodic nanocolumn, scans the axial spacing, picks the equilibrium cell, and writes the 30x replicated long wire.
+This builds a periodic repeat unit, scans the axial spacing, picks the
+equilibrium repeat length, and optionally writes a replicated reference
+supercell. The replicated cell is still periodic/infinite along z.
+
+For a nanocolumn use:
 
 ```bash
 python scripts/prepare_paper_periodic_wire.py \
-  --case paper_periodic_111_1.0nm_tfvw \
+  --case nanocolumn_circle_periodic_111_1.0nm_tfvw \
   --diameter-nm 1.0 \
+  --cross-section-shape circle \
   --orientation 111 \
   --a0 4.118877004246 \
   --vacuum 10.0 \
@@ -39,14 +53,38 @@ python scripts/prepare_paper_periodic_wire.py \
   --relax-steps 120
 ```
 
-## 3) Run periodic tensile
+For a polygonal nanocrystal use `--cross-section-shape hexagon` or
+`--cross-section-shape triangle`:
 
-Start from `inputs/short_equilibrium.vasp` for the short-wire elastic workflow, then move to `inputs/long_equilibrium.vasp` for the replicated long wire.
+```bash
+python scripts/prepare_paper_periodic_wire.py \
+  --case nanocrystal_hexagon_periodic_111_1.0nm_tfvw \
+  --diameter-nm 1.0 \
+  --cross-section-shape hexagon \
+  --orientation 111 \
+  --a0 4.118877004246 \
+  --vacuum 10.0 \
+  --replicate-z 30 \
+  --pp al.gga.recpot \
+  --kedf TFVW \
+  --ecut 1000 \
+  --fmax 0.02 \
+  --relax-steps 120
+```
+
+## 3) Run periodic tensile with Cauchy stress
+
+Start from `inputs/short_equilibrium.vasp` for the periodic repeat. The main
+stress output is now the axial wire Cauchy stress:
+
+```text
+cauchy_wire_zz_GPa = sigma_cell_zz_GPa * A_cell / A_wire,current
+```
 
 ```bash
 python scripts/run_periodic_tensile.py \
-  --case paper_r1_short_tfvw \
-  --workdir cases/paper_periodic_111_1.0nm_tfvw \
+  --case nanocolumn_circle_r1_tfvw \
+  --workdir cases/nanocolumn_circle_periodic_111_1.0nm_tfvw \
   --init inputs/short_equilibrium.vasp \
   --pp al.gga.recpot \
   --kedf TFVW \
@@ -63,4 +101,6 @@ python scripts/run_periodic_tensile.py \
 - The supported pseudopotential file is `al.gga.recpot`.
 - The supported kinetic-energy functional is `TFVW`.
 - The supported tensile driver is `scripts/run_periodic_tensile.py`.
-- The older finite-wire/grip workflow is no longer the active path for new runs.
+- Legacy finite-length tensile-machine workflows have been removed from the
+  active repository workflow to avoid mixing them with the current
+  axial-periodic definition.

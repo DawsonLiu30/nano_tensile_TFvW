@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
-from app.ase_nanocrystal import build_circular_nanowire
+from app.ase_nanocrystal import build_periodic_prism, cross_section_area_A2
 from app.dft_engine import normalize_kedf_name, relax_atoms
 
 
@@ -139,14 +139,19 @@ def _build_base_short_wire(
     diameter_nm: float,
     vacuum: float,
     orientation: str,
+    cross_section_shape: str,
+    shape_rotation_deg: float,
 ):
-    # length_z < one repeat keeps the primitive periodic wire along z.
-    return build_circular_nanowire(
+    # length_z < one repeat keeps the shortest axial repeat. The structure is
+    # still infinite along z through periodic boundary conditions.
+    return build_periodic_prism(
         a0=float(a0),
         diameter_nm=float(diameter_nm),
         length_z=1.0,
         vacuum=float(vacuum),
         orientation=str(orientation),
+        cross_section_shape=str(cross_section_shape),
+        shape_rotation_deg=float(shape_rotation_deg),
     )
 
 
@@ -237,12 +242,20 @@ def _plot_axial_scan(path: Path, rows: list[dict[str, float]], *, kedf_name: str
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(
         description=(
-            "Prepare an elongated periodic short nanowire (z > 10 A), pick a near-surface vacancy, "
-            "and relax the vacancy structure for periodic tensile loading."
+            "Prepare an axially periodic vacancy prism, pick a near-surface vacancy, "
+            "and relax the vacancy structure for periodic tensile loading. "
+            "Use circle for nanocolumn and polygonal shapes for nanocrystal."
         )
     )
     ap.add_argument("--case", default="", help="Optional case name. Defaults to a timestamped name.")
-    ap.add_argument("--diameter-nm", type=float, required=True, help="Nanowire diameter in nm.")
+    ap.add_argument("--diameter-nm", type=float, required=True, help="Circumscribed cross-section diameter in nm.")
+    ap.add_argument(
+        "--cross-section-shape",
+        choices=["circle", "hexagon", "triangle"],
+        default="circle",
+        help="xy shape: circle for nanocolumn; hexagon/triangle for nanocrystal.",
+    )
+    ap.add_argument("--shape-rotation-deg", type=float, default=0.0, help="Polygon rotation in the xy plane.")
     ap.add_argument("--orientation", choices=["111", "100", "110"], default="111")
     ap.add_argument(
         "--a0",
@@ -315,7 +328,12 @@ def main() -> None:
         raise FileNotFoundError(f"bulk validation csv not found: {bulk_validation_csv}")
     bulk_mu_eV_per_atom, bulk_mu_strain = _read_bulk_mu_from_validation(bulk_validation_csv)
 
-    case_name = args.case or f"paper_periodic_{args.orientation}_{float(args.diameter_nm):.1f}nm_vacancy_tfvw_{_ts()}"
+    shape_tag = str(args.cross_section_shape).lower()
+    default_family = "nanocolumn" if shape_tag == "circle" else "nanocrystal"
+    case_name = (
+        args.case
+        or f"{default_family}_{shape_tag}_periodic_{args.orientation}_{float(args.diameter_nm):.1f}nm_vacancy_tfvw_{_ts()}"
+    )
     if args.outdir:
         outdir = Path(args.outdir).expanduser().resolve()
     else:
@@ -323,10 +341,11 @@ def main() -> None:
     outdir.mkdir(parents=True, exist_ok=True)
 
     print("========================================")
-    print("[vacancy-wire] Preparing vacancy branch geometry")
+    print("[vacancy-prism] Preparing axially periodic vacancy prism geometry")
     print(f"[vacancy-wire] case            : {case_name}")
     print(f"[vacancy-wire] outdir          : {outdir}")
-    print(f"[vacancy-wire] diameter        : {float(args.diameter_nm):.4f} nm")
+    print(f"[vacancy-wire] shape           : {shape_tag}")
+    print(f"[vacancy-wire] diameter        : {float(args.diameter_nm):.4f} nm (circumscribed)")
     print(f"[vacancy-wire] orientation     : [{args.orientation}]")
     print(f"[vacancy-wire] vacuum          : {float(args.vacuum):.4f} A")
     print(f"[vacancy-wire] min short lz    : {float(args.min_short_lz):.4f} A")
@@ -340,6 +359,8 @@ def main() -> None:
         diameter_nm=float(args.diameter_nm),
         vacuum=float(args.vacuum),
         orientation=str(args.orientation),
+        cross_section_shape=shape_tag,
+        shape_rotation_deg=float(args.shape_rotation_deg),
     )
     base_short_lz = float(base_short.get_cell().lengths()[2])
     short_raw, short_repeat_z = _extend_short_wire(
@@ -486,7 +507,12 @@ def main() -> None:
     _write_structure_pair(outdir / "vacancy_short_equilibrium", vacancy_eq)
     _write_structure_pair(outdir / "vacancy_equilibrium", vacancy_eq)
 
-    vacancy_formation_energy = float(vacancy_energy - pristine_eq_energy + bulk_mu_eV_per_atom)
+    n_pristine = int(len(short_pristine_eq))
+    n_vacancy = int(len(vacancy_eq))
+    vacancy_formation_same_geometry = float(
+        vacancy_energy - (n_vacancy / n_pristine) * pristine_eq_energy
+    )
+    vacancy_formation_bulk_reservoir = float(vacancy_energy - pristine_eq_energy + bulk_mu_eV_per_atom)
 
     _plot_axial_scan(
         outdir / "pristine_short_axial_scan.png",
@@ -500,9 +526,12 @@ def main() -> None:
         "case": case_name,
         "branch": "vacancy_periodic_short",
         "geometry": {
-            "builder": "paper_circular_vacancy_short_branch",
+            "builder": "periodic_prism_vacancy_branch",
             "orientation": args.orientation,
+            "cross_section_shape": shape_tag,
+            "shape_rotation_deg": float(args.shape_rotation_deg),
             "diameter_nm": float(args.diameter_nm),
+            "cross_section_area_model_A2": cross_section_area_A2(shape_tag, 0.5 * float(args.diameter_nm) * 10.0),
             "vacuum_A": float(args.vacuum),
             "a0_input_A": float(args.a0),
             "base_short_lz_A": base_short_lz,
@@ -512,6 +541,7 @@ def main() -> None:
             "pristine_short_equilibrium_lz_A": short_pristine_eq_lz,
             "pristine_long_repeat_z": int(long_repeat_z),
             "pristine_long_equilibrium_lz_A": long_pristine_eq_lz,
+            "axial_boundary_condition": "periodic_infinite_z",
             "expected_layers_short": (3 * int(short_repeat_z)) if args.orientation == "111" else None,
             "expected_layers_long": (3 * int(short_repeat_z) * int(long_repeat_z)) if args.orientation == "111" else None,
         },
@@ -527,17 +557,21 @@ def main() -> None:
             "scale": float(eq_scale),
         },
         "pristine": {
-            "n_atoms": int(len(short_pristine_eq)),
+            "n_atoms": n_pristine,
             "energy_eV": float(pristine_eq_energy),
-            "energy_per_atom_eV": float(pristine_eq_energy / len(short_pristine_eq)),
+            "energy_per_atom_eV": float(pristine_eq_energy / n_pristine),
             "sigma_zz_GPa": float(pristine_eq_stress[2, 2]),
         },
         "vacancy": {
-            "n_atoms": int(len(vacancy_eq)),
+            "n_atoms": n_vacancy,
             "energy_eV": float(vacancy_energy),
-            "energy_per_atom_eV": float(vacancy_energy / len(vacancy_eq)),
+            "energy_per_atom_eV": float(vacancy_energy / n_vacancy),
             "sigma_zz_GPa": float(vacancy_stress[2, 2]),
-            "formation_energy_bulk_mu_eV": float(vacancy_formation_energy),
+            "formation_energy_same_geometry_eV": float(vacancy_formation_same_geometry),
+            "formation_energy_gillan_scaled_eV": float(vacancy_formation_same_geometry),
+            "formation_energy_bulk_reservoir_eV": float(vacancy_formation_bulk_reservoir),
+            "formation_energy_bulk_mu_eV": float(vacancy_formation_bulk_reservoir),
+            "formation_energy_primary_definition": "E_vac^(N-1) - ((N-1)/N) E_pristine^N for the same periodic nanostructure",
             "bulk_mu_eV_per_atom": float(bulk_mu_eV_per_atom),
             "bulk_mu_source_csv": str(bulk_validation_csv),
             "bulk_mu_reference_strain": float(bulk_mu_strain),
@@ -566,7 +600,16 @@ def main() -> None:
     print(f"[vacancy-wire] long eq lz                      : {long_pristine_eq_lz:.6f} A")
     print(f"[vacancy-wire] vacancy site index             : {vacancy_index}")
     print(f"[vacancy-wire] vacancy radial distance        : {vacancy_site['radial_distance_A']:.6f} A")
-    print(f"[vacancy-wire] vacancy formation energy       : {vacancy_formation_energy:.6f} eV (bulk mu)")
+    print(
+        "[vacancy-wire] vacancy formation energy       : "
+        f"{vacancy_formation_same_geometry:.6f} eV "
+        "(same-geometry Gillan-style scaled reference)"
+    )
+    print(
+        "[vacancy-wire] bulk-reservoir removal energy  : "
+        f"{vacancy_formation_bulk_reservoir:.6f} eV "
+        "(diagnostic only for nanostructures)"
+    )
 
 
 if __name__ == "__main__":
