@@ -186,6 +186,7 @@ scripts/prepare_qe_vacancy_extra_kmesh.py
 scripts/collect_qe_vacancy_convergence.py
 scripts/collect_all_qe_vacancy_recursive.py
 scripts/plot_true_vacancy_formation_from_pulled_data.py
+scripts/extract_vacancy_report_tables.py
 ```
 
 Primary processed files:
@@ -195,6 +196,9 @@ processed_vacancy_convergence/qe_vacancy_all_recursive_summary.csv
 outputs/true_vacancy_formation_20260518/01_qe_vacancy_kmesh_convergence.png
 outputs/true_vacancy_formation_20260518/02_qe_dense_k5_ecut_convergence.png
 outputs/true_vacancy_formation_20260518/vacancy_formation_combined_summary.csv
+outputs/vacancy_report_tables_20260519/table_1_qe_dense_k_600eV.csv
+outputs/vacancy_report_tables_20260519/table_2a_qe_cutoff_2x2x2.csv
+outputs/vacancy_report_tables_20260519/table_2b_qe_dense_k5_cutoff.csv
 ```
 
 Vacancy formation energy formula:
@@ -250,6 +254,7 @@ Preparation / run / collection scripts:
 scripts/prepare_dftpy_vacancy_convergence.py
 scripts/run_dftpy_vacancy_convergence.py
 scripts/collect_dftpy_vacancy_convergence.py
+scripts/extract_vacancy_report_tables.py
 run_dftpy_vacancy_convergence_one_ct56.sbatch
 ```
 
@@ -258,6 +263,7 @@ Primary processed files:
 ```text
 summary.csv
 outputs/true_vacancy_formation_20260518/03_dftpy_spacing_convergence.png
+outputs/vacancy_report_tables_20260519/table_3_dftpy_spacing_fixed_qe_a0.csv
 ```
 
 Summary result:
