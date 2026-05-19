@@ -98,6 +98,7 @@ Preparation / collection scripts:
 ```text
 scripts/prepare_qe_bulk_b_convergence.py
 scripts/collect_qe_bulk_b_convergence.py
+scripts/plot_qe_bulk_eos_convergence_figures.py
 ```
 
 Remote analysis scripts are also stored inside the raw archive when present:
@@ -117,6 +118,26 @@ processed_bulk_B_convergence/qe_bulk_high_kmesh_fit_summary_with_k20.csv
 processed_bulk_B_convergence/qe_bulk_high_kmesh_B0_convergence.png
 processed_bulk_B_convergence/qe_bulk_high_kmesh_a0_convergence.png
 processed_bulk_B_convergence/qe_bulk_high_kmesh_EOS_curves.png
+```
+
+The two bulk EOS slide figures can be regenerated from processed CSV data with:
+
+```powershell
+python scripts\plot_qe_bulk_eos_convergence_figures.py
+```
+
+Default inputs:
+
+```text
+C:\Users\dawso\Desktop\latest_professor_pull_20260511\qe_bulk_b_convergence_20260506\processed_bulk_B_convergence\qe_bulk_ecut_fit_summary.csv
+C:\Users\dawso\Desktop\latest_professor_pull_20260511\qe_bulk_b_convergence_20260506\processed_bulk_B_convergence\qe_bulk_high_kmesh_fit_summary_with_k20.csv
+```
+
+Default regenerated outputs:
+
+```text
+outputs/qe_bulk_convergence_replot_20260519/qe_bulk_B0_vs_ecut_from_processed_csv.png
+outputs/qe_bulk_convergence_replot_20260519/qe_bulk_B0_vs_high_kmesh_from_processed_csv.png
 ```
 
 Summary result:
@@ -417,4 +438,3 @@ Build command:
 ```powershell
 python scripts\build_reproducibility_package.py --zip
 ```
-
