@@ -96,6 +96,51 @@ python scripts/run_periodic_tensile.py \
   --plot-summary
 ```
 
+## 4) Postprocess historical finite-grip tensile summaries
+
+The active workflow is axially periodic, but older proposal figures used a
+finite-grip tensile setup. Do not use the raw simulation-cell stress as the
+main y-axis for those data: the vacuum-padded cell stress is diluted by the
+supercell area.
+
+For finite grips, interpret the axial grip reaction as the surface integral of
+Cauchy traction on a section normal to the wire axis:
+
+```text
+Fz = integral_A t_z dA = integral_A sigma_zz dA
+```
+
+The primary reported finite-grip stress should therefore be the
+preload-corrected nominal grip-reaction stress:
+
+```text
+sigma_nominal_primary(i) = sigma_grip_raw(i) - sigma_grip_raw(0)
+sigma_grip_raw = 0.5 * ((-F_top,z / A_ref) + (F_bottom,z / A_ref)) * 160.21766208
+```
+
+A current-area correction can be added as an apparent Cauchy-stress sensitivity
+check:
+
+```text
+sigma_app_cauchy_raw = 0.5 * ((-F_top,z / A_current) + (F_bottom,z / A_current)) * 160.21766208
+```
+
+Use the postprocessor on any finite-grip summary CSV/TSV that contains top and
+bottom z-force columns plus either area columns or x/y span columns:
+
+```bash
+python scripts/add_finite_grip_cauchy_traction_columns.py \
+  --summary path/to/finite_grip_summary.csv \
+  --out-csv path/to/finite_grip_summary_with_cauchy.csv \
+  --plot path/to/finite_grip_stress_check.png
+```
+
+The script writes:
+
+- `grip_nominal_primary_GPa`: main finite-grip y-axis
+- `grip_apparent_cauchy_primary_GPa`: current-area sensitivity check
+- `grip_top_bottom_balance_rel`: top/bottom traction balance diagnostic
+
 ## Notes
 
 - The supported pseudopotential file is `al.gga.recpot`.
