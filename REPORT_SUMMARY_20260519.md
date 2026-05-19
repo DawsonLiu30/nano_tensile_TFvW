@@ -57,6 +57,18 @@ C:\Users\dawso\Desktop\latest_professor_pull_20260511\dftpy_vacancy_size_primiti
 - Nanocrystal/faceted nanostructure: polygonal/faceted xy cross-section.
 - Geometry audit: `outputs/nanocolumn_nanocrystal_vacancy_audit_20260518.md`.
 
+### Historical Finite-Grip Tensile Data
+
+- Status: legacy proposal-stage data, not the current active tensile workflow.
+- Purpose: reprocess old finite-grip stress-strain figures using a
+  Cauchy-traction-consistent stress interpretation.
+- Main y-axis: `grip_nominal_primary_GPa`, the preload-corrected nominal
+  grip-reaction stress.
+- Sensitivity check: `grip_apparent_cauchy_primary_GPa`, the current-area
+  apparent Cauchy stress.
+- Diagnostic: `grip_top_bottom_balance_rel`, the top/bottom grip-force balance.
+- Output folder: `outputs/finite_grip_cauchy_traction_20260519`.
+
 ## Results
 
 ### QE Bulk EOS
@@ -139,6 +151,23 @@ The DFTpy vacancy value remains much larger than QE and literature values even a
 - Our dense QE vacancy results, approximately 0.57-0.65 eV, are consistent with this literature scale.
 - The DFTpy/TFvW values, approximately 2.9-3.2 eV, are much larger and should be interpreted as a method limitation for localized vacancy defects under the current setup.
 
+### Finite-Grip Cauchy-Traction Reprocessing
+
+- The old finite-grip proposal curves should not use raw cell stress because
+  the cell contains large vacuum regions.
+- The corrected main curve is the preload-corrected nominal grip-reaction
+  stress, `grip_nominal_primary_GPa`.
+- The current-area apparent Cauchy stress nearly overlaps the nominal curve for
+  all radius cases, so the main mechanical interpretation is insensitive to the
+  current-area correction.
+- The force-balance diagnostic separates the data quality:
+  - clean / usable: `r1`, `r4`, `r5`, `r6`
+  - caution: `r2`, `r3`
+  - limited low-strain reference only: `r8`
+- Key plots:
+  - `outputs/finite_grip_cauchy_traction_20260519/finite_grip_nominal_primary_all_radii.png`
+  - `outputs/finite_grip_cauchy_traction_20260519/finite_grip_top_bottom_balance_all_radii.png`
+
 ## Summary
 
 1. QE bulk convergence is established for both cutoff and k-point density.
@@ -147,5 +176,6 @@ The DFTpy vacancy value remains much larger than QE and literature values even a
 4. DFTpy does not use QE-style k-point sampling; DFTpy convergence was checked using real-space spacing and primitive supercell size.
 5. DFTpy vacancy formation energy is numerically stable but systematically higher than QE/literature.
 6. The old normalized vacancy nanostructure figure should not be used because it forced endpoint agreement. The retained actual-point figure uses only pulled CSV data.
-7. All reproducibility paths are listed in `REPRODUCIBILITY_INDEX.md`.
-
+7. Historical finite-grip tensile data are retained only as legacy proposal data
+   and have been reprocessed with a grip-reaction Cauchy-traction interpretation.
+8. All reproducibility paths are listed in `REPRODUCIBILITY_INDEX.md`.
