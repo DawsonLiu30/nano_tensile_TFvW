@@ -253,6 +253,7 @@ def write_rsync_commands(out_dir: Path) -> None:
         f"mkdir -p {dest}",
         f"rsync -avhP --exclude '*/tmp/***' iservice:/gpfs-work/dawson666/qe_cases/qe_runs/qe_bulk_b_convergence_20260506/ {dest}/qe_bulk_b_convergence_20260506/",
         f"rsync -avhP --exclude '*/tmp/***' iservice:/gpfs-work/dawson666/qe_cases/qe_runs/qe_vacancy_convergence_20260506/ {dest}/qe_vacancy_convergence_20260506/",
+        f"rsync -avhP --exclude '*/tmp/***' iservice:/gpfs-work/dawson666/qe_cases/qe_runs/qe_vacancy_convergence_20260506/kmesh_scan/k_06x06x06/ {dest}/qe_vacancy_convergence_20260506/kmesh_scan/k_06x06x06/",
         f"rsync -avhP iservice:/gpfs-work/dawson666/dftpy_project/relax/dftpy45/results/dftpy_vacancy_convergence_primitive4_qe_a0_20260508/ {dest}/dftpy_vacancy_convergence_primitive4_qe_a0_20260508/",
         f"rsync -avhP iservice:/gpfs-work/dawson666/dftpy_project/relax/dftpy45/results/dftpy_vacancy_convergence_primitive4_20260508/ {dest}/dftpy_vacancy_convergence_primitive4_20260508/",
         f"rsync -avhP iservice:/gpfs-work/dawson666/dftpy_project/relax/dftpy45/results/dftpy_vacancy_size_primitive_qe_a0_spacing020_20260511/ {dest}/dftpy_vacancy_size_primitive_qe_a0_spacing020_20260511/",
