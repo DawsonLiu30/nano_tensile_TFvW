@@ -141,6 +141,30 @@ The script writes:
 - `grip_apparent_cauchy_primary_GPa`: current-area sensitivity check
 - `grip_top_bottom_balance_rel`: top/bottom traction balance diagnostic
 
+Important distinction:
+
+The periodic tensile workflow and the historical finite-grip workflow should
+not be mixed into one stress definition.
+
+For the current axially periodic workflow, the main tensile stress is the
+area-corrected axial wire Cauchy stress derived from the simulation-cell stress:
+
+```text
+cauchy_wire_zz_GPa = sigma_cell_zz_GPa * A_cell / A_wire,current
+```
+
+For historical finite-grip data, the main tensile stress is not the raw cell
+stress. It is the preload-corrected nominal grip-reaction stress:
+
+```text
+grip_nominal_primary_GPa = grip_nominal_raw_GPa(i) - grip_nominal_raw_GPa(0)
+```
+
+The apparent current-area Cauchy stress for finite-grip data is reported only
+as a sensitivity check, because the atomic-scale current cross-sectional area
+may become ambiguous after surface relaxation, vacancy-induced distortion, or
+necking.
+
 ## Notes
 
 - The supported pseudopotential file is `al.gga.recpot`.
