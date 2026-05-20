@@ -28,8 +28,6 @@ outputs/*
 !outputs/true_vacancy_formation_20260518/**
 !outputs/vacancy_nanocrystal_actual_points_20260518/
 !outputs/vacancy_nanocrystal_actual_points_20260518/**
-!outputs/finite_grip_cauchy_traction_20260519/
-!outputs/finite_grip_cauchy_traction_20260519/**
 
 # ===== Jupyter =====
 .ipynb_checkpoints/

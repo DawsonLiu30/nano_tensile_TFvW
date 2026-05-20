@@ -389,7 +389,7 @@ Purpose:
 
 ```text
 Maintain the corrected axial-periodic tensile workflow and compute wire Cauchy
-stress using current wire cross-section area rather than finite-grip force.
+stress using the current wire/prism cross-section area.
 ```
 
 Preparation / run scripts:
@@ -410,61 +410,12 @@ Main stress conversion:
 cauchy_wire_zz_GPa = sigma_cell_zz_GPa * A_cell / A_wire,current
 ```
 
-### 8. Historical Finite-Grip Proposal Tensile Reprocessing
-
-Purpose:
+Terminology guardrail:
 
 ```text
-Reprocess the old finite-grip proposal stress-strain data using a
-Cauchy-traction-compatible interpretation of grip reaction forces. These data
-are legacy proposal data and should not be mixed with the current axially
-periodic tensile workflow.
-```
-
-Source summaries:
-
-```text
-results/professor_review/ppt_ready/data/r*/summary.csv
-```
-
-Postprocessing script:
-
-```text
-scripts/add_finite_grip_cauchy_traction_columns.py
-```
-
-Output folder:
-
-```text
-outputs/finite_grip_cauchy_traction_20260519
-```
-
-Main corrected y-axis:
-
-```text
-grip_nominal_primary_GPa
-```
-
-Sensitivity check:
-
-```text
-grip_apparent_cauchy_primary_GPa
-```
-
-Diagnostic:
-
-```text
-grip_top_bottom_balance_rel
-```
-
-Key files:
-
-```text
-outputs/finite_grip_cauchy_traction_20260519/README.md
-outputs/finite_grip_cauchy_traction_20260519/finite_grip_nominal_primary_all_radii.png
-outputs/finite_grip_cauchy_traction_20260519/finite_grip_top_bottom_balance_all_radii.png
-outputs/finite_grip_cauchy_traction_20260519/finite_grip_cauchy_radius_summary.csv
-outputs/finite_grip_cauchy_traction_20260519/finite_grip_cauchy_all_points.csv
+Nanocolumn and nanocrystal tensile models are infinite/periodic along z.
+Do not use finite-grip, grip-reaction, top-grip, or bottom-grip terminology in
+the formal workflow or thesis text.
 ```
 
 ## Report Files
