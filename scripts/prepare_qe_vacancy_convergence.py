@@ -216,6 +216,11 @@ def _write_input(
     ecut_ry = ecut_ev / RY_TO_EV
     ecutrho_ry = 8.0 * ecut_ry
     cell_card, pos_card = _atoms_to_qe_card(atoms)
+    control_extra: list[str] = []
+    if calculation == "relax":
+        force_conv_ry_per_bohr = float(force_conv_eva) / RY_PER_BOHR_TO_EV_PER_ANG
+        control_extra.append(f"    forc_conv_thr = {force_conv_ry_per_bohr:.10f}")
+
     control_lines = [
         "&CONTROL",
         f"    calculation = '{calculation}'",
@@ -225,6 +230,7 @@ def _write_input(
         "    verbosity = 'high'",
         "    tprnfor = .true.",
         "    tstress = .true.",
+        *control_extra,
         "/",
         "",
         "&SYSTEM",
@@ -247,13 +253,11 @@ def _write_input(
         "/",
     ]
     if calculation == "relax":
-        force_conv_ry_per_bohr = float(force_conv_eva) / RY_PER_BOHR_TO_EV_PER_ANG
         control_lines.extend(
             [
                 "",
                 "&IONS",
                 "    ion_dynamics = 'bfgs'",
-                f"    forc_conv_thr = {force_conv_ry_per_bohr:.10f}",
                 "/",
             ]
         )

@@ -78,6 +78,8 @@ def _infer_mode(base: Path) -> str:
     parts = set(base.parts)
     if "ecut_scan" in parts:
         return "ecut_scan"
+    if "dense_k05_ecut_scan" in parts:
+        return "dense_k05_ecut_scan"
     if "kmesh_scan" in parts:
         return "kmesh_scan"
     return "other"

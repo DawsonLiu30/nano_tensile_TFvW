@@ -56,6 +56,38 @@ Important distinction:
 
 Use the new conventional result for professor-facing DFTpy calibration.
 
+## New Rule For QE Vacancy Convergence
+
+Do not reuse the old primitive rhombohedral QE vacancy cell in the updated
+slides. QE should also use a VESTA-friendly conventional-cell construction, but
+it must stay below the practical 250-atom QE limit discussed in the meeting.
+
+Use a conventional orthorhombic fcc 2x2x4 supercell:
+
+- pristine atoms: 64
+- vacancy atoms: 63
+- cell angles: 90, 90, 90 degrees
+- volume: 1054.909 A^3
+- removed atom: central Al site at fractional coordinate (0.5, 0.5, 0.5)
+
+Preparation command:
+
+```powershell
+python scripts\prepare_qe_vacancy_conventional_orthorhombic.py --outdir "results\qe_vacancy_conventional_2x2x4_20260522" --a0 4.039848 --repeat 2x2x4 --force-conv 0.002
+```
+
+The updated QE rerun includes the professor-requested 800 eV point:
+
+- ecut scan at 2x2x2: 300, 400, 500, 600, 800 eV
+- dense-k ecut check at 5x5x5: 400, 500, 600, 800 eV
+- kmesh scan at 600 eV: 1x1x1 through 6x6x6
+
+QE input rule: `forc_conv_thr = 0.0000777876 Ry/Bohr` belongs in `&CONTROL`,
+not in `&IONS`.
+
+Open `pristine_start.vasp` and `vacancy_start.vasp` in VESTA before sending the
+package to iservice.
+
 ## Vacancy Concentration Definition
 
 For a periodic nanocolumn/nanocrystal repeat cell:

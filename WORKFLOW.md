@@ -180,6 +180,36 @@ the vacancy cell. Open `spacing_scan/spacing_0p20A/pristine_raw.vasp` and
 `spacing_scan/spacing_0p20A/vacancy_start.vasp` in VESTA before submitting the
 DFTpy runs.
 
+## 7) QE bulk-vacancy calibration cell
+
+For the QE vacancy formation-energy convergence rerun, use a VESTA-friendly
+conventional fcc supercell while keeping the original 64/63 atom scale. A full
+conventional cubic 4x4x4 fcc cell would contain 256/255 atoms, which exceeds
+the practical QE limit discussed in the meeting. Therefore the QE rerun uses a
+conventional orthorhombic 2x2x4 fcc supercell:
+
+```bash
+python scripts/prepare_qe_vacancy_conventional_orthorhombic.py \
+  --outdir results/qe_vacancy_conventional_2x2x4_20260522 \
+  --a0 4.039848 \
+  --repeat 2x2x4 \
+  --force-conv 0.002
+```
+
+This cell has 64 pristine atoms, 63 vacancy atoms, 90-degree cell angles, and
+volume 1054.909 A^3. The vacancy atom is the central Al site at fractional
+coordinate (0.5, 0.5, 0.5). The prepared QE rerun includes:
+
+- cutoff convergence at fixed 2x2x2 k-mesh: 300, 400, 500, 600, and 800 eV
+- dense-k cutoff check at fixed 5x5x5 k-mesh: 400, 500, 600, and 800 eV
+- k-mesh convergence at fixed 600 eV: 1x1x1 through 6x6x6
+
+The vacancy relaxation threshold is `forc_conv_thr = 0.0000777876 Ry/Bohr`,
+corresponding to `0.002 eV/A`, and it must be placed in QE `&CONTROL`.
+
+Open `pristine_start.vasp` and `vacancy_start.vasp` in VESTA before submitting
+the QE runs.
+
 ## Notes
 
 - The supported pseudopotential file is `al.gga.recpot`.
