@@ -159,6 +159,27 @@ Convergence order for a clean campaign:
 3. energy convergence
 4. tensile step-size convergence
 
+## 6) DFTpy bulk-vacancy calibration cell
+
+For professor-facing DFTpy vacancy formation-energy calibration, use a
+conventional cubic fcc supercell instead of the old rhombohedral primitive
+4x4x4 cell. The old primitive cell is mathematically valid but visually
+misleading in VESTA because it has 60-degree cell angles.
+
+```bash
+python scripts/prepare_dftpy_vacancy_conventional.py \
+  --outdir results/dftpy_vacancy_conventional_qe_a0_20260522 \
+  --a0 4.039825 \
+  --spacing-list 0.30,0.25,0.22,0.20,0.18 \
+  --spacing-repeat 4 \
+  --fmax 0.002
+```
+
+This conventional 4x4x4 fcc cell contains 256 pristine atoms and 255 atoms in
+the vacancy cell. Open `spacing_scan/spacing_0p20A/pristine_raw.vasp` and
+`spacing_scan/spacing_0p20A/vacancy_start.vasp` in VESTA before submitting the
+DFTpy runs.
+
 ## Notes
 
 - The supported pseudopotential file is `al.gga.recpot`.

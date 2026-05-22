@@ -17,24 +17,26 @@ The professor identified four required corrections:
 
 ## New Rule For DFTpy Calibration
 
-Do not regenerate the DFTpy bulk-vacancy calibration structures independently
-from an ASE primitive-cell builder without a VESTA check.
+Do not use the old rhombohedral primitive 4x4x4 DFTpy calibration cell in the
+slides. Even if the atom count is mathematically correct, the 60-degree cell is
+visually misleading in VESTA and was rejected in the meeting.
 
-The safer route is:
+The new formal route is:
 
-1. Use the already-validated QE pristine/vacancy structures as the source.
-2. Copy them into a DFTpy spacing-scan package.
-3. Open both copied `.vasp` files in VESTA.
+1. Build a conventional cubic fcc supercell.
+2. Use conventional 4x4x4 for the first clean spacing scan.
+3. This means 256 pristine atoms and 255 vacancy atoms.
+4. Open both `.vasp` files in VESTA.
 4. Only then submit the DFTpy calculations.
 
 Preparation command template:
 
 ```powershell
-python scripts\prepare_dftpy_vacancy_convergence_from_qe.py `
-  --qe-pristine "C:\Users\dawso\Desktop\latest_professor_pull_20260511\qe_vacancy_convergence_20260506\pristine_start.vasp" `
-  --qe-vacancy "C:\Users\dawso\Desktop\latest_professor_pull_20260511\qe_vacancy_convergence_20260506\vacancy_start.vasp" `
-  --outdir "results\dftpy_vacancy_convergence_from_qe_structures_20260522" `
+python scripts\prepare_dftpy_vacancy_conventional.py `
+  --outdir "results\dftpy_vacancy_conventional_qe_a0_20260522" `
+  --a0 4.039825 `
   --spacing-list "0.30,0.25,0.22,0.20,0.18" `
+  --spacing-repeat 4 `
   --fmax 0.002
 ```
 
@@ -42,8 +44,17 @@ Then open representative files:
 
 ```powershell
 Start-Process "C:\Users\dawso\AppData\Local\Microsoft\WinGet\Packages\KoichiMomma.VESTA_Microsoft.Winget.Source_8wekyb3d8bbwe\VESTA-win64\VESTA.exe" `
-  "C:\Users\dawso\nano_tensile_TFvW\results\dftpy_vacancy_convergence_from_qe_structures_20260522\spacing_scan\spacing_0p20A\vacancy_start.vasp"
+  "C:\Users\dawso\nano_tensile_TFvW\results\dftpy_vacancy_conventional_qe_a0_20260522\spacing_scan\spacing_0p20A\vacancy_start.vasp"
 ```
+
+Important distinction:
+
+- Old primitive 4x4x4: 64 pristine atoms, 63 vacancy atoms, 60-degree
+  rhombohedral cell.
+- New conventional 4x4x4: 256 pristine atoms, 255 vacancy atoms, 90-degree
+  cubic cell.
+
+Use the new conventional result for professor-facing DFTpy calibration.
 
 ## Vacancy Concentration Definition
 
@@ -126,4 +137,3 @@ Suggested strain step-size check after force/energy are stable:
 
 Do not use a single expensive step-size sweep before structure and force
 convergence are clean.
-
