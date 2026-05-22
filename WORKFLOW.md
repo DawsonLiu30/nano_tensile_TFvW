@@ -49,7 +49,7 @@ python scripts/prepare_paper_periodic_wire.py \
   --pp al.gga.recpot \
   --kedf TFVW \
   --ecut 1000 \
-  --fmax 0.02 \
+  --fmax 0.002 \
   --relax-steps 120
 ```
 
@@ -68,7 +68,7 @@ python scripts/prepare_paper_periodic_wire.py \
   --pp al.gga.recpot \
   --kedf TFVW \
   --ecut 1000 \
-  --fmax 0.02 \
+  --fmax 0.002 \
   --relax-steps 120
 ```
 
@@ -90,8 +90,8 @@ python scripts/run_periodic_tensile.py \
   --kedf TFVW \
   --ecut 1000 \
   --step 0.01 \
-  --cycles 20 \
-  --fmax 0.02 \
+  --cycles 50 \
+  --fmax 0.002 \
   --relax-steps 80 \
   --plot-summary
 ```
@@ -123,6 +123,41 @@ Do not report any of the following as formal thesis quantities:
 - top/bottom grip balance
 - finite physical column length
 - preload-corrected grip stress
+
+## 5) Vacancy nanocrystal tensile runs
+
+After the 2026-05-22 professor meeting, vacancy tensile tests must record both
+vacancy concentration and vacancy position. For one vacancy in a periodic
+repeat cell:
+
+```text
+c_v = N_vacancies / N_pristine_sites = 1 / N_pristine
+```
+
+Use `scripts/run_vacancy_periodic_series.py` to run the three requested radial
+locations:
+
+```bash
+python scripts/run_vacancy_periodic_series.py \
+  --diameters 1.0,2.0,3.0 \
+  --cross-section-shape hexagon \
+  --orientation 111 \
+  --vacancy-radial-positions inner,middle,outer \
+  --step 0.01 \
+  --cycles 50 \
+  --fmax 0.002
+```
+
+The generated `vacancy_branch_manifest.json` records the selected atom,
+radial location, vacancy concentration fraction, vacancy concentration
+percentage, and a per-nm3 diagnostic based on the physical prism volume.
+
+Convergence order for a clean campaign:
+
+1. structure and VESTA validation
+2. force convergence, targeting `fmax = 0.002 eV/A`
+3. energy convergence
+4. tensile step-size convergence
 
 ## Notes
 

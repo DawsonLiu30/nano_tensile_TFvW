@@ -143,7 +143,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--bulk-summary", default="", help="Optional TFvW bulk summary.txt used to read a0_ref_A.")
     ap.add_argument("--pp", default=str(ROOT / "al.gga.recpot"))
     ap.add_argument("--kedf", default="TFVW")
-    ap.add_argument("--fmax", type=float, default=0.02)
+    ap.add_argument("--fmax", type=float, default=0.002)
     ap.add_argument("--relax-steps", type=int, default=200)
     return ap.parse_args()
 

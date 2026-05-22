@@ -177,7 +177,30 @@ def _xy_center(atoms) -> tuple[float, float]:
     return float(cell[0, 0] * 0.5), float(cell[1, 1] * 0.5)
 
 
-def _choose_surface_vacancy_index(atoms, *, z_window_fraction: float) -> tuple[int, dict[str, float]]:
+def _normalize_vacancy_position(value: str) -> str:
+    key = str(value).strip().lower()
+    aliases = {
+        "inner": "inner",
+        "core": "inner",
+        "center": "inner",
+        "centre": "inner",
+        "middle": "middle",
+        "mid": "middle",
+        "outer": "outer",
+        "surface": "outer",
+        "edge": "outer",
+    }
+    if key not in aliases:
+        raise ValueError(f"Unsupported vacancy radial position '{value}'. Use inner, middle, or outer.")
+    return aliases[key]
+
+
+def _choose_radial_vacancy_index(
+    atoms,
+    *,
+    vacancy_radial_position: str,
+    z_window_fraction: float,
+) -> tuple[int, dict[str, float]]:
     pos = atoms.get_positions()
     cx, cy = _xy_center(atoms)
     z_center = float(np.mean(pos[:, 2]))
@@ -191,15 +214,36 @@ def _choose_surface_vacancy_index(atoms, *, z_window_fraction: float) -> tuple[i
     if candidate_idx.size == 0:
         candidate_idx = np.arange(len(atoms), dtype=int)
 
-    chosen = int(candidate_idx[int(np.argmax(radial[candidate_idx]))])
+    radial_position = _normalize_vacancy_position(vacancy_radial_position)
+    candidate_radial = radial[candidate_idx]
+    max_radial = float(np.max(candidate_radial))
+    if radial_position == "inner":
+        chosen = int(candidate_idx[int(np.argmin(candidate_radial))])
+        target_radial = float(np.min(candidate_radial))
+        selection_rule = "smallest radial distance among atoms within the central z-window"
+    elif radial_position == "middle":
+        target_radial = 0.5 * max_radial
+        chosen = int(candidate_idx[int(np.argmin(np.abs(candidate_radial - target_radial)))])
+        selection_rule = "radial distance closest to half of the outer radius within the central z-window"
+    else:
+        chosen = int(candidate_idx[int(np.argmax(candidate_radial))])
+        target_radial = max_radial
+        selection_rule = "largest radial distance among atoms within the central z-window"
+
+    radial_fraction = float(radial[chosen] / max_radial) if max_radial > 0.0 else float("nan")
     site = {
         "index": chosen,
+        "radial_position": radial_position,
         "x_A": float(pos[chosen, 0]),
         "y_A": float(pos[chosen, 1]),
         "z_A": float(pos[chosen, 2]),
         "radial_distance_A": float(radial[chosen]),
+        "radial_fraction_of_outer_candidate": radial_fraction,
+        "target_radial_distance_A": float(target_radial),
+        "outer_candidate_radial_distance_A": max_radial,
         "z_center_offset_A": float(z_offset[chosen]),
         "z_window_A": float(z_window),
+        "selection_rule": selection_rule,
     }
     return chosen, site
 
@@ -292,8 +336,14 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--ecut", type=float, default=1000.0, help="Kinetic energy cutoff (eV).")
     ap.add_argument("--spacing", type=float, default=None, help="Override grid spacing (Angstrom).")
     ap.add_argument("--kedf", default="TFVW", help="DFTpy KEDF name. Examples: TFVW, SM, WT.")
-    ap.add_argument("--fmax", type=float, default=0.02, help="Force convergence for each relaxation.")
+    ap.add_argument("--fmax", type=float, default=0.002, help="Force convergence for each relaxation.")
     ap.add_argument("--relax-steps", type=int, default=120, help="Maximum relaxation steps per scan point.")
+    ap.add_argument(
+        "--vacancy-radial-position",
+        choices=["inner", "middle", "outer", "core", "mid", "surface"],
+        default="outer",
+        help="Vacancy radial location in the cross-section: inner/core, middle, or outer/surface.",
+    )
     ap.add_argument(
         "--bulk-validation-csv",
         default="",
@@ -484,8 +534,9 @@ def main() -> None:
     _write_structure_pair(outdir / "pristine_long_equilibrium", long_pristine_eq)
     long_pristine_eq_lz = float(long_pristine_eq.get_cell().lengths()[2])
 
-    vacancy_index, vacancy_site = _choose_surface_vacancy_index(
+    vacancy_index, vacancy_site = _choose_radial_vacancy_index(
         short_pristine_eq,
+        vacancy_radial_position=str(args.vacancy_radial_position),
         z_window_fraction=float(args.vacancy_z_window_fraction),
     )
     vacancy_start = _remove_atom(short_pristine_eq, vacancy_index)
@@ -509,6 +560,18 @@ def main() -> None:
 
     n_pristine = int(len(short_pristine_eq))
     n_vacancy = int(len(vacancy_eq))
+    vacancy_count = n_pristine - n_vacancy
+    physical_prism_volume_A3 = float(
+        cross_section_area_A2(shape_tag, 0.5 * float(args.diameter_nm) * 10.0)
+        * short_pristine_eq_lz
+    )
+    vacancy_concentration_fraction = float(vacancy_count / n_pristine)
+    vacancy_concentration_percent = float(100.0 * vacancy_concentration_fraction)
+    vacancy_concentration_per_nm3 = (
+        float(vacancy_count / (physical_prism_volume_A3 / 1000.0))
+        if physical_prism_volume_A3 > 0.0
+        else float("nan")
+    )
     vacancy_formation_same_geometry = float(
         vacancy_energy - (n_vacancy / n_pristine) * pristine_eq_energy
     )
@@ -532,6 +595,7 @@ def main() -> None:
             "shape_rotation_deg": float(args.shape_rotation_deg),
             "diameter_nm": float(args.diameter_nm),
             "cross_section_area_model_A2": cross_section_area_A2(shape_tag, 0.5 * float(args.diameter_nm) * 10.0),
+            "physical_prism_volume_A3": physical_prism_volume_A3,
             "vacuum_A": float(args.vacuum),
             "a0_input_A": float(args.a0),
             "base_short_lz_A": base_short_lz,
@@ -576,7 +640,15 @@ def main() -> None:
             "bulk_mu_source_csv": str(bulk_validation_csv),
             "bulk_mu_reference_strain": float(bulk_mu_strain),
             "selected_site": vacancy_site,
-            "selection_rule": "largest radial distance among atoms within the central z-window",
+            "selection_rule": vacancy_site["selection_rule"],
+            "concentration": {
+                "vacancy_count": int(vacancy_count),
+                "definition": "vacancy_count / pristine_sites_in_periodic_repeat",
+                "fraction": vacancy_concentration_fraction,
+                "percent": vacancy_concentration_percent,
+                "per_nm3_using_model_prism_volume": vacancy_concentration_per_nm3,
+                "note": "The per-nm^3 value uses the physical prism cross-section area times axial repeat length, not the vacuum-padded simulation-cell volume.",
+            },
         },
         "artifacts": {
             "pristine_short_raw": str(outdir / "pristine_short_raw.vasp"),
@@ -599,7 +671,13 @@ def main() -> None:
     print(f"[vacancy-wire] short eq lz                     : {short_pristine_eq_lz:.6f} A")
     print(f"[vacancy-wire] long eq lz                      : {long_pristine_eq_lz:.6f} A")
     print(f"[vacancy-wire] vacancy site index             : {vacancy_index}")
+    print(f"[vacancy-wire] vacancy radial position       : {vacancy_site['radial_position']}")
     print(f"[vacancy-wire] vacancy radial distance        : {vacancy_site['radial_distance_A']:.6f} A")
+    print(
+        "[vacancy-wire] vacancy concentration         : "
+        f"{vacancy_concentration_fraction:.8f} "
+        f"({vacancy_concentration_percent:.4f} at.%)"
+    )
     print(
         "[vacancy-wire] vacancy formation energy       : "
         f"{vacancy_formation_same_geometry:.6f} eV "

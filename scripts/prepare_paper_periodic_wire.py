@@ -178,7 +178,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--ecut", type=float, default=1000.0, help="Kinetic energy cutoff (eV).")
     ap.add_argument("--spacing", type=float, default=None, help="Override grid spacing (Angstrom).")
     ap.add_argument("--kedf", default="TFVW", help="DFTpy KEDF name. Examples: TFVW, SM, WT.")
-    ap.add_argument("--fmax", type=float, default=0.02, help="Force convergence for each short-cell relaxation.")
+    ap.add_argument("--fmax", type=float, default=0.002, help="Force convergence for each short-cell relaxation.")
     ap.add_argument("--relax-steps", type=int, default=120, help="Maximum relaxation steps per scan point.")
     ap.add_argument("--outdir", default="", help="Optional output directory. Defaults to cases/<case>/inputs.")
     return ap.parse_args()

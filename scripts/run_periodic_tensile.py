@@ -275,7 +275,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--kedf", default="TFVW", help="DFTpy KEDF name. Examples: TFVW, SM, WT.")
     ap.add_argument("--step", type=float, default=0.01, help="Engineering strain increment per cycle.")
     ap.add_argument("--cycles", type=int, default=20, help="Number of quasistatic strain cycles.")
-    ap.add_argument("--fmax", type=float, default=0.02, help="Force convergence for each relax.")
+    ap.add_argument("--fmax", type=float, default=0.002, help="Force convergence for each relax.")
     ap.add_argument("--relax-steps", type=int, default=120, help="Maximum relax steps per cycle.")
     ap.add_argument("--axis", type=int, default=2, choices=[0, 1, 2], help="Axial strain direction.")
     ap.add_argument("--plot-summary", action="store_true", help="Plot periodic stress-strain summary at the end.")

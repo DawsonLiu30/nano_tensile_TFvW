@@ -25,7 +25,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--spacing", type=float, default=0.20, help="DFTpy real-space grid spacing in Angstrom.")
     ap.add_argument("--kedf", default="TFVW")
     ap.add_argument("--pp", default="al.gga.recpot", help="Portable relative pseudopotential path for remote runs.")
-    ap.add_argument("--fmax", type=float, default=0.02)
+    ap.add_argument("--fmax", type=float, default=0.002)
     ap.add_argument("--relax-steps", type=int, default=500)
     ap.add_argument("--repeats", default="4,6,8,10,12,14")
     return ap.parse_args()

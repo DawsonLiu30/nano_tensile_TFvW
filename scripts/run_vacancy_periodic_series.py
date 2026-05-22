@@ -57,14 +57,45 @@ def _family(shape: str) -> str:
     return "nanocolumn" if str(shape).lower() == "circle" else "nanocrystal"
 
 
-def _case_name(diameter_nm: float, shape: str, orientation: str) -> str:
-    shape_key = str(shape).lower()
-    return f"{_family(shape_key)}_{shape_key}_periodic_{orientation}_{float(diameter_nm):.1f}nm_vacancy_tfvw"
+def _normalize_vacancy_position(value: str) -> str:
+    key = str(value).strip().lower()
+    aliases = {
+        "inner": "inner",
+        "core": "inner",
+        "center": "inner",
+        "centre": "inner",
+        "middle": "middle",
+        "mid": "middle",
+        "outer": "outer",
+        "surface": "outer",
+        "edge": "outer",
+    }
+    if key not in aliases:
+        raise ValueError(f"Unsupported vacancy radial position '{value}'. Use inner, middle, or outer.")
+    return aliases[key]
 
 
-def _run_name(diameter_nm: float, shape: str) -> str:
+def _parse_position_list(text: str) -> list[str]:
+    positions = []
+    for chunk in str(text).split(","):
+        token = chunk.strip()
+        if token:
+            positions.append(_normalize_vacancy_position(token))
+    if not positions:
+        raise ValueError("No vacancy radial positions were provided.")
+    return list(dict.fromkeys(positions))
+
+
+def _case_name(diameter_nm: float, shape: str, orientation: str, vacancy_position: str) -> str:
     shape_key = str(shape).lower()
-    return f"{_family(shape_key)}_{shape_key}_r{_format_radius_tag(diameter_nm)}_vacancy_tfvw"
+    pos_key = _normalize_vacancy_position(vacancy_position)
+    return f"{_family(shape_key)}_{shape_key}_periodic_{orientation}_{float(diameter_nm):.1f}nm_vac_{pos_key}_tfvw"
+
+
+def _run_name(diameter_nm: float, shape: str, vacancy_position: str) -> str:
+    shape_key = str(shape).lower()
+    pos_key = _normalize_vacancy_position(vacancy_position)
+    return f"{_family(shape_key)}_{shape_key}_r{_format_radius_tag(diameter_nm)}_vac_{pos_key}_tfvw"
 
 
 def _run_command(args: list[str]) -> None:
@@ -92,10 +123,15 @@ def main() -> None:
     ap.add_argument("--target-long-lz", type=float, default=200.0)
     ap.add_argument("--scan-scales", default="0.94,0.95,0.96,0.97,0.98,0.99,1.00,1.01,1.02")
     ap.add_argument("--vacancy-z-window-fraction", type=float, default=0.25)
+    ap.add_argument(
+        "--vacancy-radial-positions",
+        default="outer",
+        help="Comma-separated vacancy positions to run: inner,middle,outer. Default keeps the previous outer/surface vacancy behavior.",
+    )
     ap.add_argument("--pp", default="al.gga.recpot")
     ap.add_argument("--kedf", default="TFVW")
     ap.add_argument("--ecut", type=float, default=1000.0)
-    ap.add_argument("--fmax", type=float, default=0.02)
+    ap.add_argument("--fmax", type=float, default=0.002)
     ap.add_argument("--prep-relax-steps", type=int, default=120)
     ap.add_argument("--step", type=float, default=0.01)
     ap.add_argument("--cycles", type=int, default=20)
@@ -103,88 +139,93 @@ def main() -> None:
     args = ap.parse_args()
 
     diameters = _parse_float_list(args.diameters, label="diameters")
+    vacancy_positions = _parse_position_list(args.vacancy_radial_positions)
     bulk_summary = _latest_bulk_summary_path() if not str(args.bulk_summary).strip() else (ROOT / args.bulk_summary).resolve()
     a0_ref = _read_a0_from_summary(bulk_summary)
 
     print(f"[{_ts()}] Sequential vacancy periodic series")
     print(f"[{_ts()}] cross_section_shape={args.cross_section_shape}")
     print(f"[{_ts()}] diameters_nm={', '.join(f'{d:.1f}' for d in diameters)}")
+    print(f"[{_ts()}] vacancy_positions={', '.join(vacancy_positions)}")
     print(f"[{_ts()}] bulk_summary={bulk_summary}")
     print(f"[{_ts()}] a0_ref_A={a0_ref:.12f}")
 
     python = sys.executable
     for diameter_nm in diameters:
-        case = _case_name(diameter_nm, str(args.cross_section_shape), str(args.orientation))
-        run_name = _run_name(diameter_nm, str(args.cross_section_shape))
+        for vacancy_position in vacancy_positions:
+            case = _case_name(diameter_nm, str(args.cross_section_shape), str(args.orientation), vacancy_position)
+            run_name = _run_name(diameter_nm, str(args.cross_section_shape), vacancy_position)
 
-        _run_command(
-            [
-                python,
-                "scripts/prepare_vacancy_periodic_wire.py",
-                "--case",
-                case,
-                "--diameter-nm",
-                f"{float(diameter_nm):.1f}",
-                "--cross-section-shape",
-                str(args.cross_section_shape),
-                "--shape-rotation-deg",
-                f"{float(args.shape_rotation_deg):.6f}",
-                "--orientation",
-                str(args.orientation),
-                "--a0",
-                f"{a0_ref:.12f}",
-                "--vacuum",
-                f"{float(args.vacuum):.6f}",
-                "--min-short-lz",
-                f"{float(args.min_short_lz):.6f}",
-                "--short-repeat-z",
-                str(int(args.short_repeat_z)),
-                "--target-long-lz",
-                f"{float(args.target_long_lz):.6f}",
-                "--scan-scales",
-                str(args.scan_scales),
-                "--vacancy-z-window-fraction",
-                f"{float(args.vacancy_z_window_fraction):.6f}",
-                "--pp",
-                str(args.pp),
-                "--kedf",
-                str(args.kedf),
-                "--ecut",
-                f"{float(args.ecut):.6f}",
-                "--fmax",
-                f"{float(args.fmax):.6f}",
-                "--relax-steps",
-                str(int(args.prep_relax_steps)),
-            ]
-        )
+            _run_command(
+                [
+                    python,
+                    "scripts/prepare_vacancy_periodic_wire.py",
+                    "--case",
+                    case,
+                    "--diameter-nm",
+                    f"{float(diameter_nm):.1f}",
+                    "--cross-section-shape",
+                    str(args.cross_section_shape),
+                    "--shape-rotation-deg",
+                    f"{float(args.shape_rotation_deg):.6f}",
+                    "--orientation",
+                    str(args.orientation),
+                    "--a0",
+                    f"{a0_ref:.12f}",
+                    "--vacuum",
+                    f"{float(args.vacuum):.6f}",
+                    "--min-short-lz",
+                    f"{float(args.min_short_lz):.6f}",
+                    "--short-repeat-z",
+                    str(int(args.short_repeat_z)),
+                    "--target-long-lz",
+                    f"{float(args.target_long_lz):.6f}",
+                    "--scan-scales",
+                    str(args.scan_scales),
+                    "--vacancy-z-window-fraction",
+                    f"{float(args.vacancy_z_window_fraction):.6f}",
+                    "--vacancy-radial-position",
+                    vacancy_position,
+                    "--pp",
+                    str(args.pp),
+                    "--kedf",
+                    str(args.kedf),
+                    "--ecut",
+                    f"{float(args.ecut):.6f}",
+                    "--fmax",
+                    f"{float(args.fmax):.6f}",
+                    "--relax-steps",
+                    str(int(args.prep_relax_steps)),
+                ]
+            )
 
-        _run_command(
-            [
-                python,
-                "scripts/run_periodic_tensile.py",
-                "--case",
-                run_name,
-                "--workdir",
-                str(Path("cases") / case),
-                "--init",
-                "inputs/vacancy_equilibrium.vasp",
-                "--pp",
-                str(args.pp),
-                "--kedf",
-                str(args.kedf),
-                "--ecut",
-                f"{float(args.ecut):.6f}",
-                "--step",
-                f"{float(args.step):.6f}",
-                "--cycles",
-                str(int(args.cycles)),
-                "--fmax",
-                f"{float(args.fmax):.6f}",
-                "--relax-steps",
-                str(int(args.tensile_relax_steps)),
-                "--plot-summary",
-            ]
-        )
+            _run_command(
+                [
+                    python,
+                    "scripts/run_periodic_tensile.py",
+                    "--case",
+                    run_name,
+                    "--workdir",
+                    str(Path("cases") / case),
+                    "--init",
+                    "inputs/vacancy_equilibrium.vasp",
+                    "--pp",
+                    str(args.pp),
+                    "--kedf",
+                    str(args.kedf),
+                    "--ecut",
+                    f"{float(args.ecut):.6f}",
+                    "--step",
+                    f"{float(args.step):.6f}",
+                    "--cycles",
+                    str(int(args.cycles)),
+                    "--fmax",
+                    f"{float(args.fmax):.6f}",
+                    "--relax-steps",
+                    str(int(args.tensile_relax_steps)),
+                    "--plot-summary",
+                ]
+            )
 
     print(f"[{_ts()}] Vacancy series completed.")
 
