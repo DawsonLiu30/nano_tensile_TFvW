@@ -75,6 +75,58 @@ Remaining work grouped by urgency:
 The detailed command-level fill plan is recorded in
 `CALCULATION_FILL_PLAN_20260525.md`.
 
+## DFTpy Conventional Rerun Update: 2026-05-25
+
+The VESTA-checked DFTpy conventional rerun is now meaningful and should replace
+the old primitive-cell DFTpy discussion.
+
+Same-cell comparison:
+
+| method | cell | atoms | setting | Ef_vac (eV) |
+|---|---|---:|---|---:|
+| QE | conventional `2x2x4` | `64 -> 63` | `5x5x5`, `600 eV` | `0.601085` |
+| DFTpy / TFvW | conventional `2x2x4` | `64 -> 63` | spacing `0.20 A` | `2.900849` |
+
+The same-cell QE-DFTpy difference is therefore about `2.299764 eV`.
+
+DFTpy same-cell spacing scan:
+
+| spacing (A) | Ef_vac (eV) | actual fmax (eV/A) | status |
+|---:|---:|---:|---|
+| `0.30` | `2.900725` | `0.001593` | pass |
+| `0.25` | `2.900797` | `0.000858` | pass |
+| `0.22` | `2.900844` | `0.001990` | pass |
+| `0.20` | `2.900849` | `0.001016` | pass |
+| `0.18` | `2.900901` | `0.001119` | pass |
+| `0.16` | `2.901197` | `0.001231` | pass |
+
+The full spacing range changes by only `0.000472 eV`, so the DFTpy same-cell
+result is grid-converged around `2.901 eV`.
+
+DFTpy concentration/size scan at spacing `0.20 A`:
+
+| cell | atoms | vacancy concentration | Ef_vac (eV) | actual fmax (eV/A) | status |
+|---|---:|---:|---:|---:|---|
+| `conv_02x02x02` | `32 -> 31` | `3.125%` | `2.937948` | `0.001349` | pass |
+| `conv_03x03x03` | `108 -> 107` | `0.925926%` | `2.897041` | `0.000437` | pass |
+| `conv_04x04x04` | `256 -> 255` | `0.390625%` | `2.887601` | `0.001197` | pass |
+| `conv_05x05x05` | `500 -> 499` | `0.200000%` | `2.883649` | `0.001896` | pass |
+| `conv_06x06x06` | `864 -> 863` | `0.115741%` | not accepted | `0.004161` | not converged |
+
+Current interpretation:
+
+- The high DFTpy vacancy energy is reproduced after correcting the cell
+  geometry, so it is not solely a primitive/slanted-cell artifact.
+- The concentration dependence is visible but small compared with the
+  same-cell QE-DFTpy discrepancy: `32 -> 500` atoms lowers the accepted DFTpy
+  vacancy energy by about `0.054299 eV`, while the same-cell QE-DFTpy
+  difference is about `2.30 eV`.
+- Do not include `conv_06x06x06` in the formal size trend until it satisfies the
+  `0.002 eV/A` target and produces an accepted result.
+
+The detailed DFTpy result note is recorded in
+`DFTPY_CONVENTIONAL_RESULTS_20260525.md`.
+
 ## What Changed
 
 The professor identified four required corrections:
