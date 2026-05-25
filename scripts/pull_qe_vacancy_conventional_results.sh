@@ -62,8 +62,28 @@ echo "============================================================"
 mkdir -p "$ARCHIVE_DIR"
 ZIP_PATH="$ARCHIVE_DIR/qe_vacancy_conventional_2x2x4_20260522_no_tmp.zip"
 rm -f "$ZIP_PATH"
-(
-  cd "$(dirname "$LOCAL_ROOT")"
-  zip -r "$ZIP_PATH" "$(basename "$LOCAL_ROOT")" -x '*/tmp/*'
-)
+if command -v zip >/dev/null 2>&1; then
+  (
+    cd "$(dirname "$LOCAL_ROOT")"
+    zip -r "$ZIP_PATH" "$(basename "$LOCAL_ROOT")" -x '*/tmp/*'
+  )
+else
+  python - "$LOCAL_ROOT" "$ZIP_PATH" <<'PY'
+from pathlib import Path
+import sys
+import zipfile
+
+source = Path(sys.argv[1]).resolve()
+zip_path = Path(sys.argv[2]).resolve()
+base = source.parent
+
+with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+    for path in source.rglob("*"):
+        if path.is_dir():
+            continue
+        if "tmp" in path.relative_to(source).parts:
+            continue
+        zf.write(path, path.relative_to(base))
+PY
+fi
 echo "[ZIP] $ZIP_PATH"
