@@ -72,6 +72,9 @@ Remaining work grouped by urgency:
 | tensile force convergence | not started | use `fmax = 0.002 eV/A` for final reported runs |
 | tensile step-size sensitivity | not started | compare `0.02`, `0.01`, `0.005` after force convergence |
 
+The detailed command-level fill plan is recorded in
+`CALCULATION_FILL_PLAN_20260525.md`.
+
 ## What Changed
 
 The professor identified four required corrections:

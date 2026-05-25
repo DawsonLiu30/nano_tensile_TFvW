@@ -43,6 +43,21 @@ def _parse_int_list(text: str) -> list[int]:
     return values
 
 
+def _parse_repeat(text: str) -> tuple[int, int, int]:
+    token = str(text).strip().lower().replace(",", "x")
+    parts = token.split("x")
+    if len(parts) == 1:
+        n = int(parts[0])
+        repeat = (n, n, n)
+    elif len(parts) == 3:
+        repeat = tuple(int(part.strip()) for part in parts)
+    else:
+        raise ValueError(f"Invalid conventional repeat: {text}")
+    if any(value <= 0 for value in repeat):
+        raise ValueError(f"Repeat values must be positive: {text}")
+    return repeat
+
+
 def _write_text(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="\n")
@@ -59,6 +74,10 @@ def _spacing_label(spacing_A: float) -> str:
 
 def _conv_label(n: int) -> str:
     return f"conv_{int(n):02d}x{int(n):02d}x{int(n):02d}"
+
+
+def _repeat_label(repeat: tuple[int, int, int]) -> str:
+    return f"conv_{repeat[0]:02d}x{repeat[1]:02d}x{repeat[2]:02d}"
 
 
 def _geometry_summary(atoms) -> dict[str, float | int | str]:
@@ -134,9 +153,9 @@ econv = 1e-6
     _write_text(path, text)
 
 
-def _build_conventional_pair(*, a0_A: float, repeat_n: int):
+def _build_conventional_pair(*, a0_A: float, repeat: tuple[int, int, int]):
     conventional = bulk("Al", "fcc", a=float(a0_A), cubic=True)
-    pristine = conventional.repeat((int(repeat_n), int(repeat_n), int(repeat_n)))
+    pristine = conventional.repeat(tuple(int(value) for value in repeat))
     pristine.wrap()
 
     scaled = pristine.get_scaled_positions(wrap=True)
@@ -173,9 +192,11 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--spacing-list", default="0.30,0.25,0.22,0.20,0.18")
     ap.add_argument(
         "--spacing-repeat",
-        type=int,
-        default=4,
-        help="Conventional n x n x n repeat used for the spacing scan. 4 gives 256/255 atoms.",
+        default="4",
+        help=(
+            "Conventional repeat used for the spacing scan. Use 4 for cubic "
+            "4x4x4 = 256/255 atoms, or 2x2x4 for the QE-matched 64/63 cell."
+        ),
     )
     ap.add_argument(
         "--size-repeats",
@@ -246,10 +267,8 @@ def main() -> None:
     spacing_values = _parse_float_list(args.spacing_list)
     outdir.mkdir(parents=True, exist_ok=True)
 
-    pristine, vacancy, removed = _build_conventional_pair(
-        a0_A=float(args.a0),
-        repeat_n=int(args.spacing_repeat),
-    )
+    spacing_repeat = _parse_repeat(args.spacing_repeat)
+    pristine, vacancy, removed = _build_conventional_pair(a0_A=float(args.a0), repeat=spacing_repeat)
     spacing_settings = []
     for spacing in spacing_values:
         label = _spacing_label(spacing)
@@ -266,7 +285,8 @@ def main() -> None:
             extra_manifest={
                 "setting": label,
                 "scan_type": "spacing",
-                "conventional_repeat_n": int(args.spacing_repeat),
+                "conventional_repeat": list(spacing_repeat),
+                "conventional_repeat_label": _repeat_label(spacing_repeat),
                 **removed,
             },
         )
@@ -275,7 +295,8 @@ def main() -> None:
     size_settings = []
     size_repeats = _parse_int_list(args.size_repeats) if str(args.size_repeats).strip() else []
     for n in size_repeats:
-        pristine_n, vacancy_n, removed_n = _build_conventional_pair(a0_A=float(args.a0), repeat_n=int(n))
+        repeat_n = (int(n), int(n), int(n))
+        pristine_n, vacancy_n, removed_n = _build_conventional_pair(a0_A=float(args.a0), repeat=repeat_n)
         label = _conv_label(n)
         size_settings.append(label)
         _write_case(
@@ -290,7 +311,8 @@ def main() -> None:
             extra_manifest={
                 "setting": label,
                 "scan_type": "size",
-                "conventional_repeat_n": int(n),
+                "conventional_repeat": list(repeat_n),
+                "conventional_repeat_label": _repeat_label(repeat_n),
                 **removed_n,
             },
         )
@@ -303,11 +325,12 @@ def main() -> None:
         "purpose": "Use VESTA-friendly conventional cubic fcc supercells instead of rhombohedral primitive cells.",
         "cell_basis": "conventional cubic fcc",
         "a0_A": float(args.a0),
-        "spacing_repeat_n": int(args.spacing_repeat),
+        "spacing_repeat": list(spacing_repeat),
+        "spacing_repeat_label": _repeat_label(spacing_repeat),
         "spacing_scan_atoms": {
             "pristine": int(len(pristine)),
             "vacancy": int(len(vacancy)),
-            "rule": "N_pristine = 4 * n^3 for conventional fcc n x n x n",
+            "rule": "N_pristine = 4 * nx * ny * nz for conventional fcc repeats",
         },
         "spacing_values_A": [float(v) for v in spacing_values],
         "size_repeats": [int(v) for v in size_repeats],
