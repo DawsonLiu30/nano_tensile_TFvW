@@ -81,6 +81,7 @@ $dftpySizeSource = Join-Path $dftpyPullRoot "dftpy_vacancy_conventional_size_qe_
 $copiedQe = Copy-DirectoryIfExists -Source $qeSource -Destination $qeDir -PackageRoot $PackageRoot
 $copiedDftpySame = Copy-DirectoryIfExists -Source $dftpySameSource -Destination $dftpySameDir -PackageRoot $PackageRoot
 $copiedDftpySize = Copy-DirectoryIfExists -Source $dftpySizeSource -Destination $dftpySizeDir -PackageRoot $PackageRoot
+$copiedDftpyFmax = Copy-FileIfExists -Source (Join-Path $dftpyPullRoot "dftpy_conventional_actual_final_fmax_summary.csv") -Destination (Join-Path $dftpySizeDir "dftpy_conventional_actual_final_fmax_summary.csv")
 
 Copy-FileIfExists -Source (Join-Path $RepoRoot "FINAL_REPORT_20260526.md") -Destination (Join-Path $reportDir "FINAL_REPORT_20260526.md") | Out-Null
 Copy-FileIfExists -Source "$env:USERPROFILE\OneDrive\Documents\qe_bulk_vacancy_updated_20260525.pptx" -Destination (Join-Path $reportDir "latest_slide_deck_qe_bulk_vacancy_updated_20260525.pptx") | Out-Null
@@ -130,8 +131,43 @@ powershell -ExecutionPolicy Bypass -File C:\Users\dawso\nano_tensile_TFvW\script
 - QE conventional copied: $copiedQe
 - DFTpy same-cell copied: $copiedDftpySame
 - DFTpy size/concentration copied: $copiedDftpySize
+- DFTpy actual fmax summary copied: $copiedDftpyFmax
 "@
 $readme | Set-Content -Path (Join-Path $PackageRoot "README_FINAL_NUS_UPLOAD.md") -Encoding UTF8
+
+$checklist = @"
+# Upload Checklist
+
+Upload this zip to NUS:
+
+C:\Users\dawso\Desktop\FINAL_NUS_UPLOAD_20260526.zip
+
+## Before upload
+
+- [x] QE conventional 2x2x4 input/output/log/structure copied.
+- [x] DFTpy conventional same-cell input/output/log/structure copied.
+- [x] DFTpy size/concentration input/output/log/structure copied.
+- [x] Final report copied.
+- [x] Reproducibility scripts copied.
+- [x] QE processed summary copied.
+- [x] DFTpy spacing summary copied.
+- [x] DFTpy size summary copied.
+- [x] DFTpy actual fmax summary copied: $copiedDftpyFmax
+
+## Key reportable numbers
+
+- QE best completed dense-k reference: conventional 2x2x4, 5x5x5, 600-800 eV, E_f^vac about 0.6011-0.6012 eV.
+- DFTpy same-cell spacing convergence: conventional 2x2x4, TFvW, spacing 0.30-0.16 Angstrom, E_f^vac about 2.901 eV.
+- DFTpy same-cell actual fmax: all completed spacing cases satisfy fmax < 0.002 eV/Angstrom.
+- DFTpy concentration scan accepted range: 32 to 500 pristine atoms, vacancy concentration 3.125% to 0.200%, E_f^vac decreases from 2.937948 to 2.883649 eV.
+
+## Not final / do not overclaim
+
+- QE 6x6x6 is incomplete in the local pull and should not be reported as completed.
+- DFTpy conv_06x06x06 is not accepted because it did not meet fmax < 0.002 eV/Angstrom.
+- QE fmax < 0.002 eV/Angstrom should not be claimed until explicitly verified from QE outputs.
+"@
+$checklist | Set-Content -Path (Join-Path $PackageRoot "UPLOAD_CHECKLIST.md") -Encoding UTF8
 
 $pending = @"
 # Pending / Not-Final Items
@@ -175,3 +211,4 @@ Write-Host "[ZIP   ] $zipPath"
 Write-Host "[QE copied        ] $copiedQe"
 Write-Host "[DFTpy same copied] $copiedDftpySame"
 Write-Host "[DFTpy size copied] $copiedDftpySize"
+Write-Host "[DFTpy fmax copied] $copiedDftpyFmax"
