@@ -170,6 +170,12 @@ Recommended local package root:
 C:\Users\dawso\Desktop\FINAL_NUS_UPLOAD_20260526
 ```
 
+Current final PPT copy inside the package:
+
+```text
+C:\Users\dawso\Desktop\FINAL_NUS_UPLOAD_20260526\00_FINAL_REPORT\FINAL_qe_bulk_vacancy_20260526.pptx
+```
+
 Remote sources:
 
 ```text
@@ -239,6 +245,57 @@ Recommended step-size sensitivity check:
 | 0.005 | convergence check |
 
 Do not launch the full matrix blindly. First generate one representative size with inner/middle/outer vacancy, inspect all three in VESTA, then submit the tensile jobs.
+
+Important geometry definition:
+
+```text
+Nanocolumn and nanocrystal are both axially periodic infinite structures.
+Nanocolumn: circular xy cross section.
+Nanocrystal: polygonal xy cross section, e.g. hexagon or triangle.
+The z direction is periodic, not a finite physical length.
+For this pilot, the short periodic z repeat is constrained by min Lz = 12 Angstrom, safely larger than 10 Angstrom.
+```
+
+Prepared submit/pull scripts:
+
+```text
+submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch
+submit_nanocrystal_tensile_pilot_20260526.sbatch
+scripts/push_nanocrystal_tensile_pilot_to_iservice.sh
+scripts/pull_nanocrystal_tensile_pilot_results.sh
+```
+
+Recommended command sequence:
+
+```bash
+cd /mnt/c/Users/dawso/nano_tensile_TFvW && bash scripts/push_nanocrystal_tensile_pilot_to_iservice.sh
+```
+
+Then on iservice, generate and relax the three vacancy structures first:
+
+```bash
+cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch
+```
+
+After it finishes, pull the structures and check them in VESTA:
+
+```bash
+cd /mnt/c/Users/dawso/nano_tensile_TFvW && bash scripts/pull_nanocrystal_tensile_pilot_results.sh
+```
+
+VESTA-check these files for inner/middle/outer:
+
+```text
+cases\nanocrystal_hexagon_periodic_111_2.0nm_vac_inner_tfvw\inputs\vacancy_equilibrium.vasp
+cases\nanocrystal_hexagon_periodic_111_2.0nm_vac_middle_tfvw\inputs\vacancy_equilibrium.vasp
+cases\nanocrystal_hexagon_periodic_111_2.0nm_vac_outer_tfvw\inputs\vacancy_equilibrium.vasp
+```
+
+Only after those structures pass VESTA inspection, submit the tensile pilot:
+
+```bash
+cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_tensile_pilot_20260526.sbatch
+```
 
 ### First pilot command
 

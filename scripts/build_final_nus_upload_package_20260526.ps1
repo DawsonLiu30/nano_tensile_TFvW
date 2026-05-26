@@ -84,7 +84,7 @@ $copiedDftpySize = Copy-DirectoryIfExists -Source $dftpySizeSource -Destination 
 $copiedDftpyFmax = Copy-FileIfExists -Source (Join-Path $dftpyPullRoot "dftpy_conventional_actual_final_fmax_summary.csv") -Destination (Join-Path $dftpySizeDir "dftpy_conventional_actual_final_fmax_summary.csv")
 
 Copy-FileIfExists -Source (Join-Path $RepoRoot "FINAL_REPORT_20260526.md") -Destination (Join-Path $reportDir "FINAL_REPORT_20260526.md") | Out-Null
-Copy-FileIfExists -Source "$env:USERPROFILE\OneDrive\Documents\qe_bulk_vacancy_updated_20260525.pptx" -Destination (Join-Path $reportDir "latest_slide_deck_qe_bulk_vacancy_updated_20260525.pptx") | Out-Null
+Copy-FileIfExists -Source "$env:USERPROFILE\OneDrive\Documents\qe_bulk_vacancy_updated_20260525.pptx" -Destination (Join-Path $reportDir "FINAL_qe_bulk_vacancy_20260526.pptx") | Out-Null
 
 $scriptNames = @(
     "pull_qe_vacancy_conventional_results.sh",
@@ -94,12 +94,17 @@ $scriptNames = @(
     "run_dftpy_conventional_vacancy_one.py",
     "collect_dftpy_conventional_vacancy.py",
     "collect_dftpy_final_fmax.py",
-    "build_final_nus_upload_package_20260526.ps1"
+    "build_final_nus_upload_package_20260526.ps1",
+    "push_nanocrystal_tensile_pilot_to_iservice.sh",
+    "pull_nanocrystal_tensile_pilot_results.sh"
 )
 
 foreach ($name in $scriptNames) {
     Copy-FileIfExists -Source (Join-Path $RepoRoot "scripts\$name") -Destination (Join-Path $scriptsDir $name) | Out-Null
 }
+
+Copy-FileIfExists -Source (Join-Path $RepoRoot "submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch") -Destination (Join-Path $scriptsDir "submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch") | Out-Null
+Copy-FileIfExists -Source (Join-Path $RepoRoot "submit_nanocrystal_tensile_pilot_20260526.sbatch") -Destination (Join-Path $scriptsDir "submit_nanocrystal_tensile_pilot_20260526.sbatch") | Out-Null
 
 $readme = @"
 # FINAL_NUS_UPLOAD_20260526
@@ -108,7 +113,7 @@ This folder is the clean local package for professor/NUS upload.
 
 ## Folder map
 
-- 00_FINAL_REPORT: one final report and the latest slide deck copy.
+- 00_FINAL_REPORT: one final report and one final slide deck copy.
 - 01_QE_conventional_vacancy_2x2x4: complete QE conventional input/output/log/structure data pulled from iservice.
 - 02_DFTpy_conventional_same_cell_2x2x4: complete DFTpy same-cell input/output/log/structure data.
 - 03_DFTpy_conventional_size_concentration: complete DFTpy size/concentration data.
@@ -125,6 +130,12 @@ cd /mnt/c/Users/dawso/nano_tensile_TFvW && bash scripts/pull_dftpy_conventional_
 Then rebuild this package in PowerShell:
 
 powershell -ExecutionPolicy Bypass -File C:\Users\dawso\nano_tensile_TFvW\scripts\build_final_nus_upload_package_20260526.ps1
+
+## Final PPT
+
+Use this deck as the current final PPT copy:
+
+00_FINAL_REPORT\FINAL_qe_bulk_vacancy_20260526.pptx
 
 ## Current copy status
 
