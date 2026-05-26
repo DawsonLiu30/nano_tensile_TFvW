@@ -240,6 +240,27 @@ Recommended step-size sensitivity check:
 
 Do not launch the full matrix blindly. First generate one representative size with inner/middle/outer vacancy, inspect all three in VESTA, then submit the tensile jobs.
 
+### First pilot command
+
+Run only one representative nanocrystal first. This checks vacancy concentration bookkeeping, inner/middle/outer vacancy selection, structure generation, and tensile output before spending the full budget.
+
+```bash
+cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python /gpfs-work/dawson666/dftpy_project/relax/dftpy45/scripts/run_vacancy_periodic_series.py --diameters 2.0 --orientation 111 --cross-section-shape hexagon --vacancy-radial-positions inner,middle,outer --spacing 0.20 --kedf TFVW --fmax 0.002 --step 0.01 --cycles 50 --prep-relax-steps 800 --tensile-relax-steps 800
+```
+
+If the three generated initial structures look correct in VESTA, expand to:
+
+```bash
+cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python /gpfs-work/dawson666/dftpy_project/relax/dftpy45/scripts/run_vacancy_periodic_series.py --diameters 1.5,2.0,2.5,3.0 --orientation 111 --cross-section-shape hexagon --vacancy-radial-positions inner,middle,outer --spacing 0.20 --kedf TFVW --fmax 0.002 --step 0.01 --cycles 50 --prep-relax-steps 1000 --tensile-relax-steps 1000
+```
+
+Step-size sensitivity should be performed on only one representative case first:
+
+```bash
+cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python /gpfs-work/dawson666/dftpy_project/relax/dftpy45/scripts/run_vacancy_periodic_series.py --diameters 2.0 --orientation 111 --cross-section-shape hexagon --vacancy-radial-positions middle --spacing 0.20 --kedf TFVW --fmax 0.002 --step 0.02 --cycles 25 --prep-relax-steps 800 --tensile-relax-steps 800
+cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python /gpfs-work/dawson666/dftpy_project/relax/dftpy45/scripts/run_vacancy_periodic_series.py --diameters 2.0 --orientation 111 --cross-section-shape hexagon --vacancy-radial-positions middle --spacing 0.20 --kedf TFVW --fmax 0.002 --step 0.005 --cycles 100 --prep-relax-steps 800 --tensile-relax-steps 800
+```
+
 ## 9. Current Pending Items
 
 1. Pull or rerun QE 6x6x6 conventional vacancy and collect the final result.
