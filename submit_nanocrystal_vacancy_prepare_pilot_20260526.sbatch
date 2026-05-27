@@ -44,6 +44,12 @@ echo "[INFO] Vacancy pos : $POS"
 echo "[INFO] Boundary    : periodic infinite z"
 echo "[INFO] min Lz      : 12.0 A (> 10 A)"
 
+if ! "$PYTHON" scripts/prepare_vacancy_periodic_wire.py --help | grep -q -- "--cross-section-shape"; then
+  echo "[ERROR] Remote scripts/prepare_vacancy_periodic_wire.py is stale."
+  echo "[ERROR] Re-run: bash scripts/push_nanocrystal_tensile_pilot_to_iservice.sh"
+  exit 2
+fi
+
 "$PYTHON" scripts/prepare_vacancy_periodic_wire.py \
   --case "$CASE" \
   --diameter-nm "$DIAMETER_NM" \
@@ -63,4 +69,3 @@ echo "[INFO] VESTA-check these files before tensile:"
 echo "       $ROOT/cases/$CASE/inputs/pristine_short_equilibrium.vasp"
 echo "       $ROOT/cases/$CASE/inputs/vacancy_short_start.vasp"
 echo "       $ROOT/cases/$CASE/inputs/vacancy_equilibrium.vasp"
-

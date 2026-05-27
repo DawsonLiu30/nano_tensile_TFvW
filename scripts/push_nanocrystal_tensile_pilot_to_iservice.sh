@@ -20,6 +20,9 @@ rsync -avhP \
   "$LOCAL_ROOT/scripts/prepare_vacancy_periodic_wire.py" \
   "$LOCAL_ROOT/scripts/run_periodic_tensile.py" \
   "$LOCAL_ROOT/scripts/run_vacancy_periodic_series.py" \
+  "$REMOTE_ROOT/scripts/"
+
+rsync -avhP \
   "$LOCAL_ROOT/submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch" \
   "$LOCAL_ROOT/submit_nanocrystal_tensile_pilot_20260526.sbatch" \
   "$REMOTE_ROOT/"
@@ -31,4 +34,3 @@ echo "============================================================"
 echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch"
 echo "# After pulling/checking the three VESTA structures:"
 echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_tensile_pilot_20260526.sbatch"
-
