@@ -167,14 +167,15 @@ C:\Users\dawso\Desktop\FINAL_NUS_UPLOAD_20260526.zip
 
 ## Key reportable numbers
 
-- QE best completed dense-k reference: conventional 2x2x4, 5x5x5, 600-800 eV, E_f^vac about 0.6011-0.6012 eV.
+- QE dense-k reference range: conventional 2x2x4, 4x4x4 to 6x6x6, E_f^vac about 0.5438-0.6778 eV.
+- QE 6x6x6 latest value to include after pulling updated remote output: E_f^vac = 0.677782 eV.
 - DFTpy same-cell spacing convergence: conventional 2x2x4, TFvW, spacing 0.30-0.16 Angstrom, E_f^vac about 2.901 eV.
 - DFTpy same-cell actual fmax: all completed spacing cases satisfy fmax < 0.002 eV/Angstrom.
 - DFTpy concentration scan accepted range: 32 to 500 pristine atoms, vacancy concentration 3.125% to 0.200%, E_f^vac decreases from 2.937948 to 2.883649 eV.
 
 ## Not final / do not overclaim
 
-- QE 6x6x6 is incomplete in the local pull and should not be reported as completed.
+- If the local QE summary still marks 6x6x6 incomplete, rerun scripts/pull_qe_vacancy_conventional_results.sh before NUS upload.
 - DFTpy conv_06x06x06 is not accepted because it did not meet fmax < 0.002 eV/Angstrom.
 - QE fmax < 0.002 eV/Angstrom should not be claimed until explicitly verified from QE outputs.
 "@

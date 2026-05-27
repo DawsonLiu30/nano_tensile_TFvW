@@ -13,7 +13,8 @@ Current best completed QE vacancy reference:
 - Structure: conventional fcc 2x2x4 supercell
 - Pristine / vacancy atoms: 64 -> 63
 - Vacancy concentration: 1/64 = 1.5625%
-- Best completed dense-k value: 5x5x5, 600-800 eV = about 0.6011-0.6012 eV
+- Dense-k behavior: 4x4x4 to 6x6x6 gives about 0.5438-0.6778 eV
+- Best interpretation: cutoff convergence is stable, but residual metallic k-point oscillation remains
 
 Current DFTpy conventional same-cell result:
 
@@ -28,6 +29,8 @@ Current DFTpy conventional same-cell result:
 Main interpretation:
 
 The old DFTpy result was correctly invalidated because the old cell geometry was not acceptable. However, after rebuilding the benchmark with VESTA-checked conventional fcc cells, DFTpy/TFvW still gives a high vacancy formation energy near 2.90 eV. Therefore, the high DFTpy vacancy energy is not solely caused by the old primitive/slanted-cell artifact.
+
+Using the latest completed QE dense-k points, the QE vacancy reference should be reported as a literature-consistent dense-k range rather than a single fully locked value. The newly completed 6x6x6 point gives 0.677782 eV, while 5x5x5 gives 0.601085 eV. This residual oscillation is consistent with metallic defect k-point sensitivity.
 
 ## 2. Corrected Structure Definition
 
@@ -85,10 +88,10 @@ Interpretation: the dense-k cutoff effect from 400 to 800 eV is only about 0.000
 | 2x2x2 | 1.060956 | completed, under-sampled |
 | 3x3x3 | 0.724412 | completed |
 | 4x4x4 | 0.543750 | completed |
-| 5x5x5 | 0.601085 | best completed dense-k reference |
-| 6x6x6 | pending / incomplete in local pull | needs final collection |
+| 5x5x5 | 0.601085 | dense-k reference point |
+| 6x6x6 | 0.677782 | completed; residual metallic oscillation |
 
-Important wording: the 5x5x5 value is the best completed dense-k reference so far, not a fully locked final value until the 6x6x6 collection and QE force verification are complete.
+Important wording: the dense-k QE values are literature-consistent but still oscillatory. The 5x5x5 and 6x6x6 points differ by about 0.076697 eV, so the QE vacancy energy should not be presented as one fully locked final number. It is safer to report a dense-k reference range and explicitly note residual metallic k-point sensitivity.
 
 ## 4. DFTpy Conventional Same-Cell Spacing Scan
 
@@ -123,6 +126,8 @@ DFTpy size scan setup:
 - KEDF: TFvW
 - Relaxation target: fmax < 0.002 eV/Angstrom
 
+The size/concentration scan uses conventional cubic fcc supercells and is intended to isolate vacancy-concentration dependence. This is distinct from the conventional fcc 2x2x4 same-cell calculation, which is the direct comparison to the QE benchmark.
+
 | cell | pristine atoms | vacancy atoms | vacancy concentration (%) | E_f^vac (eV) | actual final fmax (eV/Angstrom) | status |
 |---|---:|---:|---:|---:|---:|---|
 | conv_02x02x02 | 32 | 31 | 3.125000 | 2.937948 | 0.001349 | accepted |
@@ -148,8 +153,10 @@ Current comparison:
 |---|---|---:|
 | Gillan 1989 | LDA pseudopotential supercell | about 0.56 |
 | Experiment reference | literature reference | about 0.66 |
-| QE, this work | conventional 2x2x4, 5x5x5, 600-800 eV | about 0.601 |
+| QE, this work | conventional 2x2x4, dense-k 4x4x4 to 6x6x6 | about 0.544-0.678 |
 | DFTpy, this work | conventional 2x2x4, TFvW, spacing 0.20 Angstrom | about 2.901 |
+
+Using QE 5x5x5, the DFTpy-QE difference is about 2.299764 eV. Using the newly completed QE 6x6x6 point, the difference is about 2.223067 eV. Therefore, the large DFTpy-QE discrepancy remains robust against the remaining QE k-point oscillation.
 
 ## 7. Reproducibility and Data Locations
 
@@ -205,6 +212,8 @@ powershell -ExecutionPolicy Bypass -File C:\Users\dawso\nano_tensile_TFvW\script
 ## 8. Next Calculations: Nanocrystal Tensile with Vacancy Concentration and Vacancy Position
 
 Yes, the next main calculation should move to nanocrystal/nanocolumn tensile tests, but only using VESTA-checked periodic structures.
+
+In this report, "nanocrystal" refers to a 1D periodic nanocrystal-like wire with a polygonal xy cross section, not a finite isolated cluster.
 
 Required new metadata for every vacancy tensile case:
 
@@ -320,8 +329,8 @@ cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python /gpfs-work/dawson6
 
 ## 9. Current Pending Items
 
-1. Pull or rerun QE 6x6x6 conventional vacancy and collect the final result.
+1. Confirm the latest QE 6x6x6 input/output is included in the local NUS upload package; the report value is 0.677782 eV.
 2. Verify QE final force criteria consistently; do not claim QE fmax < 0.002 eV/Angstrom unless confirmed from output.
-3. Pull the full DFTpy conventional input/output/log structure to local package if not already pulled.
+3. Keep DFTpy same-cell and DFTpy cubic size/concentration scans separate in wording and tables.
 4. Update the final PPT deck to match this report after the data package is finalized.
 5. Start nanocrystal tensile pilot only after generated inner/middle/outer structures pass visual inspection.
