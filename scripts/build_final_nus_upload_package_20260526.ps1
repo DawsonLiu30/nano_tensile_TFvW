@@ -84,6 +84,7 @@ $copiedDftpySize = Copy-DirectoryIfExists -Source $dftpySizeSource -Destination 
 $copiedDftpyFmax = Copy-FileIfExists -Source (Join-Path $dftpyPullRoot "dftpy_conventional_actual_final_fmax_summary.csv") -Destination (Join-Path $dftpySizeDir "dftpy_conventional_actual_final_fmax_summary.csv")
 
 Copy-FileIfExists -Source (Join-Path $RepoRoot "FINAL_REPORT_20260526.md") -Destination (Join-Path $reportDir "FINAL_REPORT_20260526.md") | Out-Null
+Copy-FileIfExists -Source (Join-Path $RepoRoot "FINAL_PPT_CHINESE_SPEAKER_NOTES_20260527.md") -Destination (Join-Path $reportDir "FINAL_PPT_CHINESE_SPEAKER_NOTES_20260527.md") | Out-Null
 Copy-FileIfExists -Source "$env:USERPROFILE\OneDrive\Documents\qe_bulk_vacancy_updated_20260525.pptx" -Destination (Join-Path $reportDir "FINAL_qe_bulk_vacancy_20260526.pptx") | Out-Null
 
 $scriptNames = @(
