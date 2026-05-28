@@ -105,6 +105,7 @@ foreach ($name in $scriptNames) {
 }
 
 Copy-FileIfExists -Source (Join-Path $RepoRoot "submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch") -Destination (Join-Path $scriptsDir "submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch") | Out-Null
+Copy-FileIfExists -Source (Join-Path $RepoRoot "submit_nanocrystal_vacancy_prepare_repair_20260528.sbatch") -Destination (Join-Path $scriptsDir "submit_nanocrystal_vacancy_prepare_repair_20260528.sbatch") | Out-Null
 Copy-FileIfExists -Source (Join-Path $RepoRoot "submit_nanocrystal_tensile_pilot_20260526.sbatch") -Destination (Join-Path $scriptsDir "submit_nanocrystal_tensile_pilot_20260526.sbatch") | Out-Null
 
 $readme = @"

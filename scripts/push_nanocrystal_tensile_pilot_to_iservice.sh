@@ -24,6 +24,7 @@ rsync -avhP \
 
 rsync -avhP \
   "$LOCAL_ROOT/submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch" \
+  "$LOCAL_ROOT/submit_nanocrystal_vacancy_prepare_repair_20260528.sbatch" \
   "$LOCAL_ROOT/submit_nanocrystal_tensile_pilot_20260526.sbatch" \
   "$REMOTE_ROOT/"
 
@@ -32,5 +33,7 @@ echo "============================================================"
 echo "Next remote commands"
 echo "============================================================"
 echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_vacancy_prepare_pilot_20260526.sbatch"
+echo "# If middle/outer fmax did not pass:"
+echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_vacancy_prepare_repair_20260528.sbatch"
 echo "# After pulling/checking the three VESTA structures:"
 echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_nanocrystal_tensile_pilot_20260526.sbatch"

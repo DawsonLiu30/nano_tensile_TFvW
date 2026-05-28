@@ -52,6 +52,36 @@ if [ ! -f "$INIT" ]; then
   exit 1
 fi
 
+"$PYTHON" - "$WORKDIR/inputs/vacancy_short_relax.log" <<'PY'
+from pathlib import Path
+import sys
+
+log = Path(sys.argv[1])
+if not log.exists():
+    raise SystemExit(f"[ERROR] Missing relaxation log: {log}")
+
+fmax = None
+step = None
+for line in log.read_text(errors="ignore").splitlines():
+    if line.strip().startswith("BFGS:"):
+        parts = line.split()
+        try:
+            step = int(parts[1])
+            fmax = float(parts[-1])
+        except Exception:
+            pass
+
+if fmax is None:
+    raise SystemExit(f"[ERROR] Could not parse final fmax from {log}")
+
+print(f"[INFO] Parsed final vacancy fmax = {fmax:.6f} eV/A at BFGS step {step}")
+if fmax >= 0.002:
+    raise SystemExit(
+        "[ERROR] Refusing tensile run because vacancy relaxation did not meet "
+        f"fmax < 0.002 eV/A. Got {fmax:.6f} eV/A."
+    )
+PY
+
 "$PYTHON" scripts/run_periodic_tensile.py \
   --case "$RUN_NAME" \
   --workdir "$WORKDIR" \
@@ -65,4 +95,3 @@ fi
   --plot-summary
 
 echo "[INFO] End         : $(date)"
-
