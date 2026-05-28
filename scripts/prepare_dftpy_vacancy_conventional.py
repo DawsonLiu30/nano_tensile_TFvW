@@ -164,6 +164,18 @@ def _build_conventional_pair(*, a0_A: float, repeat: tuple[int, int, int]):
     diff -= np.round(diff)
     remove_idx = int(np.argmin(np.sum(diff * diff, axis=1)))
 
+    # For odd conventional repeats such as 3x3x3, no fcc atom sits exactly at
+    # (0.5, 0.5, 0.5) with the default origin. Shift the origin so VESTA shows
+    # the selected vacancy site at the visual cell center before removal.
+    shift_scaled = target - scaled[remove_idx]
+    shift_cart = shift_scaled @ pristine.get_cell().array
+    pristine.translate(shift_cart)
+    pristine.wrap()
+    scaled = pristine.get_scaled_positions(wrap=True)
+    diff = scaled - target[None, :]
+    diff -= np.round(diff)
+    remove_idx = int(np.argmin(np.sum(diff * diff, axis=1)))
+
     vacancy = pristine.copy()
     removed_scaled = scaled[remove_idx].copy()
     removed_cart = pristine.positions[remove_idx].copy()
@@ -174,6 +186,9 @@ def _build_conventional_pair(*, a0_A: float, repeat: tuple[int, int, int]):
         "removed_atom_index": int(remove_idx),
         "removed_atom_scaled": [float(v) for v in removed_scaled.tolist()],
         "removed_atom_cart_A": [float(v) for v in removed_cart.tolist()],
+        "origin_shift_scaled": [float(v) for v in shift_scaled.tolist()],
+        "origin_shift_cart_A": [float(v) for v in shift_cart.tolist()],
+        "vesta_note": "The conventional-cell origin is shifted so the removed atom is at the visual cell center before vacancy creation.",
     }
 
 

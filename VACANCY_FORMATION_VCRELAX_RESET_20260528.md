@@ -21,6 +21,8 @@ Use a VESTA-friendly conventional fcc Al supercell:
 - vacancy: 107 atoms
 - vacancy concentration: `1/108 = 0.925926%`
 - central Al atom removed
+- the conventional-cell origin is shifted before removal so the selected
+  vacancy site is exactly at the visual cell center in VESTA
 - both pristine and vacancy are fully relaxed
 
 For QE this means literal:

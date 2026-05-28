@@ -59,6 +59,17 @@ def cell_summary(atoms) -> dict[str, object]:
     }
 
 
+def center_candidate_site(atoms, atom_index: int):
+    centered = atoms.copy()
+    scaled = centered.get_scaled_positions(wrap=True)
+    target = np.array([0.5, 0.5, 0.5])
+    shift_scaled = target - scaled[int(atom_index)]
+    shift_cart = shift_scaled @ centered.get_cell().array
+    centered.translate(shift_cart)
+    centered.wrap()
+    return centered, shift_scaled, shift_cart
+
+
 def choose_center_vacancy(atoms) -> tuple[int, dict[str, object]]:
     scaled = atoms.get_scaled_positions(wrap=True)
     target = np.array([0.5, 0.5, 0.5])
@@ -308,6 +319,8 @@ def main() -> None:
 
     repeat = parse_repeat(args.repeat)
     pristine = bulk("Al", "fcc", a=float(args.a0), cubic=True).repeat(repeat)
+    vacancy_idx, pre_shift_vacancy_info = choose_center_vacancy(pristine)
+    pristine, shift_scaled, shift_cart = center_candidate_site(pristine, vacancy_idx)
     vacancy_idx, vacancy_info = choose_center_vacancy(pristine)
     vacancy = pristine.copy()
     del vacancy[vacancy_idx]
@@ -397,6 +410,10 @@ def main() -> None:
         "pristine_cell_start": cell_summary(pristine),
         "vacancy_cell_start": cell_summary(vacancy),
         "vacancy_site": vacancy_info,
+        "pre_shift_vacancy_site": pre_shift_vacancy_info,
+        "origin_shift_scaled": [float(x) for x in shift_scaled],
+        "origin_shift_cart_A": [float(x) for x in shift_cart],
+        "vesta_note": "The conventional 3x3x3 origin is shifted so the selected vacancy site is exactly at the visual cell center before removal.",
         "force_conv_eV_A": float(args.force_conv),
         "press_conv_kbar": float(args.press_conv_kbar),
         "ecut_scan_eV": ecut_series,
