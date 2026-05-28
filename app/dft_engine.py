@@ -4,6 +4,7 @@ from pathlib import Path
 import numpy as np
 
 from ase.constraints import FixAtoms
+from ase.filters import FrechetCellFilter
 from ase.optimize import BFGS
 
 from dftpy.config import DefaultOption, OptionFormat
@@ -272,6 +273,46 @@ def relax_atoms(
     if debug_fixed and fixed_idx.size > 0:
         z2 = atoms.get_positions()[:, 2]
         print(f"[relax_atoms] after  run fixed_z(min/max)={z2[fixed_idx].min():.6f}/{z2[fixed_idx].max():.6f}")
+
+    E = float(atoms.get_potential_energy())
+    S = atoms.get_stress(voigt=False) * 160.21766208
+
+    _write_dftpy_out(dftpy_outfile, energy_ev=E, stress_gpa=S)
+
+    return atoms, E, S
+
+
+def relax_atoms_and_cell(
+    atoms,
+    pp_file: str | Path,
+    spacing: float,
+    kedf: str = "TFVW",
+    fmax: float = 0.002,
+    steps: int = 500,
+    logfile: str | None = None,
+    trajfile: str | None = None,
+    dftpy_outfile: str | None = None,
+    scalar_pressure_gpa: float = 0.0,
+):
+    """Relax atomic positions and cell, analogous to a QE vc-relax workflow."""
+
+    atoms.set_constraint()
+
+    conf = _build_dftpy_config(pp_file=pp_file, spacing=spacing, atoms=atoms, kedf=kedf)
+    calc = DFTpyCalculator(config=conf)
+    atoms.calc = calc
+
+    if logfile:
+        Path(logfile).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
+    if trajfile:
+        Path(trajfile).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
+    if dftpy_outfile:
+        Path(dftpy_outfile).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
+
+    scalar_pressure_ev_a3 = float(scalar_pressure_gpa) / 160.21766208
+    cell_filter = FrechetCellFilter(atoms, scalar_pressure=scalar_pressure_ev_a3)
+    dyn = BFGS(cell_filter, trajectory=trajfile, logfile=logfile)
+    dyn.run(fmax=float(fmax), steps=int(steps))
 
     E = float(atoms.get_potential_energy())
     S = atoms.get_stress(voigt=False) * 160.21766208
