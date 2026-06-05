@@ -87,6 +87,34 @@ PARTITION=ct56 TIME_LIMIT=4-00:00:00 MAX_PARALLEL=4 \
 bash scripts/push_dftpy_tfvw_weight_scan_to_iservice_20260605.sh
 ```
 
+Important shell rule: do not put blank lines between continued environment
+assignments. If a command is written with blank lines after `\`, Bash can lose
+the custom variables and the script will silently use defaults.
+
+Correct one-block fine scan:
+
+```bash
+cd /mnt/c/Users/dawso/nano_tensile_TFvW
+
+SERIES_NAME=dftpy_vacancy_tfvw_weight_fine_y0115_020_conv3x3x3_lda_20260605 \
+Y_LIST="0.115,0.120,0.125,0.130,0.135,0.140,0.145,0.150,0.155,0.160,0.170,0.180,0.200" \
+RELAX_STEPS=5000 \
+PARTITION=ctest \
+TIME_LIMIT=02:00:00 \
+MAX_PARALLEL=2 \
+bash scripts/push_dftpy_tfvw_weight_scan_to_iservice_20260605.sh
+```
+
+After submission, the printed header must show the custom values. If it prints:
+
+```text
+[SERIES] dftpy_vacancy_tfvw_weight_conv3x3x3_lda_20260605
+[YLIST ] 0.0,0.1,...,1.0
+[NSTEPS] 1500
+```
+
+then the custom fine scan was not submitted; the script used its defaults.
+
 ## Current Running Note
 
 At the time this note was written, the fine DFTpy TFvW weight scan was submitted on `ct56` as:

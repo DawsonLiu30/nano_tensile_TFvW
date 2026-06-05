@@ -18,6 +18,28 @@ Pull PROFESS periodic vacancy relax results
 [LOCAL ] ${LOCAL_SERIES}
 EOF
 
+echo
+echo "[CHECK] Remote directory exists"
+if ! ssh "${REMOTE_HOST}" "test -d '${OUTDIR}'"; then
+  cat <<EOF
+
+[ERROR] Remote OUTDIR does not exist:
+  ${OUTDIR}
+
+This usually means the PROFESS job was prepared under a different OUTDIR, or the
+push step was not run for this exact default series.
+
+Find candidate PROFESS run folders on iservice with:
+  ssh ${REMOTE_HOST} "find /gpfs-work/dawson666 -maxdepth 4 -type d -iname '*profess*vacancy*' 2>/dev/null | sort"
+
+Then rerun pull with the correct path, for example:
+  OUTDIR='/gpfs-work/dawson666/profess_runs/<actual_series>' \\
+  bash scripts/pull_profess_periodic_vacancy_relax_results_20260605.sh
+
+EOF
+  exit 2
+fi
+
 mkdir -p "${LOCAL_SERIES}"
 rsync -avhP "${REMOTE_HOST}:${OUTDIR}/" "${LOCAL_SERIES}/"
 
