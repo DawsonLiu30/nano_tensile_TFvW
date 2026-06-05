@@ -120,7 +120,7 @@ def main() -> int:
     args = ap.parse_args()
 
     root = args.rootdir.resolve()
-    manifests = sorted(root.glob("*/*/manifest.json"))
+    manifests = sorted(root.glob("**/manifest.json"))
     rows: list[dict[str, object]] = []
     for manifest_path in manifests:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))

@@ -51,7 +51,22 @@ OK: all dynamic libraries found
 bin/PROFESS size: 1.4M
 ```
 
-This means future PROFESS production can be moved from local WSL to NCHC Slurm using the compiled iservice binary.
+The binary also passed the official PROFESS `optDen` and `optIon` Al4 smoke tests:
+
+```text
+optDen final total energy: -8.517049280096E+00 Ha
+optIon final total energy: -8.515254302646E+00 Ha
+optIon final maxForce    :  2.9069E-05 Ha/bohr
+```
+
+This means future PROFESS production can be moved from local WSL to NCHC Slurm
+using the compiled iservice binary.
+
+Detailed build/smoke-test record:
+
+```text
+PROFESS_ISERVICE_RUNBOOK_20260605.md
+```
 
 ## DFTpy TFvW Weight Scan Submission
 
@@ -135,3 +150,15 @@ C:\Users\dawso\Desktop\PROFESS_PERIODIC_VACANCY_RELAX_20260605\<series>\
   profess_periodic_vacancy_relax_completion.csv
   profess_periodic_vacancy_relax_Ef.png
 ```
+
+The production layout now separates shared structures from calculator outputs:
+
+```text
+<series>/
+  structures/<case>/          # canonical VASP structures
+  profess/<KEDF>/<case>/      # PROFESS inputs/outputs
+  dftpy/                      # reserved for DFTpy from the same structures
+```
+
+The important rule is: DFTpy and PROFESS must be generated from the same
+`structures/<case>/pristine_start.vasp` and `structures/<case>/vacancy_start.vasp`.

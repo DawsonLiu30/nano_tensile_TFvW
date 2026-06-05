@@ -330,6 +330,7 @@ def main() -> int:
     positions = [normalize_position(p) for p in parse_csv_list(args.positions)]
     kedfs = parse_csv_list(args.kedfs)
 
+    structure_rows: list[dict[str, object]] = []
     summary_rows: list[dict[str, object]] = []
     settings_rows: list[dict[str, object]] = []
 
@@ -355,13 +356,47 @@ def main() -> int:
                     f"{family(shape)}_{shape}_periodic_{args.orientation}_"
                     f"{radius_tag(diameter_nm)}nm_vac_{vacancy_position}"
                 )
+
+                # Keep one canonical structure copy so DFTpy and PROFESS can
+                # later be generated from exactly the same VASP files.
+                structure_rel = Path("structures") / base_name
+                structure_dir = outdir / structure_rel
+                structure_dir.mkdir(parents=True, exist_ok=True)
+                pristine_vasp = structure_dir / "pristine_start.vasp"
+                vacancy_vasp = structure_dir / "vacancy_start.vasp"
+                write(str(pristine_vasp), pristine, vasp5=True, direct=True)
+                write(str(vacancy_vasp), vacancy, vasp5=True, direct=True)
+                structure_manifest = {
+                    "case": base_name,
+                    "family": family(shape),
+                    "shape": shape,
+                    "orientation": args.orientation,
+                    "diameter_nm": diameter_nm,
+                    "a0_A": args.a0,
+                    "vacuum_A": args.vacuum,
+                    "min_lz_A": args.min_lz,
+                    "repeat_z": repeat_z,
+                    "N_pristine": len(pristine),
+                    "N_vacancy": len(vacancy),
+                    "vacancy_concentration_percent": 100.0 / len(pristine),
+                    "structure_rel": str(structure_rel).replace("\\", "/"),
+                    "pristine_volume_A3": float(pristine.get_volume()),
+                    "vacancy_volume_A3": float(vacancy.get_volume()),
+                    **site,
+                }
+                (structure_dir / "structure_metadata.json").write_text(
+                    json.dumps(structure_manifest, indent=2, sort_keys=True),
+                    encoding="utf-8",
+                )
+                structure_rows.append(structure_manifest)
+
                 for kedf in kedfs:
-                    case_rel = Path(kedf) / base_name
+                    case_rel = Path("profess") / kedf / base_name
                     case_dir = outdir / case_rel
                     case_dir.mkdir(parents=True, exist_ok=True)
                     (case_dir / pseudo_name).write_bytes(pseudo_dst.read_bytes())
-                    write(str(case_dir / "pristine_start.vasp"), pristine, vasp5=True, direct=True)
-                    write(str(case_dir / "vacancy_start.vasp"), vacancy, vasp5=True, direct=True)
+                    (case_dir / "pristine_start.vasp").write_bytes(pristine_vasp.read_bytes())
+                    (case_dir / "vacancy_start.vasp").write_bytes(vacancy_vasp.read_bytes())
                     pristine_meta = vasp_to_profess_ion(
                         case_dir / "pristine_start.vasp",
                         case_dir / "pristine_relax.ion",
@@ -408,6 +443,7 @@ def main() -> int:
                         "ion_method": args.ion_method,
                         "ion_tolf_eV_A": args.ion_tolf_ev_a,
                         "pseudo": pseudo_name,
+                        "structure_rel": str(structure_rel).replace("\\", "/"),
                         **site,
                         "pristine_volume_A3": pristine_meta["volume_A3"],
                         "vacancy_volume_A3": vacancy_meta["volume_A3"],
@@ -419,7 +455,40 @@ def main() -> int:
                     summary_rows.append({**manifest, "case_rel": str(case_rel).replace("\\", "/")})
                     settings_rows.append({"case_rel": str(case_rel).replace("\\", "/")})
 
+    write_csv(outdir / "shared_structure_manifest.csv", structure_rows)
+    write_csv(outdir / "profess_case_manifest.csv", summary_rows)
+    # Backward-compatible name for scripts/notebooks that already look for it.
     write_csv(outdir / "structure_manifest.csv", summary_rows)
+
+    (outdir / "dftpy").mkdir(exist_ok=True)
+    (outdir / "dftpy" / "README_SAME_STRUCTURES.txt").write_text(
+        "DFTpy cases should be generated from ../structures/<case>/pristine_start.vasp "
+        "and ../structures/<case>/vacancy_start.vasp so DFTpy and PROFESS use the "
+        "same structures.\n",
+        encoding="utf-8",
+    )
+    (outdir / "README_LAYOUT.txt").write_text(
+        "\n".join(
+            [
+                "Periodic vacancy benchmark package layout",
+                "",
+                "structures/<case>/",
+                "  Canonical VASP structures shared by all calculators.",
+                "",
+                "profess/<KEDF>/<case>/",
+                "  PROFESS input/output generated from structures/<case>/.",
+                "",
+                "dftpy/",
+                "  Reserved for DFTpy input/output generated from the same structures.",
+                "",
+                "This separation avoids mixing calculator outputs while preserving a single",
+                "source of truth for geometry.",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
     settings_file = outdir / "settings.tsv"
     with settings_file.open("w", encoding="utf-8") as fh:
         for row in settings_rows:
