@@ -72,6 +72,10 @@ def _spacing_label(spacing_A: float) -> str:
     return f"spacing_{spacing_A:.2f}A".replace(".", "p")
 
 
+def _weight_label(kedf_x: float, kedf_y: float) -> str:
+    return f"tfvw_x{float(kedf_x):.2f}_y{float(kedf_y):.2f}".replace(".", "p")
+
+
 def _conv_label(n: int) -> str:
     return f"conv_{int(n):02d}x{int(n):02d}x{int(n):02d}"
 
@@ -111,7 +115,17 @@ def _geometry_summary(atoms) -> dict[str, float | int | str]:
     return summary
 
 
-def _write_config_ini(path: Path, *, pp_filename: str, spacing_A: float, kedf: str, cellfile: str) -> None:
+def _write_config_ini(
+    path: Path,
+    *,
+    pp_filename: str,
+    spacing_A: float,
+    kedf: str,
+    xc: str,
+    kedf_x: float,
+    kedf_y: float,
+    cellfile: str,
+) -> None:
     text = f"""[JOB]
 task = Optdensity
 calctype = Energy Force Stress
@@ -138,12 +152,12 @@ spacing = {spacing_A:.8f}
 densityoutput = den.xsf
 
 [EXC]
-xc = PBE
+xc = {str(xc).strip().upper()}
 
 [KEDF]
 kedf = {kedf}
-x = 1.0
-y = 1.0
+x = {float(kedf_x):.8f}
+y = {float(kedf_y):.8f}
 
 [OPT]
 method = TN
@@ -219,7 +233,18 @@ def parse_args() -> argparse.Namespace:
         help="Optional conventional repeats for size scan, e.g. 2,3,4,5. Leave empty to skip.",
     )
     ap.add_argument("--pp", default=str(ROOT / "al.gga.recpot"))
+    ap.add_argument("--xc", default="PBE", help="DFTpy exchange-correlation label, e.g. PBE or LDA.")
     ap.add_argument("--kedf", default="TFVW")
+    ap.add_argument("--kedf-x", type=float, default=1.0, help="DFTpy [KEDF] x parameter, the TF ratio.")
+    ap.add_argument("--kedf-y", type=float, default=1.0, help="DFTpy [KEDF] y parameter, the vW ratio.")
+    ap.add_argument(
+        "--tfvw-y-list",
+        default="",
+        help=(
+            "Optional comma-separated vW-ratio scan. If set, writes weight_scan/ "
+            "settings using fixed spacing-repeat and the first spacing-list value."
+        ),
+    )
     ap.add_argument("--fmax", type=float, default=0.002)
     ap.add_argument("--relax-steps", type=int, default=500)
     return ap.parse_args()
@@ -245,6 +270,9 @@ def _write_case(
         pp_filename=pp_path.name,
         spacing_A=float(spacing_A),
         kedf=str(kedf),
+        xc=str(extra_manifest.get("xc", "PBE")),
+        kedf_x=float(extra_manifest.get("kedf_x", 1.0)),
+        kedf_y=float(extra_manifest.get("kedf_y", 1.0)),
         cellfile="pristine_raw.vasp",
     )
     _write_config_ini(
@@ -252,6 +280,9 @@ def _write_case(
         pp_filename=pp_path.name,
         spacing_A=float(spacing_A),
         kedf=str(kedf),
+        xc=str(extra_manifest.get("xc", "PBE")),
+        kedf_x=float(extra_manifest.get("kedf_x", 1.0)),
+        kedf_y=float(extra_manifest.get("kedf_y", 1.0)),
         cellfile="vacancy_start.vasp",
     )
     manifest = {
@@ -262,7 +293,10 @@ def _write_case(
         "spacing_A": float(spacing_A),
         "ecut_analogue_eV": spacing_angstrom_to_ecut_ev(float(spacing_A)),
         "pp_file": str(pp_path),
+        "xc": str(extra_manifest.get("xc", "PBE")).strip().upper(),
         "kedf": str(kedf),
+        "kedf_x": float(extra_manifest.get("kedf_x", 1.0)),
+        "kedf_y": float(extra_manifest.get("kedf_y", 1.0)),
         "fmax_eV_per_A": float(fmax),
         "relax_steps": int(relax_steps),
         "formation_energy_formula": "E_f^vac = E_vac^(N-1) - ((N-1)/N) E_pristine^(N)",
@@ -302,10 +336,42 @@ def main() -> None:
                 "scan_type": "spacing",
                 "conventional_repeat": list(spacing_repeat),
                 "conventional_repeat_label": _repeat_label(spacing_repeat),
+                "xc": str(args.xc).strip().upper(),
+                "kedf_x": float(args.kedf_x),
+                "kedf_y": float(args.kedf_y),
                 **removed,
             },
         )
     _write_text(outdir / "settings_spacing_scan.txt", "\n".join(spacing_settings) + "\n")
+
+    weight_settings = []
+    weight_values = _parse_float_list(args.tfvw_y_list) if str(args.tfvw_y_list).strip() else []
+    if weight_values:
+        weight_spacing = float(spacing_values[0])
+        for kedf_y in weight_values:
+            label = _weight_label(float(args.kedf_x), float(kedf_y))
+            weight_settings.append(label)
+            _write_case(
+                outdir / "weight_scan" / label,
+                pristine=pristine,
+                vacancy=vacancy,
+                pp_path=pp_path,
+                spacing_A=weight_spacing,
+                kedf=str(args.kedf),
+                fmax=float(args.fmax),
+                relax_steps=int(args.relax_steps),
+                extra_manifest={
+                    "setting": label,
+                    "scan_type": "weight",
+                    "conventional_repeat": list(spacing_repeat),
+                    "conventional_repeat_label": _repeat_label(spacing_repeat),
+                    "xc": str(args.xc).strip().upper(),
+                    "kedf_x": float(args.kedf_x),
+                    "kedf_y": float(kedf_y),
+                    **removed,
+                },
+            )
+        _write_text(outdir / "settings_weight_scan.txt", "\n".join(weight_settings) + "\n")
 
     size_settings = []
     size_repeats = _parse_int_list(args.size_repeats) if str(args.size_repeats).strip() else []
@@ -328,6 +394,9 @@ def main() -> None:
                 "scan_type": "size",
                 "conventional_repeat": list(repeat_n),
                 "conventional_repeat_label": _repeat_label(repeat_n),
+                "xc": str(args.xc).strip().upper(),
+                "kedf_x": float(args.kedf_x),
+                "kedf_y": float(args.kedf_y),
                 **removed_n,
             },
         )
@@ -350,6 +419,10 @@ def main() -> None:
         "spacing_values_A": [float(v) for v in spacing_values],
         "size_repeats": [int(v) for v in size_repeats],
         "kedf": str(args.kedf),
+        "kedf_x": float(args.kedf_x),
+        "kedf_y": float(args.kedf_y),
+        "tfvw_y_scan": [float(v) for v in weight_values],
+        "xc": str(args.xc).strip().upper(),
         "pp_file": str(pp_path),
         "fmax_eV_per_A": float(args.fmax),
         "relax_steps": int(args.relax_steps),
@@ -370,6 +443,8 @@ def main() -> None:
     print("============================================================")
     print(f"Root: {outdir}")
     print(f"Spacing settings: {outdir / 'settings_spacing_scan.txt'}")
+    if weight_settings:
+        print(f"Weight settings : {outdir / 'settings_weight_scan.txt'}")
     if size_settings:
         print(f"Size settings   : {outdir / 'settings_size_scan.txt'}")
     print(f"Pristine atoms  : {len(pristine)}")

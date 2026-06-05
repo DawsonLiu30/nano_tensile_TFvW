@@ -1,0 +1,7 @@
+ecut 1600
+meth NTN
+KINE CAT
+exch lda
+geometryfile STRUCTURE.ion
+
+print minimizer density 2

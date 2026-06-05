@@ -28,6 +28,8 @@ def resolve_case(rootdir: Path, setting: str, scan: str) -> Path:
         candidates.append(rootdir / "spacing_scan" / setting)
     if scan in {"auto", "size"}:
         candidates.append(rootdir / "size_scan" / setting)
+    if scan in {"auto", "weight"}:
+        candidates.append(rootdir / "weight_scan" / setting)
     for candidate in candidates:
         if candidate.exists():
             return candidate
@@ -43,7 +45,7 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Run DFTpy full atom+cell relaxation for one vacancy case.")
     ap.add_argument("--rootdir", required=True)
     ap.add_argument("--setting", required=True)
-    ap.add_argument("--scan", choices=["auto", "spacing", "size"], default="auto")
+    ap.add_argument("--scan", choices=["auto", "spacing", "size", "weight"], default="auto")
     ap.add_argument("--pressure-gpa", type=float, default=0.0)
     return ap.parse_args()
 
@@ -60,6 +62,9 @@ def main() -> None:
 
     spacing = float(manifest["spacing_A"])
     kedf = str(manifest["kedf"])
+    xc = str(manifest.get("xc", "PBE")).strip().upper()
+    kedf_x = float(manifest.get("kedf_x", 1.0))
+    kedf_y = float(manifest.get("kedf_y", 1.0))
     fmax = float(manifest["fmax_eV_per_A"])
     steps = int(manifest["relax_steps"])
 
@@ -71,6 +76,9 @@ def main() -> None:
         pp_file=pp_file,
         spacing=spacing,
         kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
         fmax=fmax,
         steps=steps,
         logfile=str(case_dir / "pristine_relax.log"),
@@ -83,6 +91,9 @@ def main() -> None:
         pp_file=pp_file,
         spacing=spacing,
         kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
         fmax=fmax,
         steps=steps,
         logfile=str(case_dir / "vacancy_relax.log"),
@@ -114,6 +125,9 @@ def main() -> None:
         "spacing_A": spacing,
         "ecut_analogue_eV": float(manifest.get("ecut_analogue_eV", 0.0)),
         "kedf": kedf,
+        "kedf_x": kedf_x,
+        "kedf_y": kedf_y,
+        "xc": xc,
         "fmax_eV_per_A": fmax,
         "target_pressure_GPa": float(args.pressure_gpa),
         "pristine_energy_eV": float(pristine_energy),

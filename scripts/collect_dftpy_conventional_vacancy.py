@@ -59,6 +59,10 @@ def collect_scan(rootdir: Path, scan_name: str) -> list[dict[str, object]]:
                 "vacancy_concentration_percent": 100.0 / float(n_pristine),
                 "spacing_A": float(manifest["spacing_A"]),
                 "ecut_analogue_eV": float(manifest["ecut_analogue_eV"]),
+                "xc": str(result.get("xc", manifest.get("xc", "unknown"))),
+                "kedf": str(result.get("kedf", manifest.get("kedf", "unknown"))),
+                "kedf_x": float(result.get("kedf_x", manifest.get("kedf_x", math.nan))),
+                "kedf_y": float(result.get("kedf_y", manifest.get("kedf_y", math.nan))),
                 "fmax_eV_A": float(manifest["fmax_eV_per_A"]),
                 "pristine_energy_eV": result.get("pristine_energy_eV", math.nan),
                 "vacancy_energy_eV": result.get("vacancy_energy_eV", math.nan),
@@ -121,6 +125,7 @@ def main() -> None:
 
     spacing_rows = collect_scan(rootdir, "spacing_scan")
     size_rows = collect_scan(rootdir, "size_scan")
+    weight_rows = collect_scan(rootdir, "weight_scan")
 
     if spacing_rows:
         # Larger spacing first in the table mirrors the usual convergence scan order.
@@ -153,7 +158,18 @@ def main() -> None:
             title="DFTpy conventional fcc vacancy: size/concentration convergence",
         )
 
-    all_rows = spacing_rows + size_rows
+    if weight_rows:
+        add_deltas(weight_rows, "kedf_y")
+        write_csv(rootdir / "dftpy_conventional_weight_summary.csv", weight_rows)
+        plot_scan(
+            rootdir / "dftpy_conventional_weight_Ef.png",
+            weight_rows,
+            xkey="kedf_y",
+            xlabel="vW ratio y in TFvW",
+            title="DFTpy conventional fcc vacancy: TF/vW weight scan",
+        )
+
+    all_rows = spacing_rows + size_rows + weight_rows
     write_csv(rootdir / "dftpy_conventional_all_summary.csv", all_rows)
 
     print("============================================================")
@@ -162,6 +178,7 @@ def main() -> None:
     print(f"Root: {rootdir}")
     print(f"Spacing rows: {len(spacing_rows)}")
     print(f"Size rows   : {len(size_rows)}")
+    print(f"Weight rows : {len(weight_rows)}")
     print(f"All summary : {rootdir / 'dftpy_conventional_all_summary.csv'}")
 
 

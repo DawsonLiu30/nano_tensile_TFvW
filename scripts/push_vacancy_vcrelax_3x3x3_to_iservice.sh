@@ -16,6 +16,10 @@ echo
 rsync -avhP "$LOCAL_ROOT/app/dft_engine.py" "$DFTPY_REMOTE/app/dft_engine.py"
 
 rsync -avhP \
+  "$LOCAL_ROOT/al.lda.recpot" \
+  "$DFTPY_REMOTE/al.lda.recpot"
+
+rsync -avhP \
   "$LOCAL_ROOT/scripts/prepare_dftpy_vacancy_conventional.py" \
   "$LOCAL_ROOT/scripts/run_dftpy_vcrelax_vacancy_one.py" \
   "$LOCAL_ROOT/scripts/collect_dftpy_conventional_vacancy.py" \
@@ -41,3 +45,7 @@ echo "cd /gpfs-work/dawson666/qe_cases/qe_runs/qe_vacancy_vcrelax_conv3x3x3_2026
 echo
 echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python scripts/prepare_dftpy_vacancy_conventional.py --outdir results/dftpy_vacancy_vcrelax_conv3x3x3_qe_a0_20260528 --a0 4.039848 --spacing-repeat 3x3x3 --spacing-list 0.30,0.25,0.22,0.20,0.18,0.16 --fmax 0.002 --relax-steps 1500"
 echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && sbatch submit_dftpy_vcrelax_conv3x3x3_ct56_array.sh"
+echo
+echo "# DFTpy LDA rerun requested by advisor: QE remains PBE-PAW; only DFTpy switches to al.lda.recpot."
+echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && python scripts/prepare_dftpy_vacancy_conventional.py --outdir results/dftpy_vacancy_vcrelax_conv3x3x3_centered_lda_20260529 --a0 4.039848 --spacing-repeat 3x3x3 --spacing-list 0.30,0.25,0.22,0.20,0.18,0.16 --pp al.lda.recpot --xc LDA --kedf TFVW --fmax 0.002 --relax-steps 1500"
+echo "cd /gpfs-work/dawson666/dftpy_project/relax/dftpy45 && SERIES_NAME=dftpy_vacancy_vcrelax_conv3x3x3_centered_lda_20260529 sbatch submit_dftpy_vcrelax_conv3x3x3_ct56_array.sh"

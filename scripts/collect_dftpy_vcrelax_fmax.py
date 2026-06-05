@@ -61,6 +61,8 @@ def main() -> None:
                     "N_pristine": manifest.get("pristine_n_atoms", ""),
                     "N_vacancy": manifest.get("vacancy_n_atoms", ""),
                     "spacing_A": manifest.get("spacing_A", ""),
+                    "xc": result.get("xc", manifest.get("xc", "unknown")),
+                    "kedf": result.get("kedf", manifest.get("kedf", "unknown")),
                     "Ef_vac_eV": result.get("vacancy_formation_energy_eV", math.nan),
                     "pristine_final_step": p_step,
                     "pristine_final_fmax_eV_A": p_fmax,
@@ -86,6 +88,7 @@ def main() -> None:
     for row in rows:
         print(
             f"{row['series']} {row['setting']} "
+            f"xc={row['xc']} "
             f"Ef={float(row['Ef_vac_eV']):.6f} "
             f"P_fmax={row['pristine_final_fmax_eV_A']} "
             f"V_fmax={row['vacancy_final_fmax_eV_A']} "

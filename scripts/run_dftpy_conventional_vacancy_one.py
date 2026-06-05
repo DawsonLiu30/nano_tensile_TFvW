@@ -35,7 +35,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--setting", required=True)
     parser.add_argument(
         "--scan",
-        choices=["auto", "spacing", "size"],
+        choices=["auto", "spacing", "size", "weight"],
         default="auto",
         help="Scan folder to search. Auto checks spacing_scan then size_scan.",
     )
@@ -48,6 +48,8 @@ def resolve_case(rootdir: Path, setting: str, scan: str) -> Path:
         candidates.append(rootdir / "spacing_scan" / setting)
     if scan in {"auto", "size"}:
         candidates.append(rootdir / "size_scan" / setting)
+    if scan in {"auto", "weight"}:
+        candidates.append(rootdir / "weight_scan" / setting)
     for case_dir in candidates:
         if case_dir.exists():
             return case_dir
@@ -72,6 +74,9 @@ def main() -> None:
 
     spacing = float(manifest["spacing_A"])
     kedf = str(manifest["kedf"])
+    xc = str(manifest.get("xc", "PBE")).strip().upper()
+    kedf_x = float(manifest.get("kedf_x", 1.0))
+    kedf_y = float(manifest.get("kedf_y", 1.0))
     fmax = float(manifest["fmax_eV_per_A"])
     relax_steps = int(manifest["relax_steps"])
 
@@ -83,6 +88,9 @@ def main() -> None:
         pp_file=pp_file,
         spacing=spacing,
         kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
         dftpy_outfile=str(case_dir / "pristine_dftpy.out"),
     )
 
@@ -92,6 +100,9 @@ def main() -> None:
         spacing=spacing,
         fixed_idx=[],
         kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
         fmax=fmax,
         steps=relax_steps,
         logfile=str(case_dir / "vacancy_relax.log"),
@@ -118,6 +129,9 @@ def main() -> None:
         "spacing_A": spacing,
         "ecut_analogue_eV": float(manifest.get("ecut_analogue_eV", 0.0)),
         "kedf": kedf,
+        "kedf_x": kedf_x,
+        "kedf_y": kedf_y,
+        "xc": xc,
         "fmax_eV_per_A": fmax,
         "pristine_energy_eV": float(pristine_energy_eV),
         "vacancy_energy_eV": float(vacancy_energy_eV),

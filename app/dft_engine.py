@@ -184,7 +184,15 @@ def normalize_kedf_name(kedf: str | None) -> str:
     return aliases.get(compact, name)
 
 
-def _build_dftpy_config(pp_file: str | Path, spacing: float, atoms, kedf: str = "TFVW") -> OptionFormat:
+def _build_dftpy_config(
+    pp_file: str | Path,
+    spacing: float,
+    atoms,
+    kedf: str = "TFVW",
+    xc: str = "PBE",
+    kedf_x: float | None = None,
+    kedf_y: float | None = None,
+) -> OptionFormat:
     pp_path = Path(pp_file).expanduser().resolve()
     if not pp_path.exists():
         raise FileNotFoundError(f"pp_file not found: {pp_path}")
@@ -197,7 +205,12 @@ def _build_dftpy_config(pp_file: str | Path, spacing: float, atoms, kedf: str = 
         conf["PP"][sym] = pp_path.name
 
     conf["JOB"]["calctype"] = "Energy Force Stress"
+    conf["EXC"]["xc"] = str(xc).strip().upper()
     conf["KEDF"]["kedf"] = normalize_kedf_name(kedf)
+    if kedf_x is not None:
+        conf["KEDF"]["x"] = float(kedf_x)
+    if kedf_y is not None:
+        conf["KEDF"]["y"] = float(kedf_y)
     conf["OPT"]["method"] = "LBFGS"
     conf["GRID"]["spacing"] = float(spacing)
 
@@ -221,12 +234,23 @@ def evaluate_atoms(
     pp_file: str | Path,
     spacing: float,
     kedf: str = "TFVW",
+    xc: str = "PBE",
+    kedf_x: float | None = None,
+    kedf_y: float | None = None,
     dftpy_outfile: str | None = None,
 ):
     if dftpy_outfile:
         Path(dftpy_outfile).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
 
-    conf = _build_dftpy_config(pp_file=pp_file, spacing=spacing, atoms=atoms, kedf=kedf)
+    conf = _build_dftpy_config(
+        pp_file=pp_file,
+        spacing=spacing,
+        atoms=atoms,
+        kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
+    )
     calc = DFTpyCalculator(config=conf)
     atoms.calc = calc
 
@@ -242,6 +266,9 @@ def relax_atoms(
     spacing: float,
     fixed_idx,
     kedf: str = "TFVW",
+    xc: str = "PBE",
+    kedf_x: float | None = None,
+    kedf_y: float | None = None,
     fmax: float = 0.05,
     steps: int = 200,
     logfile: str | None = None,
@@ -252,7 +279,15 @@ def relax_atoms(
     fixed_idx = np.asarray(fixed_idx, dtype=int).ravel()
     atoms.set_constraint(FixAtoms(indices=fixed_idx))
 
-    conf = _build_dftpy_config(pp_file=pp_file, spacing=spacing, atoms=atoms, kedf=kedf)
+    conf = _build_dftpy_config(
+        pp_file=pp_file,
+        spacing=spacing,
+        atoms=atoms,
+        kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
+    )
     calc = DFTpyCalculator(config=conf)
     atoms.calc = calc
 
@@ -287,6 +322,9 @@ def relax_atoms_and_cell(
     pp_file: str | Path,
     spacing: float,
     kedf: str = "TFVW",
+    xc: str = "PBE",
+    kedf_x: float | None = None,
+    kedf_y: float | None = None,
     fmax: float = 0.002,
     steps: int = 500,
     logfile: str | None = None,
@@ -298,7 +336,15 @@ def relax_atoms_and_cell(
 
     atoms.set_constraint()
 
-    conf = _build_dftpy_config(pp_file=pp_file, spacing=spacing, atoms=atoms, kedf=kedf)
+    conf = _build_dftpy_config(
+        pp_file=pp_file,
+        spacing=spacing,
+        atoms=atoms,
+        kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
+    )
     calc = DFTpyCalculator(config=conf)
     atoms.calc = calc
 

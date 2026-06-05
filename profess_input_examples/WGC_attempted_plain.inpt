@@ -1,0 +1,13 @@
+ecut 1600
+meth NTN
+KINE WGC
+WGCT 2
+PARA LAMB 1
+PARA MU 1
+PARA ALPHA 1.206011329583298
+PARA BETA 0.460655337083368
+PARA GAMMA 2.7
+exch lda
+geometryfile STRUCTURE.ion
+
+print minimizer density 2
