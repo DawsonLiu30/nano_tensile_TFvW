@@ -76,7 +76,7 @@ cat 'results/${SERIES_NAME}/settings_weight_scan.txt'
 "
 
 echo
-echo "[3/3] Submit ct56 array"
+echo "[3/3] Submit ${PARTITION} array"
 ssh "${REMOTE_HOST}" "
 set -euo pipefail
 cd '${REMOTE_ROOT}'

@@ -115,6 +115,11 @@ After submission, the printed header must show the custom values. If it prints:
 
 then the custom fine scan was not submitted; the script used its defaults.
 
+Fine weight-scan setting names must also be checked. The corrected script keeps
+enough decimal places so values such as `0.115`, `0.120`, and `0.125` become
+distinct folders (`y0p115`, `y0p12`, `y0p125`). If the remote
+`settings_weight_scan.txt` shows repeated labels, do not submit that series.
+
 ## Current Running Note
 
 At the time this note was written, the fine DFTpy TFvW weight scan was submitted on `ct56` as:

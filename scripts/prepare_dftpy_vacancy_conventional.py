@@ -72,8 +72,15 @@ def _spacing_label(spacing_A: float) -> str:
     return f"spacing_{spacing_A:.2f}A".replace(".", "p")
 
 
+def _float_token(value: float, ndigits: int = 4) -> str:
+    token = f"{float(value):.{int(ndigits)}f}".rstrip("0").rstrip(".")
+    if token == "-0":
+        token = "0"
+    return token.replace(".", "p").replace("-", "m")
+
+
 def _weight_label(kedf_x: float, kedf_y: float) -> str:
-    return f"tfvw_x{float(kedf_x):.2f}_y{float(kedf_y):.2f}".replace(".", "p")
+    return f"tfvw_x{_float_token(kedf_x)}_y{_float_token(kedf_y)}"
 
 
 def _conv_label(n: int) -> str:
@@ -348,8 +355,16 @@ def main() -> None:
     weight_values = _parse_float_list(args.tfvw_y_list) if str(args.tfvw_y_list).strip() else []
     if weight_values:
         weight_spacing = float(spacing_values[0])
+        seen_weight_labels: dict[str, float] = {}
         for kedf_y in weight_values:
             label = _weight_label(float(args.kedf_x), float(kedf_y))
+            if label in seen_weight_labels:
+                raise ValueError(
+                    "Duplicate TF/vW weight label generated: "
+                    f"{label!r} for y={kedf_y} and y={seen_weight_labels[label]}. "
+                    "Increase label precision or change the scan list."
+                )
+            seen_weight_labels[label] = float(kedf_y)
             weight_settings.append(label)
             _write_case(
                 outdir / "weight_scan" / label,
