@@ -120,6 +120,34 @@ enough decimal places so values such as `0.115`, `0.120`, and `0.125` become
 distinct folders (`y0p115`, `y0p12`, `y0p125`). If the remote
 `settings_weight_scan.txt` shows repeated labels, do not submit that series.
 
+If the prepare step succeeds but Slurm rejects submission with
+`QOSMaxSubmitJobPerUserLimit`, do not rerun the full push/prepare script. Wait
+for the job count to drop or cancel older arrays, then submit the existing
+prepared series:
+
+```bash
+cd /mnt/c/Users/dawso/nano_tensile_TFvW
+
+SERIES_NAME=dftpy_vacancy_tfvw_weight_fine_y0115_020_conv3x3x3_lda_20260605_v2 \
+PARTITION=ctest \
+TIME_LIMIT=02:00:00 \
+MAX_PARALLEL=2 \
+bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh
+```
+
+Useful queue cleanup checks:
+
+```bash
+squeue -u dawson666
+squeue -u dawson666 -h -o "%A %T %j %P %M %R"
+```
+
+Cancel only the specific old array if it is unwanted:
+
+```bash
+scancel <jobid>
+```
+
 ## Current Running Note
 
 At the time this note was written, the fine DFTpy TFvW weight scan was submitted on `ct56` as:
