@@ -9,6 +9,8 @@ PARTITION="${PARTITION:-ctest}"
 TIME_LIMIT="${TIME_LIMIT:-02:00:00}"
 MAX_PARALLEL="${MAX_PARALLEL:-2}"
 DRY_RUN="${DRY_RUN:-0}"
+ARRAY_START="${ARRAY_START:-0}"
+ARRAY_END="${ARRAY_END:-}"
 
 cat <<EOF
 ============================================================
@@ -20,6 +22,8 @@ Submit existing DFTpy TF/vW weight scan
 [PART  ] ${PARTITION}
 [TIME  ] ${TIME_LIMIT}
 [ARRAY ] %${MAX_PARALLEL}
+[START ] ${ARRAY_START}
+[END   ] ${ARRAY_END:-auto-last}
 EOF
 
 REMOTE_CMD=$(cat <<'EOF'
@@ -31,25 +35,36 @@ if [[ ! -s "${SETTING_FILE}" ]]; then
   exit 2
 fi
 N=$(wc -l < "${SETTING_FILE}")
-LAST=$((N - 1))
+FULL_LAST=$((N - 1))
+START="${ARRAY_START}"
+if [[ -z "${ARRAY_END}" ]]; then
+  END="${FULL_LAST}"
+else
+  END="${ARRAY_END}"
+fi
+if [[ "${START}" -lt 0 || "${END}" -lt "${START}" || "${END}" -gt "${FULL_LAST}" ]]; then
+  echo "[ERROR] Invalid array range ${START}-${END}; valid range is 0-${FULL_LAST}" >&2
+  exit 3
+fi
 echo "[REMOTE] settings=${N}"
+echo "[REMOTE] submitting array range=${START}-${END}%${MAX_PARALLEL}"
 echo "[REMOTE] settings_weight_scan.txt:"
 cat "${SETTING_FILE}"
 if [[ "${DRY_RUN}" == "1" ]]; then
-  echo "[DRY_RUN] sbatch -A ${ACCOUNT} -p ${PARTITION} -t ${TIME_LIMIT} --array=0-${LAST}%${MAX_PARALLEL} submit_dftpy_vcrelax_weight_scan_ct56_array.sh"
+  echo "[DRY_RUN] sbatch -A ${ACCOUNT} -p ${PARTITION} -t ${TIME_LIMIT} --array=${START}-${END}%${MAX_PARALLEL} submit_dftpy_vcrelax_weight_scan_ct56_array.sh"
   exit 0
 fi
 SERIES_NAME="${SERIES_NAME}" sbatch \
   -A "${ACCOUNT}" \
   -p "${PARTITION}" \
   -t "${TIME_LIMIT}" \
-  --array=0-${LAST}%${MAX_PARALLEL} \
+  --array=${START}-${END}%${MAX_PARALLEL} \
   submit_dftpy_vcrelax_weight_scan_ct56_array.sh
 EOF
 )
 
 ssh "${REMOTE_HOST}" \
-  "REMOTE_ROOT='${REMOTE_ROOT}' SERIES_NAME='${SERIES_NAME}' ACCOUNT='${ACCOUNT}' PARTITION='${PARTITION}' TIME_LIMIT='${TIME_LIMIT}' MAX_PARALLEL='${MAX_PARALLEL}' DRY_RUN='${DRY_RUN}' bash -s" \
+  "REMOTE_ROOT='${REMOTE_ROOT}' SERIES_NAME='${SERIES_NAME}' ACCOUNT='${ACCOUNT}' PARTITION='${PARTITION}' TIME_LIMIT='${TIME_LIMIT}' MAX_PARALLEL='${MAX_PARALLEL}' DRY_RUN='${DRY_RUN}' ARRAY_START='${ARRAY_START}' ARRAY_END='${ARRAY_END}' bash -s" \
   <<< "${REMOTE_CMD}"
 
 cat <<EOF
@@ -64,4 +79,3 @@ Pull after completion:
   SERIES_NAME=${SERIES_NAME} bash scripts/pull_dftpy_tfvw_weight_scan_results_20260605.sh
 ============================================================
 EOF
-
