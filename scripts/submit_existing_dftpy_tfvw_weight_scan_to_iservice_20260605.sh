@@ -9,8 +9,10 @@ PARTITION="${PARTITION:-ctest}"
 TIME_LIMIT="${TIME_LIMIT:-02:00:00}"
 MAX_PARALLEL="${MAX_PARALLEL:-2}"
 DRY_RUN="${DRY_RUN:-0}"
-ARRAY_START="${ARRAY_START:-0}"
-ARRAY_END="${ARRAY_END:-}"
+# Positional arguments override environment variables. This avoids accidental
+# loss of ARRAY_END when a pasted multi-line shell command contains blank lines.
+ARRAY_START="${1:-${ARRAY_START:-0}}"
+ARRAY_END="${2:-${ARRAY_END:-}}"
 
 cat <<EOF
 ============================================================

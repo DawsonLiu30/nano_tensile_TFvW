@@ -136,27 +136,22 @@ bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh
 ```
 
 For `ctest`, avoid submitting a large array at once. It effectively behaves like
-"2 running + 1 waiting", so submit chunks of about 3 array elements:
+"2 running + 1 waiting", so submit chunks of about 3 array elements. Use the
+positional `START END` form to avoid pasted-line-continuation problems:
 
 ```bash
 cd /mnt/c/Users/dawso/nano_tensile_TFvW
 
-SERIES_NAME=dftpy_vacancy_tfvw_weight_fine_y0115_020_conv3x3x3_lda_20260605_v2 \
-ARRAY_START=0 \
-ARRAY_END=2 \
-PARTITION=ctest \
-TIME_LIMIT=02:00:00 \
-MAX_PARALLEL=2 \
-bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh
+SERIES_NAME=dftpy_vacancy_tfvw_weight_fine_y0115_020_conv3x3x3_lda_20260605_v2 PARTITION=ctest TIME_LIMIT=02:00:00 MAX_PARALLEL=2 bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh 0 2
 ```
 
 After those finish, submit the next chunks:
 
 ```text
-ARRAY_START=3  ARRAY_END=5
-ARRAY_START=6  ARRAY_END=8
-ARRAY_START=9  ARRAY_END=11
-ARRAY_START=12 ARRAY_END=12
+bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh 3 5
+bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh 6 8
+bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh 9 11
+bash scripts/submit_existing_dftpy_tfvw_weight_scan_to_iservice_20260605.sh 12 12
 ```
 
 Useful queue cleanup checks:
