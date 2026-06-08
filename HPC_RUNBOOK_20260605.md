@@ -68,6 +68,17 @@ Detailed build/smoke-test record:
 PROFESS_ISERVICE_RUNBOOK_20260605.md
 ```
 
+DFTpy TFvW fine weight-scan result:
+
+```text
+DFTPY_TFVW_FINE_WEIGHT_SCAN_20260608.md
+```
+
+Key result: for conventional fcc Al 3x3x3 vacancy with LDA and
+`al.lda.recpot`, `x=1.0, y=0.140` gives `Ef_vac = 0.647 eV` and
+`x=1.0, y=0.145` gives `Ef_vac = 0.669 eV`; both satisfy the
+`fmax < 0.002 eV/A` target.
+
 ## DFTpy TFvW Weight Scan Submission
 
 The DFTpy TF/vW weight-scan push script now supports partition routing:
