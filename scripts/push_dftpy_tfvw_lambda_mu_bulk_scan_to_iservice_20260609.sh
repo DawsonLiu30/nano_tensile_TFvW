@@ -17,23 +17,26 @@ SUBMIT="${SUBMIT:-1}"
 
 LAMBDA_LIST="${LAMBDA_LIST:-0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}"
 MU_LIST="${MU_LIST:-0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0}"
-A0_LIST="${A0_LIST:-2.20,2.30,2.40,2.50,2.60,2.70,2.80,2.90,3.00,3.10,3.20,3.30,3.40,3.50,3.60,3.70,3.80,3.90,4.00,4.10,4.20,4.30,4.40,4.50,4.60,4.70,4.80,4.90,5.00}"
+INITIAL_A0="${INITIAL_A0:-4.039848}"
 SPACING="${SPACING:-0.20}"
 OPT_METHOD="${OPT_METHOD:-CG-HS}"
 OPT_MAXITER="${OPT_MAXITER:-500}"
 OPT_MAXFUN="${OPT_MAXFUN:-500}"
+FMAX="${FMAX:-0.002}"
+RELAX_STEPS="${RELAX_STEPS:-500}"
 
 cat <<EOF
 ============================================================
-Push DFTpy TF+vW lambda-mu bulk scan
+Push DFTpy TF+vW lambda-mu bulk vc-relax scan
 ============================================================
 [LOCAL ] ${LOCAL_ROOT}
 [REMOTE] ${REMOTE_HOST}:${REMOTE_ROOT}
 [SERIES] ${SERIES_NAME}
 [LAMBDA] ${LAMBDA_LIST}
 [MU    ] ${MU_LIST}
-[A0    ] ${A0_LIST}
+[A0    ] ${INITIAL_A0} A initial
 [GRID  ] ${SPACING} A
+[RELAX ] fmax=${FMAX} eV/A, steps=${RELAX_STEPS}
 [OPT   ] ${OPT_METHOD}, maxiter=${OPT_MAXITER}, maxfun=${OPT_MAXFUN}
 [ARRAY ] ${ARRAY_START}-${ARRAY_END}%${MAX_PARALLEL}
 [GROUP ] ${GROUP_SIZE} coefficient pairs per array task
@@ -48,7 +51,6 @@ rsync -avhP \
 rsync -avhP \
   scripts/prepare_dftpy_tfvw_lambda_mu_bulk_scan.py \
   scripts/run_dftpy_tfvw_lambda_mu_bulk_one.py \
-  scripts/evaluate_dftpy_tfvw_bulk_point.py \
   scripts/collect_dftpy_tfvw_lambda_mu_bulk_scan.py \
   "${REMOTE_HOST}:${REMOTE_ROOT}/scripts/"
 rsync -avhP \
@@ -63,11 +65,12 @@ python scripts/prepare_dftpy_tfvw_lambda_mu_bulk_scan.py \
   --outdir 'results/${SERIES_NAME}' \
   --lambda-list '${LAMBDA_LIST}' \
   --mu-list '${MU_LIST}' \
-  --a0-list '${A0_LIST}' \
+  --initial-a0 '${INITIAL_A0}' \
   --spacing '${SPACING}' \
-  --repeat 1x1x1 \
   --pp al.lda.recpot \
   --xc LDA \
+  --fmax '${FMAX}' \
+  --relax-steps '${RELAX_STEPS}' \
   --opt-method '${OPT_METHOD}' \
   --opt-maxiter '${OPT_MAXITER}' \
   --opt-maxfun '${OPT_MAXFUN}'

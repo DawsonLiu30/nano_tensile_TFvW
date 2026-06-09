@@ -28,14 +28,15 @@ the earlier fixed-`lambda_TF=1` scan by varying both coefficients.
 - Columns: `mu_vW = 0.1, 0.2, ..., 1.0`.
 - Total: 100 independent coefficient pairs.
 
-For every pair, the workflow performs an fcc Al EOS/lattice scan and records:
+For every pair, the workflow performs a direct zero-pressure cell relaxation
+and records:
 
 1. equilibrium total energy in eV/atom;
 2. equilibrium kinetic (KEDF) energy in eV/atom;
 3. equilibrium lattice constant in Angstrom.
 
 The raw long-form table also retains whole-cell energies, weighted TF and vW
-components, fit method, fit RMSE, bulk modulus, and boundary-fit warnings.
+components, final force/stress diagnostics, and the stable-fcc classification.
 
 ## Numerical setup
 
@@ -46,14 +47,17 @@ components, fit method, fit RMSE, bulk modulus, and boundary-fit warnings.
 - Grid spacing: `0.20 A`.
 - Density optimizer: `CG-HS`, with `maxiter=maxfun=500`. This is more robust
   than LBFGS for the strongly contracted low-coefficient cells.
-- Lattice scan: `2.20-5.00 A` in `0.10 A` steps. The broad range is required
-  because small coefficients can predict a strongly contracted or collapsed
-  lattice.
-- Equilibrium lattice constant: zero-hydrostatic-stress interpolation between
-  adjacent lattice points. Birch-Murnaghan/local-quadratic fitting is retained
-  only as a fallback when no pressure sign change is available.
-- Non-converged density-optimization points are retained in raw logs but
-  excluded from the EOS fit.
+- DFTpy relaxation: ASE `FrechetCellFilter` plus BFGS, with hydrostatic strain
+  enforced to preserve cubic symmetry. Both atoms and the cubic cell are
+  included, making this the bulk analogue of `vc-relax`.
+- PROFESS relaxation: `MINI cell` with `KINE TF+`, `PARA LAMB`, and `PARA MU`.
+  The perfect conventional fcc positions are fixed by symmetry.
+- A final single-point density optimization is used only to decompose the
+  already-relaxed total energy into KEDF/TF/vW terms. It does not alter the
+  geometry.
+- Relaxed points outside `3.0 <= a0 <= 6.0 A` are classified as having no
+  stable fcc equilibrium and are excluded from the professor three-panel table.
+- Raw outputs and failure/instability statuses are retained for every point.
 - Scheduler: use `ctest`, at most two simultaneous tasks.
 
 ## Submission
@@ -88,3 +92,26 @@ bash scripts/pull_dftpy_tfvw_lambda_mu_bulk_scan_results_20260609.sh
 The professor-style three-panel table is written to:
 
 `tables/professor_three_panel_lambda_mu_table.csv`
+
+## Local PROFESS cross-check
+
+```powershell
+$root = "C:\Users\dawso\Desktop\LOCAL_PROFESS_TFVW_LAMBDA_MU_CELL_RELAX_20260609"
+
+python scripts\prepare_profess_tfvw_lambda_mu_cell_relax.py `
+  --outdir $root `
+  --profess-bin C:\Users\dawso\Desktop\LOCAL_PROFESS_KEDF_SWEEP_20260604\PROFESS `
+  --pp C:\Users\dawso\nano_tensile_TFvW\al.lda.recpot
+
+python scripts\run_local_profess_tfvw_lambda_mu_cell_relax.py --rootdir $root
+python scripts\collect_profess_tfvw_lambda_mu_cell_relax.py --rootdir $root
+```
+
+The DFTpy and PROFESS tables can be compared with:
+
+```powershell
+python scripts\compare_dftpy_profess_tfvw_lambda_mu_relax.py `
+  --dftpy-root C:\Users\dawso\Desktop\LOCAL_DFTPY_TFVW_LAMBDA_MU_CELL_RELAX_20260609 `
+  --profess-root C:\Users\dawso\Desktop\LOCAL_PROFESS_TFVW_LAMBDA_MU_CELL_RELAX_20260609 `
+  --out C:\Users\dawso\Desktop\TFVW_LAMBDA_MU_DFTPY_PROFESS_COMPARISON_20260609.csv
+```

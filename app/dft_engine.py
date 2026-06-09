@@ -389,6 +389,10 @@ def relax_atoms_and_cell(
     trajfile: str | None = None,
     dftpy_outfile: str | None = None,
     scalar_pressure_gpa: float = 0.0,
+    hydrostatic_strain: bool = False,
+    opt_method: str | None = None,
+    opt_maxiter: int | None = None,
+    opt_maxfun: int | None = None,
 ):
     """Relax atomic positions and cell, analogous to a QE vc-relax workflow."""
 
@@ -402,6 +406,9 @@ def relax_atoms_and_cell(
         xc=xc,
         kedf_x=kedf_x,
         kedf_y=kedf_y,
+        opt_method=opt_method,
+        opt_maxiter=opt_maxiter,
+        opt_maxfun=opt_maxfun,
     )
     calc = DFTpyCalculator(config=conf)
     atoms.calc = calc
@@ -414,7 +421,11 @@ def relax_atoms_and_cell(
         Path(dftpy_outfile).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
 
     scalar_pressure_ev_a3 = float(scalar_pressure_gpa) / 160.21766208
-    cell_filter = FrechetCellFilter(atoms, scalar_pressure=scalar_pressure_ev_a3)
+    cell_filter = FrechetCellFilter(
+        atoms,
+        scalar_pressure=scalar_pressure_ev_a3,
+        hydrostatic_strain=bool(hydrostatic_strain),
+    )
     dyn = BFGS(cell_filter, trajectory=trajfile, logfile=logfile)
     dyn.run(fmax=float(fmax), steps=int(steps))
 

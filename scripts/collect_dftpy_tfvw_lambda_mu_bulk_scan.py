@@ -39,6 +39,7 @@ def matrix_rows(
     lookup = {
         (float(row["lambda_tf"]), float(row["mu_vw"])): row.get(field, math.nan)
         for row in rows
+        if bool(row.get("done", False))
     }
     output = []
     for lambda_tf in lambda_values:
@@ -136,34 +137,37 @@ def main() -> None:
             {
                 "setting": setting,
                 "done": bool(result.get("done", False)),
+                "status": result.get("status", "MISSING"),
+                "relaxation_converged": result.get(
+                    "relaxation_converged", False
+                ),
+                "stable_fcc_equilibrium": result.get(
+                    "stable_fcc_equilibrium", False
+                ),
                 "lambda_tf": float(manifest["lambda_tf"]),
                 "mu_vw": float(manifest["mu_vw"]),
-                "total_energy_eV": result.get("equilibrium_total_energy_eV", math.nan),
+                "relaxation_mode": result.get("relaxation_mode", ""),
+                "total_energy_eV": result.get("total_energy_eV", math.nan),
                 "total_energy_eV_per_atom": result.get(
-                    "equilibrium_total_energy_eV_per_atom", math.nan
+                    "total_energy_eV_per_atom", math.nan
                 ),
-                "kinetic_energy_eV": result.get("equilibrium_kinetic_energy_eV", math.nan),
+                "kinetic_energy_eV": result.get("kinetic_energy_eV", math.nan),
                 "kinetic_energy_eV_per_atom": result.get(
-                    "equilibrium_kinetic_energy_eV_per_atom", math.nan
+                    "kinetic_energy_eV_per_atom", math.nan
                 ),
-                "tf_energy_eV_per_atom": result.get(
-                    "equilibrium_tf_energy_eV_per_atom", math.nan
+                "tf_energy_eV_per_atom": result.get("tf_energy_eV_per_atom", math.nan),
+                "vw_energy_eV_per_atom": result.get("vw_energy_eV_per_atom", math.nan),
+                "lattice_constant_A": result.get("lattice_constant_A", math.nan),
+                "final_filter_fmax_eV_A": result.get(
+                    "final_filter_fmax_eV_A", math.nan
                 ),
-                "vw_energy_eV_per_atom": result.get(
-                    "equilibrium_vw_energy_eV_per_atom", math.nan
+                "final_atomic_fmax_eV_A": result.get(
+                    "final_atomic_fmax_eV_A", math.nan
                 ),
-                "lattice_constant_A": result.get("equilibrium_a0_A", math.nan),
-                "bulk_modulus_GPa": result.get("bulk_modulus_GPa", math.nan),
-                "fit_method": result.get("fit_method", ""),
-                "fit_rmse_eV_per_atom": result.get("fit_rmse_eV_per_atom", math.nan),
-                "fit_reliable": result.get("fit_reliable", False),
-                "boundary_minimum": result.get("boundary_minimum", False),
-                "equilibrium_hydrostatic_stress_GPa": result.get(
-                    "equilibrium_hydrostatic_stress_GPa", math.nan
+                "final_max_abs_stress_GPa": result.get(
+                    "final_max_abs_stress_GPa", math.nan
                 ),
-                "equilibrium_refinement_steps": result.get(
-                    "equilibrium_refinement_steps", 0
-                ),
+                "final_scf_converged": result.get("final_scf_converged", False),
                 "case_dir": str(case_dir),
             }
         )
@@ -195,8 +199,8 @@ def main() -> None:
         mu_values,
     )
 
-    completed = sum(bool(row["done"]) for row in rows)
-    reliable = sum(bool(row["done"]) and bool(row["fit_reliable"]) for row in rows)
+    completed = sum(bool(row["relaxation_converged"]) for row in rows)
+    reliable = sum(bool(row["stable_fcc_equilibrium"]) for row in rows)
     note = [
         "# DFTpy TF+vW lambda-mu bulk scan",
         "",
@@ -206,10 +210,10 @@ def main() -> None:
         "",
         "The two coefficients are independent. No lambda+mu=1 constraint is applied.",
         "",
-        f"- Completed points: {completed}/{len(rows)}",
-        f"- Reliable interior EOS fits: {reliable}/{len(rows)}",
+        f"- Force-converged cell relaxations: {completed}/{len(rows)}",
+        f"- Stable fcc equilibria: {reliable}/{len(rows)}",
         "- Main table values are reported per atom.",
-        "- The long summary also preserves whole-cell energies and fit diagnostics.",
+        "- The long summary also preserves final force and stress diagnostics.",
     ]
     (rootdir / "COLLECTION_NOTE.md").write_text("\n".join(note) + "\n", encoding="utf-8")
 
@@ -217,8 +221,8 @@ def main() -> None:
     print("DFTpy TF+vW lambda-mu bulk scan collected")
     print("============================================================")
     print(f"Root      : {rootdir}")
-    print(f"Completed : {completed}/{len(rows)}")
-    print(f"Reliable  : {reliable}/{len(rows)}")
+    print(f"Relaxed   : {completed}/{len(rows)}")
+    print(f"Stable fcc: {reliable}/{len(rows)}")
     print(f"Main table: {tables_dir / 'professor_three_panel_lambda_mu_table.csv'}")
 
 
