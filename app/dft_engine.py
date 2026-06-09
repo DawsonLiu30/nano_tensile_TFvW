@@ -11,6 +11,9 @@ from dftpy.config import DefaultOption, OptionFormat
 from dftpy.api.api4ase import DFTpyCalculator
 
 
+HARTREE_TO_EV = 27.211386245988
+
+
 def _patch_dftpy_linesearch_compat() -> None:
     try:
         from scipy.optimize._dcsrch import DCSRCH
@@ -192,6 +195,9 @@ def _build_dftpy_config(
     xc: str = "PBE",
     kedf_x: float | None = None,
     kedf_y: float | None = None,
+    opt_method: str | None = None,
+    opt_maxiter: int | None = None,
+    opt_maxfun: int | None = None,
 ) -> OptionFormat:
     pp_path = Path(pp_file).expanduser().resolve()
     if not pp_path.exists():
@@ -211,7 +217,11 @@ def _build_dftpy_config(
         conf["KEDF"]["x"] = float(kedf_x)
     if kedf_y is not None:
         conf["KEDF"]["y"] = float(kedf_y)
-    conf["OPT"]["method"] = "LBFGS"
+    conf["OPT"]["method"] = str(opt_method or "LBFGS")
+    if opt_maxiter is not None:
+        conf["OPT"]["maxiter"] = int(opt_maxiter)
+    if opt_maxfun is not None:
+        conf["OPT"]["maxfun"] = int(opt_maxfun)
     conf["GRID"]["spacing"] = float(spacing)
 
     return OptionFormat(conf)
@@ -258,6 +268,54 @@ def evaluate_atoms(
     stress_gpa = atoms.get_stress(voigt=False) * 160.21766208
     _write_dftpy_out(dftpy_outfile, energy_ev=energy_ev, stress_gpa=stress_gpa)
     return atoms, energy_ev, stress_gpa
+
+
+def evaluate_atoms_with_energy_components(
+    atoms,
+    pp_file: str | Path,
+    spacing: float,
+    kedf: str = "TFVW",
+    xc: str = "PBE",
+    kedf_x: float | None = None,
+    kedf_y: float | None = None,
+    opt_method: str | None = None,
+    opt_maxiter: int | None = None,
+    opt_maxfun: int | None = None,
+    dftpy_outfile: str | None = None,
+):
+    """Evaluate an ASE structure and return DFTpy's resolved energy terms."""
+
+    if dftpy_outfile:
+        Path(dftpy_outfile).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
+
+    conf = _build_dftpy_config(
+        pp_file=pp_file,
+        spacing=spacing,
+        atoms=atoms,
+        kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
+        opt_method=opt_method,
+        opt_maxiter=opt_maxiter,
+        opt_maxfun=opt_maxfun,
+    )
+    calc = DFTpyCalculator(config=conf)
+    atoms.calc = calc
+
+    energy_ev = float(atoms.get_potential_energy())
+    stress_gpa = atoms.get_stress(voigt=False) * 160.21766208
+    energy_terms_ev = {
+        str(name): float(output.energy) * HARTREE_TO_EV
+        for name, output in calc.dftpy_results["energypotential"].items()
+        if getattr(output, "energy", None) is not None
+    }
+    energy_terms_ev["KEDF"] = sum(
+        value for name, value in energy_terms_ev.items() if name.startswith("KEDF-")
+    )
+
+    _write_dftpy_out(dftpy_outfile, energy_ev=energy_ev, stress_gpa=stress_gpa)
+    return atoms, energy_ev, stress_gpa, energy_terms_ev
 
 
 def relax_atoms(
