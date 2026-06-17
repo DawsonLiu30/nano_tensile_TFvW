@@ -30,6 +30,8 @@ def resolve_case(rootdir: Path, setting: str, scan: str) -> Path:
         candidates.append(rootdir / "size_scan" / setting)
     if scan in {"auto", "weight"}:
         candidates.append(rootdir / "weight_scan" / setting)
+    if scan in {"auto", "pair"}:
+        candidates.append(rootdir / "pair_scan" / setting)
     for candidate in candidates:
         if candidate.exists():
             return candidate
@@ -45,8 +47,13 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Run DFTpy full atom+cell relaxation for one vacancy case.")
     ap.add_argument("--rootdir", required=True)
     ap.add_argument("--setting", required=True)
-    ap.add_argument("--scan", choices=["auto", "spacing", "size", "weight"], default="auto")
+    ap.add_argument("--scan", choices=["auto", "spacing", "size", "weight", "pair"], default="auto")
     ap.add_argument("--pressure-gpa", type=float, default=0.0)
+    ap.add_argument(
+        "--ase-optimizer",
+        choices=["BFGS", "LBFGS", "BFGSLineSearch", "SciPyFminBFGS", "SciPyFminCG", "MDMin"],
+        default="BFGS",
+    )
     return ap.parse_args()
 
 
@@ -85,6 +92,7 @@ def main() -> None:
         trajfile=str(case_dir / "pristine_relax.traj"),
         dftpy_outfile=str(case_dir / "pristine_dftpy.out"),
         scalar_pressure_gpa=float(args.pressure_gpa),
+        ase_optimizer=str(args.ase_optimizer),
     )
     vacancy_relaxed, vacancy_energy, vacancy_stress = relax_atoms_and_cell(
         vacancy,
@@ -100,6 +108,7 @@ def main() -> None:
         trajfile=str(case_dir / "vacancy_relax.traj"),
         dftpy_outfile=str(case_dir / "vacancy_dftpy.out"),
         scalar_pressure_gpa=float(args.pressure_gpa),
+        ase_optimizer=str(args.ase_optimizer),
     )
 
     write_structure_pair(case_dir / "pristine_vc_relaxed", pristine_relaxed)
@@ -109,6 +118,7 @@ def main() -> None:
 
     n_pristine = int(manifest["pristine_n_atoms"])
     n_vacancy = int(manifest["vacancy_n_atoms"])
+    vacancy_count = n_pristine - n_vacancy
     ef_vac = float(vacancy_energy - (n_vacancy / n_pristine) * pristine_energy)
 
     result = {
@@ -120,8 +130,10 @@ def main() -> None:
         "conventional_repeat": manifest.get("conventional_repeat", []),
         "pristine_n_atoms": n_pristine,
         "vacancy_n_atoms": n_vacancy,
-        "vacancy_concentration_fraction": 1.0 / float(n_pristine),
-        "vacancy_concentration_percent": 100.0 / float(n_pristine),
+        "vacancy_count": vacancy_count,
+        "vacancy_concentration_fraction": float(vacancy_count) / float(n_pristine),
+        "vacancy_concentration_percent": 100.0 * float(vacancy_count) / float(n_pristine),
+        "pair_distance_A": manifest.get("pair_distance_A"),
         "spacing_A": spacing,
         "ecut_analogue_eV": float(manifest.get("ecut_analogue_eV", 0.0)),
         "kedf": kedf,
@@ -130,6 +142,7 @@ def main() -> None:
         "xc": xc,
         "fmax_eV_per_A": fmax,
         "target_pressure_GPa": float(args.pressure_gpa),
+        "ase_optimizer": str(args.ase_optimizer),
         "pristine_energy_eV": float(pristine_energy),
         "vacancy_energy_eV": float(vacancy_energy),
         "vacancy_formation_energy_eV": ef_vac,
@@ -139,7 +152,7 @@ def main() -> None:
         "vacancy_cell_lengths_A": [float(x) for x in vacancy_relaxed.cell.lengths()],
         "pristine_cell_angles_deg": [float(x) for x in pristine_relaxed.cell.angles()],
         "vacancy_cell_angles_deg": [float(x) for x in vacancy_relaxed.cell.angles()],
-        "formula": "E_f^vac = E_full-relax_vac^(N-1) - ((N-1)/N) E_full-relax_pristine^N",
+        "formula": "E_f^defect = E_full-relax_defect^(N-nvac) - ((N-nvac)/N) E_full-relax_pristine^N",
     }
     (case_dir / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result, indent=2))

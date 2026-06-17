@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import math
 import re
 from pathlib import Path
@@ -62,11 +63,24 @@ def parse_last_total_force(path: Path) -> float:
 
 def infer_mode(path: Path) -> str:
     parts = set(path.parts)
+    if "pair_scan" in parts:
+        return "pair_scan"
     if "ecut_scan" in parts:
         return "ecut_scan"
     if "kmesh_scan" in parts:
         return "kmesh_scan"
     return "other"
+
+
+def read_manifest(path: Path) -> dict[str, object]:
+    for name in ("pair_manifest.json", "manifest.json"):
+        candidate = path / name
+        if candidate.exists():
+            try:
+                return json.loads(candidate.read_text(encoding="utf-8"))
+            except Exception:
+                return {}
+    return {}
 
 
 def collect(rootdir: Path) -> list[dict[str, object]]:
@@ -78,6 +92,7 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
         vacancy_in = base / "vacancy_vcrelax" / "vc-relax.in"
         if not vacancy_out.exists():
             continue
+        manifest = read_manifest(base)
 
         p_done = job_done(pristine_out)
         v_done = job_done(vacancy_out)
@@ -85,6 +100,7 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
         ev_ry = last_energy_ry(vacancy_out)
         np_atoms = parse_nat(pristine_in)
         nv_atoms = parse_nat(vacancy_in)
+        vacancy_count = (np_atoms - nv_atoms) if np_atoms and nv_atoms else math.nan
         if p_done and v_done and np_atoms and nv_atoms and not math.isnan(ep_ry) and not math.isnan(ev_ry):
             ef_ev = (ev_ry - (nv_atoms / np_atoms) * ep_ry) * RY_TO_EV
         else:
@@ -98,7 +114,9 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
                 "kmesh": parse_kmesh(pristine_in),
                 "N_pristine": np_atoms,
                 "N_vacancy": nv_atoms,
-                "vacancy_concentration_percent": (100.0 / np_atoms) if np_atoms else math.nan,
+                "vacancy_count": vacancy_count,
+                "vacancy_concentration_percent": (100.0 * vacancy_count / np_atoms) if np_atoms and nv_atoms else math.nan,
+                "pair_distance_A": manifest.get("pair_distance_A", math.nan),
                 "pristine_done": p_done,
                 "vacancy_done": v_done,
                 "E_pristine_Ry": ep_ry,

@@ -2,6 +2,45 @@
 
 Date: 2026-06-05
 
+## 2026-06-16 Path Migration Note
+
+The active NCHC work root is now:
+
+```text
+/work/dawson666
+```
+
+Older notes may still mention `/gpfs-work/dawson666`; do not use that path for
+new submissions.
+
+Current canonical roots:
+
+```text
+DFTpy root : /work/dawson666/dftpy_project/relax/dftpy45
+QE root    : /work/dawson666/qe_cases/qe_runs
+QE pw.x    : /work/dawson666/q-e-qe-7.3.1/PW/src/pw.x
+```
+
+For QE jobs, use the absolute `pw.x` path above. It is not on `PATH`, so
+`which pw.x` can return nothing even when QE is usable.
+
+The current QE runtime workaround is:
+
+```bash
+QELIB="${QELIB:-/home/dawson666/miniconda3/envs/abinit-env/lib}"
+export LD_LIBRARY_PATH="${QELIB}:${LD_LIBRARY_PATH:-}"
+GFORTRAN_LIB="${QELIB}/libgfortran.so.5.0.0"
+if [ -s "$GFORTRAN_LIB" ]; then
+  export LD_PRELOAD="$GFORTRAN_LIB${LD_PRELOAD:+:$LD_PRELOAD}"
+fi
+```
+
+The current detailed workflow index is:
+
+```text
+CURRENT_WORKFLOW_INDEX_20260616.md
+```
+
 ## Queue Routing Rule
 
 Use `ctest` for short jobs that are expected to finish within 2 hours.

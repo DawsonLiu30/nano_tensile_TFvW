@@ -5,7 +5,8 @@ import numpy as np
 
 from ase.constraints import FixAtoms
 from ase.filters import FrechetCellFilter
-from ase.optimize import BFGS
+from ase.optimize import BFGS, BFGSLineSearch, LBFGS, MDMin
+from ase.optimize.sciopt import SciPyFminBFGS, SciPyFminCG
 
 from dftpy.config import DefaultOption, OptionFormat
 from dftpy.api.api4ase import DFTpyCalculator
@@ -166,6 +167,26 @@ def _patch_dftpy_linesearch_compat() -> None:
 
 
 _patch_dftpy_linesearch_compat()
+
+
+def _select_ase_optimizer(name: str | None):
+    normalized = str(name or "BFGS").strip().upper()
+    if normalized == "BFGS":
+        return BFGS
+    if normalized == "LBFGS":
+        return LBFGS
+    if normalized in {"BFGSLINESEARCH", "BFGS_LINE_SEARCH", "LINESEARCH"}:
+        return BFGSLineSearch
+    if normalized in {"SCIPYBFGS", "SCIPYFMINBFGS"}:
+        return SciPyFminBFGS
+    if normalized in {"SCIPYCG", "SCIPYFMINCG"}:
+        return SciPyFminCG
+    if normalized == "MDMIN":
+        return MDMin
+    raise ValueError(
+        f"Unsupported ASE optimizer: {name}. "
+        "Supported: BFGS, LBFGS, BFGSLineSearch, SciPyFminBFGS, SciPyFminCG, MDMin"
+    )
 
 
 def normalize_kedf_name(kedf: str | None) -> str:
@@ -393,6 +414,7 @@ def relax_atoms_and_cell(
     opt_method: str | None = None,
     opt_maxiter: int | None = None,
     opt_maxfun: int | None = None,
+    ase_optimizer: str | None = None,
 ):
     """Relax atomic positions and cell, analogous to a QE vc-relax workflow."""
 
@@ -426,7 +448,8 @@ def relax_atoms_and_cell(
         scalar_pressure=scalar_pressure_ev_a3,
         hydrostatic_strain=bool(hydrostatic_strain),
     )
-    dyn = BFGS(cell_filter, trajectory=trajfile, logfile=logfile)
+    optimizer_cls = _select_ase_optimizer(ase_optimizer)
+    dyn = optimizer_cls(cell_filter, trajectory=trajfile, logfile=logfile)
     dyn.run(fmax=float(fmax), steps=int(steps))
 
     E = float(atoms.get_potential_energy())

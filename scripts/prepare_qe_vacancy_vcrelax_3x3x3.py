@@ -186,7 +186,18 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 
-PWX="${{PWX:-/gpfs-home/dawson666/q-e-qe-7.3.1/bin/pw.x}}"
+PWX="${{PWX:-/work/dawson666/q-e-qe-7.3.1/PW/src/pw.x}}"
+if [ ! -x "$PWX" ]; then
+  echo "[ERROR] PWX not executable or not found: $PWX"
+  exit 2
+fi
+
+QELIB="${{QELIB:-/home/dawson666/miniconda3/envs/abinit-env/lib}}"
+export LD_LIBRARY_PATH="${{QELIB}}:${{LD_LIBRARY_PATH:-}}"
+GFORTRAN_LIB="${{QELIB}}/libgfortran.so.5.0.0"
+if [ -s "$GFORTRAN_LIB" ]; then
+  export LD_PRELOAD="$GFORTRAN_LIB${{LD_PRELOAD:+:$LD_PRELOAD}}"
+fi
 
 run_qe () {{
   local subdir="$1"
@@ -208,6 +219,9 @@ run_qe () {{
 echo "[INFO] Host    : $(hostname)"
 echo "[INFO] Workdir : $(pwd)"
 echo "[INFO] Job ID  : $SLURM_JOB_ID"
+echo "[INFO] PWX     : $PWX"
+echo "[INFO] QELIB   : $QELIB"
+echo "[INFO] LD_PRELOAD=${{LD_PRELOAD:-}}"
 echo "[INFO] Start   : $(date)"
 
 run_qe pristine_vcrelax
@@ -235,7 +249,8 @@ def write_array(path: Path, *, settings: list[str], max_parallel: int, partition
 
 set -euo pipefail
 
-cd "$(dirname "$0")"
+ROOT="${{ROOT:-${{SLURM_SUBMIT_DIR:-$(pwd -P)}}}}"
+cd "$ROOT"
 mkdir -p logs_submit
 
 SETTING=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" "{settings_file.name}")

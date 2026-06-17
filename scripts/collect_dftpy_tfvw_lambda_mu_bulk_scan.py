@@ -39,13 +39,39 @@ def matrix_rows(
     lookup = {
         (float(row["lambda_tf"]), float(row["mu_vw"])): row.get(field, math.nan)
         for row in rows
-        if bool(row.get("done", False))
+        if bool(row.get("relaxation_converged", False))
     }
     output = []
     for lambda_tf in lambda_values:
         matrix_row: dict[str, object] = {"lambda/mu": lambda_tf}
         for mu_vw in mu_values:
             matrix_row[f"{mu_vw:.1f}"] = lookup.get((lambda_tf, mu_vw), math.nan)
+        output.append(matrix_row)
+    return output
+
+
+def status_matrix_rows(
+    rows: list[dict[str, object]],
+    lambda_values: list[float],
+    mu_values: list[float],
+) -> list[dict[str, object]]:
+    lookup = {
+        (float(row["lambda_tf"]), float(row["mu_vw"])): (
+            "STABLE"
+            if bool(row.get("stable_fcc_equilibrium", False))
+            else "COLLAPSED"
+            if bool(row.get("relaxation_converged", False))
+            else "UNCONVERGED"
+        )
+        for row in rows
+    }
+    output = []
+    for lambda_tf in lambda_values:
+        matrix_row: dict[str, object] = {"lambda/mu": lambda_tf}
+        for mu_vw in mu_values:
+            matrix_row[f"{mu_vw:.1f}"] = lookup.get(
+                (lambda_tf, mu_vw), "MISSING"
+            )
         output.append(matrix_row)
     return output
 
@@ -193,6 +219,11 @@ def main() -> None:
             title,
         )
 
+    write_csv(
+        tables_dir / "matrix_physical_status.csv",
+        status_matrix_rows(rows, lambda_values, mu_values),
+    )
+
     write_three_panel_table(
         tables_dir / "professor_three_panel_lambda_mu_table.csv",
         matrices,
@@ -212,7 +243,10 @@ def main() -> None:
         "",
         f"- Force-converged cell relaxations: {completed}/{len(rows)}",
         f"- Stable fcc equilibria: {reliable}/{len(rows)}",
+        f"- Collapsed/nonphysical equilibria: {len(rows) - reliable}/{len(rows)}",
         "- Main table values are reported per atom.",
+        "- All force-converged numerical values are retained in the matrices.",
+        "- Use matrix_physical_status.csv to distinguish STABLE and COLLAPSED points.",
         "- The long summary also preserves final force and stress diagnostics.",
     ]
     (rootdir / "COLLECTION_NOTE.md").write_text("\n".join(note) + "\n", encoding="utf-8")

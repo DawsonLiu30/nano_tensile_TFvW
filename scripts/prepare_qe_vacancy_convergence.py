@@ -111,7 +111,7 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 
-PWX="${{PWX:-/gpfs-home/dawson666/q-e-qe-7.3.1/bin/pw.x}}"
+PWX="${{PWX:-/work/dawson666/q-e-qe-7.3.1/PW/src/pw.x}}"
 
 echo "[INFO] Host      : $(hostname)"
 echo "[INFO] Workdir   : $(pwd)"
@@ -166,7 +166,7 @@ export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export OPENBLAS_NUM_THREADS=1
 
-PWX="${{PWX:-/gpfs-home/dawson666/q-e-qe-7.3.1/bin/pw.x}}"
+PWX="${{PWX:-/work/dawson666/q-e-qe-7.3.1/PW/src/pw.x}}"
 
 echo "[INFO] Host      : $(hostname)"
 echo "[INFO] Workdir   : $(pwd)"

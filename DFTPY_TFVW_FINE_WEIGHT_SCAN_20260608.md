@@ -18,10 +18,16 @@ TFvW `y` parameter while keeping:
 - Spacing: `0.20 A`
 - Target force: `fmax < 0.002 eV/A`
 
-Remote result path:
+Remote result path when first run (historical):
 
 ```text
 /gpfs-work/dawson666/dftpy_project/relax/dftpy45/results/dftpy_vacancy_tfvw_weight_fine_y0115_020_conv3x3x3_lda_20260605_v2/
+```
+
+Current NCHC root after the 2026-06-16 path migration:
+
+```text
+/work/dawson666/dftpy_project/relax/dftpy45
 ```
 
 Summary file:
@@ -79,4 +85,3 @@ y = 0.138, 0.140, 0.142, 0.144, 0.146
 ```
 
 but this is not required before starting the nanocolumn vacancy-position tests.
-

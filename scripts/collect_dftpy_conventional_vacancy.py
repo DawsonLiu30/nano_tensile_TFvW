@@ -38,6 +38,8 @@ def collect_scan(rootdir: Path, scan_name: str) -> list[dict[str, object]]:
         manifest = read_json(manifest_path)
         result = read_json(result_path) if result_path.exists() else {}
         n_pristine = int(manifest["pristine_n_atoms"])
+        n_vacancy = int(manifest["vacancy_n_atoms"])
+        vacancy_count = n_pristine - n_vacancy
         ef = result.get("vacancy_formation_energy_eV", math.nan)
         repeat_label = str(manifest.get("conventional_repeat_label", ""))
         if not repeat_label:
@@ -55,8 +57,10 @@ def collect_scan(rootdir: Path, scan_name: str) -> list[dict[str, object]]:
                 "cell_basis": str(manifest["cell_basis"]),
                 "conventional_repeat_label": repeat_label,
                 "N_pristine": n_pristine,
-                "N_vacancy": int(manifest["vacancy_n_atoms"]),
-                "vacancy_concentration_percent": 100.0 / float(n_pristine),
+                "N_vacancy": n_vacancy,
+                "vacancy_count": vacancy_count,
+                "vacancy_concentration_percent": 100.0 * float(vacancy_count) / float(n_pristine),
+                "pair_distance_A": result.get("pair_distance_A", manifest.get("pair_distance_A", math.nan)),
                 "spacing_A": float(manifest["spacing_A"]),
                 "ecut_analogue_eV": float(manifest["ecut_analogue_eV"]),
                 "xc": str(result.get("xc", manifest.get("xc", "unknown"))),
@@ -126,6 +130,7 @@ def main() -> None:
     spacing_rows = collect_scan(rootdir, "spacing_scan")
     size_rows = collect_scan(rootdir, "size_scan")
     weight_rows = collect_scan(rootdir, "weight_scan")
+    pair_rows = collect_scan(rootdir, "pair_scan")
 
     if spacing_rows:
         # Larger spacing first in the table mirrors the usual convergence scan order.
@@ -169,7 +174,18 @@ def main() -> None:
             title="DFTpy conventional fcc vacancy: TF/vW weight scan",
         )
 
-    all_rows = spacing_rows + size_rows + weight_rows
+    if pair_rows:
+        add_deltas(pair_rows, "pair_distance_A")
+        write_csv(rootdir / "dftpy_conventional_pair_summary.csv", pair_rows)
+        plot_scan(
+            rootdir / "dftpy_conventional_pair_Ef.png",
+            pair_rows,
+            xkey="pair_distance_A",
+            xlabel="vacancy-pair distance r (A)",
+            title="DFTpy conventional fcc divacancy: pair-distance scan",
+        )
+
+    all_rows = spacing_rows + size_rows + weight_rows + pair_rows
     write_csv(rootdir / "dftpy_conventional_all_summary.csv", all_rows)
 
     print("============================================================")
@@ -179,6 +195,7 @@ def main() -> None:
     print(f"Spacing rows: {len(spacing_rows)}")
     print(f"Size rows   : {len(size_rows)}")
     print(f"Weight rows : {len(weight_rows)}")
+    print(f"Pair rows   : {len(pair_rows)}")
     print(f"All summary : {rootdir / 'dftpy_conventional_all_summary.csv'}")
 
 
