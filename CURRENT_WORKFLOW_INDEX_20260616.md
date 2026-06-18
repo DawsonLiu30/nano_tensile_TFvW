@@ -2,6 +2,9 @@
 
 Date: 2026-06-16
 
+Latest handoff update: 2026-06-18.  See `WEEKEND_HANDOFF_20260618.md` and
+`ADVISOR_RESPONSE_ACTIONS_20260618.md` before continuing from another computer.
+
 This file is the current handoff map for the vacancy/divacancy work.  It is
 intended to keep the calculation families separated and reproducible.
 
@@ -186,10 +189,10 @@ Current remote run:
 Current job:
 
 ```text
-1534682_[0-4] QEVCR3 on ct56
+1553956_[0-4] QEVCR3 on ct56
 ```
 
-Current status as of 2026-06-16 evening:
+Current status as of 2026-06-18:
 
 - All five QE array tasks are running.
 - `pw.x` path and runtime library issue were fixed.
@@ -248,9 +251,30 @@ pair distances can run when policy/resources permit.
 
 ## Current Next Steps
 
-1. Wait for QE job `1534682_[0-4]` to finish.
+1. Wait for QE job `1553956_[0-4]` to finish.
 2. Collect QE output with `scripts/collect_qe_vcrelax_vacancy.py`.
 3. Pull with `scripts/pull_divacancy_rscan_results_20260616.sh`.
 4. Build a combined QE vs DFTpy `E_2vac(r)` plot.
 5. If the professor confirms that `r` itself must exceed `10 A`, prepare a
    longer `3x3x6` divacancy scan.
+
+## Advisor Feedback From 2026-06-18
+
+Professor Lueder requested a cleanup before the next submission:
+
+- Finish and evaluate the single-vacancy `lambda/mu` calibration before treating
+  divacancy/nanostructure data as final.
+- Add QE/DFT reference values.
+- Put DFTpy input/output files directly inside the raw calculation folders.
+- Add source directories and critical computational details to spreadsheets.
+- Add compact evaluation slides or notebooks.
+- Clarify `divacancy_start.vasp` vs `vacancy_start.vasp`.
+- Explain or recheck the small divacancy trend drop near `6-7 A`.
+- Clarify that reported `r` values are minimum-image distances under PBC.
+- Avoid redundant main plots showing both `E_2vac` and `E_2vac/2`.
+
+The detailed action list and draft reply are in:
+
+```text
+ADVISOR_RESPONSE_ACTIONS_20260618.md
+```
