@@ -38,6 +38,87 @@ def write_structure_pair(base: Path, atoms) -> None:
     write(str(base.with_suffix(".xyz")), atoms)
 
 
+def write_dftpy_provenance_input(
+    path: Path,
+    *,
+    pp_filename: str,
+    structure_filename: str,
+    spacing_a: float,
+    xc: str,
+    kedf: str,
+    kedf_x: float,
+    kedf_y: float,
+) -> None:
+    """Write the human-readable equivalent of the programmatic calculator input."""
+
+    path.write_text(
+        f"""# Provenance input equivalent to the DftpyCalculator configuration.
+# Ionic and cell relaxation is performed by ASE FrechetCellFilter + BFGS.
+
+[JOB]
+task = Optdensity
+calctype = Energy Force Stress
+
+[PATH]
+pppath = ../../
+cellpath = ./
+
+[PP]
+Al = {pp_filename}
+
+[CELL]
+cellfile = {structure_filename}
+format = vasp
+
+[GRID]
+spacing = {spacing_a:.8f}
+
+[EXC]
+xc = {str(xc).strip().upper()}
+
+[KEDF]
+kedf = {kedf}
+x = {kedf_x:.8f}
+y = {kedf_y:.8f}
+
+[OPT]
+method = LBFGS
+""",
+        encoding="utf-8",
+    )
+
+
+def write_case_readme(path: Path, *, setting: str, pair_distance_a: float) -> None:
+    path.write_text(
+        f"""DFTpy divacancy case: {setting}
+
+Pair distance:
+  {pair_distance_a:.8f} A (initial minimum-image distance under PBC)
+
+Starting structures:
+  pristine_raw.vasp       108-atom pristine cell
+  divacancy_start.vasp    106-atom cell with two vacancies
+
+DFTpy provenance inputs:
+  dftpy_pristine_input.ini
+  dftpy_divacancy_input.ini
+
+Expected calculation outputs:
+  pristine_dftpy.out
+  divacancy_dftpy.out
+  pristine_relax.log
+  divacancy_relax.log
+  pristine_vc_relaxed.vasp
+  divacancy_vc_relaxed.vasp
+  result.json
+
+The .ini files document the DftpyCalculator settings. The ionic and cell
+relaxation is driven programmatically through ASE FrechetCellFilter and BFGS.
+""",
+        encoding="utf-8",
+    )
+
+
 def build_centered_pristine(a0: float, repeat: tuple[int, int, int]):
     atoms = bulk("Al", "fcc", a=a0, cubic=True).repeat(repeat)
     scaled = atoms.get_scaled_positions(wrap=True)
@@ -105,7 +186,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--account", default="MST114175")
     parser.add_argument("--partition", default="ctest")
     parser.add_argument("--time-limit", default="02:00:00")
-    parser.add_argument("--cpus", type=int, default=8)
+    parser.add_argument("--cpus", type=int, default=1)
     parser.add_argument("--mem", default="96G")
     parser.add_argument("--max-parallel", type=int, default=2)
     parser.add_argument(
@@ -138,6 +219,7 @@ def main() -> None:
     rows = []
     ecut_analogue = spacing_to_ecut_analogue_ev(args.spacing)
     n_pristine = len(pristine)
+    pp_path = Path(args.pp).expanduser().resolve()
 
     for case_idx, (distance, second_index, delta) in enumerate(pairs, start=1):
         setting = f"pair_{case_idx:02d}_{safe_distance_label(distance)}"
@@ -145,8 +227,32 @@ def main() -> None:
         case_dir.mkdir(parents=True)
         divacancy = remove_two_atoms(pristine, center_index, second_index)
         write_structure_pair(case_dir / "pristine_raw", pristine)
-        write_structure_pair(case_dir / "vacancy_start", divacancy)
         write_structure_pair(case_dir / "divacancy_start", divacancy)
+        write_dftpy_provenance_input(
+            case_dir / "dftpy_pristine_input.ini",
+            pp_filename=pp_path.name,
+            structure_filename="pristine_raw.vasp",
+            spacing_a=args.spacing,
+            xc=args.xc,
+            kedf=args.kedf,
+            kedf_x=args.kedf_x,
+            kedf_y=args.kedf_y,
+        )
+        write_dftpy_provenance_input(
+            case_dir / "dftpy_divacancy_input.ini",
+            pp_filename=pp_path.name,
+            structure_filename="divacancy_start.vasp",
+            spacing_a=args.spacing,
+            xc=args.xc,
+            kedf=args.kedf,
+            kedf_x=args.kedf_x,
+            kedf_y=args.kedf_y,
+        )
+        write_case_readme(
+            case_dir / "README_CASE.txt",
+            setting=setting,
+            pair_distance_a=distance,
+        )
 
         manifest = {
             "setting": setting,
@@ -169,7 +275,7 @@ def main() -> None:
             "pair_delta_A": [float(x) for x in delta],
             "spacing_A": args.spacing,
             "ecut_analogue_eV": ecut_analogue,
-            "pp_file": str(Path(args.pp).expanduser().resolve()),
+            "pp_file": str(pp_path),
             "xc": args.xc,
             "kedf": args.kedf,
             "kedf_x": args.kedf_x,
@@ -193,8 +299,8 @@ def main() -> None:
                 "vacancy_count": n_pristine - len(divacancy),
                 "vacancy_concentration_percent": f"{100.0 * (n_pristine - len(divacancy)) / n_pristine:.8f}",
                 "source_dir": str(case_dir),
-                "input_files": "pristine_raw.vasp; vacancy_start.vasp; point_manifest.json",
-                "expected_output_files": "pristine_dftpy.out; vacancy_dftpy.out; pristine_relax.log; vacancy_relax.log; result.json",
+                "input_files": "pristine_raw.vasp; divacancy_start.vasp; dftpy_pristine_input.ini; dftpy_divacancy_input.ini; point_manifest.json",
+                "expected_output_files": "pristine_dftpy.out; divacancy_dftpy.out; pristine_relax.log; divacancy_relax.log; result.json",
             }
         )
 
@@ -233,9 +339,9 @@ conda activate dftpy-env
 
 export PYTHONNOUSERSITE=1
 export MPLBACKEND=Agg
-export OMP_NUM_THREADS="${{SLURM_CPUS_PER_TASK:-{args.cpus}}}"
-export MKL_NUM_THREADS="${{SLURM_CPUS_PER_TASK:-{args.cpus}}}"
-export OPENBLAS_NUM_THREADS="${{SLURM_CPUS_PER_TASK:-{args.cpus}}}"
+export OMP_NUM_THREADS="${{OMP_NUM_THREADS:-1}}"
+export MKL_NUM_THREADS="${{MKL_NUM_THREADS:-1}}"
+export OPENBLAS_NUM_THREADS="${{OPENBLAS_NUM_THREADS:-1}}"
 
 SETTING=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" "$SETTING_FILE")
 if [ -z "$SETTING" ]; then
@@ -246,6 +352,7 @@ fi
 echo "[INFO] SERIES_NAME=$SERIES_NAME"
 echo "[INFO] SETTING=$SETTING"
 echo "[INFO] ASE_OPTIMIZER=$ASE_OPTIMIZER"
+echo "[INFO] OMP_NUM_THREADS=$OMP_NUM_THREADS"
 
 python scripts/run_dftpy_vcrelax_vacancy_one.py \\
   --rootdir "${{ROOT}}/results/${{SERIES_NAME}}" \\

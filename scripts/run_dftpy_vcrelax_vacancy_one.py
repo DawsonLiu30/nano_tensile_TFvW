@@ -5,6 +5,7 @@ import json
 import sys
 from pathlib import Path
 
+import numpy as np
 from ase.io import read, write
 
 
@@ -43,6 +44,43 @@ def write_structure_pair(base: Path, atoms) -> None:
     write(str(base.with_suffix(".vasp")), atoms, direct=True, vasp5=True)
 
 
+def write_calculator_provenance(
+    path: Path,
+    *,
+    structure_file: str,
+    pp_file: Path,
+    spacing: float,
+    kedf: str,
+    xc: str,
+    kedf_x: float,
+    kedf_y: float,
+    fmax: float,
+    steps: int,
+    pressure_gpa: float,
+    ase_optimizer: str,
+) -> None:
+    data = {
+        "structure_file": structure_file,
+        "dftpy_calculator": {
+            "JOB": {"calctype": "Energy Force Stress"},
+            "PATH": {"pppath": str(pp_file.parent)},
+            "PP": {"Al": pp_file.name},
+            "GRID": {"spacing": spacing},
+            "EXC": {"xc": xc},
+            "KEDF": {"kedf": kedf, "x": kedf_x, "y": kedf_y},
+            "OPT": {"method": "LBFGS"},
+        },
+        "ase_full_relaxation": {
+            "cell_filter": "FrechetCellFilter",
+            "optimizer": ase_optimizer,
+            "fmax_eV_A": fmax,
+            "max_steps": steps,
+            "scalar_pressure_GPa": pressure_gpa,
+        },
+    }
+    path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+
+
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="Run DFTpy full atom+cell relaxation for one vacancy case.")
     ap.add_argument("--rootdir", required=True)
@@ -75,8 +113,45 @@ def main() -> None:
     fmax = float(manifest["fmax_eV_per_A"])
     steps = int(manifest["relax_steps"])
 
+    is_pair = str(manifest.get("scan_type", "")) == "pair"
+    defect_label = "divacancy" if is_pair else "vacancy"
+    defect_start = case_dir / f"{defect_label}_start.vasp"
+    if not defect_start.exists() and is_pair:
+        # Backward compatibility for packages prepared before the explicit
+        # divacancy naming fix.
+        defect_start = case_dir / "vacancy_start.vasp"
+
     pristine = read(str(case_dir / "pristine_raw.vasp"))
-    vacancy = read(str(case_dir / "vacancy_start.vasp"))
+    defect = read(str(defect_start))
+
+    write_calculator_provenance(
+        case_dir / "dftpy_pristine_calculator_config.json",
+        structure_file="pristine_raw.vasp",
+        pp_file=pp_file,
+        spacing=spacing,
+        kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
+        fmax=fmax,
+        steps=steps,
+        pressure_gpa=float(args.pressure_gpa),
+        ase_optimizer=str(args.ase_optimizer),
+    )
+    write_calculator_provenance(
+        case_dir / f"dftpy_{defect_label}_calculator_config.json",
+        structure_file=defect_start.name,
+        pp_file=pp_file,
+        spacing=spacing,
+        kedf=kedf,
+        xc=xc,
+        kedf_x=kedf_x,
+        kedf_y=kedf_y,
+        fmax=fmax,
+        steps=steps,
+        pressure_gpa=float(args.pressure_gpa),
+        ase_optimizer=str(args.ase_optimizer),
+    )
 
     pristine_relaxed, pristine_energy, pristine_stress = relax_atoms_and_cell(
         pristine,
@@ -94,8 +169,8 @@ def main() -> None:
         scalar_pressure_gpa=float(args.pressure_gpa),
         ase_optimizer=str(args.ase_optimizer),
     )
-    vacancy_relaxed, vacancy_energy, vacancy_stress = relax_atoms_and_cell(
-        vacancy,
+    defect_relaxed, defect_energy, defect_stress = relax_atoms_and_cell(
+        defect,
         pp_file=pp_file,
         spacing=spacing,
         kedf=kedf,
@@ -104,22 +179,24 @@ def main() -> None:
         kedf_y=kedf_y,
         fmax=fmax,
         steps=steps,
-        logfile=str(case_dir / "vacancy_relax.log"),
-        trajfile=str(case_dir / "vacancy_relax.traj"),
-        dftpy_outfile=str(case_dir / "vacancy_dftpy.out"),
+        logfile=str(case_dir / f"{defect_label}_relax.log"),
+        trajfile=str(case_dir / f"{defect_label}_relax.traj"),
+        dftpy_outfile=str(case_dir / f"{defect_label}_dftpy.out"),
         scalar_pressure_gpa=float(args.pressure_gpa),
         ase_optimizer=str(args.ase_optimizer),
     )
 
     write_structure_pair(case_dir / "pristine_vc_relaxed", pristine_relaxed)
-    write_structure_pair(case_dir / "vacancy_vc_relaxed", vacancy_relaxed)
+    write_structure_pair(case_dir / f"{defect_label}_vc_relaxed", defect_relaxed)
     write_structure_pair(case_dir / "pristine_relaxed", pristine_relaxed)
-    write_structure_pair(case_dir / "vacancy_relaxed", vacancy_relaxed)
+    write_structure_pair(case_dir / f"{defect_label}_relaxed", defect_relaxed)
 
     n_pristine = int(manifest["pristine_n_atoms"])
     n_vacancy = int(manifest["vacancy_n_atoms"])
     vacancy_count = n_pristine - n_vacancy
-    ef_vac = float(vacancy_energy - (n_vacancy / n_pristine) * pristine_energy)
+    ef_vac = float(defect_energy - (n_vacancy / n_pristine) * pristine_energy)
+    pristine_fmax = float(np.linalg.norm(pristine_relaxed.get_forces(), axis=1).max())
+    defect_fmax = float(np.linalg.norm(defect_relaxed.get_forces(), axis=1).max())
 
     result = {
         "setting": str(manifest["setting"]),
@@ -131,6 +208,7 @@ def main() -> None:
         "pristine_n_atoms": n_pristine,
         "vacancy_n_atoms": n_vacancy,
         "vacancy_count": vacancy_count,
+        "defect_label": defect_label,
         "vacancy_concentration_fraction": float(vacancy_count) / float(n_pristine),
         "vacancy_concentration_percent": 100.0 * float(vacancy_count) / float(n_pristine),
         "pair_distance_A": manifest.get("pair_distance_A"),
@@ -144,14 +222,21 @@ def main() -> None:
         "target_pressure_GPa": float(args.pressure_gpa),
         "ase_optimizer": str(args.ase_optimizer),
         "pristine_energy_eV": float(pristine_energy),
-        "vacancy_energy_eV": float(vacancy_energy),
+        "vacancy_energy_eV": float(defect_energy),
+        f"{defect_label}_energy_eV": float(defect_energy),
         "vacancy_formation_energy_eV": ef_vac,
         "pristine_stress_GPa": pristine_stress.tolist(),
-        "vacancy_stress_GPa": vacancy_stress.tolist(),
+        "vacancy_stress_GPa": defect_stress.tolist(),
+        f"{defect_label}_stress_GPa": defect_stress.tolist(),
+        "pristine_final_fmax_eV_A": pristine_fmax,
+        "vacancy_final_fmax_eV_A": defect_fmax,
+        f"{defect_label}_final_fmax_eV_A": defect_fmax,
         "pristine_cell_lengths_A": [float(x) for x in pristine_relaxed.cell.lengths()],
-        "vacancy_cell_lengths_A": [float(x) for x in vacancy_relaxed.cell.lengths()],
+        "vacancy_cell_lengths_A": [float(x) for x in defect_relaxed.cell.lengths()],
+        f"{defect_label}_cell_lengths_A": [float(x) for x in defect_relaxed.cell.lengths()],
         "pristine_cell_angles_deg": [float(x) for x in pristine_relaxed.cell.angles()],
-        "vacancy_cell_angles_deg": [float(x) for x in vacancy_relaxed.cell.angles()],
+        "vacancy_cell_angles_deg": [float(x) for x in defect_relaxed.cell.angles()],
+        f"{defect_label}_cell_angles_deg": [float(x) for x in defect_relaxed.cell.angles()],
         "formula": "E_f^defect = E_full-relax_defect^(N-nvac) - ((N-nvac)/N) E_full-relax_pristine^N",
     }
     (case_dir / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")

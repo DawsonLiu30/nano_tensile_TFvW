@@ -21,8 +21,6 @@ from prepare_qe_vacancy_vcrelax_3x3x3 import (  # noqa: E402
     cell_summary,
     parse_kmesh_list,
     parse_repeat,
-    write_array,
-    write_group_job,
     write_vcrelax_input,
 )
 
@@ -80,6 +78,106 @@ def remove_two_atoms(atoms, first_index: int, second_index: int):
     return divacancy
 
 
+def write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+
+
+def write_divacancy_group_job(
+    path: Path,
+    *,
+    job_name: str,
+    partition: str,
+    ntasks: int,
+    time_limit: str,
+    mem: str,
+) -> None:
+    text = f"""#!/bin/bash
+#SBATCH --job-name={job_name}
+#SBATCH --output=%x-%j.out
+#SBATCH --error=%x-%j.err
+#SBATCH --time={time_limit}
+#SBATCH --nodes=1
+#SBATCH --ntasks={ntasks}
+#SBATCH --mem={mem}
+#SBATCH --partition={partition}
+#SBATCH --no-requeue
+#SBATCH --account=MST114175
+
+set -euo pipefail
+
+module purge
+module load intel/2021
+module load intelmpi/2021.11
+
+PWX="${{PWX:-/work/dawson666/q-e-qe-7.3.1/PW/src/pw.x}}"
+QELIB="${{QELIB:-/home/dawson666/miniconda3/envs/abinit-env/lib}}"
+export LD_LIBRARY_PATH="${{QELIB}}:${{LD_LIBRARY_PATH:-}}"
+export LD_PRELOAD="${{QELIB}}/libgfortran.so.5.0.0${{LD_PRELOAD:+:$LD_PRELOAD}}"
+
+if [ ! -x "$PWX" ]; then
+  echo "[ERROR] QE binary not found: $PWX"
+  exit 2
+fi
+
+run_qe() {{
+  local folder="$1"
+  if [ -s "$folder/vc-relax.out" ] && grep -q "JOB DONE" "$folder/vc-relax.out"; then
+    echo "[SKIP] $folder already completed"
+    return
+  fi
+  echo "[RUN] $folder"
+  (
+    cd "$folder"
+    rm -rf tmp CRASH
+    mkdir -p tmp
+    mpirun "$PWX" -in vc-relax.in > vc-relax.out
+  )
+}}
+
+echo "[INFO] host=$(hostname) job=${{SLURM_JOB_ID}} pwx=$PWX"
+run_qe pristine_vcrelax
+run_qe divacancy_vcrelax
+"""
+    write_text(path, text)
+
+
+def write_divacancy_array(
+    path: Path,
+    *,
+    settings: list[str],
+    max_parallel: int,
+    partition: str,
+    ntasks: int,
+    time_limit: str,
+    mem: str,
+) -> None:
+    settings_file = path.with_suffix(".settings")
+    write_text(settings_file, "\n".join(settings) + "\n")
+    text = f"""#!/bin/bash
+#SBATCH --job-name=QEDivac
+#SBATCH --output=logs_submit/%x_%A_%a.out
+#SBATCH --error=logs_submit/%x_%A_%a.err
+#SBATCH --time={time_limit}
+#SBATCH --nodes=1
+#SBATCH --ntasks={ntasks}
+#SBATCH --mem={mem}
+#SBATCH --partition={partition}
+#SBATCH --no-requeue
+#SBATCH --account=MST114175
+#SBATCH --array=0-{len(settings) - 1}%{max_parallel}
+
+set -euo pipefail
+
+ROOT="${{ROOT:-${{SLURM_SUBMIT_DIR:-$(pwd -P)}}}}"
+SETTING=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" "${{ROOT}}/{settings_file.name}")
+mkdir -p "${{ROOT}}/logs_submit"
+cd "${{ROOT}}/${{SETTING}}"
+bash group_job.sh
+"""
+    write_text(path, text)
+
+
 def prepare_case(
     root: Path,
     rel_setting: str,
@@ -108,7 +206,7 @@ def prepare_case(
         press_conv_kbar=press_conv_kbar,
     )
     write_vcrelax_input(
-        setting_dir / "vacancy_vcrelax" / "vc-relax.in",
+        setting_dir / "divacancy_vcrelax" / "vc-relax.in",
         prefix=f"Al_divac_{rel_setting.replace('/', '_')}",
         atoms=divacancy,
         ecut_ev=ecut_ev,
@@ -117,7 +215,7 @@ def prepare_case(
         force_conv_eva=force_conv_eva,
         press_conv_kbar=press_conv_kbar,
     )
-    write_group_job(
+    write_divacancy_group_job(
         setting_dir / "group_job.sh",
         job_name=f"QDV{rel_setting.split('/')[-1].replace('_', '')[:8]}",
         partition=partition,
@@ -241,14 +339,14 @@ def main() -> None:
                 "vacancy_count": n_pristine - len(divacancy),
                 "vacancy_concentration_percent": f"{100.0 * (n_pristine - len(divacancy)) / n_pristine:.8f}",
                 "source_dir": str(case_dir),
-                "input_files": "pristine_vcrelax/vc-relax.in; vacancy_vcrelax/vc-relax.in; pair_manifest.json",
-                "expected_output_files": "pristine_vcrelax/vc-relax.out; vacancy_vcrelax/vc-relax.out",
+                "input_files": "pristine_vcrelax/vc-relax.in; divacancy_vcrelax/vc-relax.in; pair_manifest.json",
+                "expected_output_files": "pristine_vcrelax/vc-relax.out; divacancy_vcrelax/vc-relax.out",
                 "ecut_eV": args.ecut,
                 "kmesh": "x".join(str(x) for x in kmesh),
             }
         )
 
-    write_array(
+    write_divacancy_array(
         outdir / "submit_qe_divacancy_pair_array.sh",
         settings=settings,
         max_parallel=args.max_parallel,

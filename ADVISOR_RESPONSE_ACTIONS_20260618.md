@@ -2,6 +2,36 @@
 
 Date: 2026-06-18
 
+## Progress Update: 2026-06-22
+
+Completed locally:
+
+- DFTpy pair scans now use explicit `divacancy_*` input/output names.
+- Each new case contains readable DFTpy `.ini` provenance inputs, actual
+  calculator-config JSON files, outputs, relax logs, final structures, and a
+  case README.
+- DFTpy Slurm defaults are now one task, one CPU, and one BLAS/OpenMP thread.
+- The QE divacancy generator now writes a concise job script and uses the
+  explicit `divacancy_vcrelax` directory name.
+- Three workflow notebooks were added under `notebooks/`.
+- The old DFTpy pilot package was rebuilt successfully with `5/5` complete
+  directly discoverable case folders.
+- Geometry/strain audit shows the `6.3876 A` point is force converged and has no
+  obvious displacement/strain anomaly.
+
+Important interpretation found on 2026-06-22:
+
+- The old scalar-distance plot mixed crystallographic directions:
+  `[110]`, `[100]`, `[110]`, `[310]`, `[110]`.
+- The small drop near `6.39 A` occurs at the `[310]` point. It must be discussed
+  as orientation dependence, not as a break in a single `[110]` radial trend.
+- The `8.5698 A` point is the `[110]` vector `(L/2,L/2,0)` in a cubic cell with
+  `L ~= 12.12 A`; it is valid under the minimum-image convention.
+- The complete 10x10 single-vacancy matrix shows that `(lambda,mu)=(1,0.13)`
+  matches the vacancy energy but does not match the relaxed lattice constant.
+- A 42-point fine scan has therefore been prepared for
+  `lambda=0.90-0.95`, `mu=0.04-0.10` before any final divacancy rerun.
+
 This file translates Professor Lueder's 2026-06-18 feedback into concrete
 calculation, packaging, and reporting actions.
 

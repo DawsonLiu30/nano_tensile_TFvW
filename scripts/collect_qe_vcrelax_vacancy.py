@@ -87,9 +87,10 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
     for pristine_out in sorted(rootdir.rglob("pristine_vcrelax/vc-relax.out")):
         base = pristine_out.parent.parent
-        vacancy_out = base / "vacancy_vcrelax" / "vc-relax.out"
+        defect_dir_name = "divacancy_vcrelax" if (base / "divacancy_vcrelax").exists() else "vacancy_vcrelax"
+        vacancy_out = base / defect_dir_name / "vc-relax.out"
         pristine_in = base / "pristine_vcrelax" / "vc-relax.in"
-        vacancy_in = base / "vacancy_vcrelax" / "vc-relax.in"
+        vacancy_in = base / defect_dir_name / "vc-relax.in"
         if not vacancy_out.exists():
             continue
         manifest = read_manifest(base)
@@ -115,6 +116,7 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
                 "N_pristine": np_atoms,
                 "N_vacancy": nv_atoms,
                 "vacancy_count": vacancy_count,
+                "defect_label": "divacancy" if defect_dir_name == "divacancy_vcrelax" else "vacancy",
                 "vacancy_concentration_percent": (100.0 * vacancy_count / np_atoms) if np_atoms and nv_atoms else math.nan,
                 "pair_distance_A": manifest.get("pair_distance_A", math.nan),
                 "pristine_done": p_done,

@@ -278,3 +278,41 @@ The detailed action list and draft reply are in:
 ```text
 ADVISOR_RESPONSE_ACTIONS_20260618.md
 ```
+
+## Monday 2026-06-22 Pipeline Update
+
+New or corrected workflow components:
+
+| Purpose | File |
+|---|---|
+| Energy, binding, and PBC definitions | `DIVACANCY_ENERGY_AND_PBC_DEFINITIONS.md` |
+| Generate structure notebook | `notebooks/01_generate_divacancy_structures.ipynb` |
+| Verify DFTpy formation energy notebook | `notebooks/02_read_dftpy_outputs_compute_formation_energy.ipynb` |
+| Compare DFTpy and QE notebook | `notebooks/03_compare_dftpy_qe_divacancy.ipynb` |
+| Geometry and strain-proxy audit | `scripts/analyze_divacancy_geometry_strain.py` |
+| Rebuild professor package | `scripts/build_divacancy_professor_package.py` |
+| Prepare 42-point single-vacancy fine scan | `scripts/prepare_dftpy_tfvw_lambda_mu_vacancy_fine_scan.py` |
+| Push fine scan to NCHC | `scripts/push_dftpy_tfvw_lambda_mu_vacancy_fine_scan.sh` |
+
+Corrected divacancy direction table:
+
+| Initial r (A) | Direction family | DFTpy pilot E_2vac (eV) |
+|---:|---|---:|
+| 2.8566 | `[110]` | 1.151372 |
+| 4.0398 | `[100]` | 1.191490 |
+| 5.7132 | `[110]` | 1.206444 |
+| 6.3876 | `[310]` | 1.199246 |
+| 8.5698 | `[110]` | 1.210838 |
+
+The apparent dip at `6.3876 A` is not part of a single fixed-direction trend;
+the point changes from `[110]` to `[310]`. Future plots must show direction.
+
+The old divacancy pilot used `(lambda,mu)=(1.0,0.13)`. It remains pilot data
+because that setting matches the single-vacancy formation energy but does not
+simultaneously match the relaxed lattice constant. The next calibration scan is:
+
+```text
+lambda = 0.90, 0.91, 0.92, 0.93, 0.94, 0.95
+mu     = 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10
+points = 42
+```
