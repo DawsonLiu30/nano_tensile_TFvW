@@ -2,7 +2,7 @@
 
 Date: 2026-06-16
 
-Latest handoff update: 2026-06-18.  See `WEEKEND_HANDOFF_20260618.md` and
+Latest handoff update: 2026-06-22.  See `WEEKEND_HANDOFF_20260618.md` and
 `ADVISOR_RESPONSE_ACTIONS_20260618.md` before continuing from another computer.
 
 This file is the current handoff map for the vacancy/divacancy work.  It is
@@ -38,7 +38,7 @@ paths. New divacancy scripts use `/work/dawson666` by default.
 | `3x3x3` starting cell length | `12.119544 A` in each direction |
 | Cell-size interpretation | cell sides exceed `10 A`; if professor means `vacancy-vacancy distance r > 10 A`, prepare `3x3x6` |
 | DFTpy XC/pseudo | `LDA`, `al.lda.recpot` |
-| DFTpy calibrated TFvW | `kedf_x/lambda = 1.0`, `kedf_y/mu = 0.13` |
+| DFTpy TFvW pilot setting | `kedf_x/lambda = 1.0`, `kedf_y/mu = 0.13`; not final because lattice constant was not jointly calibrated |
 | DFTpy spacing | `0.20 A` |
 | DFTpy relaxation | full atom+cell relaxation / vc-relax equivalent |
 | DFTpy optimizer default | ASE `BFGS`; fallback options exist, but do not use FIRE |
@@ -64,7 +64,9 @@ Important result:
 |---:|---:|---|
 | `0.130` | `0.603451` | pristine and vacancy pass `fmax < 0.002 eV/A` |
 
-Use `x/lambda = 1.0`, `y/mu ~= 0.13` for current DFTpy production screening.
+Treat `x/lambda = 1.0`, `y/mu ~= 0.13` as a historical pilot setting only.
+The final pair must be selected jointly from vacancy formation energy, relaxed
+lattice constant, forces, and stress.
 
 Main scripts:
 
@@ -113,6 +115,40 @@ Notes:
 - Formation-energy maps should plot vacancy formation energy, not raw pristine
   total energy. KEDF and lattice constant maps can be direct relaxed-pristine
   values if that is the requested table.
+
+### 2a. Single-Vacancy Lambda/Mu Fine Scan
+
+The 42-point refinement scans `lambda=0.90-0.95` and `mu=0.04-0.10` for the
+same conventional `3x3x3`, `108 -> 107` cell. NCHC job `1569500` was submitted
+on 2026-06-22 as three workers with at most two concurrent workers.
+
+This scan is independent of the numerical QE target during execution. After
+completion, re-rank the same DFTpy results against the corrected QE reference
+described below; no DFTpy rerun is needed solely because the reference changed.
+
+### 2b. Corrected QE Single-Vacancy Reference
+
+The corrected KSDFT source is the conventional cubic `3x3x3`, `108 -> 107`,
+QE/PBE `vc-relax` workflow at `800 eV`:
+
+| k mesh | Ef_vac (eV) |
+|---|---:|
+| `3x3x3` | `0.644941904` |
+| `4x4x4` | `0.677874700` |
+| `5x5x5` | `0.638912226` |
+
+Use `0.638912226 eV` as the best completed dense-k point and retain
+`0.638912-0.677875 eV` as the visible k-point sensitivity range. The old
+`0.601167 eV` target belongs to the historical conventional `2x2x4`,
+`64 -> 63` dataset and must not be labeled as the corrected `3x3x3` reference.
+
+Reference documentation and package builder:
+
+| Purpose | File |
+|---|---|
+| Reference definition | `QE_SINGLE_VACANCY_REFERENCE.md` |
+| Build complete input/output dossier | `scripts/build_qe_single_vacancy_reference_package.py` |
+| Collect energies and actual final atomic fmax | `scripts/collect_qe_vcrelax_vacancy.py` |
 
 ### 3. DFTpy Divacancy r-Scan
 

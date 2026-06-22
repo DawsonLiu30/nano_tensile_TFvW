@@ -9,6 +9,13 @@ from pathlib import Path
 
 
 RY_TO_EV = 13.605693122994
+BOHR_TO_ANGSTROM = 0.529177210903
+RY_BOHR_TO_EV_ANGSTROM = RY_TO_EV / BOHR_TO_ANGSTROM
+ATOM_FORCE_RE = re.compile(
+    r"atom\s+\d+\s+type\s+\d+\s+force\s*=\s*"
+    r"([0-9.EeDd+-]+)\s+([0-9.EeDd+-]+)\s+([0-9.EeDd+-]+)",
+    re.IGNORECASE,
+)
 
 
 def read_text(path: Path) -> str:
@@ -61,6 +68,28 @@ def parse_last_total_force(path: Path) -> float:
     return values[-1] if values else math.nan
 
 
+def parse_final_atomic_fmax(path: Path, nat: int | None) -> tuple[float, float]:
+    """Return the maximum atomic-force norm from the final QE force block."""
+    if not nat:
+        return math.nan, math.nan
+    text = read_text(path)
+    if "Total force" not in text:
+        return math.nan, math.nan
+    before_last_total = text.rsplit("Total force", 1)[0]
+    matches = list(ATOM_FORCE_RE.finditer(before_last_total))[-nat:]
+    if len(matches) != nat:
+        return math.nan, math.nan
+    norms: list[float] = []
+    for match in matches:
+        components = [
+            float(match.group(index).replace("D", "E").replace("d", "e"))
+            for index in range(1, 4)
+        ]
+        norms.append(math.sqrt(sum(component * component for component in components)))
+    fmax_ry_bohr = max(norms)
+    return fmax_ry_bohr, fmax_ry_bohr * RY_BOHR_TO_EV_ANGSTROM
+
+
 def infer_mode(path: Path) -> str:
     parts = set(path.parts)
     if "pair_scan" in parts:
@@ -101,6 +130,8 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
         ev_ry = last_energy_ry(vacancy_out)
         np_atoms = parse_nat(pristine_in)
         nv_atoms = parse_nat(vacancy_in)
+        pristine_fmax_ry_bohr, pristine_fmax_ev_a = parse_final_atomic_fmax(pristine_out, np_atoms)
+        vacancy_fmax_ry_bohr, vacancy_fmax_ev_a = parse_final_atomic_fmax(vacancy_out, nv_atoms)
         vacancy_count = (np_atoms - nv_atoms) if np_atoms and nv_atoms else math.nan
         if p_done and v_done and np_atoms and nv_atoms and not math.isnan(ep_ry) and not math.isnan(ev_ry):
             ef_ev = (ev_ry - (nv_atoms / np_atoms) * ep_ry) * RY_TO_EV
@@ -126,6 +157,10 @@ def collect(rootdir: Path) -> list[dict[str, object]]:
                 "Ef_vac_eV": ef_ev,
                 "pristine_total_force_Ry_bohr": parse_last_total_force(pristine_out),
                 "vacancy_total_force_Ry_bohr": parse_last_total_force(vacancy_out),
+                "pristine_final_atomic_fmax_Ry_bohr": pristine_fmax_ry_bohr,
+                "vacancy_final_atomic_fmax_Ry_bohr": vacancy_fmax_ry_bohr,
+                "pristine_final_atomic_fmax_eV_A": pristine_fmax_ev_a,
+                "vacancy_final_atomic_fmax_eV_A": vacancy_fmax_ev_a,
             }
         )
     return sorted(rows, key=lambda r: (str(r["mode"]), str(r["kmesh"]), float(r["ecut_eV"]), str(r["path"])))

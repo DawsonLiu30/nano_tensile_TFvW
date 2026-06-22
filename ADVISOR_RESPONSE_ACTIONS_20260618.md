@@ -29,7 +29,7 @@ Important interpretation found on 2026-06-22:
   `L ~= 12.12 A`; it is valid under the minimum-image convention.
 - The complete 10x10 single-vacancy matrix shows that `(lambda,mu)=(1,0.13)`
   matches the vacancy energy but does not match the relaxed lattice constant.
-- A 42-point fine scan has therefore been prepared for
+- A 42-point fine scan was submitted as NCHC job `1569500` for
   `lambda=0.90-0.95`, `mu=0.04-0.10` before any final divacancy rerun.
 
 This file translates Professor Lueder's 2026-06-18 feedback into concrete
@@ -301,11 +301,19 @@ Action:
 
 Status:
 
-- QE single-vacancy reference exists from previous vc-relax work.
+- The corrected QE single-vacancy `3x3x3`, `108 -> 107`, PBE `vc-relax`
+  reference has been audited and packaged.
+- Best completed dense-k point: `5x5x5`, `800 eV`,
+  `Ef_vac = 0.638912226 eV`.
+- Completed `3x3x3` to `5x5x5` range: `0.638912-0.677875 eV`.
+- The previous `0.601167 eV` target is historical `2x2x4`, `64 -> 63` data and
+  is not the corrected `3x3x3` reference.
 - QE divacancy r-scan is running.
 
 Action:
 
+- Rank the 42-point DFTpy fine scan against the corrected best point and the
+  full dense-k range.
 - Pull and collect QE when job `1553956` finishes.
 - Add QE values to comparison table and plots.
 

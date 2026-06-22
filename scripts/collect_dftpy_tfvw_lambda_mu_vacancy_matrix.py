@@ -456,7 +456,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--energy-match-tolerance-eV", type=float, default=2.0e-6)
     parser.add_argument("--stress-limit-GPa", type=float, default=0.5)
     parser.add_argument("--collapse-lattice-limit-A", type=float, default=3.0)
-    parser.add_argument("--qe-reference-eV", type=float, default=0.601167)
+    parser.add_argument("--qe-reference-eV", type=float, default=0.6389122264065549)
     parser.add_argument("--lattice-reference-A", type=float, default=4.039848)
     parser.add_argument(
         "--fallback-pp",

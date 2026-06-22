@@ -49,7 +49,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--mem", default="96G")
     parser.add_argument("--max-parallel", type=int, default=2)
     parser.add_argument("--workers", type=int, default=3)
-    parser.add_argument("--qe-ef-reference", type=float, default=0.601167)
+    parser.add_argument("--qe-ef-reference", type=float, default=0.6389122264065549)
     parser.add_argument("--lattice-reference", type=float, default=4.039848)
     return parser.parse_args()
 
@@ -173,6 +173,9 @@ done
         "kedf": args.kedf,
         "target_fmax_eV_A": args.fmax,
         "qe_vacancy_formation_reference_eV": args.qe_ef_reference,
+        "qe_reference_role": "best completed dense-k corrected 3x3x3 vc-relax point",
+        "qe_dense_k_reference_range_eV": [0.6389122264065549, 0.6778746998824394],
+        "historical_qe_2x2x4_reference_eV": 0.601167,
         "lattice_reference_A": args.lattice_reference,
         "selection_rule": "Evaluate formation energy, pristine lattice constant, force/stress quality jointly.",
     }
