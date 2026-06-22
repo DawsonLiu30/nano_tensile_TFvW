@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -270,6 +271,9 @@ def _write_case(
     extra_manifest: dict[str, object],
 ) -> None:
     case_dir.mkdir(parents=True, exist_ok=True)
+    case_pp = case_dir / pp_path.name
+    if pp_path.resolve() != case_pp.resolve():
+        shutil.copy2(pp_path, case_pp)
     _write_structure_pair(case_dir / "pristine_raw", pristine)
     _write_structure_pair(case_dir / "vacancy_start", vacancy)
     _write_config_ini(
@@ -299,7 +303,8 @@ def _write_case(
         "vacancy_n_atoms": int(len(vacancy)),
         "spacing_A": float(spacing_A),
         "ecut_analogue_eV": spacing_angstrom_to_ecut_ev(float(spacing_A)),
-        "pp_file": str(pp_path),
+        "pp_file": case_pp.name,
+        "pp_source_file": str(pp_path.resolve()),
         "xc": str(extra_manifest.get("xc", "PBE")).strip().upper(),
         "kedf": str(kedf),
         "kedf_x": float(extra_manifest.get("kedf_x", 1.0)),
@@ -311,6 +316,29 @@ def _write_case(
         "vacancy_geometry": _geometry_summary(vacancy),
     }
     _write_text(case_dir / "point_manifest.json", json.dumps(manifest, indent=2))
+    defect_label = "divacancy" if str(extra_manifest.get("scan_type", "")) == "pair" else "vacancy"
+    _write_text(
+        case_dir / "README_CASE.txt",
+        f"""DFTpy {defect_label} calculation case
+
+Setting: {extra_manifest.get('setting', case_dir.name)}
+Cell: conventional cubic fcc, {_repeat_label(tuple(extra_manifest.get('conventional_repeat', (0, 0, 0))))}
+Atoms: {len(pristine)} -> {len(vacancy)}
+XC: {str(extra_manifest.get('xc', 'PBE')).strip().upper()}
+KEDF: {kedf}, lambda/x={float(extra_manifest.get('kedf_x', 1.0))}, mu/y={float(extra_manifest.get('kedf_y', 1.0))}
+Grid spacing: {float(spacing_A)} A
+Target fmax: {float(fmax)} eV/A
+Pseudopotential: {case_pp.name}
+
+The INI files define each DFTpy density optimization and Energy/Force/Stress
+evaluation. Full atom-and-cell relaxation is performed by
+scripts/run_dftpy_vcrelax_vacancy_one.py using ASE FrechetCellFilter and BFGS.
+This outer relaxation is the DFTpy equivalent of a vc-relax workflow.
+
+Formation energy:
+E_f = E_defect(N-n) - ((N-n)/N) E_pristine(N)
+""",
+    )
 
 
 def main() -> None:

@@ -163,6 +163,12 @@ Action:
   - `result.json`
 - Keep scheduler logs separately, but do not rely on them as the only place to
   find DFTpy output.
+- Run `scripts/audit_vacancy_submission_gate.py` before submission and before
+  professor-facing packaging.
+- New case folders contain the case-local pseudopotential and
+  `README_CASE.txt` in addition to both DFTpy INI files and structures.
+- Use `scripts/materialize_dftpy_case_reproducibility.py` to retrofit the
+  currently running fine-scan folders after pulling them locally.
 
 ### C2. Evaluation slides are missing
 

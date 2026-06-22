@@ -150,6 +150,35 @@ Reference documentation and package builder:
 | Build complete input/output dossier | `scripts/build_qe_single_vacancy_reference_package.py` |
 | Collect energies and actual final atomic fmax | `scripts/collect_qe_vcrelax_vacancy.py` |
 
+### Submission Gate
+
+Before submitting or packaging a vacancy workflow, run:
+
+```bash
+python scripts/audit_vacancy_submission_gate.py \
+  --dftpy-root /path/to/prepared_dftpy_series \
+  --qe-root /path/to/prepared_or_completed_qe_series
+```
+
+Add `--require-qe-outputs` when auditing completed QE data. The gate checks
+atom counts, centered vacancy, cell dimensions, short contacts, `vc-relax`,
+lambda/mu consistency, pseudo availability, submit-script threading, and raw
+output completion. Do not submit or package a series when the status is
+`FAIL`.
+
+For a series prepared before case-local pseudopotentials and README files were
+added, materialize them after pulling the raw results:
+
+```bash
+python scripts/materialize_dftpy_case_reproducibility.py \
+  --rootdir /path/to/pulled_series \
+  --pp /path/to/al.lda.recpot
+```
+
+The DFTpy INI `Optdensity` task is the inner electronic-density optimization.
+The outer full atom-and-cell relaxation is performed by
+`run_dftpy_vcrelax_vacancy_one.py` with ASE `FrechetCellFilter` and `BFGS`.
+
 ### 3. DFTpy Divacancy r-Scan
 
 Purpose: respond to the request for two vacancies at the same height, scan the

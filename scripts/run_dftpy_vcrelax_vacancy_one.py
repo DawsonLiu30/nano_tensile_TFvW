@@ -101,9 +101,17 @@ def main() -> None:
     case_dir = resolve_case(rootdir, str(args.setting), str(args.scan))
     manifest = json.loads((case_dir / "point_manifest.json").read_text(encoding="utf-8"))
 
-    pp_file = Path(str(manifest["pp_file"])).expanduser().resolve()
-    if not pp_file.exists():
-        raise FileNotFoundError(f"Missing DFTpy pseudopotential: {pp_file}")
+    pp_declared = Path(str(manifest["pp_file"])).expanduser()
+    pp_candidates = [
+        pp_declared if pp_declared.is_absolute() else case_dir / pp_declared,
+        case_dir / pp_declared.name,
+        rootdir / pp_declared.name,
+    ]
+    pp_file = next((candidate.resolve() for candidate in pp_candidates if candidate.exists()), None)
+    if pp_file is None:
+        raise FileNotFoundError(
+            "Missing DFTpy pseudopotential. Tried:\n" + "\n".join(str(path) for path in pp_candidates)
+        )
 
     spacing = float(manifest["spacing_A"])
     kedf = str(manifest["kedf"])
