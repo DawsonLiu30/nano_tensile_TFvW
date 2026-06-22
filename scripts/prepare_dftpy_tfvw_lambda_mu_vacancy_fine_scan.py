@@ -48,6 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--time-limit", default="02:00:00")
     parser.add_argument("--mem", default="96G")
     parser.add_argument("--max-parallel", type=int, default=2)
+    parser.add_argument("--workers", type=int, default=3)
     parser.add_argument("--qe-ef-reference", type=float, default=0.601167)
     parser.add_argument("--lattice-reference", type=float, default=4.039848)
     return parser.parse_args()
@@ -101,7 +102,7 @@ def main() -> None:
             )
 
     (outdir / "settings_weight_scan.txt").write_text("\n".join(settings) + "\n", encoding="utf-8")
-    array_end = len(settings) - 1
+    array_end = args.workers - 1
     submit = f"""#!/bin/bash
 #SBATCH --job-name=dftpyLMfine
 #SBATCH --output=logs_ctest/%x_%A_%a.out
@@ -133,14 +134,26 @@ export OPENBLAS_NUM_THREADS=1
 
 mkdir -p "${{ROOT}}/logs_ctest"
 cd "${{ROOT}}"
-SETTING=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" "$SETTING_FILE")
-echo "[INFO] SERIES_NAME=$SERIES_NAME SETTING=$SETTING"
+mapfile -t SETTINGS < "$SETTING_FILE"
+WORKER_COUNT="${{SLURM_ARRAY_TASK_COUNT:-{args.workers}}}"
 
-python scripts/run_dftpy_vcrelax_vacancy_one.py \\
-  --rootdir "${{ROOT}}/results/${{SERIES_NAME}}" \\
-  --setting "$SETTING" \\
-  --scan weight \\
-  --ase-optimizer BFGS
+for ((INDEX=SLURM_ARRAY_TASK_ID; INDEX<${{#SETTINGS[@]}}; INDEX+=WORKER_COUNT)); do
+  SETTING="${{SETTINGS[$INDEX]}}"
+  RESULT="${{ROOT}}/results/${{SERIES_NAME}}/weight_scan/${{SETTING}}/result.json"
+  if [ -s "$RESULT" ]; then
+    echo "[SKIP] $SETTING already completed"
+    continue
+  fi
+  echo "[RUN] index=$INDEX setting=$SETTING"
+  if ! python scripts/run_dftpy_vcrelax_vacancy_one.py \\
+    --rootdir "${{ROOT}}/results/${{SERIES_NAME}}" \\
+    --setting "$SETTING" \\
+    --scan weight \\
+    --ase-optimizer BFGS; then
+    echo "[FAILED] $SETTING" >&2
+    touch "${{ROOT}}/results/${{SERIES_NAME}}/weight_scan/${{SETTING}}/WORKER_FAILED.txt"
+  fi
+done
 """
     (outdir / "submit_dftpy_lambda_mu_fine_array.sh").write_text(submit, encoding="utf-8")
 
@@ -154,6 +167,7 @@ python scripts/run_dftpy_vcrelax_vacancy_one.py \\
         "lambda_tf_values": args.lambda_list,
         "mu_vw_values": args.mu_list,
         "point_count": len(settings),
+        "worker_count": args.workers,
         "spacing_A": args.spacing,
         "xc": args.xc.upper(),
         "kedf": args.kedf,
@@ -175,4 +189,3 @@ python scripts/run_dftpy_vcrelax_vacancy_one.py \\
 
 if __name__ == "__main__":
     main()
-
