@@ -31,6 +31,10 @@ Important interpretation found on 2026-06-22:
   matches the vacancy energy but does not match the relaxed lattice constant.
 - A 42-point fine scan was submitted as NCHC job `1569500` for
   `lambda=0.90-0.95`, `mu=0.04-0.10` before any final divacancy rerun.
+- Job `1569500` timed out because each two-hour ctest worker attempted many
+  points. It produced no complete case-level results; structure/input audit
+  passed. The corrected production strategy uses one point per ct56 array task
+  in two 21-point submission chunks.
 
 This file translates Professor Lueder's 2026-06-18 feedback into concrete
 calculation, packaging, and reporting actions.

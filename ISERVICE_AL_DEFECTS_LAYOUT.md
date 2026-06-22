@@ -30,3 +30,9 @@ snapshot. It is not a live completion report. Use:
 cd /work/dawson666/dftpy_project/relax/dftpy45
 bash scripts/check_iservice_al_defects_status.sh
 ```
+
+Job `1569500` used the archived multi-point worker strategy and timed out before
+writing complete case-level results. The active production submission is
+`02_submission_scripts/active/submit_dftpy_lambda_mu_fine_one_case_ct56.sh`.
+Submit no more than 21 array indices at a time to stay below the user job-submit
+limit.

@@ -35,6 +35,7 @@ def audit_dftpy(root: Path, errors: list[str], warnings: list[str]) -> dict[str,
     manifest_path = root / "manifest.json"
     settings_path = root / "settings_weight_scan.txt"
     submit_candidates = [
+        root / "02_submission_scripts" / "active" / "submit_dftpy_lambda_mu_fine_one_case_ct56.sh",
         root / "submit_dftpy_lambda_mu_fine_array.sh",
         root / "submit_dftpy_lambda_mu_fine_workers.sh",
     ]

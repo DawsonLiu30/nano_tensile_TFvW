@@ -127,6 +127,11 @@ The 42-point refinement scans `lambda=0.90-0.95` and `mu=0.04-0.10` for the
 same conventional `3x3x3`, `108 -> 107` cell. NCHC job `1569500` was submitted
 on 2026-06-22 as three workers with at most two concurrent workers.
 
+Job `1569500` is classified as a scheduler-strategy failure: each two-hour
+worker attempted many points and no complete case-level `result.json` was
+produced. The structures and inputs passed the submission gate. Do not use the
+legacy worker scripts again.
+
 Canonical source directory:
 
 ```text
@@ -136,6 +141,29 @@ Canonical source directory:
 This scan is independent of the numerical QE target during execution. After
 completion, re-rank the same DFTpy results against the corrected QE reference
 described below; no DFTpy rerun is needed solely because the reference changed.
+
+Corrected production strategy:
+
+- one lambda/mu point per ct56 array task
+- one CPU and one day walltime per point
+- at most four concurrent points
+- submit indices `0-20` first, then `21-41` after the first chunk leaves queue
+- every task validates case inputs, skips existing results, and writes explicit
+  running/failure/completion markers
+
+Submit the first chunk from local WSL:
+
+```bash
+cd /mnt/c/Users/dawso/nano_tensile_TFvW
+bash scripts/push_submit_dftpy_lambda_mu_fine_ct56_chunk.sh
+```
+
+After the first chunk completes:
+
+```bash
+ARRAY_START=21 ARRAY_END=41 \
+  bash scripts/push_submit_dftpy_lambda_mu_fine_ct56_chunk.sh
+```
 
 ### 2b. Corrected QE Single-Vacancy Reference
 
