@@ -21,12 +21,17 @@ Current canonical project roots:
 | Area | Current root |
 |---|---|
 | DFTpy | `/work/dawson666/dftpy_project/relax/dftpy45` |
+| Al defects data root | `/work/dawson666/dftpy_project/relax/dftpy45/results/Al_defects` |
 | QE | `/work/dawson666/qe_cases/qe_runs` |
 | QE `pw.x` | `/work/dawson666/q-e-qe-7.3.1/PW/src/pw.x` |
 | PROFESS | `/work/dawson666/profess3_build_20260605/bin/PROFESS` if migrated; older notes may show `/gpfs-work/...` |
 
 Important: older notes and scripts may still contain historical `/gpfs-work`
 paths. New divacancy scripts use `/work/dawson666` by default.
+
+The canonical nested layout is documented in `ISERVICE_AL_DEFECTS_LAYOUT.md`.
+Legacy flat result paths are temporary symlinks and must remain until active
+jobs and older notebooks are retired.
 
 ## Current Method Conventions
 
@@ -122,6 +127,12 @@ The 42-point refinement scans `lambda=0.90-0.95` and `mu=0.04-0.10` for the
 same conventional `3x3x3`, `108 -> 107` cell. NCHC job `1569500` was submitted
 on 2026-06-22 as three workers with at most two concurrent workers.
 
+Canonical source directory:
+
+```text
+/work/dawson666/dftpy_project/relax/dftpy45/results/Al_defects/01_calibration/single_vacancy/dftpy_tfvw_lambda_mu/fine_L0p90-0p95_M0p04-0p10
+```
+
 This scan is independent of the numerical QE target during execution. After
 completion, re-rank the same DFTpy results against the corrected QE reference
 described below; no DFTpy rerun is needed solely because the reference changed.
@@ -199,7 +210,7 @@ C:\Users\dawso\Desktop\DFTPY_DIVACANCY_RSCAN_20260616\raw\dftpy_divacancy_vcrela
 Current remote source directory:
 
 ```text
-/work/dawson666/dftpy_project/relax/dftpy45/results/dftpy_divacancy_vcrelax_conv3x3x3_rscan_20260616
+/work/dawson666/dftpy_project/relax/dftpy45/results/Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13
 ```
 
 DFTpy result summary:
@@ -289,7 +300,7 @@ Then pull both methods locally:
 ```bash
 cd /mnt/c/Users/dawso/nano_tensile_TFvW
 
-DFTPY_SERIES=dftpy_divacancy_vcrelax_conv3x3x3_rscan_20260616 \
+DFTPY_SERIES_RELATIVE_DIR=Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13 \
 QE_SERIES=qe_divacancy_vcrelax_conv3x3x3_rscan_20260616 \
 bash scripts/pull_divacancy_rscan_results_20260616.sh
 ```

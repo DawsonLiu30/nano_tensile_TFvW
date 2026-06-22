@@ -4,8 +4,8 @@ set -euo pipefail
 LOCAL_ROOT="${LOCAL_ROOT:-/mnt/c/Users/dawso/nano_tensile_TFvW}"
 REMOTE_HOST="${REMOTE_HOST:-iservice}"
 REMOTE_ROOT="${REMOTE_ROOT:-/work/dawson666/dftpy_project/relax/dftpy45}"
-SERIES_NAME="${SERIES_NAME:-dftpy_divacancy_vcrelax_conv3x3x3_rscan_20260616}"
-REMOTE_OUTDIR="${REMOTE_ROOT}/results/${SERIES_NAME}"
+SERIES_RELATIVE_DIR="${SERIES_RELATIVE_DIR:-${SERIES_NAME:-Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13}}"
+REMOTE_OUTDIR="${REMOTE_ROOT}/results/${SERIES_RELATIVE_DIR}"
 
 ACCOUNT="${ACCOUNT:-MST114175}"
 PARTITION="${PARTITION:-ctest}"
@@ -93,12 +93,12 @@ ssh "${REMOTE_HOST}" "
 set -euo pipefail
 cd '${REMOTE_ROOT}'
 mkdir -p logs_ctest
-SERIES_NAME='${SERIES_NAME}' sbatch \
+SERIES_DIR='${REMOTE_OUTDIR}' sbatch \
   -A '${ACCOUNT}' \
   -p '${PARTITION}' \
   -t '${TIME_LIMIT}' \
   --array=0-4%${MAX_PARALLEL} \
-  'results/${SERIES_NAME}/submit_dftpy_divacancy_pair_array.sh'
+  '${REMOTE_OUTDIR}/submit_dftpy_divacancy_pair_array.sh'
 "
 
 echo

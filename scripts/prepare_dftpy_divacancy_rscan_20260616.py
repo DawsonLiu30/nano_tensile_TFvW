@@ -327,9 +327,9 @@ def main() -> None:
 set -euo pipefail
 
 ROOT="${{ROOT:-/work/dawson666/dftpy_project/relax/dftpy45}}"
-SERIES_NAME="${{SERIES_NAME:-{outdir.name}}}"
+SERIES_DIR="${{SERIES_DIR:-{outdir}}}"
 ASE_OPTIMIZER="${{ASE_OPTIMIZER:-{args.ase_optimizer}}}"
-SETTING_FILE="${{ROOT}}/results/${{SERIES_NAME}}/settings_pair_scan.txt"
+SETTING_FILE="${{SERIES_DIR}}/settings_pair_scan.txt"
 
 mkdir -p "${{ROOT}}/logs_ctest"
 cd "${{ROOT}}"
@@ -349,13 +349,13 @@ if [ -z "$SETTING" ]; then
   exit 1
 fi
 
-echo "[INFO] SERIES_NAME=$SERIES_NAME"
+echo "[INFO] SERIES_DIR=$SERIES_DIR"
 echo "[INFO] SETTING=$SETTING"
 echo "[INFO] ASE_OPTIMIZER=$ASE_OPTIMIZER"
 echo "[INFO] OMP_NUM_THREADS=$OMP_NUM_THREADS"
 
 python scripts/run_dftpy_vcrelax_vacancy_one.py \\
-  --rootdir "${{ROOT}}/results/${{SERIES_NAME}}" \\
+  --rootdir "${{SERIES_DIR}}" \\
   --setting "$SETTING" \\
   --scan pair \\
   --ase-optimizer "$ASE_OPTIMIZER"

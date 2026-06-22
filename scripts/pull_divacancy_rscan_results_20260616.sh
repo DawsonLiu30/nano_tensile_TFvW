@@ -9,9 +9,10 @@ QE_SERIES="${QE_SERIES:-qe_divacancy_vcrelax_conv3x3x3_rscan_20260616}"
 QE_REMOTE_ROOT="${QE_REMOTE_ROOT:-/work/dawson666/qe_cases/qe_runs}"
 QE_REMOTE="${REMOTE_HOST}:${QE_REMOTE_ROOT}/${QE_SERIES}/"
 
-DFTPY_SERIES="${DFTPY_SERIES:-dftpy_divacancy_vcrelax_conv3x3x3_rscan_20260616}"
+DFTPY_SERIES_RELATIVE_DIR="${DFTPY_SERIES_RELATIVE_DIR:-${DFTPY_SERIES:-Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13}}"
+DFTPY_SERIES_LOCAL_NAME="${DFTPY_SERIES_LOCAL_NAME:-$(basename "${DFTPY_SERIES_RELATIVE_DIR}")}"
 DFTPY_REMOTE_ROOT="${DFTPY_REMOTE_ROOT:-/work/dawson666/dftpy_project/relax/dftpy45}"
-DFTPY_REMOTE="${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/results/${DFTPY_SERIES}/"
+DFTPY_REMOTE="${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/results/${DFTPY_SERIES_RELATIVE_DIR}/"
 
 if command -v python3 >/dev/null 2>&1; then
   PYTHON=python3
@@ -33,7 +34,7 @@ echo "[LOCAL ] ${LOCAL_BASE}"
 echo "[QE    ] ${QE_REMOTE}"
 echo "[DFTpy ] ${DFTPY_REMOTE}"
 
-mkdir -p "${RAW}/QE/${QE_SERIES}" "${RAW}/DFTpy/${DFTPY_SERIES}" "${PROCESSED}" "${REPRO}"
+mkdir -p "${RAW}/QE/${QE_SERIES}" "${RAW}/DFTpy/${DFTPY_SERIES_LOCAL_NAME}" "${PROCESSED}" "${REPRO}"
 
 echo
 echo "[1/5] Pull QE raw input/output"
@@ -41,7 +42,7 @@ rsync -avhP --exclude '*/tmp/***' "${QE_REMOTE}" "${RAW}/QE/${QE_SERIES}/"
 
 echo
 echo "[2/5] Pull DFTpy raw input/output"
-rsync -avhP "${DFTPY_REMOTE}" "${RAW}/DFTpy/${DFTPY_SERIES}/"
+rsync -avhP "${DFTPY_REMOTE}" "${RAW}/DFTpy/${DFTPY_SERIES_LOCAL_NAME}/"
 
 echo
 echo "[3/5] Pull scheduler logs and reproducibility scripts"
@@ -70,9 +71,9 @@ echo "[4/5] Collect local summaries"
   --out "${PROCESSED}/qe_divacancy_pair_summary.csv"
 
 "${PYTHON}" "${LOCAL_ROOT}/scripts/collect_dftpy_conventional_vacancy.py" \
-  --rootdir "${RAW}/DFTpy/${DFTPY_SERIES}"
+  --rootdir "${RAW}/DFTpy/${DFTPY_SERIES_LOCAL_NAME}"
 
-cp "${RAW}/DFTpy/${DFTPY_SERIES}/dftpy_conventional_pair_summary.csv" \
+cp "${RAW}/DFTpy/${DFTPY_SERIES_LOCAL_NAME}/dftpy_conventional_pair_summary.csv" \
   "${PROCESSED}/dftpy_divacancy_pair_summary.csv" 2>/dev/null || true
 
 "${PYTHON}" - "${PROCESSED}" <<'PY'

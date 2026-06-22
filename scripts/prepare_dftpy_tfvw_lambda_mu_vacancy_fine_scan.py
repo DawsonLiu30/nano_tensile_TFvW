@@ -33,6 +33,7 @@ def token(value: float) -> str:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Prepare a fine DFTpy TFvW lambda/mu single-vacancy scan.")
     parser.add_argument("--outdir", required=True)
+    parser.add_argument("--overwrite", action="store_true", help="Replace an existing output directory.")
     parser.add_argument("--pp", required=True)
     parser.add_argument("--a0", type=float, default=4.039848)
     parser.add_argument("--repeat", default="3x3x3")
@@ -68,6 +69,8 @@ def main() -> None:
     if not pp_path.exists():
         raise FileNotFoundError(pp_path)
     if outdir.exists():
+        if not args.overwrite:
+            raise FileExistsError(f"Output directory already exists; refusing to replace it: {outdir}")
         shutil.rmtree(outdir)
     outdir.mkdir(parents=True)
 
@@ -120,8 +123,8 @@ def main() -> None:
 set -euo pipefail
 
 ROOT="${{ROOT:-/work/dawson666/dftpy_project/relax/dftpy45}}"
-SERIES_NAME="${{SERIES_NAME:-{outdir.name}}}"
-SETTING_FILE="${{ROOT}}/results/${{SERIES_NAME}}/settings_weight_scan.txt"
+SERIES_DIR="${{SERIES_DIR:-{outdir}}}"
+SETTING_FILE="${{SERIES_DIR}}/settings_weight_scan.txt"
 
 source /home/dawson666/miniconda3/etc/profile.d/conda.sh
 conda activate dftpy-env
@@ -139,19 +142,19 @@ WORKER_COUNT="${{SLURM_ARRAY_TASK_COUNT:-{args.workers}}}"
 
 for ((INDEX=SLURM_ARRAY_TASK_ID; INDEX<${{#SETTINGS[@]}}; INDEX+=WORKER_COUNT)); do
   SETTING="${{SETTINGS[$INDEX]}}"
-  RESULT="${{ROOT}}/results/${{SERIES_NAME}}/weight_scan/${{SETTING}}/result.json"
+  RESULT="${{SERIES_DIR}}/weight_scan/${{SETTING}}/result.json"
   if [ -s "$RESULT" ]; then
     echo "[SKIP] $SETTING already completed"
     continue
   fi
   echo "[RUN] index=$INDEX setting=$SETTING"
   if ! python scripts/run_dftpy_vcrelax_vacancy_one.py \\
-    --rootdir "${{ROOT}}/results/${{SERIES_NAME}}" \\
+    --rootdir "${{SERIES_DIR}}" \\
     --setting "$SETTING" \\
     --scan weight \\
     --ase-optimizer BFGS; then
     echo "[FAILED] $SETTING" >&2
-    touch "${{ROOT}}/results/${{SERIES_NAME}}/weight_scan/${{SETTING}}/WORKER_FAILED.txt"
+    touch "${{SERIES_DIR}}/weight_scan/${{SETTING}}/WORKER_FAILED.txt"
   fi
 done
 """

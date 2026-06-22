@@ -57,7 +57,7 @@ Remote QE series:
 Remote DFTpy divacancy series:
 
 ```text
-/work/dawson666/dftpy_project/relax/dftpy45/results/dftpy_divacancy_vcrelax_conv3x3x3_rscan_20260616
+/work/dawson666/dftpy_project/relax/dftpy45/results/Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13
 ```
 
 Do not cancel or modify the QE jobs unless they clearly fail. They are the
@@ -96,7 +96,7 @@ From WSL on the home computer:
 ```bash
 cd /mnt/c/Users/dawso/nano_tensile_TFvW
 
-DFTPY_SERIES=dftpy_divacancy_vcrelax_conv3x3x3_rscan_20260616 \
+DFTPY_SERIES_RELATIVE_DIR=Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13 \
 QE_SERIES=qe_divacancy_vcrelax_conv3x3x3_rscan_20260616 \
 bash scripts/pull_divacancy_rscan_results_20260616.sh
 ```
@@ -160,4 +160,3 @@ PROFESS:    /work/dawson666/profess3_build_20260605/bin/PROFESS
 
 Old `/gpfs-work/dawson666` paths are historical and should not be used for new
 submission scripts.
-
