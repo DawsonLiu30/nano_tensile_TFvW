@@ -1,27 +1,20 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-LOCAL_ROOT="${LOCAL_ROOT:-/mnt/c/Users/dawso/nano_tensile_TFvW}"
-LOCAL_BASE="${LOCAL_BASE:-/mnt/c/Users/dawso/Desktop/DIVACANCY_RSCAN_RESULTS_20260616}"
+source "$(dirname -- "${BASH_SOURCE[0]}")/divacancy_transfer_common.sh"
+LOCAL_BASE="${LOCAL_BASE:-$(dirname -- "$LOCAL_ROOT")/LOCAL_RUNS/divacancy_pull_$(date -u +%Y%m%dT%H%M%SZ)}"
+[[ ! -e "$LOCAL_BASE" ]] || { echo "Refusing existing destination: $LOCAL_BASE" >&2; exit 2; }
 REMOTE_HOST="${REMOTE_HOST:-iservice}"
 
-QE_SERIES="${QE_SERIES:-qe_divacancy_vcrelax_conv3x3x3_rscan_20260616}"
+: "${QE_SERIES:?Set QE_SERIES to the exact remote series you intend to retrieve}"
 QE_REMOTE_ROOT="${QE_REMOTE_ROOT:-/work/dawson666/qe_cases/qe_runs}"
 QE_REMOTE="${REMOTE_HOST}:${QE_REMOTE_ROOT}/${QE_SERIES}/"
 
-DFTPY_SERIES_RELATIVE_DIR="${DFTPY_SERIES_RELATIVE_DIR:-${DFTPY_SERIES:-Al_defects/03_defect_cases/divacancy/dftpy_tfvw/preliminary_r_scan_L1p00_M0p13}}"
+DFTPY_SERIES_RELATIVE_DIR="${DFTPY_SERIES_RELATIVE_DIR:-${DFTPY_SERIES:-}}"
+: "${DFTPY_SERIES_RELATIVE_DIR:?Set DFTPY_SERIES_RELATIVE_DIR to the exact remote series}"
 DFTPY_SERIES_LOCAL_NAME="${DFTPY_SERIES_LOCAL_NAME:-$(basename "${DFTPY_SERIES_RELATIVE_DIR}")}"
 DFTPY_REMOTE_ROOT="${DFTPY_REMOTE_ROOT:-/work/dawson666/dftpy_project/relax/dftpy45}"
 DFTPY_REMOTE="${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/results/${DFTPY_SERIES_RELATIVE_DIR}/"
-
-if command -v python3 >/dev/null 2>&1; then
-  PYTHON=python3
-elif command -v python >/dev/null 2>&1; then
-  PYTHON=python
-else
-  echo "[ERROR] Python is required for local collection." >&2
-  exit 127
-fi
 
 RAW="${LOCAL_BASE}/raw"
 PROCESSED="${LOCAL_BASE}/processed"
@@ -55,7 +48,7 @@ rsync -avhP --ignore-missing-args \
 rsync -avhP --relative --ignore-missing-args \
   "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./al.lda.recpot" \
   "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./app/dft_engine.py" \
-  "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./scripts/prepare_dftpy_divacancy_rscan_20260616.py" \
+  "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./scripts/divacancy_geometry.py"   "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./scripts/divacancy_analysis_checks.py"   "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./scripts/prepare_dftpy_divacancy_rscan_20260616.py" \
   "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./scripts/run_dftpy_vcrelax_vacancy_one.py" \
   "${REMOTE_HOST}:${DFTPY_REMOTE_ROOT}/./scripts/collect_dftpy_conventional_vacancy.py" \
   "${REPRO}/DFTpy/" || true
@@ -74,7 +67,7 @@ echo "[4/5] Collect local summaries"
   --rootdir "${RAW}/DFTpy/${DFTPY_SERIES_LOCAL_NAME}"
 
 cp "${RAW}/DFTpy/${DFTPY_SERIES_LOCAL_NAME}/dftpy_conventional_pair_summary.csv" \
-  "${PROCESSED}/dftpy_divacancy_pair_summary.csv" 2>/dev/null || true
+  "${PROCESSED}/dftpy_divacancy_pair_summary.csv"
 
 "${PYTHON}" - "${PROCESSED}" <<'PY'
 from pathlib import Path
@@ -100,6 +93,11 @@ if qe.exists():
                 "method": "QE/PBE",
                 "case": Path(row.get("path", "")).name,
                 "r_A": row.get("pair_distance_A", ""),
+                "pair_direction": row.get("pair_direction_verified", row.get("pair_direction_family", "unknown")),
+                "qualification_status": row.get("status", "unverified"),
+                "qualified": row.get("qualified", "False"),
+                "qualification_reasons": row.get("qualification_reasons", "No independent qualification in source summary"),
+                "comparison_scope": "separate method records; not a geometry-matched QE/DFTpy comparison",
                 "N_pristine": row.get("N_pristine", ""),
                 "N_defect": row.get("N_vacancy", ""),
                 "vacancy_count": row.get("vacancy_count", ""),
@@ -119,6 +117,11 @@ if dft.exists():
                 "method": "DFTpy/LDA/TFvW",
                 "case": row.get("setting", ""),
                 "r_A": row.get("pair_distance_A", ""),
+                "pair_direction": row.get("pair_direction_verified", row.get("pair_direction_family", "unknown")),
+                "qualification_status": row.get("status", "unverified"),
+                "qualified": row.get("qualified", "False"),
+                "qualification_reasons": row.get("qualification_reasons", "No independent qualification in source summary"),
+                "comparison_scope": "separate method records; not a geometry-matched QE/DFTpy comparison",
                 "N_pristine": row.get("N_pristine", ""),
                 "N_defect": row.get("N_vacancy", ""),
                 "vacancy_count": row.get("vacancy_count", ""),
@@ -140,8 +143,7 @@ PY
 
 echo
 echo "[5/5] Build compact zip without QE tmp folders"
-ZIP_PATH="${LOCAL_BASE}/DIVACANCY_RSCAN_RESULTS_20260616.zip"
-rm -f "${ZIP_PATH}"
+ZIP_PATH="${LOCAL_BASE}/DIVACANCY_RSCAN_RESULTS.zip"
 "${PYTHON}" - "${LOCAL_BASE}" "${ZIP_PATH}" <<'PY'
 from pathlib import Path
 import sys

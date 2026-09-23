@@ -415,6 +415,8 @@ def relax_atoms_and_cell(
     opt_maxiter: int | None = None,
     opt_maxfun: int | None = None,
     ase_optimizer: str | None = None,
+    abort_fmax_eV_A: float | None = None,
+    abort_after_steps: int = 50,
 ):
     """Relax atomic positions and cell, analogous to a QE vc-relax workflow."""
 
@@ -450,10 +452,41 @@ def relax_atoms_and_cell(
     )
     optimizer_cls = _select_ase_optimizer(ase_optimizer)
     dyn = optimizer_cls(cell_filter, trajectory=trajfile, logfile=logfile)
-    dyn.run(fmax=float(fmax), steps=int(steps))
+    if abort_fmax_eV_A is not None and float(abort_fmax_eV_A) > 0.0:
+        counter = {"n": 0}
+
+        def abort_pathological_fmax() -> None:
+            counter["n"] += 1
+            if counter["n"] < int(abort_after_steps):
+                return
+            try:
+                forces = np.asarray(cell_filter.get_forces(), dtype=float)
+            except Exception:
+                forces = np.asarray(atoms.get_forces(), dtype=float)
+            if forces.size == 0:
+                return
+            current_fmax = float(np.linalg.norm(forces.reshape((-1, forces.shape[-1])), axis=1).max())
+            if current_fmax > float(abort_fmax_eV_A):
+                raise RuntimeError(
+                    f"Aborting pathological cell relaxation: fmax={current_fmax:.6g} eV/A "
+                    f"> threshold={float(abort_fmax_eV_A):.6g} eV/A after {counter['n']} optimizer steps"
+                )
+
+        dyn.attach(abort_pathological_fmax, interval=1)
+    optimizer_converged = bool(dyn.run(fmax=float(fmax), steps=int(steps)))
 
     E = float(atoms.get_potential_energy())
     S = atoms.get_stress(voigt=False) * 160.21766208
+    combined_fmax = float(np.linalg.norm(cell_filter.get_forces(), axis=1).max())
+    atoms.info["relaxation_evidence"] = {
+        "optimizer_converged": optimizer_converged,
+        "combined_filter_fmax_eV_A": combined_fmax,
+        "target_fmax_eV_A": float(fmax),
+        "steps_taken": int(dyn.nsteps),
+        "max_steps": int(steps),
+        "cell_filter": "FrechetCellFilter",
+        "electronic_convergence_status": "not_exposed_by_dftpy_ase_api",
+    }
 
     _write_dftpy_out(dftpy_outfile, energy_ev=E, stress_gpa=S)
 

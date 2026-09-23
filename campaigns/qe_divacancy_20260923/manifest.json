@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "campaign_id": "qe_divacancy_20260923",
+  "status_date": "2026-09-23",
+  "protocol": {
+    "mode": "fixed TFvW-relaxed geometry, SCF only",
+    "parent_sites": 108,
+    "nat": 106,
+    "a0_A": 3.9545804060131293,
+    "cell_edge_A": 11.86374121803939,
+    "xc": "LDA (Slater + PZ)",
+    "pseudo": "Al.pz-vbc.UPF, nonlocal norm-conserving",
+    "ecutwfc_Ry": 60,
+    "ecutrho_Ry": 240,
+    "kmesh": [
+      3,
+      3,
+      3
+    ],
+    "koffset": [
+      0,
+      0,
+      0
+    ],
+    "nosym": true,
+    "noinv": false,
+    "nbnd": 200,
+    "smearing": "mv",
+    "degauss_Ry": 0.02,
+    "conv_thr_Ry": 1e-09,
+    "electron_maxstep": 200,
+    "reference_QE_version": "7.5",
+    "geometry_source": "TFvW lambda0.9 mu0.1, LDA, 78^3 grid, fixed cell, fmax<=0.001 eV/angstrom"
+  },
+  "pseudo": {
+    "file": "pseudo/Al.pz-vbc.UPF",
+    "sha256": "4eab06b63f87f07ede2d5a193e6d993a09107167fd6b8647afa807342501d6e5",
+    "source_url": "https://pseudopotentials.quantum-espresso.org/upf_files/Al.pz-vbc.UPF"
+  },
+  "cases": [
+    {
+      "id": "2V_1NN_D110",
+      "input": "inputs/2V_1NN_D110/pw.in",
+      "sha256": "bf8ba065d8710372509c29db5952ac3c1d806ce2dd20ef9d127dd2f4bb052801",
+      "status": "completed",
+      "source_input": "luder_qe_20260917/2V_1NN_D110/attempt_006/source_pw.in",
+      "source_input_sha256": "8674ac564d2de1962b439b62d563a32db576840019c09ff313ad64e6de9e5900",
+      "changed_operational_fields": [
+        "pseudo_dir",
+        "outdir",
+        "prefix",
+        "restart_mode",
+        "startingpot",
+        "startingwfc"
+      ]
+    },
+    {
+      "id": "2V_2NN_D100",
+      "input": "inputs/2V_2NN_D100/pw.in",
+      "sha256": "8e4b4dd6b1fdd0b5695ff835393bdd9839be9bff7ac2b41d1871ff5725f97a37",
+      "status": "pending",
+      "source_input": "luder_qe_20260917/2V_2NN_D100/attempt_002/source_pw.in",
+      "source_input_sha256": "8f801bdb038730ee6566b8f567e9bff954f2dc44d9d7961e6d688657e56506d3",
+      "changed_operational_fields": [
+        "pseudo_dir",
+        "outdir",
+        "prefix",
+        "restart_mode",
+        "startingpot",
+        "startingwfc"
+      ],
+      "prior_status": "attempt_002 interrupted at SCF iteration4, not converged"
+    },
+    {
+      "id": "2V_D310_r1",
+      "input": "inputs/2V_D310_r1/pw.in",
+      "sha256": "90da3c4e8609cefda5b6adbd6661eba2b53d4e2770905ac8dfdc85c2165776f6",
+      "status": "pending",
+      "source_input": "luder_qe_20260917/new_direction_inputs/2V_D310_r1/pw.in",
+      "source_input_sha256": "62c9db9bd716aacec0d262cf551d686570cc12526dedb6b63e4876f3a2c9884a",
+      "changed_operational_fields": [
+        "pseudo_dir",
+        "outdir",
+        "prefix",
+        "restart_mode",
+        "startingpot",
+        "startingwfc"
+      ],
+      "prior_status": "input prepared, not started"
+    },
+    {
+      "id": "2V_D110_r2",
+      "input": "inputs/2V_D110_r2/pw.in",
+      "sha256": "a12e251fc3ce06443b98341684a6a4bff2e19414b3e0d5d27e8f24701cf7a4a8",
+      "status": "pending",
+      "source_input": "luder_qe_20260917/new_direction_inputs/2V_D110_r2/pw.in",
+      "source_input_sha256": "52f7db95828bdbb6e28dff30671ac8f03f99f60c2dd9cdbf8b07c2f67edccee8",
+      "changed_operational_fields": [
+        "pseudo_dir",
+        "outdir",
+        "prefix",
+        "restart_mode",
+        "startingpot",
+        "startingwfc"
+      ],
+      "prior_status": "input prepared, not started"
+    }
+  ],
+  "pairs": [
+    {
+      "id": "near_neighbours",
+      "left": "2V_1NN_D110",
+      "right": "2V_2NN_D100"
+    },
+    {
+      "id": "310_vs_middle110",
+      "left": "2V_D310_r1",
+      "right": "2V_D110_r2"
+    }
+  ],
+  "archived_results": [
+    {
+      "case": "2V_1NN_D110",
+      "pseudo_sha256": "4eab06b63f87f07ede2d5a193e6d993a09107167fd6b8647afa807342501d6e5",
+      "source_attempt": "attempt_006",
+      "input": "evidence/2V_1NN_D110/pw.in",
+      "input_sha256": "9e4bbcb0e04bf56379726c0fd046591912a922b7ac89ae4f8c6e193826221b9a",
+      "output": "evidence/2V_1NN_D110/pw.out",
+      "output_sha256": "09addb17d9eafb96bd753a9a63f5fe7af1653aa1e0d6a582143bfb7fce1d3804",
+      "result": "evidence/2V_1NN_D110/result.json",
+      "result_sha256": "35788e95ac051bc14ab02f4b2d94133410e15fd980604a64628ed4036e4d6e7a"
+    }
+  ],
+  "migration": "Fresh SCF on another machine. No wavefunction checkpoint is included or automatically reused.",
+  "limitations": [
+    "No cutoff/kpoint/smearing convergence series",
+    "Not QE ionic relaxation",
+    "No matching QE0V/1V for formation or binding energies",
+    "310/middle110 differ in direction and separation"
+  ]
+}

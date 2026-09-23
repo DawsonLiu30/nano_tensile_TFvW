@@ -1,4 +1,22 @@
 # ===== Runtime / HPC =====
+work/
+runs/
+scratch/
+*.save/
+*.wfc*
+*.restart_scf
+*.restart_k*
+node_modules/
+env/local-qe.sh
+.env
+.env.*
+!.env.example
+*.pem
+id_rsa
+id_ed25519
+# Private correspondence stays local; source snapshots preserve the old history.
+deliverables/EMAIL_REPLY_DRAFT_20260713.txt
+deliverables/ADVISOR_POINT_BY_POINT_REPLY_20260713.md
 results/
 slurm/
 cases/

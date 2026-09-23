@@ -2,11 +2,15 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
+import os
 import shutil
 import subprocess
 import zipfile
 from pathlib import Path
+
+from divacancy_analysis_checks import qualify_case
 
 
 GITHUB_URL = "https://github.com/DawsonLiu30/nano_tensile_TFvW"
@@ -23,7 +27,8 @@ def copy_file(source: Path, destination: Path) -> bool:
 def git_value(repo: Path, *args: str) -> str:
     try:
         return subprocess.check_output(
-            ["git", *args], cwd=repo, text=True, stderr=subprocess.DEVNULL
+            ["git", *args], cwd=repo, text=True, stderr=subprocess.DEVNULL,
+            env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"},
         ).strip()
     except Exception:
         return "unknown"
@@ -33,7 +38,8 @@ def write_provenance_ini(path: Path, manifest: dict[str, object], structure: str
     pp_name = Path(str(manifest.get("pp_file", "al.lda.recpot"))).name
     path.write_text(
         f"""# Human-readable equivalent of the programmatic DftpyCalculator input.
-# Full ionic/cell relaxation uses ASE FrechetCellFilter + BFGS.
+# Reconstructed documentation, not an original input file.
+# Full ionic/cell relaxation uses ASE FrechetCellFilter; see result.json for optimizer.
 
 [JOB]
 task = Optdensity
@@ -58,8 +64,8 @@ xc = {str(manifest.get('xc', 'LDA')).upper()}
 
 [KEDF]
 kedf = {manifest.get('kedf', 'TFVW')}
-x = {float(manifest.get('kedf_x', 1.0)):.8f}
-y = {float(manifest.get('kedf_y', 0.13)):.8f}
+x = {float(manifest.get('kedf_x', float('nan'))):.8f}
+y = {float(manifest.get('kedf_y', float('nan'))):.8f}
 
 [OPT]
 method = LBFGS
@@ -105,6 +111,7 @@ driven through ASE FrechetCellFilter and the optimizer recorded in result.json.
 
 
 def copy_case(source: Path, destination: Path) -> dict[str, object]:
+    qualification = qualify_case(source)
     destination.mkdir(parents=True, exist_ok=True)
     manifest_path = source / "point_manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -188,13 +195,14 @@ def copy_case(source: Path, destination: Path) -> dict[str, object]:
         "mu": manifest.get("kedf_y"),
         "missing_required_files": ";".join(missing),
         "complete": not missing,
+        **qualification,
     }
 
 
 def zip_directory(source: Path, destination: Path) -> None:
     if destination.exists():
-        destination.unlink()
-    with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+        raise FileExistsError(f"Refusing to overwrite saved archive: {destination}")
+    with zipfile.ZipFile(destination, "x", compression=zipfile.ZIP_DEFLATED) as archive:
         for path in source.rglob("*"):
             if path.is_file():
                 archive.write(path, path.relative_to(source.parent))
@@ -215,8 +223,12 @@ def main() -> None:
     analysis = Path(args.analysis).expanduser().resolve() if args.analysis else None
     scheduler_logs = Path(args.scheduler_logs).expanduser().resolve() if args.scheduler_logs else None
 
-    if output.exists():
-        shutil.rmtree(output)
+    if not (dftpy_root / "pair_scan").is_dir():
+        raise FileNotFoundError(f"Missing pair_scan: {dftpy_root}")
+    if output.exists() or output.with_suffix(".zip").exists():
+        raise FileExistsError(f"Choose a new output path; preserving existing package: {output}")
+    if output == dftpy_root or dftpy_root in output.parents:
+        raise ValueError("Package output must be outside the source dataset")
     start = output / "00_START_HERE"
     tables = output / "01_TABLES"
     figures = output / "02_FIGURES"
@@ -233,13 +245,17 @@ def main() -> None:
             rows.append(copy_case(case_dir, calculations / case_dir.name))
 
     with (tables / "case_file_audit.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()) if rows else [])
+        writer = csv.DictWriter(handle, fieldnames=list(dict.fromkeys(key for row in rows for key in row)))
         writer.writeheader()
         writer.writerows(rows)
 
     for pattern in ("*.csv", "manifest.json", "settings_pair_scan.txt"):
         for source in dftpy_root.glob(pattern):
-            copy_file(source, tables / source.name)
+            # Imported tables are historical provenance, not fresh acceptance.
+            copy_file(source, tables / "SOURCE_TABLES_UNREASSESSED" / source.name)
+
+    for source in (dftpy_root / "pseudopotentials").glob("*"):
+        copy_file(source, output / "03_CALCULATIONS" / "DFTpy" / "pseudopotentials" / source.name)
 
     if analysis and analysis.exists():
         for source in analysis.iterdir():
@@ -251,14 +267,29 @@ def main() -> None:
     copy_file(repo / "notebooks" / "README.md", notebooks / "README.md")
     copy_file(repo / "DIVACANCY_ENERGY_AND_PBC_DEFINITIONS.md", start / "ENERGY_AND_PBC_DEFINITIONS.md")
 
-    branch = git_value(repo, "branch", "--show-current")
     commit = git_value(repo, "rev-parse", "HEAD")
+    # No status, diff, ls-files or other index-touching Git operation. SHA-256
+    # of the actual included files is the code-delivery identity.
+    (code / "WORKTREE_STATUS.txt").write_text(
+        "working_tree_not_committed; source SHA manifest authoritative\n", encoding="utf-8")
+    source_tree = code / "source_tree"
+    source_files = []
+    for name in ("app", "scripts", "tests", "notebooks", "profess_input_examples"):
+        source_files.extend(path for path in (repo / name).rglob("*") if path.is_file()
+                            and "__pycache__" not in path.parts and path.suffix not in {".pyc", ".pyo"})
+    source_files.extend(path for path in repo.iterdir() if path.is_file() and path.suffix.lower() in
+                        {".py", ".sh", ".ps1", ".sbatch", ".md", ".json", ".yml", ".yaml", ".toml", ".ini", ".txt", ".recpot", ".upf"})
+    source_hashes = {}
+    for source in sorted(set(source_files)):
+        relative = source.relative_to(repo)
+        copy_file(source, source_tree / relative)
+        source_hashes[str(relative)] = hashlib.sha256((source_tree / relative).read_bytes()).hexdigest()
+    (code / "SOURCE_SHA256.json").write_text(json.dumps(source_hashes, indent=2) + "\n", encoding="utf-8")
+    for source in (dftpy_root / "scripts_used").glob("*"):
+        copy_file(source, code / "PRODUCTION_SCRIPTS_USED" / source.name)
     (code / "GITHUB_AND_CODE_POINTERS.txt").write_text(
         f"""GitHub repository:
   {GITHUB_URL}
-
-Branch:
-  {branch}
 
 Commit:
   {commit}
@@ -269,9 +300,11 @@ Authoritative production scripts:
   scripts/collect_dftpy_conventional_vacancy.py
   scripts/analyze_divacancy_geometry_strain.py
 
-The notebooks in 04_NOTEBOOKS demonstrate generation, output parsing, and
-formation-energy calculation. The GitHub commit is the authoritative code
-delivery; this package does not duplicate the complete repository.
+The Git commit identifies the base revision only. The worktree is not committed.
+The current app/scripts/tests/notebooks and root text configuration/documentation
+files are included in source_tree. SOURCE_SHA256.json identifies their bytes.
+Available original production scripts are copied into PRODUCTION_SCRIPTS_USED.
+The notebooks require AL_DEFECTS_REPO pointing to a complete working repository.
 """,
         encoding="utf-8",
     )
@@ -281,12 +314,22 @@ delivery; this package does not duplicate the complete repository.
             copy_file(source, logs / source.name)
 
     complete_count = sum(bool(row["complete"]) for row in rows)
+    counts = {status: sum(row["status"] == status for row in rows)
+              for status in ("missing", "failed", "unconverged", "qualified")}
+    state = "All cases numerically qualified" if rows and counts["qualified"] == len(rows) else "Incomplete or mixed qualification"
     (start / "README.txt").write_text(
-        f"""DFTpy divacancy pilot package
+        f"""DFTpy divacancy evidence package
 
 Status:
-  Pilot calculation generated before final lambda/mu + QE calibration.
-  Do not treat this package as the final production conclusion.
+  {state}.
+  {json.dumps(counts, sort_keys=True)}
+  Qualification is recomputed from the source inputs, outputs, trajectory,
+  reference settings and combined atom/cell optimizer logs at packaging time.
+  Numerical qualification does not establish thesis acceptance, finite-size
+  convergence, electronic-density convergence, or an independently calibrated
+  QE comparison. The *_dftpy.out files are saved calculator energy/stress
+  summaries, not full electronic-density iteration traces.
+  Source: {dftpy_root}
 
 Cases:
   {complete_count}/{len(rows)} case folders contain the required direct input/output files.
@@ -294,6 +337,7 @@ Cases:
 Start here:
   00_START_HERE/ENERGY_AND_PBC_DEFINITIONS.md
   01_TABLES/case_file_audit.csv
+  01_TABLES/SOURCE_TABLES_UNREASSESSED/ (historical source tables)
   03_CALCULATIONS/DFTpy/pair_scan/<case>/README_CASE.txt
   04_NOTEBOOKS/
   05_CODE_POINTERS/GITHUB_AND_CODE_POINTERS.txt
@@ -301,10 +345,23 @@ Start here:
 Main figure definition:
   E_2vac(r) = E_defect(N-2,r) - ((N-2)/N) E_pristine(N)
   Per-vacancy energy is intentionally not duplicated in the main figures.
+  r is the initial minimum-image distance under PBC, not a final relaxed distance.
+
+Comparison limitations:
+  Never connect mixed directions or join QE by distance alone. QE comparisons
+  require separately verified matching initial geometry, XC, relaxation and
+  energy/reference definitions, plus convergence and pseudopotential evidence.
+  Do not derive a formal binding energy from the historical monovacancy
+  600 eV / 0.250343 A scan and the 0.20 A divacancy scan: the grids differ.
+  Binding needs matching code, PP hash, XC/KEDF/weights, grid, cell, pressure,
+  energy reference and convergence tolerance before combining mono/divacancy.
 """,
         encoding="utf-8",
     )
 
+    package_hashes = {str(path.relative_to(output)): hashlib.sha256(path.read_bytes()).hexdigest()
+                      for path in sorted(output.rglob("*")) if path.is_file()}
+    (output / "SHA256SUMS.json").write_text(json.dumps(package_hashes, indent=2) + "\n", encoding="utf-8")
     zip_path = output.with_suffix(".zip")
     zip_directory(output, zip_path)
     print(f"cases={len(rows)} complete={complete_count}")
@@ -314,4 +371,3 @@ Main figure definition:
 
 if __name__ == "__main__":
     main()
-

@@ -1,0 +1,22 @@
+{
+  "status": "scf_converged",
+  "exit_code": 0,
+  "job_done": true,
+  "scf_converged": true,
+  "scf_iterations": 27,
+  "energy_Ry": -444.04662686,
+  "energy_eV": -6041.562137357784,
+  "last_estimated_scf_accuracy_Ry": 3.9e-10,
+  "energy_convention": "QE printed total energy at specified Marzari-Vanderbilt smearing; not zero-smearing extrapolated",
+  "not_ionic_relaxation": true,
+  "not_cutoff_k_smearing_convergence_test": true,
+  "label": "2V_1NN_D110",
+  "attempt": "attempt_006",
+  "elapsed_s": 1783.628098112,
+  "finished_utc": "2026-09-20T10:44:18.382613+00:00",
+  "peak_RSS_GiB": 2.1834449768066406,
+  "TFvW_energy_same_geometry_eV": -6670.735792690299,
+  "stopped_for_memory": false,
+  "recovery_run_id": "luder_qe_recovery_20260920",
+  "stopped_for_resource_guard": false
+}

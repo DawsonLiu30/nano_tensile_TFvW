@@ -3,12 +3,11 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import shutil
 import sys
 from pathlib import Path
 
-import numpy as np
-from ase.build import bulk
 from ase.io import write
 
 
@@ -20,8 +19,14 @@ from prepare_qe_vacancy_vcrelax_3x3x3 import (  # noqa: E402
     DEFAULT_A0_A,
     cell_summary,
     parse_kmesh_list,
-    parse_repeat,
     write_vcrelax_input,
+)
+
+
+from divacancy_geometry import (
+    build_centered_pristine, direction_label, enumerate_pairs, pair_geometry_metadata,
+    parse_direction, parse_repeat, prepare_output_directory, remove_two_atoms,
+    sha256_file, validate_positive,
 )
 
 
@@ -34,48 +39,11 @@ def write_structure_pair(base: Path, atoms) -> None:
     write(str(base.with_suffix(".xyz")), atoms)
 
 
-def build_centered_pristine(a0: float, repeat: tuple[int, int, int]):
-    atoms = bulk("Al", "fcc", a=a0, cubic=True).repeat(repeat)
-    scaled = atoms.get_scaled_positions(wrap=True)
-    target = np.array([0.5, 0.5, 0.5])
-    diff = scaled - target
-    diff -= np.round(diff)
-    distances = np.linalg.norm(diff @ atoms.get_cell().array, axis=1)
-    center_index = int(np.argmin(distances))
-    shift_scaled = target - scaled[center_index]
-    atoms.set_scaled_positions((scaled + shift_scaled) % 1.0)
-    atoms.wrap()
-    return atoms, center_index, shift_scaled
-
-
-def enumerate_same_height_pairs(pristine, center_index: int, z_tol: float, distance_tol: float):
-    positions = pristine.get_positions()
-    center = positions[center_index]
-    candidates = []
-    for idx, pos in enumerate(positions):
-        if idx == center_index:
-            continue
-        delta = pos - center
-        if abs(float(delta[2])) > z_tol:
-            continue
-        distance = float(np.linalg.norm(delta))
-        if distance <= distance_tol:
-            continue
-        candidates.append((distance, idx, delta))
-
-    grouped = []
-    for distance, idx, delta in sorted(candidates, key=lambda item: item[0]):
-        if grouped and abs(distance - grouped[-1][0]) <= distance_tol:
-            continue
-        grouped.append((distance, idx, delta))
-    return grouped
-
-
-def remove_two_atoms(atoms, first_index: int, second_index: int):
-    divacancy = atoms.copy()
-    for idx in sorted([first_index, second_index], reverse=True):
-        del divacancy[idx]
-    return divacancy
+def enumerate_same_height_pairs(pristine, center_index, z_tol=1e-6, distance_tol=1e-4,
+                                direction=(1, 1, 0), direction_tol=1e-6):
+    """Fixed-direction compatibility entry; use selection='shells' explicitly for shells."""
+    return enumerate_pairs(pristine, center_index, direction=direction, z_tol=z_tol,
+                           distance_tol=distance_tol, direction_tol=direction_tol)
 
 
 def write_text(path: Path, text: str) -> None:
@@ -122,14 +90,20 @@ fi
 
 run_qe() {{
   local folder="$1"
-  if [ -s "$folder/vc-relax.out" ] && grep -q "JOB DONE" "$folder/vc-relax.out"; then
+  if [ -s "$folder/vc-relax.out" ] && grep -q "JOB DONE" "$folder/vc-relax.out" && grep -Eq 'bfgs converged|End of BFGS Geometry Optimization' "$folder/vc-relax.out"; then
     echo "[SKIP] $folder already completed"
     return
   fi
   echo "[RUN] $folder"
   (
     cd "$folder"
-    rm -rf tmp CRASH
+    if [ -e vc-relax.out ] || [ -e tmp ] || [ -e CRASH ]; then
+      archive="attempt_$(date -u +%Y%m%dT%H%M%SZ)_${{SLURM_JOB_ID:-local}}"
+      mkdir "$archive"
+      for item in vc-relax.out tmp CRASH; do
+        [ ! -e "$item" ] || mv -- "$item" "$archive/"
+      done
+    fi
     mkdir -p tmp
     mpirun "$PWX" -in vc-relax.in > vc-relax.out
   )
@@ -171,6 +145,10 @@ set -euo pipefail
 
 ROOT="${{ROOT:-${{SLURM_SUBMIT_DIR:-$(pwd -P)}}}}"
 SETTING=$(sed -n "$((SLURM_ARRAY_TASK_ID + 1))p" "${{ROOT}}/{settings_file.name}")
+if [ -z "$SETTING" ] || [ ! -f "${{ROOT}}/${{SETTING}}/group_job.sh" ]; then
+  echo "[ERROR] Invalid array setting: $SETTING" >&2
+  exit 2
+fi
 mkdir -p "${{ROOT}}/logs_submit"
 cd "${{ROOT}}/${{SETTING}}"
 bash group_job.sh
@@ -225,14 +203,14 @@ def prepare_case(
     )
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv=None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Prepare QE/PBE vc-relax scan for same-height divacancy pairs in conventional fcc Al."
     )
     parser.add_argument("--outdir", required=True)
     parser.add_argument("--pseudo", required=True)
     parser.add_argument("--a0", type=float, default=DEFAULT_A0_A)
-    parser.add_argument("--repeat", default="3x3x3")
+    parser.add_argument("--repeat", type=parse_repeat, default=(3, 3, 3))
     parser.add_argument("--ecut", type=float, default=800.0)
     parser.add_argument("--kmesh", default="3x3x3")
     parser.add_argument("--force-conv", type=float, default=0.002)
@@ -242,10 +220,27 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--time-limit", default="4-00:00:00")
     parser.add_argument("--mem", default="128G")
     parser.add_argument("--max-parallel", type=int, default=5)
+    parser.add_argument("--pair-selection", choices=["fixed_direction", "shells"], default="fixed_direction",
+                        help="fixed_direction radial scan, or independent 3D FCC shell/direction representatives")
+    parser.add_argument("--direction", type=parse_direction, default=(1, 1, 0))
+    parser.add_argument("--direction-tol", type=float, default=1e-6)
     parser.add_argument("--z-tol", type=float, default=1.0e-6)
     parser.add_argument("--distance-tol", type=float, default=1.0e-4)
     parser.add_argument("--max-pairs", type=int, default=0)
-    return parser.parse_args()
+    args = parser.parse_args(argv)
+    try:
+        validate_positive(a0=args.a0, ecut=args.ecut, force_conv=args.force_conv,
+                          press_conv_kbar=args.press_conv_kbar, ntasks=args.ntasks,
+                          max_parallel=args.max_parallel, z_tol=args.z_tol,
+                          distance_tol=args.distance_tol, direction_tol=args.direction_tol)
+        meshes = parse_kmesh_list(args.kmesh)
+        if len(meshes) != 1 or any(v <= 0 for v in meshes[0]):
+            raise ValueError("kmesh must contain exactly one positive mesh, e.g. 3x3x3")
+        if args.max_pairs < 0:
+            raise ValueError("max-pairs must be nonnegative")
+    except ValueError as exc:
+        parser.error(str(exc))
+    return args
 
 
 def main() -> None:
@@ -254,17 +249,18 @@ def main() -> None:
     pseudo = Path(args.pseudo).expanduser().resolve()
     if not pseudo.exists():
         raise FileNotFoundError(f"Missing pseudo: {pseudo}")
-    if outdir.exists():
-        shutil.rmtree(outdir)
-    outdir.mkdir(parents=True)
-
-    repeat = parse_repeat(args.repeat)
+    repeat = args.repeat
     kmesh = parse_kmesh_list(args.kmesh)[0]
     pristine, center_index, shift_scaled = build_centered_pristine(args.a0, repeat)
-    pairs = enumerate_same_height_pairs(pristine, center_index, args.z_tol, args.distance_tol)
+    pairs = enumerate_pairs(pristine, center_index, selection=args.pair_selection,
+                            direction=args.direction, z_tol=args.z_tol,
+                            distance_tol=args.distance_tol, direction_tol=args.direction_tol)
     if args.max_pairs > 0:
         pairs = pairs[: args.max_pairs]
 
+    if not pairs:
+        raise ValueError(f"No pairs for selection={args.pair_selection}, direction={args.direction}, repeat={repeat}")
+    prepare_output_directory(outdir)
     psp_dir = outdir / "psp"
     psp_dir.mkdir()
     pseudo_name = pseudo.name
@@ -282,6 +278,7 @@ def main() -> None:
         rel_setting = f"pair_scan/{setting_name}"
         case_dir = outdir / rel_setting
         divacancy = remove_two_atoms(pristine, center_index, second_index)
+        geometry = pair_geometry_metadata(pristine, center_index, second_index, delta, args.a0)
         prepare_case(
             outdir,
             rel_setting,
@@ -302,6 +299,15 @@ def main() -> None:
         manifest = {
             "setting": setting_name,
             "scan_type": "pair",
+            "pair_selection": args.pair_selection,
+            **geometry,
+            "scan_point_index": case_idx,
+            "requested_direction_indices": list(args.direction) if args.pair_selection == "fixed_direction" else None,
+            "direction_tolerance_A": args.direction_tol,
+            "pseudo_sha256": sha256_file(pseudo),
+            "pseudo_source_at_preparation": str(pseudo),
+            "generator_sha256": sha256_file(Path(__file__)),
+            "geometry_helper_sha256": sha256_file(SCRIPT_DIR / "divacancy_geometry.py"),
             "code": "Quantum ESPRESSO",
             "functional": "PBE",
             "pseudo": pseudo_name,
@@ -334,6 +340,9 @@ def main() -> None:
                 "dx_A": f"{float(delta[0]):.8f}",
                 "dy_A": f"{float(delta[1]):.8f}",
                 "dz_A": f"{float(delta[2]):.8f}",
+                "direction": geometry["pair_direction_family"],
+                "fcc_shell_index": geometry["fcc_shell_index"],
+                "pair_selection": args.pair_selection,
                 "N_pristine": n_pristine,
                 "N_divacancy": len(divacancy),
                 "vacancy_count": n_pristine - len(divacancy),
@@ -361,7 +370,18 @@ def main() -> None:
         writer.writerows(rows)
 
     top_manifest = {
-        "workflow": "qe_pbe_al_divacancy_pair_rscan",
+        "workflow": "qe_pbe_al_divacancy_" + args.pair_selection + "_rscan",
+        "pair_selection": args.pair_selection,
+        "pair_direction_family": direction_label(args.direction) if args.pair_selection == "fixed_direction" else None,
+        "pair_direction_indices": list(args.direction) if args.pair_selection == "fixed_direction" else None,
+        "distance_convention": "initial minimum-image distance under PBC",
+        "shell_note": "scan_point_index is not the FCC neighbour-shell index; see fcc_shell_index in each case",
+        "method": {"code": "Quantum ESPRESSO", "functional": "PBE", "a0_start_A": args.a0,
+                   "ecut_eV": args.ecut, "kmesh": list(kmesh), "pseudo": pseudo_name,
+                   "pseudo_sha256": sha256_file(pseudo), "force_conv_eV_A": args.force_conv,
+                   "press_conv_kbar": args.press_conv_kbar, "relaxation": "vc-relax"},
+        "generator_sha256": sha256_file(Path(__file__)),
+        "geometry_helper_sha256": sha256_file(SCRIPT_DIR / "divacancy_geometry.py"),
         "root": str(outdir),
         "pair_count": len(settings),
         "cell_lengths_A": [float(x) for x in pristine.cell.lengths()],
@@ -370,6 +390,10 @@ def main() -> None:
         "submit_command": f"cd {outdir} && sbatch submit_qe_divacancy_pair_array.sh",
     }
     (outdir / "manifest.json").write_text(json.dumps(top_manifest, indent=2), encoding="utf-8")
+    source_dir = outdir / "preparation_sources"
+    source_dir.mkdir()
+    for source in (Path(__file__), SCRIPT_DIR / "divacancy_geometry.py", SCRIPT_DIR / "prepare_qe_vacancy_vcrelax_3x3x3.py"):
+        shutil.copy2(source, source_dir / source.name)
     print(json.dumps(top_manifest, indent=2))
 
 

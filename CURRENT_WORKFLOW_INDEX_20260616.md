@@ -1,4 +1,9 @@
-# Current Vacancy Workflow Index
+# Historical Vacancy Workflow Index — 2026-06-16
+
+> Superseded operational entry (2026-09-08): use `README.md` and
+> `RESEARCH_PROTOCOL.json` in this repository. The June settings and remote
+> paths below describe the historical workflow; they are not the defaults of
+> the corrected August [110] analysis. Existing notes are retained as provenance.
 
 Date: 2026-06-16
 
@@ -420,3 +425,22 @@ lambda = 0.90, 0.91, 0.92, 0.93, 0.94, 0.95
 mu     = 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10
 points = 42
 ```
+
+### 2026-08-31 fixed-direction divacancy correction
+
+The divacancy generator now accepts an explicit cubic crystallographic
+direction and defaults to `[110]`. The local runner passes `DIRECTION=1,1,0`,
+so distance-shell selection can no longer silently mix `[100]`, `[110]`, and
+`[310]` configurations.
+
+For the existing `3x3x3` conventional cell, the fixed-`[110]` lattice scan has
+three distinct separations: `2.79631062`, `5.59262124`, and `8.38893187 A`.
+The corrected `(lambda,mu)=(0.9,0.1)` production rerun is stored at:
+
+```text
+work/DFTPY_DIVACANCY_D110_L0p9_M0p1_RERUN_20260831
+```
+
+All three production points satisfy the combined-filter `fmax <= 0.005 eV/A`
+criterion. The nearest-neighbour point uses the thread-pinned LBFGS fallback;
+its 1000-step BFGS force-floor attempt is retained in the package audit folder.

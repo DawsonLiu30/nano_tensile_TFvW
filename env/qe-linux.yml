@@ -1,0 +1,6 @@
+name: al-qe-portable
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - qe=7.5

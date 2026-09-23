@@ -1,5 +1,14 @@
 # Divacancy Energy And PBC Definitions
 
+## Current scope, 2026-09-08
+
+Current [110] data use a0=3.9545804060131293 Å, lambda=0.9, mu=0.1,
+and initial distances 2.7963106, 5.5926212 and 8.3889319 Å. The older
+4.039848 Å / 8.57 Å examples below are geometric examples from the June
+pilot, not current DFTpy results. [110] is a direction; (110) is a plane.
+The second point along [110] is not fcc second-nearest-neighbour [100].
+The archived August13 [100] case exists and must be considered separately.
+
 ## Structure Names
 
 ```text
@@ -27,14 +36,23 @@ This is the main two-vacancy formation energy plotted against distance.
 
 ## Binding Or Relative Energy
 
-If a separately converged one-vacancy reference is available:
+Only with matched, independently converged mono/divacancy protocols and an
+assessed finite-size limit may a binding interpretation be made. State the
+sign explicitly. The widespread positive-attraction convention is
+`E_bind = 2 E_1vac - E_2vac`; the historical project used the opposite sign,
+which is labelled interaction energy here:
 
 ```text
-E_bind(r) = E_2vac(r) - 2 E_1vac
+E_interaction(r) = E_2vac(r) - 2 E_1vac
 ```
 
 With this sign convention, a negative value indicates that the pair is lower
 in energy than two isolated vacancies.
+
+The available selected monovacancy reference uses spacing about 0.250343 Å
+and target 0.01 eV/Å, whereas the corrected divacancy uses 0.20 Å and
+0.005 eV/Å. A direct combination is only a diagnostic of unmatched datasets,
+and must not be presented as a quantitative binding-energy result.
 
 If a sufficiently separated one-vacancy reference is not available, only a
 finite-cell relative energy may be reported:

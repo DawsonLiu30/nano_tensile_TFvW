@@ -5,23 +5,21 @@ import csv
 import json
 import math
 import shutil
+import sys
 from pathlib import Path
 
-from ase.build import bulk
 from ase.io import write
 
 
-EV_PER_HA_GRID = 27.211386245988
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
 
-
-def parse_repeat(text: str) -> tuple[int, int, int]:
-    parts = text.lower().replace(",", "x").split("x")
-    if len(parts) != 3:
-        raise argparse.ArgumentTypeError("repeat must look like 3x3x3")
-    values = tuple(int(part) for part in parts)
-    if any(value <= 0 for value in values):
-        raise argparse.ArgumentTypeError("repeat values must be positive")
-    return values
+from divacancy_geometry import (
+    DFTPY_A0_A, build_centered_pristine, direction_label, enumerate_pairs,
+    pair_geometry_metadata, parse_direction, parse_repeat, prepare_output_directory,
+    remove_two_atoms, sha256_file, validate_positive,
+)
 
 
 def spacing_to_ecut_analogue_ev(spacing_a: float) -> float:
@@ -88,16 +86,27 @@ method = LBFGS
     )
 
 
-def write_case_readme(path: Path, *, setting: str, pair_distance_a: float) -> None:
+def write_case_readme(
+    path: Path,
+    *,
+    setting: str,
+    pair_distance_a: float,
+    pair_direction: tuple[int, int, int],
+    n_pristine: int = 108,
+    pair_selection: str = "fixed_direction",
+) -> None:
     path.write_text(
         f"""DFTpy divacancy case: {setting}
 
 Pair distance:
   {pair_distance_a:.8f} A (initial minimum-image distance under PBC)
 
+Crystallographic direction (selection protocol: {pair_selection}):
+  {direction_label(pair_direction)} (parallel and antiparallel sites are equivalent)
+
 Starting structures:
-  pristine_raw.vasp       108-atom pristine cell
-  divacancy_start.vasp    106-atom cell with two vacancies
+  pristine_raw.vasp       {n_pristine}-atom pristine cell
+  divacancy_start.vasp    {n_pristine - 2}-atom cell with two vacancies
 
 DFTpy provenance inputs:
   dftpy_pristine_input.ini
@@ -119,69 +128,47 @@ relaxation is driven programmatically through ASE FrechetCellFilter and BFGS.
     )
 
 
-def build_centered_pristine(a0: float, repeat: tuple[int, int, int]):
-    atoms = bulk("Al", "fcc", a=a0, cubic=True).repeat(repeat)
-    scaled = atoms.get_scaled_positions(wrap=True)
-    center = [0.5, 0.5, 0.5]
-    distances = [
-        sum((coord - target) ** 2 for coord, target in zip(pos, center))
-        for pos in scaled
-    ]
-    center_index = min(range(len(distances)), key=lambda idx: distances[idx])
-    shift = [center[i] - scaled[center_index][i] for i in range(3)]
-    scaled_shifted = (scaled + shift) % 1.0
-    atoms.set_scaled_positions(scaled_shifted)
-    atoms.wrap()
-    return atoms, center_index, shift
+def enumerate_same_height_pairs(pristine, center_index, direction=(1, 1, 0),
+                                z_tol=1e-6, distance_tol=1e-4, direction_tol=1e-6):
+    """Compatibility wrapper; new code may call enumerate_pairs explicitly."""
+    return enumerate_pairs(pristine, center_index, direction=direction, z_tol=z_tol,
+                           distance_tol=distance_tol, direction_tol=direction_tol)
 
 
-def enumerate_same_height_pairs(pristine, center_index: int, z_tol: float, distance_tol: float):
-    positions = pristine.get_positions()
-    center = positions[center_index]
-    candidates = []
-    for idx, pos in enumerate(positions):
-        if idx == center_index:
-            continue
-        delta = pos - center
-        if abs(float(delta[2])) > z_tol:
-            continue
-        distance = float((delta @ delta) ** 0.5)
-        if distance <= distance_tol:
-            continue
-        candidates.append((distance, idx, delta))
-
-    grouped = []
-    for distance, idx, delta in sorted(candidates, key=lambda item: item[0]):
-        if grouped and abs(distance - grouped[-1][0]) <= distance_tol:
-            continue
-        grouped.append((distance, idx, delta))
-    return grouped
-
-
-def remove_two_atoms(atoms, first_index: int, second_index: int):
-    divacancy = atoms.copy()
-    for idx in sorted([first_index, second_index], reverse=True):
-        del divacancy[idx]
-    return divacancy
-
-
-def parse_args() -> argparse.Namespace:
+def parse_args(argv=None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Prepare a DFTpy full atom+cell relaxation scan for same-height Al divacancy pairs."
+        description=(
+            "Prepare a DFTpy full atom+cell relaxation scan for same-height Al "
+            "divacancy pairs along one fixed crystallographic direction."
+        )
     )
     parser.add_argument("--outdir", required=True)
-    parser.add_argument("--a0", type=float, default=4.039848)
+    parser.add_argument("--a0", type=float, default=DFTPY_A0_A)
     parser.add_argument("--repeat", type=parse_repeat, default=(3, 3, 3))
     parser.add_argument("--pp", default="al.lda.recpot")
     parser.add_argument("--xc", default="LDA")
     parser.add_argument("--kedf", default="TFVW")
-    parser.add_argument("--kedf-x", type=float, default=1.0)
-    parser.add_argument("--kedf-y", type=float, default=0.13)
+    parser.add_argument("--kedf-x", type=float, default=0.9)
+    parser.add_argument("--kedf-y", type=float, default=0.1)
     parser.add_argument("--spacing", type=float, default=0.20)
-    parser.add_argument("--fmax", type=float, default=0.002)
+    parser.add_argument("--fmax", type=float, default=0.005)
     parser.add_argument("--relax-steps", type=int, default=5000)
+    parser.add_argument(
+        "--direction",
+        type=parse_direction,
+        default=(1, 1, 0),
+        help="fixed cubic crystallographic direction (default: 1,1,0)",
+    )
+    parser.add_argument("--pair-selection", choices=["fixed_direction", "shells"], default="fixed_direction",
+                        help="fixed_direction radial scan, or independent 3D FCC shell/direction representatives")
     parser.add_argument("--z-tol", type=float, default=1.0e-6)
     parser.add_argument("--distance-tol", type=float, default=1.0e-4)
+    parser.add_argument(
+        "--direction-tol",
+        type=float,
+        default=1.0e-6,
+        help="maximum perpendicular displacement from the fixed direction in A",
+    )
     parser.add_argument("--max-pairs", type=int, default=0)
     parser.add_argument("--account", default="MST114175")
     parser.add_argument("--partition", default="ctest")
@@ -195,21 +182,46 @@ def parse_args() -> argparse.Namespace:
         choices=["BFGS", "LBFGS", "BFGSLineSearch", "SciPyFminBFGS", "SciPyFminCG", "MDMin"],
         help="ASE optimizer passed to the DFTpy vc-relax-equivalent runner.",
     )
-    return parser.parse_args()
+    args = parser.parse_args(argv)
+    try:
+        validate_positive(a0=args.a0, spacing=args.spacing, fmax=args.fmax,
+                          relax_steps=args.relax_steps, z_tol=args.z_tol,
+                          distance_tol=args.distance_tol, direction_tol=args.direction_tol,
+                          cpus=args.cpus, max_parallel=args.max_parallel)
+        if args.max_pairs < 0:
+            raise ValueError("max-pairs must be nonnegative")
+        if any(not math.isfinite(v) or v < 0 for v in (args.kedf_x, args.kedf_y)):
+            raise ValueError("KEDF weights must be finite and nonnegative")
+        if args.kedf_x == args.kedf_y == 0:
+            raise ValueError("both KEDF weights cannot be zero")
+    except ValueError as exc:
+        parser.error(str(exc))
+    return args
 
 
 def main() -> None:
     args = parse_args()
     outdir = Path(args.outdir).expanduser().resolve()
-    if outdir.exists():
-        shutil.rmtree(outdir)
-    outdir.mkdir(parents=True)
+    pp_source = Path(args.pp).expanduser().resolve()
+    if not pp_source.is_file():
+        raise FileNotFoundError(f"Missing pseudopotential: {pp_source}")
 
     pristine, center_index, shift = build_centered_pristine(args.a0, args.repeat)
-    pairs = enumerate_same_height_pairs(pristine, center_index, args.z_tol, args.distance_tol)
+    pairs = enumerate_pairs(
+        pristine, center_index, selection=args.pair_selection, direction=args.direction,
+        z_tol=args.z_tol, distance_tol=args.distance_tol, direction_tol=args.direction_tol,
+    )
     if args.max_pairs > 0:
         pairs = pairs[: args.max_pairs]
+    if not pairs:
+        raise RuntimeError(
+            f"No same-height pairs found along {direction_label(args.direction)} "
+            f"for repeat={args.repeat}"
+        )
 
+    prepare_output_directory(outdir)
+    pp_path = outdir / pp_source.name
+    shutil.copy2(pp_source, pp_path)
     pair_root = outdir / "pair_scan"
     pair_root.mkdir()
     write_structure_pair(outdir / "pristine_raw", pristine)
@@ -219,13 +231,13 @@ def main() -> None:
     rows = []
     ecut_analogue = spacing_to_ecut_analogue_ev(args.spacing)
     n_pristine = len(pristine)
-    pp_path = Path(args.pp).expanduser().resolve()
 
     for case_idx, (distance, second_index, delta) in enumerate(pairs, start=1):
         setting = f"pair_{case_idx:02d}_{safe_distance_label(distance)}"
         case_dir = pair_root / setting
         case_dir.mkdir(parents=True)
         divacancy = remove_two_atoms(pristine, center_index, second_index)
+        geometry = pair_geometry_metadata(pristine, center_index, second_index, delta, args.a0)
         write_structure_pair(case_dir / "pristine_raw", pristine)
         write_structure_pair(case_dir / "divacancy_start", divacancy)
         write_dftpy_provenance_input(
@@ -252,11 +264,19 @@ def main() -> None:
             case_dir / "README_CASE.txt",
             setting=setting,
             pair_distance_a=distance,
+            pair_direction=tuple(geometry["pair_direction_indices"]),
+            n_pristine=n_pristine,
+            pair_selection=args.pair_selection,
         )
 
         manifest = {
             "setting": setting,
             "scan_type": "pair",
+            "pair_selection": args.pair_selection,
+            **geometry,
+            "scan_point_index": case_idx,
+            "requested_direction_indices": list(args.direction) if args.pair_selection == "fixed_direction" else None,
+            "direction_tolerance_A": args.direction_tol,
             "cell_basis": "conventional cubic fcc",
             "a0_start_A": args.a0,
             "conventional_repeat": list(args.repeat),
@@ -275,7 +295,12 @@ def main() -> None:
             "pair_delta_A": [float(x) for x in delta],
             "spacing_A": args.spacing,
             "ecut_analogue_eV": ecut_analogue,
-            "pp_file": str(pp_path),
+            "pp_file": "../../" + pp_path.name,
+            "pp_sha256": sha256_file(pp_path),
+            "pp_source_at_preparation": str(pp_source),
+            "ase_optimizer": args.ase_optimizer,
+            "generator_sha256": sha256_file(Path(__file__)),
+            "geometry_helper_sha256": sha256_file(SCRIPT_DIR / "divacancy_geometry.py"),
             "xc": args.xc,
             "kedf": args.kedf,
             "kedf_x": args.kedf_x,
@@ -294,6 +319,9 @@ def main() -> None:
                 "dx_A": f"{float(delta[0]):.8f}",
                 "dy_A": f"{float(delta[1]):.8f}",
                 "dz_A": f"{float(delta[2]):.8f}",
+                "direction": geometry["pair_direction_family"],
+                "fcc_shell_index": geometry["fcc_shell_index"],
+                "pair_selection": args.pair_selection,
                 "N_pristine": n_pristine,
                 "N_divacancy": len(divacancy),
                 "vacancy_count": n_pristine - len(divacancy),
@@ -364,9 +392,17 @@ python scripts/run_dftpy_vcrelax_vacancy_one.py \\
     submit_path.write_text(submit_text, encoding="utf-8")
 
     top_manifest = {
-        "workflow": "dftpy_al_divacancy_pair_rscan",
+        "workflow": "dftpy_al_divacancy_" + args.pair_selection + "_rscan",
+        "pair_selection": args.pair_selection,
+        "distance_convention": "initial minimum-image distance under PBC",
+        "shell_note": "scan_point_index is not the FCC neighbour-shell index; see fcc_shell_index in each case",
+        "generator_sha256": sha256_file(Path(__file__)),
+        "geometry_helper_sha256": sha256_file(SCRIPT_DIR / "divacancy_geometry.py"),
         "root": str(outdir),
         "pair_count": len(settings),
+        "pair_direction_family": direction_label(args.direction) if args.pair_selection == "fixed_direction" else None,
+        "pair_direction_indices": list(args.direction) if args.pair_selection == "fixed_direction" else None,
+        "direction_tolerance_A": args.direction_tol,
         "settings_file": str(outdir / "settings_pair_scan.txt"),
         "submit_script": str(submit_path),
         "cell_lengths_A": [float(x) for x in pristine.cell.lengths()],
@@ -377,7 +413,10 @@ python scripts/run_dftpy_vcrelax_vacancy_one.py \\
             "kedf": args.kedf,
             "kedf_x": args.kedf_x,
             "kedf_y": args.kedf_y,
-            "pp": str(Path(args.pp).expanduser().resolve()),
+            "pp": pp_path.name,
+            "pp_sha256": sha256_file(pp_path),
+            "a0_start_A": args.a0,
+            "ase_optimizer": args.ase_optimizer,
             "spacing_A": args.spacing,
             "relaxation": "full atom+cell relaxation / vc-relax equivalent",
             "fmax_eV_A": args.fmax,
@@ -385,6 +424,10 @@ python scripts/run_dftpy_vcrelax_vacancy_one.py \\
     }
     (outdir / "manifest.json").write_text(json.dumps(top_manifest, indent=2), encoding="utf-8")
 
+    source_dir = outdir / "preparation_sources"
+    source_dir.mkdir()
+    for source in (Path(__file__), SCRIPT_DIR / "divacancy_geometry.py"):
+        shutil.copy2(source, source_dir / source.name)
     print(json.dumps(top_manifest, indent=2))
 
 

@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "revision_date": "2026-09-24",
+  "research_status": "corrected_direction_resolved_results_with_remaining_validation",
+  "thesis_acceptance": "not_assessed",
+  "windows_source": "C:/OFDFT/nano_tensile_TFvW",
+  "wsl_runtime": "/var/tmp/al-defects-runtime-20260907",
+  "current_divacancy": {
+    "dataset_relative_to_OFDFT": "DFTPY_DIVACANCY_D110_L0p9_M0p1_RERUN_20260831",
+    "cell_basis": "conventional cubic fcc",
+    "repeat": [
+      3,
+      3,
+      3
+    ],
+    "pristine_atoms": 108,
+    "defect_atoms": 106,
+    "a0_start_A": 3.9545804060131293,
+    "direction_indices": [
+      1,
+      1,
+      0
+    ],
+    "axis_reversal_equivalent": true,
+    "direction_is_not_plane": true,
+    "xc": "LDA",
+    "kedf": "TFVW",
+    "lambda": 0.9,
+    "mu": 0.1,
+    "pseudopotential": "al.lda.recpot",
+    "requested_spacing_A": 0.2,
+    "pressure_GPa": 0.0,
+    "relaxation": "full atom and cell; ASE FrechetCellFilter",
+    "combined_fmax_target_eV_A": 0.005,
+    "formation_energy": "E106 - (106/108)*E108; total eV per two-vacancy configuration",
+    "distance": "initial removed-site minimum-image distance, not a post-relaxation distance",
+    "points": [
+      {
+        "r_A": 2.796310621839333,
+        "E_2vac_eV": 1.2783895060420036,
+        "optimizer": "LBFGS"
+      },
+      {
+        "r_A": 5.592621243678668,
+        "E_2vac_eV": 1.332160884008772,
+        "optimizer": "BFGS"
+      },
+      {
+        "r_A": 8.388931865518002,
+        "E_2vac_eV": 1.3349384808188915,
+        "optimizer": "BFGS"
+      }
+    ],
+    "electronic_convergence_audit": "not_certified_by_energy_summary_or_ASE_force_checks",
+    "finite_size_convergence": "not_established",
+    "grid_convergence_at_current_protocol": "not_established",
+    "isolated_binding_energy": "not_established",
+    "QE_divacancy_cross_validation": "not_established",
+    "scope_note": "Historical August2026 variable-cell dataset. Retained for earlier tools; not the latest controlled comparison."
+  },
+  "historical_second_neighbour": {
+    "case_relative_to_OFDFT": "DFTPY_DIVACANCY_L0p9_M0p1_CURATED_20260813/pair_scan/pair_02_r3p9546A",
+    "direction_indices": [
+      1,
+      0,
+      0
+    ],
+    "fcc_shell": 2,
+    "r_A": 3.9545804060131293,
+    "E_2vac_eV": 1.315854762725,
+    "usage": "separate direction-resolved comparison; exclude from fixed-[110] curve"
+  },
+  "binding_conventions": {
+    "binding_positive_attraction": "2*E_1vac - E_2vac",
+    "interaction_negative_attraction": "E_2vac - 2*E_1vac",
+    "requirements": "State sign convention and match XC, KEDF, pseudopotential, numerical grid, relaxation and reference protocol; assess finite-size convergence. Do not combine the current unmatched mono/divacancy values."
+  },
+  "operational_entry": "docs/CROSS_DEVICE_QE.md",
+  "current_portable_QE": {
+    "manifest": "campaigns/qe_divacancy_20260923/manifest.json",
+    "mode": "SCF at fixed corresponding TFvW geometries",
+    "source_status_date": "2026-09-23",
+    "completed": [
+      "2V_1NN_D110"
+    ],
+    "pending": [
+      "2V_2NN_D100",
+      "2V_D310_r1",
+      "2V_D110_r2"
+    ],
+    "destination_validated": false,
+    "comparison_status": "not yet available",
+    "migration_mode": "fresh_SCF",
+    "remote_host": "twnia3.nchc.org.tw",
+    "remote_user": "dawson666"
+  }
+}

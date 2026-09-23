@@ -1,0 +1,42 @@
+{
+  "status": "prepared_not_calculated",
+  "study": "vertical",
+  "mode": "scf",
+  "label": "2V_1NN_D110",
+  "source_case": {
+    "source_attempt": "/mnt/c/OFDFT/LOCAL_MACHINE_20260907/runs/validation_fixedcell_108_f001_20260916/2V_1NN_D110/attempt_001",
+    "source_traj_sha256": "efbd930ce767638dee9a9161858a787b75fe7f01f442514053671296746d666f",
+    "source_result_sha256": "c18110bee6ecf206fed2f672cdcc2de4045ca2e2a9fb3ef9c8771228d7d980de",
+    "source_energy_eV": -6670.735792690299,
+    "n_atoms": 106,
+    "source_removed_indices": [
+      59,
+      104
+    ],
+    "max_reference_site_displacement_A": 0.139000773319621
+  },
+  "input_sha256": "8674ac564d2de1962b439b62d563a32db576840019c09ff313ad64e6de9e5900",
+  "pseudo_sha256": "4eab06b63f87f07ede2d5a193e6d993a09107167fd6b8647afa807342501d6e5",
+  "xc": "Slater exchange + Perdew-Zunger LDA correlation from NC UPF; same XC form as TFvW LDA, different pseudopotential",
+  "xc_branch": "LDA_PZ_NC",
+  "pseudo_file": "Al.pz-vbc.UPF",
+  "ecutwfc_Ry": 60.0,
+  "ecutrho_Ry": 240.0,
+  "kmesh": [
+    3,
+    3,
+    3
+  ],
+  "koffset": [
+    0,
+    0,
+    0
+  ],
+  "degauss_Ry": 0.02,
+  "nbnd": 200,
+  "scf_conv_thr_Ry_total": 1e-09,
+  "requested_final_max_vector_force_eV_A": null,
+  "qe_component_force_thr_Ry_bohr": null,
+  "TFvW_source_force_target_eV_A": 0.001,
+  "comparison_meaning": "QE single-point energy on unchanged verified TFvW source geometry"
+}

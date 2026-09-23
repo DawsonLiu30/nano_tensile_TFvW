@@ -1,8 +1,17 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import redirect_stdout, redirect_stderr
+from datetime import datetime, timezone
+import hashlib
+from importlib.metadata import version
 import json
+import math
+import os
+import re
+import shutil
 import sys
+import traceback
 from pathlib import Path
 
 import numpy as np
@@ -24,6 +33,8 @@ def repeat_label(manifest: dict[str, object]) -> str:
 
 
 def resolve_case(rootdir: Path, setting: str, scan: str) -> Path:
+    if not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', setting) or '..' in setting:
+        raise ValueError('Setting must be a single safe directory name')
     candidates: list[Path] = []
     if scan in {"auto", "spacing"}:
         candidates.append(rootdir / "spacing_scan" / setting)
@@ -35,7 +46,10 @@ def resolve_case(rootdir: Path, setting: str, scan: str) -> Path:
         candidates.append(rootdir / "pair_scan" / setting)
     for candidate in candidates:
         if candidate.exists():
-            return candidate
+            resolved = candidate.resolve()
+            if resolved.parent != candidate.parent.resolve() or rootdir.resolve() not in resolved.parents:
+                raise ValueError('Case path escapes calculation root')
+            return resolved
     raise FileNotFoundError("Could not find setting. Tried:\n" + "\n".join(str(x) for x in candidates))
 
 
@@ -87,6 +101,7 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--setting", required=True)
     ap.add_argument("--scan", choices=["auto", "spacing", "size", "weight", "pair"], default="auto")
     ap.add_argument("--pressure-gpa", type=float, default=0.0)
+    ap.add_argument('--restart', action='store_true', help='Archive the entire prior attempt before rerunning from input structures')
     ap.add_argument(
         "--ase-optimizer",
         choices=["BFGS", "LBFGS", "BFGSLineSearch", "SciPyFminBFGS", "SciPyFminCG", "MDMin"],
@@ -95,11 +110,19 @@ def parse_args() -> argparse.Namespace:
     return ap.parse_args()
 
 
-def main() -> None:
+def main() -> int:
     args = parse_args()
     rootdir = Path(args.rootdir).expanduser().resolve()
     case_dir = resolve_case(rootdir, str(args.setting), str(args.scan))
+    # Linux/WSL execution: refuse simultaneous writes to the same case.
+    import fcntl
+    case_lock = (case_dir / '.case.lock').open('a')
+    fcntl.flock(case_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     manifest = json.loads((case_dir / "point_manifest.json").read_text(encoding="utf-8"))
+    if manifest.get('setting') != args.setting:
+        raise ValueError('Manifest setting differs from directory')
+    if not math.isfinite(args.pressure_gpa) or args.pressure_gpa != 0:
+        raise ValueError('This formation-energy workflow is defined at zero external pressure')
 
     pp_declared = Path(str(manifest["pp_file"])).expanduser()
     pp_candidates = [
@@ -131,6 +154,41 @@ def main() -> None:
 
     pristine = read(str(case_dir / "pristine_raw.vasp"))
     defect = read(str(defect_start))
+    if len(pristine) != int(manifest['pristine_n_atoms']) or len(defect) != int(manifest['vacancy_n_atoms']):
+        raise ValueError('Input structures and manifest atom counts disagree')
+    if is_pair and len(pristine) - len(defect) != 2:
+        raise ValueError('Divacancy calculation must remove exactly two atoms')
+    if not np.allclose(pristine.cell.array, defect.cell.array, atol=1e-7, rtol=0):
+        raise ValueError('Initial pristine/defect cells differ')
+    if not all(math.isfinite(x) for x in (spacing, fmax, kedf_x, kedf_y)) or spacing <= 0 or fmax <= 0 or steps <= 0:
+        raise ValueError('Invalid numerical settings')
+    if 'pp_sha256' in manifest and hashlib.sha256(pp_file.read_bytes()).hexdigest() != manifest['pp_sha256']:
+        raise ValueError('Pseudopotential differs from prepared hash')
+    artifacts = [p for p in case_dir.iterdir() if p.is_file() and (
+        p.name in ('result.json', 'run_failure.json', 'run_provenance.json', 'local_runner.log')
+        or p.name.endswith(('_relax.log', '_relax.traj', '_dftpy.out', '_relaxed.vasp', '_relaxed.xyz')))]
+    if artifacts:
+        if not args.restart:
+            raise FileExistsError('Prior attempt exists; --restart explicitly archives it before rerunning')
+        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
+        archive = rootdir / 'audit' / f'{args.setting}_{stamp}'
+        shutil.copytree(case_dir, archive)
+        print(f'[ARCHIVED] {archive}')
+        # Only stale completion markers are removed; all copies are preserved.
+        for name in ('result.json', 'run_failure.json'):
+            (case_dir / name).unlink(missing_ok=True)
+    provenance = {
+        'started_utc': datetime.now(timezone.utc).isoformat(),
+        'python': sys.version,
+        'packages': {name: version(name) for name in ('dftpy', 'ase', 'numpy', 'scipy')},
+        'sha256': {str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else p.name:
+                   hashlib.sha256(p.read_bytes()).hexdigest() for p in
+                   (Path(__file__).resolve(), ROOT / 'app/dft_engine.py', pp_file,
+                    case_dir / 'point_manifest.json', case_dir / 'pristine_raw.vasp', defect_start)},
+        'electronic_convergence_status': 'not_exposed_by_dftpy_ase_api',
+        'console_record': 'local_runner.log',
+    }
+    (case_dir / 'run_provenance.json').write_text(json.dumps(provenance, indent=2) + '\n', encoding='utf-8')
 
     write_calculator_provenance(
         case_dir / "dftpy_pristine_calculator_config.json",
@@ -161,7 +219,36 @@ def main() -> None:
         ase_optimizer=str(args.ase_optimizer),
     )
 
-    pristine_relaxed, pristine_energy, pristine_stress = relax_atoms_and_cell(
+    # Capture density-iteration console output as well as ASE optimizer logs.
+    def recorded_relax(*values, **kwargs):
+        with (case_dir / 'local_runner.log').open('a', encoding='utf-8') as console:
+            # DFTpy retains a reference to stdout at import time. Redirecting
+            # Python's sys.stdout alone loses that transcript; capture FDs too.
+            sys.stdout.flush()
+            sys.stderr.flush()
+            saved_out, saved_err = os.dup(1), os.dup(2)
+            try:
+                os.dup2(console.fileno(), 1)
+                os.dup2(console.fileno(), 2)
+                with redirect_stdout(console), redirect_stderr(console):
+                    try:
+                        return relax_atoms_and_cell(*values, **kwargs)
+                    except Exception as exc:
+                        traceback.print_exc()
+                        (case_dir / 'run_failure.json').write_text(json.dumps({
+                            'status': 'failed', 'error': str(exc), 'logfile': kwargs.get('logfile'),
+                            'time_utc': datetime.now(timezone.utc).isoformat()}, indent=2) + '\n')
+                        raise
+            finally:
+                console.flush()
+                sys.stdout.flush()
+                sys.stderr.flush()
+                os.dup2(saved_out, 1)
+                os.dup2(saved_err, 2)
+                os.close(saved_out)
+                os.close(saved_err)
+    (case_dir / 'local_runner.log').write_text('', encoding='utf-8')
+    pristine_relaxed, pristine_energy, pristine_stress = recorded_relax(
         pristine,
         pp_file=pp_file,
         spacing=spacing,
@@ -177,7 +264,7 @@ def main() -> None:
         scalar_pressure_gpa=float(args.pressure_gpa),
         ase_optimizer=str(args.ase_optimizer),
     )
-    defect_relaxed, defect_energy, defect_stress = relax_atoms_and_cell(
+    defect_relaxed, defect_energy, defect_stress = recorded_relax(
         defect,
         pp_file=pp_file,
         spacing=spacing,
@@ -229,6 +316,10 @@ def main() -> None:
         "fmax_eV_per_A": fmax,
         "target_pressure_GPa": float(args.pressure_gpa),
         "ase_optimizer": str(args.ase_optimizer),
+        'pristine_relaxation_evidence': pristine_relaxed.info.get('relaxation_evidence', {}),
+        'defect_relaxation_evidence': defect_relaxed.info.get('relaxation_evidence', {}),
+        'electronic_convergence_status': 'not_exposed_by_dftpy_ase_api',
+        'thesis_acceptance': 'not_assessed',
         "pristine_energy_eV": float(pristine_energy),
         "vacancy_energy_eV": float(defect_energy),
         f"{defect_label}_energy_eV": float(defect_energy),
@@ -248,8 +339,15 @@ def main() -> None:
         "formula": "E_f^defect = E_full-relax_defect^(N-nvac) - ((N-nvac)/N) E_full-relax_pristine^N",
     }
     (case_dir / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
-    print(json.dumps(result, indent=2))
+    from divacancy_analysis_checks import qualify_case
+    qualification = qualify_case(case_dir)
+    result['status'] = qualification['status']
+    result['qualification_reasons'] = qualification['qualification_reasons']
+    (case_dir / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+    print(json.dumps({'case': str(case_dir), 'status': result['status'],
+                      'formation_energy_eV': ef_vac, 'reasons': result['qualification_reasons']}, indent=2))
+    return 0 if qualification['qualified'] else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

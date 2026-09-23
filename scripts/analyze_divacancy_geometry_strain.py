@@ -10,36 +10,41 @@ from pathlib import Path
 
 import numpy as np
 from ase.io import read
+from ase.geometry import find_mic
+
+from divacancy_analysis_checks import qualify_case, optimizer_last_record
+from collect_dftpy_conventional_vacancy import series_key
 
 
 def last_bfgs_fmax(path: Path) -> float:
-    value = math.nan
-    if not path.exists():
-        return value
-    for line in path.read_text(errors="ignore").splitlines():
-        if line.strip().startswith("BFGS:"):
-            try:
-                value = float(line.split()[-1])
-            except (ValueError, IndexError):
-                pass
-    return value
+    """Backward-compatible name; supports every ASE optimizer log format."""
+    return optimizer_last_record(path)["fmax_eV_A"]
 
 
 def minimum_image_vectors(frac_delta: np.ndarray, cell: np.ndarray) -> np.ndarray:
-    wrapped = frac_delta - np.round(frac_delta)
-    return wrapped @ cell
+    # Component wrapping alone need not be the shortest image for a sheared cell.
+    vectors, _ = find_mic(np.asarray(frac_delta) @ cell, cell, pbc=True)
+    return vectors
+
+
+def green_lagrange_strain(start_cell: np.ndarray, final_cell: np.ndarray) -> np.ndarray:
+    # ASE stores lattice vectors as rows: A_final = A_initial @ F.T.
+    deformation_transpose = np.linalg.solve(start_cell, final_cell)
+    return 0.5 * (deformation_transpose @ deformation_transpose.T - np.eye(3))
 
 
 def crystallographic_direction(frac_delta: np.ndarray) -> str:
     wrapped = frac_delta - np.round(frac_delta)
-    fractions = [Fraction(abs(float(value))).limit_denominator(48) for value in wrapped]
+    fractions = [Fraction(float(value)).limit_denominator(48) for value in wrapped]
     denominators = [value.denominator for value in fractions]
     common = math.lcm(*denominators)
     integers = [int(value * common) for value in fractions]
     nonzero = [value for value in integers if value]
     divisor = reduce(math.gcd, nonzero) if nonzero else 1
     reduced = [value // divisor for value in integers]
-    return "[" + "".join(str(value) for value in reduced) + "]"
+    if any(reduced) and next(value for value in reduced if value) < 0:
+        reduced = [-value for value in reduced]
+    return "[" + " ".join(str(value) for value in reduced) + "]"
 
 
 def local_bond_strain(start, final, cutoff_a: float) -> tuple[np.ndarray, np.ndarray]:
@@ -85,7 +90,7 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
         path.write_text("", encoding="utf-8")
         return
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(handle, fieldnames=list(dict.fromkeys(key for row in rows for key in row)))
         writer.writeheader()
         writer.writerows(rows)
 
@@ -93,9 +98,14 @@ def write_csv(path: Path, rows: list[dict[str, object]]) -> None:
 def analyze(root: Path, output: Path, cutoff_a: float) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     case_rows: list[dict[str, object]] = []
     atom_rows: list[dict[str, object]] = []
+    qualification_rows: list[dict[str, object]] = []
 
     for manifest_path in sorted((root / "pair_scan").glob("*/point_manifest.json")):
         case_dir = manifest_path.parent
+        qualification = qualify_case(case_dir)
+        qualification_rows.append({"case": case_dir.name, **qualification})
+        if not qualification["qualified"]:
+            continue
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         result_path = case_dir / "result.json"
         if not result_path.exists():
@@ -112,7 +122,7 @@ def analyze(root: Path, output: Path, cutoff_a: float) -> tuple[list[dict[str, o
         pristine = read(case_dir / "pristine_raw.vasp")
         start = read(start_path)
         final = read(final_path)
-        if len(start) != len(final):
+        if len(start) != len(final) or start.get_chemical_symbols() != final.get_chemical_symbols():
             raise ValueError(f"Atom-count mismatch: {case_dir}")
 
         first_index = int(manifest["first_vacancy_index"])
@@ -140,8 +150,7 @@ def analyze(root: Path, output: Path, cutoff_a: float) -> tuple[list[dict[str, o
 
         start_cell = pristine.cell.array
         final_cell = final.cell.array
-        deformation_gradient = np.linalg.solve(start_cell, final_cell)
-        green_strain = 0.5 * (deformation_gradient.T @ deformation_gradient - np.eye(3))
+        green_strain = green_lagrange_strain(start_cell, final_cell)
         lengths = pristine.cell.lengths()
         max_minimum_image_distance = float(np.linalg.norm(lengths / 2.0))
 
@@ -153,7 +162,7 @@ def analyze(root: Path, output: Path, cutoff_a: float) -> tuple[list[dict[str, o
             {
                 "case": case_dir.name,
                 "initial_pair_distance_A": float(np.linalg.norm(pair_vector)),
-                "crystallographic_direction_family": crystallographic_direction(pair_frac),
+                "crystallographic_direction_family": qualification["pair_direction_verified"],
                 "initial_pair_dx_A": float(pair_vector[0]),
                 "initial_pair_dy_A": float(pair_vector[1]),
                 "initial_pair_dz_A": float(pair_vector[2]),
@@ -162,13 +171,18 @@ def analyze(root: Path, output: Path, cutoff_a: float) -> tuple[list[dict[str, o
                 "cell_b_A": float(lengths[1]),
                 "cell_c_A": float(lengths[2]),
                 "maximum_minimum_image_distance_A": max_minimum_image_distance,
-                "E_2vac_eV": as_float(result.get("vacancy_formation_energy_eV")),
-                "pristine_final_fmax_eV_A": as_float(
-                    result.get("pristine_final_fmax_eV_A"), last_bfgs_fmax(case_dir / "pristine_relax.log")
-                ),
-                "divacancy_final_fmax_eV_A": as_float(
-                    result.get("divacancy_final_fmax_eV_A"), last_bfgs_fmax(defect_log)
-                ),
+                "E_2vac_eV": qualification["Ef_recomputed_eV"],
+                "pristine_combined_fmax_eV_A": qualification["pristine_combined_fmax_eV_A"],
+                "divacancy_combined_fmax_eV_A": qualification["vacancy_combined_fmax_eV_A"],
+                "pristine_atomic_fmax_eV_A": as_float(result.get("pristine_final_fmax_eV_A")),
+                "divacancy_atomic_fmax_eV_A": as_float(result.get("vacancy_final_fmax_eV_A")),
+                "status": qualification["status"],
+                "qualification_reasons": qualification["qualification_reasons"],
+                "thesis_acceptance": qualification["thesis_acceptance"],
+                "comparison_group": str(series_key({**manifest, **result, **qualification,
+                    "N_pristine": manifest["pristine_n_atoms"], "N_vacancy": manifest["vacancy_n_atoms"],
+                    "fmax_eV_A": manifest["fmax_eV_per_A"],
+                    "vacancy_count": 2, "pair_direction_verified": qualification["pair_direction_verified"]}, "pair_distance_A")),
                 "mean_nonaffine_displacement_A": float(np.mean(displacement)),
                 "max_nonaffine_displacement_A": float(np.max(displacement)),
                 "mean_abs_local_bond_strain": float(np.nanmean(np.abs(bond_strain))),
@@ -197,11 +211,18 @@ def analyze(root: Path, output: Path, cutoff_a: float) -> tuple[list[dict[str, o
             )
 
     case_rows.sort(key=lambda row: float(row["initial_pair_distance_A"]))
+    write_csv(output / "divacancy_case_qualification.csv", qualification_rows)
     write_csv(output / "divacancy_geometry_strain_summary.csv", case_rows)
     write_csv(output / "divacancy_atom_displacement_strain.csv", atom_rows)
 
     trend_rows: list[dict[str, object]] = []
-    for previous, current in zip(case_rows, case_rows[1:]):
+    previous_by_group = {}
+    for current in case_rows:
+        group = current["comparison_group"]
+        previous = previous_by_group.get(group)
+        previous_by_group[group] = current
+        if previous is None:
+            continue
         trend_rows.append(
             {
                 "from_case": previous["case"],
@@ -221,6 +242,10 @@ def make_plots(
     case_rows: list[dict[str, object]],
     atom_rows: list[dict[str, object]],
 ) -> None:
+    if not case_rows:
+        for name in ('divacancy_displacement_and_strain_proxy.png', 'divacancy_E2vac_by_direction.png', 'divacancy_E2vac_by_direction.pdf'):
+            (output / name).unlink(missing_ok=True)
+        return
     try:
         import matplotlib.pyplot as plt
     except ImportError:
@@ -244,9 +269,12 @@ def make_plots(
     plt.close(figure)
 
     figure, axis = plt.subplots(figsize=(5.2, 3.6))
-    directions = sorted({str(row["crystallographic_direction_family"]) for row in case_rows})
-    for direction in directions:
-        selected = [row for row in case_rows if row["crystallographic_direction_family"] == direction]
+    groups = sorted({str(row["comparison_group"]) for row in case_rows})
+    for index, group in enumerate(groups, 1):
+        selected = [row for row in case_rows if row["comparison_group"] == group]
+        direction = selected[0]["crystallographic_direction_family"]
+        if len(groups) > 1:
+            direction = f"{direction}; series {index}"
         selected.sort(key=lambda row: float(row["initial_pair_distance_A"]))
         distance = [float(row["initial_pair_distance_A"]) for row in selected]
         energy = [float(row["E_2vac_eV"]) for row in selected]
@@ -270,13 +298,17 @@ def main() -> None:
     parser.add_argument("--rootdir", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--neighbor-cutoff", type=float, default=3.3)
+    parser.add_argument("--skip-plots", action="store_true")
     args = parser.parse_args()
+    if not math.isfinite(args.neighbor_cutoff) or args.neighbor_cutoff <= 0:
+        parser.error('--neighbor-cutoff must be finite and positive')
 
     root = Path(args.rootdir).expanduser().resolve()
     output = Path(args.output).expanduser().resolve()
     output.mkdir(parents=True, exist_ok=True)
     case_rows, atom_rows = analyze(root, output, args.neighbor_cutoff)
-    make_plots(output, case_rows, atom_rows)
+    if not args.skip_plots:
+        make_plots(output, case_rows, atom_rows)
     print(f"cases={len(case_rows)}")
     print(f"atoms={len(atom_rows)}")
     print(f"output={output}")
