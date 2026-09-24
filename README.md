@@ -5,6 +5,7 @@
 ## 先看這裡
 
 - **[在國網 iService／其他電腦執行 QE](docs/CROSS_DEVICE_QE.md)**：下載、環境設定、驗證、執行與結果回傳。
+- **[本次 Taiwania3 部署](docs/TAIWANIA3_20260924.md)**：已取得遠端環境紀錄；專用 helper 先檢查，再提交同站 1NN 基準。
 - **[最新可攜 QE 計算包](campaigns/qe_divacancy_20260923/README.md)**：四個精確輸入、同一份偽勢、SHA-256、來源與完成證據。
 - [科學條件與狀態 manifest](campaigns/qe_divacancy_20260923/manifest.json)。
 - [先前 Windows／WSL 操作紀錄](docs/LOCAL_WORKFLOW_20260908.md)：保留原機器與 USB 資料位置。
@@ -39,7 +40,7 @@ GitHub 保存程式、精確小型輸入、偽勢、進度與精簡輸出證據�
 
 最新 2NN 中斷 scratch 的完整性不足，本次換機預設從相同科學條件重新開始 SCF。原 scratch 不刪除。新計算必須寫到 repository 外的新 attempt，以免覆寫舊結果；登入資訊也不存入 Git。
 
-國網連線：`ssh dawson666@twnia3.nchc.org.tw`。2026-09-24 已確認可連線，但仍需互動式登入驗證，遠端 QE／Slurm 環境尚未核對。舊腳本內的 `ct56`、account 與 QE7.3.1 路徑不能直接視為現行設定。
+國網連線：`ssh dawson666@twnia3.nchc.org.tw`。使用者於 2026-09-24 已登入並取得移轉版 clone；Python、佇列與計畫關聯已有貼回紀錄。QE／MPI 的實際執行與新計算結果尚未確認。請依 [Taiwania3 部署紀錄](docs/TAIWANIA3_20260924.md) 完成現場查核。
 
 ## 本機測試
 

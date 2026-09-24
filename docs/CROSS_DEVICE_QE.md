@@ -1,5 +1,7 @@
 # 用 GitHub 在另一台電腦或 iService 接續 QE 計算
 
+**2026-09-24 更新：** 使用者已登入 Taiwania3 並核對 clone。當前目的地請優先使用 [Taiwania3 專用部署說明](TAIWANIA3_20260924.md)；下文保留一般跨裝置流程。
+
 本次移轉的是 `campaigns/qe_divacancy_20260923`：**固定 DFTpy 鬆弛後的原子位置與晶胞，只做 QE 電子自洽（SCF）計算**。目的先回答兩組雙空位排列哪一個能量較低；不是舊版 PBE 的 `vc-relax`，也不會重新執行拉伸試驗。
 
 GitHub 保存程式、環境規格、精確輸入、偽勢與精簡證據。計算輸出及大型 scratch 放在 Git repository 外面。以下命令分成檢查、準備、執行；**只有明確加上 `run --execute` 或自行呼叫 `sbatch` 才會開始計算**。
@@ -99,9 +101,7 @@ python scripts/qe_portable.py run \
 ssh dawson666@twnia3.nchc.org.tw
 ```
 
-2026-09-24 已確認本機可連到這個 SSH 主機，但非互動登入回覆
-`Permission denied (keyboard-interactive)`。仍須本人完成站方互動驗證；
-尚未確認目前帳號的 partition、allocation、module 或可執行路徑。
+2026-09-24 使用者已完成互動登入，貼回 Python、partition、計畫關聯與舊提交腳本；QE modules、執行檔與實際計算仍待現場檢查。Codex 的獨立 SSH 程序不會自動取得使用者另一個終端的登入狀態。
 登入憑證不能隨 GitHub 搬移，也不要把密碼／一次性驗證碼寫進 repository。
 
 先在登入節點 clone、驗證並準備，**不要在登入節點直接跑大型 `pw.x`**。`hpc/qe_portable.sbatch` 預設請求 1 task、每 task 2 CPU、16 GB、12 小時；沒有填入猜測的 account 或 partition，也不會自行提交。
