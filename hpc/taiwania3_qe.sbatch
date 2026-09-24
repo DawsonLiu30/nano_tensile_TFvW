@@ -6,6 +6,7 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=64G
 #SBATCH --time=12:00:00
+#SBATCH --no-requeue
 set -euo pipefail
 : "${SLURM_JOB_ID:?Submit via Slurm, not bash on a login node}"
 : "${PROJECT_ROOT:?Missing checkout}"
@@ -21,7 +22,7 @@ fi
 # Reuse of login-node UCX settings would select the wrong device on cpn nodes.
 export HOSTNAME="$(hostname)"
 module purge
-module load intel/2021
+module load intel/2022
 module load intelmpi/2021.11
 export I_MPI_PMI_LIBRARY="${QE_PMI_LIBRARY:-/usr/lib64/libpmi2.so}"
 module list 2>&1

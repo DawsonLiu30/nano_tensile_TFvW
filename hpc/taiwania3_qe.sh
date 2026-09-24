@@ -18,7 +18,7 @@ export PROJECT_ROOT
 PROJECT_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
 export QE_WORK_ROOT="${QE_WORK_ROOT:-/work/dawson666/qe_cases/qe_runs/AL_DIVACANCY_SCF_20260924}"
 export QE_PYTHON="${QE_PYTHON:-/home/dawson666/miniconda3/bin/python3}"
-qe_binary="${QE_BINARY:-/home/dawson666/q-e-qe-7.3.1/bin/pw.x}"
+qe_binary="${QE_BINARY:-/home/u1871490/qe-7.5/bin/pw.x}"
 export QE_BINARY="$qe_binary"
 account="${QE_ACCOUNT:-mst114175}"
 partition="${QE_PARTITION:-ct56}"
@@ -36,7 +36,7 @@ if ! command -v module >/dev/null 2>&1; then
 fi
 export HOSTNAME="$(hostname)"
 module purge
-module load intel/2021
+module load intel/2022
 module load intelmpi/2021.11
 module list 2>&1
 [[ -x "$qe_binary" ]] || fail "Observed historical QE path is unavailable: $qe_binary"
@@ -79,9 +79,12 @@ receipt="$QE_WORK_ROOT/slurm-logs/preflight-$(date -u +%Y%m%dT%H%M%SZ)-$$.txt"
 } > "$receipt"
 printf '[PREFLIGHT RECORD] %s\n' "$receipt"
 existing="$(squeue -h -u "$(id -un)" -n "$job_name" -o '%i')"
-[[ -z "$existing" ]] || fail "A matching job is already queued/running: $existing"
+if [[ -n "$existing" ]]; then
+  [[ "$action" == check ]] || fail "A matching job is already queued/running: $existing"
+  printf '[CHECK ONLY] Existing job %s is unchanged; no submission will occur.\n' "$existing"
+fi
 job_args=(--account="$account" --partition="$partition"
-  --nodes=1 --ntasks=29 --cpus-per-task=1 --mem=64G --time=12:00:00
+  --nodes=1 --ntasks=29 --cpus-per-task=1 --mem=64G --time=12:00:00 --no-requeue
   --job-name="$job_name" --chdir="$QE_WORK_ROOT/slurm-logs"
   --output="$QE_WORK_ROOT/slurm-logs/%x-%j.out"
   --error="$QE_WORK_ROOT/slurm-logs/%x-%j.err" --export=ALL)
