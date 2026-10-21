@@ -1,0 +1,25 @@
+{
+  "historical_printed_QE_total_dynamic_RAM_lower_bound_GB": {
+    "R15_0V": 72.6,
+    "R15_1V": 72.1,
+    "R20_0V": 156.45,
+    "R20_1V": 155.76
+  },
+  "historical_successful_allocation_GiB": {
+    "R15": 128,
+    "R20": 256
+  },
+  "historical_R20_cgroup_peak_GiB": 177.96,
+  "historical_sources": [
+    "C:/OFDFT/nano_tensile_TFvW/docs/QE_NANO_MEMORY_RECOVERY_20261001_ZH.md",
+    "C:/OFDFT/nano_tensile_TFvW/docs/QE_NANO_PROGRESS_20261012.md"
+  ],
+  "proposed_GiB": {
+    "R11_0V_1V": 128,
+    "R13_0V_1V": 128,
+    "R17_0V_1V": 192,
+    "R15_k5_0V_1V": 192
+  },
+  "reasoning": "R11/R13 are smaller than the successful R15 benchmark; retain its proven 128 GiB request rather than return to failed 64 GiB. R17 lies between 96 and176 sites; use192 GiB. R15k5 uses192GiB to allow extra k-point storage. None is a measured peak or guarantee for new inputs. Enforced cgroup and Slurm memory checks precede launching all29 ranks.",
+  "not_a_measurement": "R17 lower-bound interpolation of the two historical pristine estimates is106.14 GB; this is planning only, not QE output for R17."
+}

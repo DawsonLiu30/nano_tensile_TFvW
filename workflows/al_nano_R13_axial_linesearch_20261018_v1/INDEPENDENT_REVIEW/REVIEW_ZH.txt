@@ -1,0 +1,38 @@
+R13 軸向 BFGSLineSearch 候選：獨立方法及程式審查
+2026-10-18；本審查沒有執行 DFT、遠端操作或提交。
+
+結論：目前未見阻塞性的 API／控制流程問題，可以進入遠端相同環境的無 DFT 預檢，再作有界的真實候選試算。這份審查不代表 R13 已收斂，也不把新方法列為已有合格 Al 結果的流程。
+
+1. 方法與實際 API
+原續算已有長時間四步往返，固定晶胞的 cell filter 梯度也偏大。此次讓同一 z-only FrechetCellFilter 同時調整原子及軸長，與待降低的梯度一致；橫向晶胞及傾斜項固定。zero pressure、constant_volume=False 保持。
+已讀取 root 下載且有 SHA256 的遠端 ASE 3.25 原始碼：BFGSLineSearch 使用 filter 的能量與廣義力，FrechetCellFilter 提供對應的變形梯度。DFTpyCalculator 沒有 free_energy 屬性；實際 OptimizableFilter 會捕捉 PropertyNotImplementedError，改用 ordinary energy。程式不必捏造 free_energy 欄位。能量與梯度是否適合實際 R13 仍由真實電子/力/stress 診斷及試算結果判斷。
+maxstep=.005 是 ASE 線搜尋相鄰 trial 的廣義座標增量參數，不保證每個完整步驟的原子最大位移≤.005 Å。新版另記錄實際原子位移、廣義位移與 ΔLz，並在結果中寫清這一點。
+
+2. 晶胞變更、密度與電子數
+實際 DFTpy api4ase.run_config 遇到 cell change 時，不沿用舊 grid 物件；ConfigParser 以目前 ions.cell 和固定 nr=[140,140,96] 建立新網格。field2distrib 在 nr 相同時拷貝相同分率格點的數值，隨後按目標電子數正規化。這不是更換網格點數，也不是額外做實空間插值。
+新 ElectronicTrace 的 geometry_provider 來自正在工作的 calculator.atoms。每次 logical solve 取得目前 cell 快照，對初猜及返回密度都驗證 grid、228 電子、正密度與 lattice；亦檢查同一次 solve 中 cell 沒被更改，以及原橫向晶胞、PBC、至少 10 Å 的週期長度保持。不是拿密度自己的 lattice 來自我認證。
+TN、econv=1e-11 Ha/atom、ncheck=3 不變。僅 warm TN 原生 flag1 允許一次獨立 HEG；第二次失敗、flag2、錯密度或其他錯誤停止。只有原生 flag0 的密度能繼續供力與應力使用。
+
+3. 本次審查發現並已補上的事項
+實際 ASE linesearch 的 warning 字串檢查有切片不相符的情況，warning 可能仍帶回非空步長。新 process-local wrapper 現在明確拒絕 WARNING、ERROR 與所有非 CONVERGENCE 結果，保留 trial log，讓原 runner 保存上一個完整 checkpoint；沒有改已安裝的 ASE。
+舊 base runner 的固定晶胞敘述由新版 truthful_dump 在 running、interrupted、provenance 和 final result 寫入真實的 atoms+axial-zz 模式。重複週期與電子呼叫上限也有獨立停止原因。
+
+4. 保全及驗收
+原 scientific base runner SHA256 保持 dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72。
+新入口核對原 package、先前電子驗證、原 stress gate、已中斷父作業及 coherent step483 bundle 的 hash；同 case lock、新 attempt 和已成功端點防重複保持。
+候選限制為最多 60 個 ionic outer steps、120 次 logical SCF、每次最多 2 個 physical attempt、110 分鐘。程式監測兩步或四步週期，在連續三個週期缺少進展時停止；不會將未通過的力算成通過。
+完整 accepted outer step 才寫 checkpoint。電子或 ionic line-search 在 trial 中失敗時，最後已完成的 bundle 不被 trial 幾何取代。原 Fmax≤.001、filter≤.001 eV/Å 及 |sigma_zz|≤.05 GPa 保持。
+
+5. 獨立無 DFT 測試
+api_smoke.py：本機 ASE 3.29 使用解析計算器測試 BFGSLineSearch+Frechet，7 步收斂；軸向 filter 導數與有限差分誤差 6.05e-13。另一個真實 DFTpy field/grid 測試中，cell 體積增加 0.1% 使未正規化電荷變為 228.228，正規化後回到 228。
+review_control_flow.py：10 項 mocked 電子控制流程通過，包括動態 cell、stale lattice 拒絕、PBC／橫向／電子數保護、solve 中 cell 改動、一次 HEG 重試、第二次失敗與呼叫上限。
+review_adapter.py：3 項通過。真正的新 wrapper 使用解析計算器 5 步收斂；注入 WARNING 且 trial 已改變幾何時會停止，仍只保留先前完成的 observer state；週期停止邏輯不取代原力門檻。
+這些是 API、數值導數與控制流程測試，不是 Al 的新物理數據。遠端 ASE 3.25 預檢由主 agent 負責；此檔案不預先宣稱已通過。
+
+官方參考
+ASE 3.25 BFGSLineSearch：https://gitlab.com/ase/ase/-/raw/3.25.0/ase/optimize/bfgslinesearch.py
+ASE 3.25 filters：https://gitlab.com/ase/ase/-/raw/3.25.0/ase/filters.py
+ASE 3.25 linesearch：https://gitlab.com/ase/ase/-/raw/3.25.0/ase/utils/linesearch.py
+DFTpy 結構鬆弛文件：https://dftpy.rutgers.edu/tutorials/ofdft/relax.html
+DFTpy 2.1.2 interface：https://raw.githubusercontent.com/Quantum-MultiScale/DFTpy/v2.1.2/src/dftpy/interface.py
+遠端實際來源優先於僅依版本或最新版文件推測；來源與程式 SHA 保存在 review_findings.json。

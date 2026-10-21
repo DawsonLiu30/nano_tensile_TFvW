@@ -1,0 +1,19 @@
+--- prior/staged_optimizer.py
++++ current/staged_optimizer.py
+@@ -8,13 +8,13 @@
+ import numpy as np
+ 
+ POLICY = {
+-    'revision': 'fixed_cell_smallstep_LBFGS_finish_20261017_v1',
++    'revision': 'fixed_cell_smallstep_LBFGS_gated_TN_20261017_v1',
+     'optimizer': 'LBFGS',
+     'maxstep_A': 0.01,
+     'cell_degrees_of_freedom_during_finish': 'none; cell fixed at coherent parent checkpoint',
+     'filter_role': 'original z-only FrechetCellFilter retained for final force/stress acceptance',
+-    'electronic_optimizer': 'unchanged LBFGS',
+-    'scope': 'historical optimizer family; current stricter R13 physical endpoint still requires acceptance',
++    'electronic_optimizer': 'TN econv 1e-11 Ha/atom; independent force gate required',
++    'scope': 'same smallstep ionic family; electronic candidate must pass independent checkpoint force gate',
+ }
+ 
+ class FixedCellFinish:

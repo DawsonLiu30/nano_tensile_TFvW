@@ -1,0 +1,7 @@
+{
+  "tests_run": 18,
+  "failures": 0,
+  "errors": 0,
+  "success": true,
+  "scope": "No DFT; real historical k3 fixtures and explicitly synthetic SCF/gate mutation tests."
+}

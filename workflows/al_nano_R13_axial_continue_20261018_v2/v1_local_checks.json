@@ -1,0 +1,28 @@
+{
+  "recovery_base.py": {
+    "unchanged": true,
+    "sha256": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+  },
+  "electronic_trace.py": {
+    "unchanged": true,
+    "sha256": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9"
+  },
+  "api_smoke.py": {
+    "unchanged": true,
+    "sha256": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418"
+  },
+  "all_runtime_sources_unchanged": true,
+  "local_tests": {
+    "tests": 11,
+    "passed": 11,
+    "failures": 0,
+    "errors": 0,
+    "scope": "Synthetic only, no DFT",
+    "returncode": 0
+  },
+  "freeze": {
+    "manifest_sha256": "2e67fe5f489926780a8c930aa5ed733fd41b24ccadac2f540d73ee0ed1dfda00",
+    "payload_files_including_manifest": 17
+  },
+  "scope": "Program and provenance checks only; no DFT execution."
+}

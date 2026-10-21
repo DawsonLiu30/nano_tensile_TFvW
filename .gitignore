@@ -17,6 +17,7 @@ id_ed25519
 # Private correspondence stays local; source snapshots preserve the old history.
 deliverables/EMAIL_REPLY_DRAFT_20260713.txt
 deliverables/ADVISOR_POINT_BY_POINT_REPLY_20260713.md
+docs/LUDER_SCOPE_EMAIL_DRAFT_*.md
 results/
 slurm/
 cases/
@@ -39,6 +40,14 @@ tmp/
 *.xyz
 *.vasp
 
+# Small frozen input structures belong to the reproducibility record.
+!campaigns/**/*.vasp
+!campaigns/**/*.xyz
+!workflows/**/*.vasp
+!workflows/**/*.xyz
+# Curated imports are enumerated and hashed; original large restart files stay local.
+!archives/research_sync_20261021/**
+
 # ===== Curated report outputs =====
 outputs/*
 !outputs/nanocolumn_nanocrystal_vacancy_audit_20260518.md
@@ -53,3 +62,6 @@ outputs/*
 __pycache__/
 *.npy
 results/*/cycle_*_relax.traj
+
+# Keep the explicitly curated, hashed archive after general file-type exclusions.
+!archives/research_sync_20261021/**

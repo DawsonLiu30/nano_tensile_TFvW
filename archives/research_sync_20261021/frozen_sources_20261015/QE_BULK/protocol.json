@@ -1,0 +1,113 @@
+{
+  "status": "review_prepared_not_submitted",
+  "common_namelists": {
+    "control": {
+      "calculation": "vc-relax",
+      "tstress": true,
+      "tprnfor": true,
+      "nstep": 200,
+      "etot_conv_thr": 1e-06,
+      "forc_conv_thr": 1.94469038114889e-05,
+      "pseudo_dir": "./pseudo",
+      "outdir": "./scratch",
+      "restart_mode": "from_scratch",
+      "max_seconds": 255600,
+      "disk_io": "low",
+      "verbosity": "high"
+    },
+    "system": {
+      "ibrav": 0,
+      "ntyp": 1,
+      "nbnd": 200,
+      "ecutwfc": 58.798915481,
+      "ecutrho": 470.3913238484,
+      "occupations": "smearing",
+      "smearing": "mp",
+      "degauss": 0.02,
+      "nspin": 1,
+      "tot_charge": 0.0,
+      "nosym": true,
+      "noinv": true
+    },
+    "electrons": {
+      "conv_thr": 1e-10,
+      "electron_maxstep": 300,
+      "scf_must_converge": true,
+      "mixing_mode": "plain",
+      "mixing_beta": 0.2,
+      "mixing_ndim": 4,
+      "diagonalization": "david",
+      "diago_david_ndim": 2,
+      "startingpot": "atomic",
+      "startingwfc": "atomic+random"
+    },
+    "ions": {
+      "ion_dynamics": "bfgs",
+      "trust_radius_min": 1e-06
+    },
+    "cell": {
+      "cell_dynamics": "bfgs",
+      "press": 0.0,
+      "press_conv_thr": 0.5,
+      "cell_dofree": "all"
+    }
+  },
+  "kmesh_and_offset": [
+    4,
+    4,
+    4,
+    0,
+    0,
+    0
+  ],
+  "periodic_boundary_conditions": [
+    true,
+    true,
+    true
+  ],
+  "method": "QE PBE PAW, unchanged pseudopotential",
+  "pseudo_sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+  "resource_proposal": {
+    "partition": "ct56",
+    "nodes_per_case": 1,
+    "MPI_ranks_per_case": 29,
+    "threads_per_rank": 1,
+    "memory_GiB_per_case": 64,
+    "Slurm_hours": 72,
+    "QE_max_seconds": 255600,
+    "array_case_count": 5,
+    "array_concurrency_cap": 5,
+    "note": "64 GiB retained for bulk k4, whose printed lower-bound estimates are >36.58–37.04 GB. Actual cgroup limit is checked before launch; not a guarantee of peak memory. Five concurrent tasks; scheduler applies account limits."
+  },
+  "acceptance": {
+    "normal_QE_exit_and_JOB_DONE": true,
+    "BFGS_converged": true,
+    "final_relaxed_cell_SCF_required": true,
+    "final_accuracy_Ry_max": 1e-10,
+    "final_max_force_component_eV_A": 0.0005,
+    "final_max_force_norm_eV_A": 0.001,
+    "final_full_stress_max_abs_GPa": 0.05,
+    "pressure_target_GPa": 0.0,
+    "all_six_independent_stress_components_required": true,
+    "final_XML_stdout_geometry_force_energy_alignment_required": true,
+    "normal_MPI_and_no_OOM_required": true,
+    "source_and_output_hashes_required": true
+  },
+  "allowed_changes_from_parent_k4_SCF": [
+    "calculation scf -> vc-relax",
+    "new prefix",
+    "max_seconds 169200 -> 255600",
+    "add BFGS IONS with trust_radius_min=1e-6",
+    "add CELL BFGS, zero pressure, all cell freedoms, 0.5 kbar tolerance"
+  ],
+  "optimizer_note": "Uniform trust_radius_min=1e-6 borrows the successful 1V repair setting. This is an explicit optimizer change, not a force-tolerance relaxation.",
+  "conditional_next_stage": "After all five accepted k4 endpoints, prepare matched k5 SCFs from those new geometries. No k5 geometries or DFT results exist in this package.",
+  "inference_limit": "Selected Ef/Eb/D12/5NN-vs-1NN only; not all-six ordering, isolated-defect limit, dynamics or mechanism proof.",
+  "calibration_scope": "k4 is the already-observed diagnostic density chosen to determine how its residual forces relax; it is not claimed converged or equivalent to primitive 40^3. Accepted k4 endpoints still require matched denser-mesh checks.",
+  "relative_to_k3": "k-point mesh 3^3 -> 4^3; all cases now SCF conv_thr=1e-10 Ry and explicit trust_radius_min=1e-6 bohr as in the successful 1V repair; no force or stress tolerance relaxation.",
+  "baseline_ids": [
+    "QE primitive EOS 40^3/80^3",
+    "QE 800 eV cutoff retained",
+    "108-site k3/k4 transfer gap unresolved"
+  ]
+}

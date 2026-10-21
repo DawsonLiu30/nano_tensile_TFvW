@@ -1,0 +1,93 @@
+{
+  "campaign": "al_bulk_k4_vcrelax_review_20261003",
+  "status": "prepared_for_review_only",
+  "submitted": false,
+  "protocol_sha256": "3cf16c1bc7b12516e6c5ea5747845630801a38a25ff16b8dc4814e3b1b8aab91",
+  "cases": [
+    {
+      "case": "0V",
+      "nat": 108,
+      "prefix": "bulk_0V_k4_vcr_20261003",
+      "input": "inputs/0V/pw.in",
+      "input_sha256": "bdb5b0134162b19b5f6953acf5cbc50952c549d4520b021694e20391d0ff7518",
+      "parent_input": "sources/0V/pw.in",
+      "parent_input_sha256": "8b594174cac471fc8c0d078572f34dc88890037ec70e11ef81998acd7575b0ad",
+      "geometry_origin": "Accepted k3 vc-relax endpoint, carried unchanged through accepted k4 fixed-geometry SCF",
+      "initial_volume_A3": 1782.6410845263006,
+      "initial_cell_length_spread_percent": 5.462931218502831e-07
+    },
+    {
+      "case": "1V",
+      "nat": 107,
+      "prefix": "bulk_1V_k4_vcr_20261003",
+      "input": "inputs/1V/pw.in",
+      "input_sha256": "b79e6b7eee0ec926fc9e131533c2243d8bce8636abcd529210f66e1acb960eea",
+      "parent_input": "sources/1V/pw.in",
+      "parent_input_sha256": "6525d02dccac28c0027d689ab3aa817b0423fc99ec6fdabef86045fff6750890",
+      "geometry_origin": "Accepted k3 vc-relax endpoint, carried unchanged through accepted k4 fixed-geometry SCF",
+      "initial_volume_A3": 1777.1526024758969,
+      "initial_cell_length_spread_percent": 6.350648629194211e-06
+    },
+    {
+      "case": "2V_1NN_D110",
+      "nat": 106,
+      "prefix": "bulk_2V_1NN_D110_k4_vcr_20261003",
+      "input": "inputs/2V_1NN_D110/pw.in",
+      "input_sha256": "084213364ee08437c82600fb42dc0eabf6a5f72873316fea5c09069cee9a6f7c",
+      "parent_input": "sources/2V_1NN_D110/pw.in",
+      "parent_input_sha256": "62b02438c253cd7c0da3e96009fd985f0fcc257d75ea78b19d0756331d02321e",
+      "geometry_origin": "Accepted k3 vc-relax endpoint, carried unchanged through accepted k4 fixed-geometry SCF",
+      "initial_volume_A3": 1773.7117705912162,
+      "initial_cell_length_spread_percent": 4.401568574013992
+    },
+    {
+      "case": "2V_2NN_D100",
+      "nat": 106,
+      "prefix": "bulk_2V_2NN_D100_k4_vcr_20261003",
+      "input": "inputs/2V_2NN_D100/pw.in",
+      "input_sha256": "c4f0a049cbd855d22ba503e9419534ce44458de7cb4b4dc1833a71f9ae987628",
+      "parent_input": "sources/2V_2NN_D100/pw.in",
+      "parent_input_sha256": "30928c2a77b445d139d41c5bdd5a69d433e51680b3a200ebb1eb283cdaf142e6",
+      "geometry_origin": "Accepted k3 vc-relax endpoint, carried unchanged through accepted k4 fixed-geometry SCF",
+      "initial_volume_A3": 1771.4522528805237,
+      "initial_cell_length_spread_percent": 0.02509649804971481
+    },
+    {
+      "case": "2V_5NN_D310",
+      "nat": 106,
+      "prefix": "bulk_2V_5NN_D310_k4_vcr_20261003",
+      "input": "inputs/2V_5NN_D310/pw.in",
+      "input_sha256": "a98b347209ae4040677defb4e65153b7dcddc15f625eaa66d027f4aaaec63e23",
+      "parent_input": "sources/2V_5NN_D310/pw.in",
+      "parent_input_sha256": "5a8765828ec5a6006e9507ce8e30b8d4fec11f2ee473b78b7359afdb23986e3b",
+      "geometry_origin": "Accepted k3 vc-relax endpoint, carried unchanged through accepted k4 fixed-geometry SCF",
+      "initial_volume_A3": 1772.9815806480335,
+      "initial_cell_length_spread_percent": 4.349954038717319
+    }
+  ],
+  "source_sha256": {
+    "sources/0V/provenance.json": "c558e5e7f9209b03b701490c40fcdcee5f55f217b7aa26b7da02dd486fe83f91",
+    "sources/0V/pw.in": "8b594174cac471fc8c0d078572f34dc88890037ec70e11ef81998acd7575b0ad",
+    "sources/0V/pw.out": "ca73041dbc0fd0beaff599764534013c73f656cf834d2efd6a4dabaa2c7fe65b",
+    "sources/0V/result.json": "c5429e96308183ec2b2607294ccb91cdf6facfe35024aebffd5ee95eee849d8f",
+    "sources/1V/provenance.json": "044d6d0df97e2173ef0f04ec4acf0e670496ae62a67b1cf77a9306ae2d880239",
+    "sources/1V/pw.in": "6525d02dccac28c0027d689ab3aa817b0423fc99ec6fdabef86045fff6750890",
+    "sources/1V/pw.out": "66346557372b6da78da834f875e62d3802b6b3b4f27cc7ee703bf066bbd8378c",
+    "sources/1V/result.json": "6fe75f428acba419658ef22a71ca6f90b94e52e3f15ce110f987634ca2d1b34a",
+    "sources/2V_1NN_D110/provenance.json": "4f3db214ab1b49bc1d31f8ec5358996e840e3b88abe4645a6c4d0da8ac5149f8",
+    "sources/2V_1NN_D110/pw.in": "62b02438c253cd7c0da3e96009fd985f0fcc257d75ea78b19d0756331d02321e",
+    "sources/2V_1NN_D110/pw.out": "5ae93f39417a47d5ef1888d63add0805ef1b8e2ca426dcca24014ea42d030866",
+    "sources/2V_1NN_D110/result.json": "1bc74d58d0f8cc7d72b49a100b5932368ee381f41a67df343804f74e5b787fac",
+    "sources/2V_2NN_D100/provenance.json": "cade5bd092fa00545778bfaef824ae9eb5e739cbb59d1777d2ea430f2c944207",
+    "sources/2V_2NN_D100/pw.in": "30928c2a77b445d139d41c5bdd5a69d433e51680b3a200ebb1eb283cdaf142e6",
+    "sources/2V_2NN_D100/pw.out": "e3664692797cc1ccf0d569893382688b5e786951fe1aa1f6c9f8fb4d48cc5458",
+    "sources/2V_2NN_D100/result.json": "03421283e5ba3a9f7c203da4dc9bc1dd6e57cc763a79770fe22599a8588dce78",
+    "sources/2V_5NN_D310/provenance.json": "fdfeaac2df089c53c658b3300e3633c96394ac05e6d4d1dc13877b1f3a8618ad",
+    "sources/2V_5NN_D310/pw.in": "5a8765828ec5a6006e9507ce8e30b8d4fec11f2ee473b78b7359afdb23986e3b",
+    "sources/2V_5NN_D310/pw.out": "4e2634cc0d2a1bea16941a91b74c95ae544e74b93c3432297b12c8dae62e2fc4",
+    "sources/2V_5NN_D310/result.json": "24652503aaeb2d2a3e5cdda241d61bd85b3c4aa5bedd83da6eada4fd053d02ba",
+    "sources/QE_PARAMETER_BASELINES_20260925.md": "621b0abdc915141910ea047c4f22a40eeaeeaedc0d21bcacc27e2fa0e532a259",
+    "sources/independently_decoded_endpoints.json": "43a026ace178f1aaa9d2dd42a749a7e442fef361a9798cd752d0f47adb4e0e57",
+    "sources/run_bulk_vacancy_qe_1v_repair_20260928.py": "dd67a996de05b520a863e741ae6f2d19cc2e749925978c67853424bebabb36e9"
+  }
+}

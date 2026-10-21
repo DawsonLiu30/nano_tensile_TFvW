@@ -1,12 +1,41 @@
 # 鋁體相與空位研究：跨裝置工作入口
 
-更新：2026-09-24。這個 repository 保留 `nano_tensile_TFvW` 的歷史名稱；目前重點是 bulk／單空位校準、雙空位構型比較，以及 QE 對照。舊拉伸與奈米線腳本是歷史工作，並非本輪執行入口。
+## 目前入口：2026-10-21 GitHub 同步版
+
+研究分支為 **`codex/portable-qe-20260923`**。GitHub 預設的 `main` 仍是較早版本；請使用本分支。
+
+- [專案與資料位置索引](docs/REPOSITORY_INDEX.md)：結構生成、計算流程、證據與外部大檔的位置。
+- [已驗證流程登錄](docs/VALIDATED_WORKFLOWS.md)與[機讀登錄](docs/validated_workflows.json)：區分程式測試、實際啟動及物理端點驗收；使用前先查此處。
+- [收斂基準](docs/CONVERGENCE_BASELINES.md)：保留既有校準與各模型的適用範圍。
+- [最新 QE bulk 續算與 k5 紀錄](docs/QE_BULK_REFERENCE_RESUME_20261021.md)：目前使用 v2；啟動證據不等於新結果已驗收。
+- [Git push／pull 操作](docs/GIT_SYNC.md)與[保存內容驗證](docs/git_sync_20261021/SHA256SUMS.json)。
+
+本次保留既有程式、輸入、凍結版本、hash 與驗收證據。`archives/research_sync_20261021` 補存原本位於本機資料包的小型來源與結果證據；原始資料包未改動。完整密度、波函數及大型 restart 仍由外部資料索引管理。
+
+```powershell
+git clone --branch codex/portable-qe-20260923 https://github.com/DawsonLiu30/nano_tensile_TFvW.git
+cd nano_tensile_TFvW
+python scripts/verify_research_snapshot.py
+```
+
+驗證指令只檢查保存檔案，不啟動 DFT 或提交作業。
+
+---
+
+以下保留 2026-09-25 的工作入口與歷史說明；當時的「最新」以該日期為準。
+
+更新：2026-09-25。這個 repository 保留 `nano_tensile_TFvW` 的歷史名稱；目前重點是 bulk／單空位校準、雙空位構型比較，以及 QE 對照。舊拉伸與奈米線腳本是歷史工作，並非本輪執行入口。
 
 ## 先看這裡
 
+- **[Proposal最新執行稿v0.3（9/25晚間）](docs/PROPOSAL_CURRENT_STATUS_20260925_ZH.md)**：已驗證bulk初步結果、兩方法差異、四主體完成/待补矩陣、9/28確認稿優先順序。
+- **[最新：2026-09-25 bulk 晶胞鬆弛](docs/AL_BULK_VACANCY_VCRELAX_20260925.md)**：依使用者更正，QE維持PAW/PBE、DFTpy維持LDA/local；共同12.119544 Å初態，八組獨立晶胞鬆弛。DFTpy使用ctest，與舊固定晶胞資料分開。
+- **[2026-09-25 QE 條件來源與最新進度](docs/QE_PARAMETER_BASELINES_20260925.md)**：簡報既有 cutoff／k 點測試、單位、不同晶胞／偽勢協定的界限，以及 array `2151591` 的已完成、最佳化停止與排隊狀態。
+- **[本輪 bulk 空位鬆弛執行紀錄](docs/AL_BULK_VACANCY_EXECUTION_20260924.md)**：8 組共同理想初態、DFTpy 本機結果、Taiwania3 新 QE `relax` array `2151591`、來源 hashes、輸出位置與只讀監控指令。
+- **[2026-09-24 會後 proposal 架構 v0.2](docs/PROPOSAL_HANDOFF_20260924.md)**：bulk Al與晶態Al奈米柱的空缺形成／聚集能量與結構；包含TFvW、QE、線性彈性、計算清單及未寄出的確認信。
 - **[在國網 iService／其他電腦執行 QE](docs/CROSS_DEVICE_QE.md)**：下載、環境設定、驗證、執行與結果回傳。
 - **[本次 Taiwania3 部署](docs/TAIWANIA3_20260924.md)**：已取得遠端環境紀錄；專用 helper 先檢查，再提交同站 1NN 基準。
-- **[最新可攜 QE 計算包](campaigns/qe_divacancy_20260923/README.md)**：四個精確輸入、同一份偽勢、SHA-256、來源與完成證據。
+- **[前一輪固定幾何 QE SCF 計算包](campaigns/qe_divacancy_20260923/README.md)**：四個精確輸入、同一份偽勢、SHA-256、來源與完成證據；與本輪理想初態原子鬆弛分開保存。
 - [科學條件與狀態 manifest](campaigns/qe_divacancy_20260923/manifest.json)。
 - [先前 Windows／WSL 操作紀錄](docs/LOCAL_WORKFLOW_20260908.md)：保留原機器與 USB 資料位置。
 
@@ -20,7 +49,7 @@ python3 scripts/qe_portable.py verify
 
 `verify` 只檢查輸入，不啟動 QE。執行工具只需要 Python 3.10+ 標準函式庫；計算另需 Linux／WSL 的 QE。提供的最小環境是 `env/qe-linux.yml`（Python3.11、QE7.5）。完整 DFTpy 舊環境規格仍在 `environment-wsl.yml`。
 
-## 尚缺的 QE 計算
+## 前一輪固定幾何 QE SCF：來源快照
 
 | Case | 來源狀態 | 欲回答的問題 |
 |---|---|---|

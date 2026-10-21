@@ -1,0 +1,414 @@
+[
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/checkpoint.json",
+    "archive": "R13_0V/checkpoint.json",
+    "bytes": 1679,
+    "sha256": "42d8a1f3648b6cb8682d72d979cb0071002394c9e97491ca42d9b36575fa9f9a",
+    "mtime_before": 1792333269.3559706,
+    "mtime_after": 1792333269.3559706,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/checkpoint.traj",
+    "archive": "R13_0V/checkpoint.traj",
+    "bytes": 4889,
+    "sha256": "02f67aa599d3ad240ba4966e649a5d0b3b9115237555552a7d07c94bf267d84e",
+    "mtime_before": 1792333267.820944,
+    "mtime_after": 1792333267.820944,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/checkpoint_bundle.npz",
+    "archive": "R13_0V/checkpoint_bundle.npz",
+    "bytes": 14321612,
+    "sha256": "620046a5f261ea5f62ad50109d1fcf4c58f85835b9f87a524e052219b7380a99",
+    "mtime_before": 1792333269.2928782,
+    "mtime_after": 1792333269.2928782,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/config.json",
+    "archive": "R13_0V/config.json",
+    "bytes": 3670,
+    "sha256": "e6493048fc13e6cbd69847d17f7726f5eb7c915f550e9143613dbd38a8ea80fd",
+    "mtime_before": 1792318804.7052348,
+    "mtime_after": 1792318804.7052348,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/dftpy_full_stdout.log",
+    "archive": "R13_0V/dftpy_full_stdout.log",
+    "bytes": 770618,
+    "sha256": "b7d71e50a640bf9acb1d6ad558bc8b560d884833340f824f3364200e7729f569",
+    "mtime_before": 1792333270.237513,
+    "mtime_after": 1792333270.237513,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/electronic_evaluations.jsonl",
+    "archive": "R13_0V/electronic_evaluations.jsonl",
+    "bytes": 85536,
+    "sha256": "1d244a842006ab6a43330c7cc69b971e99be9f2a9fd041a552b6a6dfdb508c84",
+    "mtime_before": 1792333265.4337993,
+    "mtime_after": 1792333265.4337993,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/electronic_trace/directions.jsonl",
+    "archive": "R13_0V/electronic_trace/directions.jsonl",
+    "bytes": 604159,
+    "sha256": "2d60eaa9707a2a51438add6c5f7819c181d53a1620baebd389abdfefd18478f1",
+    "mtime_before": 1792333264.193747,
+    "mtime_after": 1792333264.193747,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/electronic_trace/line_search.jsonl",
+    "archive": "R13_0V/electronic_trace/line_search.jsonl",
+    "bytes": 1538631,
+    "sha256": "4db5b0da4550e94325b60b703d17ef892d302498e6a8519c4e1a5d66131cbf69",
+    "mtime_before": 1792333265.3700202,
+    "mtime_after": 1792333265.3700202,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/electronic_trace/physical_electronic_attempts.jsonl",
+    "archive": "R13_0V/electronic_trace/physical_electronic_attempts.jsonl",
+    "bytes": 98585,
+    "sha256": "f977d575a2d4794da1bb696ef975656d79bda1470cd2b889a51c248d9d96063f",
+    "mtime_before": 1792333265.430261,
+    "mtime_after": 1792333265.430261,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/final.extxyz",
+    "archive": "R13_0V/final.extxyz",
+    "bytes": 9071,
+    "sha256": "82dfe2a0803a0cb3c5999f22fdfa2a8d2d255153f78cb9c052a5cc177dceb5cb",
+    "mtime_before": 1792333269.5089452,
+    "mtime_after": 1792333269.5089452,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/final.traj",
+    "archive": "R13_0V/final.traj",
+    "bytes": 4889,
+    "sha256": "02f67aa599d3ad240ba4966e649a5d0b3b9115237555552a7d07c94bf267d84e",
+    "mtime_before": 1792333269.5199144,
+    "mtime_after": 1792333269.5199144,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/final.vasp",
+    "archive": "R13_0V/final.vasp",
+    "bytes": 4880,
+    "sha256": "26ce97053f76bdd5658014d3bdcfecc8f880b1a7727ae1463be3e9586352ca37",
+    "mtime_before": 1792333269.5400813,
+    "mtime_after": 1792333269.5400813,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/final_forces_eV_A.npy",
+    "archive": "R13_0V/final_forces_eV_A.npy",
+    "bytes": 1952,
+    "sha256": "8dc3cf9d43ea6ef7f4f4969a46dbf03beaeab89e8c7f47b74ea2fbbc05b70b2d",
+    "mtime_before": 1792333270.232778,
+    "mtime_after": 1792333270.232778,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/initial.extxyz",
+    "archive": "R13_0V/initial.extxyz",
+    "bytes": 4944,
+    "sha256": "60590932789f9368ffa9e557c3df89c3dae890510be0327e7d4258f92d783f47",
+    "mtime_before": 1792318804.7109025,
+    "mtime_after": 1792318804.7109025,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/initial.traj",
+    "archive": "R13_0V/initial.traj",
+    "bytes": 2768,
+    "sha256": "5df36df680f97b21a9a0775daab0c38421f86210ea58ffc7dc6bd631d17f0352",
+    "mtime_before": 1792318804.721218,
+    "mtime_after": 1792318804.721218,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/axial_recovery_entry.py",
+    "archive": "R13_0V/inputs/axial_recovery_entry.py",
+    "bytes": 14358,
+    "sha256": "b3890312aa0538e6a5eb1b5fc8e70465cd7a0a4ed47fd4c4a018a3a7ffd6333e",
+    "mtime_before": 1792318804.5819328,
+    "mtime_after": 1792318804.5819328,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/axial_revision_manifest.json",
+    "archive": "R13_0V/inputs/axial_revision_manifest.json",
+    "bytes": 3511,
+    "sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+    "mtime_before": 1792318804.598656,
+    "mtime_after": 1792318804.598656,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/dft_engine.py",
+    "archive": "R13_0V/inputs/dft_engine.py",
+    "bytes": 15933,
+    "sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+    "mtime_before": 1792318804.5626884,
+    "mtime_after": 1792318804.5626884,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/dftpy_cases.json",
+    "archive": "R13_0V/inputs/dftpy_cases.json",
+    "bytes": 136435,
+    "sha256": "41e0b189b055751cf09d7ab991cd15767a4ac4c6da7c5e7b6c2c8037c25ce6be",
+    "mtime_before": 1792318804.5421133,
+    "mtime_after": 1792318804.5421133,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/electronic_gate_pass.json",
+    "archive": "R13_0V/inputs/electronic_gate_pass.json",
+    "bytes": 3113,
+    "sha256": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2",
+    "mtime_before": 1792318804.700793,
+    "mtime_after": 1792318804.700793,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/electronic_trace.py",
+    "archive": "R13_0V/inputs/electronic_trace.py",
+    "bytes": 8278,
+    "sha256": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "mtime_before": 1792318804.5861652,
+    "mtime_after": 1792318804.5861652,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/gate.json",
+    "archive": "R13_0V/inputs/gate.json",
+    "bytes": 7556,
+    "sha256": "1e324e45830130cbcfbd5e418ae65400176e035ef87a85ec551395d8c094157c",
+    "mtime_before": 1792318804.5745015,
+    "mtime_after": 1792318804.5745015,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/gated_nano.py",
+    "archive": "R13_0V/inputs/gated_nano.py",
+    "bytes": 15059,
+    "sha256": "2b37135067438c4cd3b678877e16c9b93e6fdf309302d981e0764fcca82609f4",
+    "mtime_before": 1792318804.5703707,
+    "mtime_after": 1792318804.5703707,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/package_manifest.json",
+    "archive": "R13_0V/inputs/package_manifest.json",
+    "bytes": 4428,
+    "sha256": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+    "mtime_before": 1792318804.5783856,
+    "mtime_after": 1792318804.5783856,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/parent_provenance.json",
+    "archive": "R13_0V/inputs/parent_provenance.json",
+    "bytes": 19798,
+    "sha256": "5c4eed227bfc7addf4d0c17feaf1a59fc5c77b70081bfad48c55f15be408c696",
+    "mtime_before": 1792318804.6928608,
+    "mtime_after": 1792318804.6928608,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/parent_result.json",
+    "archive": "R13_0V/inputs/parent_result.json",
+    "bytes": 14200,
+    "sha256": "32bedd18ba54f078d9e7c17f0f8ae7cf73201608a90fe83da40d645853da36be",
+    "mtime_before": 1792318804.6884723,
+    "mtime_after": 1792318804.6884723,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/parent_revision_manifest.json",
+    "archive": "R13_0V/inputs/parent_revision_manifest.json",
+    "bytes": 3180,
+    "sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+    "mtime_before": 1792318804.697055,
+    "mtime_after": 1792318804.697055,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/recovery_runner.py",
+    "archive": "R13_0V/inputs/recovery_runner.py",
+    "bytes": 26109,
+    "sha256": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "mtime_before": 1792318804.5904202,
+    "mtime_after": 1792318804.5904202,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/runner.py",
+    "archive": "R13_0V/inputs/runner.py",
+    "bytes": 26054,
+    "sha256": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253",
+    "mtime_before": 1792318804.558619,
+    "mtime_after": 1792318804.558619,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/staged_optimizer.py",
+    "archive": "R13_0V/inputs/staged_optimizer.py",
+    "bytes": 9706,
+    "sha256": "3ff5702912282ae3c0085c43925d7c3f7e1a3d99e0b551fc2eddfc22d7f495d7",
+    "mtime_before": 1792318804.5946436,
+    "mtime_after": 1792318804.5946436,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/stress_candidate.py",
+    "archive": "R13_0V/inputs/stress_candidate.py",
+    "bytes": 1041,
+    "sha256": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb",
+    "mtime_before": 1792318804.5666473,
+    "mtime_after": 1792318804.5666473,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs/structure.extxyz",
+    "archive": "R13_0V/inputs/structure.extxyz",
+    "bytes": 5945,
+    "sha256": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7",
+    "mtime_before": 1792318804.5469525,
+    "mtime_after": 1792318804.5469525,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/ionic_evaluations.jsonl",
+    "archive": "R13_0V/ionic_evaluations.jsonl",
+    "bytes": 62347,
+    "sha256": "80741c10b099125bff9c90987fa629927faa1075700ded2a5c6e36fccf527a06",
+    "mtime_before": 1792333269.3653474,
+    "mtime_after": 1792333269.3653474,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/ionic_line_search.jsonl",
+    "archive": "R13_0V/ionic_line_search.jsonl",
+    "bytes": 1574665,
+    "sha256": "4dcf8c8fff74020707495c4de95a0f85b95e60b2441b2d6701142d1219bdb0eb",
+    "mtime_before": 1792333267.7911081,
+    "mtime_after": 1792333267.7911081,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/optimizer_events.jsonl",
+    "archive": "R13_0V/optimizer_events.jsonl",
+    "bytes": 34390,
+    "sha256": "949cde912e0c6230d2c759ecb611f7ba6354049b100dc19c1a4a214f4425a82a",
+    "mtime_before": 1792333269.497249,
+    "mtime_after": 1792333269.497249,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/optimizer_state.json",
+    "archive": "R13_0V/optimizer_state.json",
+    "bytes": 1639416,
+    "sha256": "98c072e5b486f706555e716bdbba5fe1d839cfdc479727afc8093e7e97e96276",
+    "mtime_before": 1792333269.4829426,
+    "mtime_after": 1792333269.4829426,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/provenance.json",
+    "archive": "R13_0V/provenance.json",
+    "bytes": 20459,
+    "sha256": "919e2718129fb2b9806c23b3173cf14a93ded2842f12b20e33611915f09c30de",
+    "mtime_before": 1792318804.7363973,
+    "mtime_after": 1792318804.7363973,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/relax.log",
+    "archive": "R13_0V/relax.log",
+    "bytes": 2737,
+    "sha256": "8b99676d368e865e8d13b5d4b5b137c3c806238052d731e97832ad85f3a68cca",
+    "mtime_before": 1792333270.469916,
+    "mtime_after": 1792333270.469916,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/relax.traj",
+    "archive": "R13_0V/relax.traj",
+    "bytes": 208894,
+    "sha256": "c45e3a6a0edca89b01f3c6da3d910396d93508b86b61ba394d32a6075f8c0cba",
+    "mtime_before": 1792333270.2398884,
+    "mtime_after": 1792333270.2398884,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/result.json",
+    "archive": "R13_0V/result.json",
+    "bytes": 8841,
+    "sha256": "11a02622642d1741563457ecf9ae05f51a2ac0cde70c1725ec4383f930ff56c6",
+    "mtime_before": 1792333270.7045038,
+    "mtime_after": 1792333270.7045038,
+    "stable_during_read": true,
+    "live_job_snapshot": false
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/axial-continue-2255218.err",
+    "archive": "ACCOUNTING/axial-continue-2255218.err",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "source": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/axial-continue-2255218.out",
+    "archive": "ACCOUNTING/axial-continue-2255218.out",
+    "bytes": 1618,
+    "sha256": "d45572399f5bd803f3476db6f65d50a2a090beead9468e61cdfefbdf25a04e41"
+  }
+]

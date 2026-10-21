@@ -1,0 +1,59 @@
+{
+  "updated_utc": "2026-10-18T16:53:00.845331+00:00",
+  "job_id": "2255218",
+  "case": "R13_0V",
+  "attempt": "attempt_005_axial_linesearch_continue",
+  "status": "accepted_numerical_endpoint_for_this_case",
+  "slurm_state": "COMPLETED",
+  "finished_Taiwan": "2026-10-18T22:21:11+08:00",
+  "elapsed_slurm": "04:01:12",
+  "physical_endpoint_accepted": true,
+  "scientific_scope": "Strict numerical endpoint acceptance under the recorded model; not evidence of retained FCC morphology, k/grid/vacuum convergence, or a global minimum",
+  "result_archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS",
+  "result_sha256": "11a02622642d1741563457ecf9ae05f51a2ac0cde70c1725ec4383f930ff56c6",
+  "workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R13_axial_continue_20261018_v2",
+  "revision_manifest_sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+  "checkpoint_bundle_sha256": "620046a5f261ea5f62ad50109d1fcf4c58f85835b9f87a524e052219b7380a99",
+  "optimizer_state_sha256": "98c072e5b486f706555e716bdbba5fe1d839cfdc479727afc8093e7e97e96276",
+  "energy_eV": -4761.035407359499,
+  "atomic_fmax_eV_A": 0.0009765340429975084,
+  "filter_fmax_eV_A": 0.00097667952148547,
+  "sigma_zz_GPa": 4.08520859265529e-05,
+  "Lz_A": 13.73993716301678,
+  "ionic_steps": 46,
+  "electronic_calls": 185,
+  "electronic_attempt_summary": {
+    "logical_calls": 185,
+    "physical_attempts": 185,
+    "failed_physical_attempts": 0,
+    "HEG_retries": 0,
+    "all_physical_attempts_converged": true,
+    "retry_policy": "Only TN warm native flag=1 permits one HEG attempt; no other failure is retried."
+  },
+  "acceptance": {
+    "atomic_force_eV_A": 0.001,
+    "filter_force_eV_A": 0.001,
+    "abs_sigma_zz_GPa": 0.05
+  },
+  "saved_data_QA": {
+    "passed": 596,
+    "total": 596,
+    "archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13"
+  },
+  "reuse_scope": "Successful R13_0V case using saved coherent checkpoint, z-only BFGSLineSearch and electronic TN. Reuse the frozen scientific core with a reviewed new case manifest; not a guarantee for all columns or a certified global minimum.",
+  "frozen_source_policy": "Original manifests and snapshot contents remain unchanged; this evidence record supplies the later acceptance status.",
+  "electronic_method": "TN; econv=1e-11 Ha/atom; ncheck=3",
+  "ionic_method": "ASE BFGSLineSearch; z-only FrechetCellFilter; maxstep trial increment 0.02 (not an outer-step displacement cap)",
+  "fresh_Hessian_at_continuation_start": true,
+  "paired_optimizer_checkpoint_saved": true,
+  "R13_pair_review": {
+    "formation_energy_eV": 0.616366216319,
+    "mu_Al_OF_eV": -62.94385754462274,
+    "nonaffine_pair_rms_A": 0.029941559741141578,
+    "nonaffine_pair_max_A": 0.1053177080734351,
+    "vacancy_parent_site_id": 33,
+    "nearest_parent_empty_count": 1,
+    "scope": "The two endpoints support similar rearranged structures; the missing parent site remains empty. Both pass the force/stress endpoint gates. This is not a global-minimum or complete numerical-transfer certification.",
+    "electronic_precision_note": "Same physical functional, pseudopotential and grid; new 0V uses TN/econv1e-11 while original accepted 1V uses LBFGS/econv1e-9. Formation-energy electronic-precision sensitivity is not separately completed."
+  }
+}

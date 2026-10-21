@@ -1,0 +1,67 @@
+{
+  "snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1",
+  "payload_hashes": {
+    "recover_electronic.py": "c62fc261a410c97aa9e771d3179754f876b20ceaddbc1b1837d94509aefc68d9",
+    "electronic_trace.py": "48487869f688977da955cf83d380d86add1de2b2bc3f3f7105626b2abe526160",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "staged_optimizer.py": "467a766e1678de1f2e202a8d6a907dca40d786e12ff231ddb499f13cd988ee84",
+    "test_recovery.py": "570a2900d01b562205c01a78d505045ad39945785cb9019e0948aaf86c31ad6e",
+    "freeze_revision.py": "d9a6295a3681fe3f9cd8e135f4c6b6e8c8154a9c6dc83b31ad81d4a3854d5b61",
+    "staged_optimizer.diff": "5e0aedc0aba60984a9577a6aa83b5a547ab5488fda4d8256613b6b62ecf11e2b",
+    "README.txt": "401e80917f1509ca10301f58176fb72edfee1b6309852e774a09c62aa3d49f71",
+    "diagnose.sbatch": "40d5dcfa7fb4455c21ba560d61ec5463e0b546665c538b835121e8c8c50b0250",
+    "continue.sbatch": "2abe1b91c7093ca7dfab243f7da6ba5ca0a6efbf11067b0154cf86d110b04199",
+    "submission_metadata.json": "531b953f756096f9262f97e2900aec2d290bb9835aeb0a931c1f7e0ff2a73adb",
+    "REVISION_MANIFEST.json": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223"
+  },
+  "tests": {
+    "command": [
+      "/home/dawson666/miniconda3/envs/dftpy-env/bin/python",
+      "-B",
+      "test_recovery.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\"tests\": 25, \"passed\": 25, \"errors\": 0, \"failures\": 0, \"scope\": \"Synthetic program checks, no DFT\"}\n",
+    "stderr": "test_HEG_failure_not_retried (__main__.Tests.test_HEG_failure_not_retried) ... ok\ntest_LBFGS_not_retried (__main__.Tests.test_LBFGS_not_retried) ... ok\ntest_bad_FD_rejected (__main__.Tests.test_bad_FD_rejected) ... ok\ntest_cell_change_rejected (__main__.Tests.test_cell_change_rejected) ... ok\ntest_deadline_not_retried (__main__.Tests.test_deadline_not_retried) ... ok\ntest_density_invalid_grid_charge_cell (__main__.Tests.test_density_invalid_grid_charge_cell) ... ok\ntest_diagnostic_deadline_does_not_proceed_to_TN (__main__.Tests.test_diagnostic_deadline_does_not_proceed_to_TN) ... ok\ntest_energy_difference_rejected (__main__.Tests.test_energy_difference_rejected) ... ok\ntest_failed_native_flag_rejected (__main__.Tests.test_failed_native_flag_rejected) ... ok\ntest_flag2_not_retried (__main__.Tests.test_flag2_not_retried) ... ok\ntest_force_difference_rejected (__main__.Tests.test_force_difference_rejected) ... ok\ntest_invalid_density_not_retried (__main__.Tests.test_invalid_density_not_retried) ... ok\ntest_invalid_retry_rejected (__main__.Tests.test_invalid_retry_rejected) ... ok\ntest_native_success_no_retry (__main__.Tests.test_native_success_no_retry) ... ok\ntest_ncheck_change_rejected (__main__.Tests.test_ncheck_change_rejected) ... ok\ntest_parent_full_acceptance_retained (__main__.Tests.test_parent_full_acceptance_retained) ... ok\ntest_repeat_is_really_HEG (__main__.Tests.test_repeat_is_really_HEG) ... ok\ntest_repeat_stress_rejected (__main__.Tests.test_repeat_stress_rejected) ... ok\ntest_retry_keeps_fail_and_updates_all_caller_state (__main__.Tests.test_retry_keeps_fail_and_updates_all_caller_state) ... ok\ntest_search_task_trials_are_not_modified (__main__.Tests.test_search_task_trials_are_not_modified) ... ok\ntest_selfconsistent_FD_gate_passes (__main__.Tests.test_selfconsistent_FD_gate_passes) ... ok\ntest_two_failures_stop (__main__.Tests.test_two_failures_stop) ... ok\ntest_unsupported_native_arguments_rejected (__main__.Tests.test_unsupported_native_arguments_rejected) ... ok\ntest_wrong_FD_axis_rejected (__main__.Tests.test_wrong_FD_axis_rejected) ... ok\ntest_wrong_electronic_threshold_rejected (__main__.Tests.test_wrong_electronic_threshold_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 25 tests in 0.083s\n\nOK\n"
+  },
+  "verify": {
+    "command": [
+      "/home/dawson666/miniconda3/envs/dftpy-env/bin/python",
+      "-B",
+      "recover_electronic.py",
+      "verify",
+      "--parent-snapshot",
+      "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_of_20261015_20261015T124450Z",
+      "--parent-runroot",
+      "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+      "--parent-attempt",
+      "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_002_smallstep"
+    ],
+    "returncode": 0,
+    "stdout": "{\n  \"accepted\": true,\n  \"scope\": \"preflight only; no DFT\",\n  \"revision_manifest_sha256\": \"79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223\",\n  \"parent_bundle_sha256\": \"93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f\",\n  \"completed_ionic_step\": 100,\n  \"candidate\": {\n    \"candidate_method\": \"TN\",\n    \"candidate_econv_Ha_per_atom\": 1e-11,\n    \"ncheck\": 3,\n    \"repeat_energy_max_eV\": 1e-05,\n    \"repeat_force_max_eV_A\": 0.0001,\n    \"repeat_sigma_zz_max_GPa\": 0.001,\n    \"force_fd_error_max_eV_A\": 0.0001,\n    \"force_fd_step_difference_max_eV_A\": 5e-05,\n    \"force_fd_steps_A\": [\n      0.001,\n      0.0005\n    ],\n    \"force_parent_site_id\": 58,\n    \"force_axis\": 2,\n    \"logical_scf_max\": 8,\n    \"physical_scf_max\": 14,\n    \"diagnostic_seconds_max\": 6600,\n    \"ionic_steps_max\": 1000,\n    \"ionic_seconds_max\": 79200,\n    \"force_target_eV_A\": 0.001,\n    \"sigma_zz_target_GPa\": 0.05,\n    \"retry_policy\": \"TN warm native flag=1 -> at most one independent HEG attempt; all other failures stop\"\n  },\n  \"cell_A\": [\n    [\n      20.263429469800002,\n      0.0,\n      0.0\n    ],\n    [\n      0.0,\n      20.263429469800002,\n      0.0\n    ],\n    [\n      0.0,\n      0.0,\n      13.431287361524449\n    ]\n  ],\n  \"electrons\": 228,\n  \"n_atoms\": 76,\n  \"same_physical_model\": true\n}\n",
+    "stderr": ""
+  },
+  "shell_checks": {
+    "diagnose.sbatch": {
+      "command": [
+        "bash",
+        "-n",
+        "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/diagnose.sbatch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    "continue.sbatch": {
+      "command": [
+        "bash",
+        "-n",
+        "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/continue.sbatch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "no_DFT_executed": true
+}

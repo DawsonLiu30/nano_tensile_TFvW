@@ -1,0 +1,30 @@
+--- parent/base_runner.py
++++ recovery_base.py
+@@ -246,7 +246,7 @@
+     from ase.filters import FrechetCellFilter
+     from ase.io import write
+     from ase.io.trajectory import Trajectory
+-    from ase.optimize import LBFGS
++    from staged_optimizer import make_optimizer
+     from ase.units import Bohr, Hartree
+     from dftpy.api.api4ase import DFTpyCalculator
+     from dftpy.optimization.optimization import Optimization
+@@ -386,15 +386,15 @@
+         result = {"case": args.case, "attempt": args.attempt, "status": "running", "accepted": False,
+                   "n_atoms": len(atoms), "vacancy_count": checked["vacancy_count"], "started_utc": utc(),
+                   "initial_cell_A": atoms.cell.array.tolist(), "target_pressure_GPa": 0.0,
+-                  "relaxation_mode": "atoms_and_axial_zz_FrechetCellFilter_zero_pressure",
++                  "relaxation_mode": "fixed_cell_atoms_after_axial_relaxation; original axial filter/stress acceptance retained",
+                   "effective_runtime_budget_s": budget, "scientific_scope": checked["scientific_scope"]}
+         dump(attempt / "result.json", result)
+         Optimization.optimize_rho = monitored
+         try:
+             with budget_guard(budget), capture(attempt / "dftpy_full_stdout.log"):
+                 trajectory = Trajectory(attempt / "relax.traj", "w", atoms)
+-                dyn = LBFGS(cell_filter, logfile=str(attempt / "relax.log"),
+-                            maxstep=manifest["ionic"]["maxstep_A"])
++                dyn = make_optimizer(cell_filter, logfile=str(attempt / "relax.log"),
++                                     ionic=manifest["ionic"])
+                 dyn.attach(checkpoint, interval=1)
+                 converged = bool(dyn.run(fmax=manifest["ionic"]["filter_fmax_eV_A"],
+                                          steps=manifest["ionic"]["max_steps"]))

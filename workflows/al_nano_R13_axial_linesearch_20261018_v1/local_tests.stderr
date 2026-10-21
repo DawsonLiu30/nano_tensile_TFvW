@@ -1,0 +1,12 @@
+test_cycles_stop_after_checkpoint_observer (__main__.Tests.test_cycles_stop_after_checkpoint_observer) ... ok
+test_filter_gradient_matches_energy_difference (__main__.Tests.test_filter_gradient_matches_energy_difference) ... ok
+test_limit_and_acceptance_unchanged (__main__.Tests.test_limit_and_acceptance_unchanged) ... ok
+test_native_axial_filter_compatible_and_descends (__main__.Tests.test_native_axial_filter_compatible_and_descends) ... ok
+test_repeated_four_cycle_detected (__main__.Tests.test_repeated_four_cycle_detected) ... ok
+test_unconverged_FG_not_accepted (__main__.Tests.test_unconverged_FG_not_accepted) ... ok
+test_warning_not_accepted_even_nonnull_step (__main__.Tests.test_warning_not_accepted_even_nonnull_step) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.382s
+
+OK

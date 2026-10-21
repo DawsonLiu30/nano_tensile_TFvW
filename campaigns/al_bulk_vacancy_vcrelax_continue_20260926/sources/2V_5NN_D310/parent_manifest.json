@@ -1,0 +1,176 @@
+{
+  "schema_version": 1,
+  "campaign_id": "al_bulk_vacancy_vcrelax_20260925",
+  "protocol": {
+    "calculation": "vc-relax",
+    "xc": "PBE",
+    "pseudopotential_type": "PAW",
+    "cell_dofree": "all",
+    "press_kbar": 0,
+    "press_conv_thr_kbar": 0.5,
+    "force_norm_target_eV_A": 0.001,
+    "ecutwfc_Ry": 58.798915481,
+    "ecutrho_Ry": 470.3913238484,
+    "ecutwfc_eV": 799.9999999993471,
+    "kmesh": [
+      3,
+      3,
+      3
+    ],
+    "koffset": [
+      0,
+      0,
+      0
+    ],
+    "smearing": "mp",
+    "degauss_Ry": 0.02,
+    "nbnd": 200,
+    "conv_thr_Ry": 1e-08,
+    "electron_maxstep": 300,
+    "mixing_beta": 0.2,
+    "mixing_ndim": 4,
+    "nstep": 200,
+    "max_seconds": 39600,
+    "ion_dynamics": "bfgs",
+    "cell_dynamics": "bfgs",
+    "etot_conv_thr_Ry": 1e-06,
+    "forc_conv_thr_Ry_bohr": 1.9446903811488877e-05,
+    "force_component_tolerance_eV_A": 0.0005,
+    "nosym": true,
+    "noinv": true,
+    "tstress": true,
+    "tprnfor": true,
+    "historical_source": "/home/dawson666/qe_divacancy_vcrelax_conv3x3x3_rscan_20260616/pair_scan/pair_01_r2p8566A/pristine_vcrelax/vc-relax.in",
+    "historical_source_sha256": "d22c3c847ba57ac7480ffbf6ebc10cca7ae2b3c0636a4250a9457894bc10c63c",
+    "provenance_note": "Cutoffs, PP, k mesh, smearing, XC, mixing beta and cell settings retained from actual historical input. Force and energy targets are the stricter September24 campaign targets; nbnd=200, mixing_ndim=4, nstep=200 and wall limit remain explicit September24 operational/numerical choices.",
+    "convergence_scope": "800 eV is a PPT tested bulk EOS cutoff and the actual historical 108-site vc setting. This does not assert complete defect k-point or cell-size convergence."
+  },
+  "geometry_manifest": {
+    "file": "geometry.json",
+    "sha256": "5fc90ca8d32ed444597c1b98c431980ffd4b5cbe400474ad2976b9b408cd8732"
+  },
+  "pseudo": {
+    "file": "pseudo/Al_PAW_PBE.UPF",
+    "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a"
+  },
+  "case_order": [
+    "0V",
+    "1V",
+    "2V_1NN_D110",
+    "2V_2NN_D100",
+    "2V_3NN_D211",
+    "2V_4NN_D110",
+    "2V_5NN_D310",
+    "2V_6NN_D111"
+  ],
+  "cases": {
+    "0V": {
+      "input": "qe/inputs/0V/pw.in",
+      "sha256": "b55e925ad44692550206118bbf6117a560706762c90a0563adc08f68ce503c35",
+      "nat": 108,
+      "q": 0,
+      "structure": "structures/0V/POSCAR",
+      "structure_sha256": "18d4696993e370c6485346a82b4edacb4988304536bc0093efc51a5198bde11a",
+      "extxyz": "structures/0V/structure.extxyz",
+      "extxyz_sha256": "0a69a7c038bb8758a01fccc6e43f607b1a7336b7ccd550ff5143ce153ec15673",
+      "removed_parent_ids": []
+    },
+    "1V": {
+      "input": "qe/inputs/1V/pw.in",
+      "sha256": "8611c537db6ffb187b6362222c7c92e20444d48170076d1b2882be8f6bb1bc26",
+      "nat": 107,
+      "q": 1,
+      "structure": "structures/1V/POSCAR",
+      "structure_sha256": "73ac4e03bd962b949026c33ae27d766bbec92513c76688e27c24d8b847468270",
+      "extxyz": "structures/1V/structure.extxyz",
+      "extxyz_sha256": "e65b16e92042614a77dd9970e792c3aa87ac060bb005aa18c85705b09a9dc7ac",
+      "removed_parent_ids": [
+        43
+      ]
+    },
+    "2V_1NN_D110": {
+      "input": "qe/inputs/2V_1NN_D110/pw.in",
+      "sha256": "0970f8a6eccbdba6a512f05fcefeb0f9ef19329325fdd338b1980f36a2f0aba7",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_1NN_D110/POSCAR",
+      "structure_sha256": "635eeba7bd9bc810ab3912054a6548ef459c8b752cb1f65fdbc0b5001f3247f3",
+      "extxyz": "structures/2V_1NN_D110/structure.extxyz",
+      "extxyz_sha256": "680b2c0f611499fcd82c6f7e5ac64a5f797dda7ffdec3c36782088b8961fd591",
+      "removed_parent_ids": [
+        43,
+        64
+      ]
+    },
+    "2V_2NN_D100": {
+      "input": "qe/inputs/2V_2NN_D100/pw.in",
+      "sha256": "9aa502f42e93f56b54961cb54c2a60a082262c7de068941d6aa969ae66994abd",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_2NN_D100/POSCAR",
+      "structure_sha256": "13b62ce7e8e84cf3cb22985050df6f7b8a36e555bc28d76b57c0447a52361ca1",
+      "extxyz": "structures/2V_2NN_D100/structure.extxyz",
+      "extxyz_sha256": "4a39a7c44f952e51ed6d0ddb9567472bad27c294887fb81086097eece4538883",
+      "removed_parent_ids": [
+        43,
+        79
+      ]
+    },
+    "2V_3NN_D211": {
+      "input": "qe/inputs/2V_3NN_D211/pw.in",
+      "sha256": "b2286cbd3963ac602b3e290814d43b5048206ebe15ddb492d5bbcb54b1e5acce",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_3NN_D211/POSCAR",
+      "structure_sha256": "49f00e10ed3e3ac57af7643987dac202713e6b24ced1f874da2bfe507e81eacc",
+      "extxyz": "structures/2V_3NN_D211/structure.extxyz",
+      "extxyz_sha256": "5d23db21399a04ee53c31f2a32d22ed1ccf855e76ed379759a05154b14f828e0",
+      "removed_parent_ids": [
+        43,
+        82
+      ]
+    },
+    "2V_4NN_D110": {
+      "input": "qe/inputs/2V_4NN_D110/pw.in",
+      "sha256": "c9a73d65d7d9ddc0439af71cb399ebc36e3a78aa8d72556b1ed5fa09e36f3666",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_4NN_D110/POSCAR",
+      "structure_sha256": "ea7cd3b3fec16c08608bf7feb52936b3da0864e2a93e36abcd7017de8933eee2",
+      "extxyz": "structures/2V_4NN_D110/structure.extxyz",
+      "extxyz_sha256": "8d26bd93ad7ff2f279711d8df23c8a4480321be1125c9031d00bc76e989e07ab",
+      "removed_parent_ids": [
+        43,
+        85
+      ]
+    },
+    "2V_5NN_D310": {
+      "input": "qe/inputs/2V_5NN_D310/pw.in",
+      "sha256": "24e013dc55ba496a1271e2aa68b7b2404b939273927e04f7d31c539f28cca78c",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_5NN_D310/POSCAR",
+      "structure_sha256": "467dc3a2c55c98796c1741a5f298d5acf97bdfcf32e01f3eecd596082cafca24",
+      "extxyz": "structures/2V_5NN_D310/structure.extxyz",
+      "extxyz_sha256": "2d2b36a23aa58dbed26c62319e0a9d67f3e5b234e5665fe148b7d676ab2ba09d",
+      "removed_parent_ids": [
+        43,
+        100
+      ]
+    },
+    "2V_6NN_D111": {
+      "input": "qe/inputs/2V_6NN_D111/pw.in",
+      "sha256": "988f812d9321809320af02aca090b8d757c9aba36da3fafbf918b9f611dfedf6",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_6NN_D111/POSCAR",
+      "structure_sha256": "e285f82128fa8c58bc34f2ceec4e1cfb4cfb30dad0edb0e40d166e2a43bdd831",
+      "extxyz": "structures/2V_6NN_D111/structure.extxyz",
+      "extxyz_sha256": "7ce3777c58b2f9b73660730d5545800bc0b2ddf278206636ba744e208e0d611c",
+      "removed_parent_ids": [
+        43,
+        86
+      ]
+    }
+  }
+}

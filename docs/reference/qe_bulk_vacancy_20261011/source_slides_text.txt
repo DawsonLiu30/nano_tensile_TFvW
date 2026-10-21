@@ -1,0 +1,141 @@
+SLIDE 1
+Work hypothesis and background
+Current purpose:
+Validate QE bulk and vacancy benchmarks.
+-    Compare QE and DFTpy vacancy energetics.
+-     Separate numerical convergence from method limitation.
+
+Literature anchor:
+Gillan 1989: relaxed Al vacancy ≈ 0.56 eV; experiment ≈ 0.66 eV.
+
+SLIDE 2
+
+Computational / technical details
+
+QE bulk EOS / B₀ workflow
+- Primitive fcc Al bulk cell: 1 atom.
+- EOS scan: 9 points from a0 = 4.000 to 4.080 A.
+- ecut scan: 300-1000 eV at fixed 16x16x16.
+- High-k check extended to 20, 24, 30, 40, 60, 80.
+
+
+QE vacancy supercell definition
+Primitive fcc Al cell: 1 atom
+Defect supercell: primitive 4×4×4 repetition
+Pristine / vacancy: 64 atoms → 63 atoms
+Supercell vector length: ≈ 11.43 Å
+Supercell volume: ≈ 1054.9 Å³
+Important: n×n×n means primitive-cell replication, not volume in Å³.
+
+DFTpy status and supercell notation caveat
+- Primitive-cell size scan completed: 4×4×4 to 14×14×14.- All DFTpy vacancy relaxations reached fmax < 0.02 eV/A.
+
+SLIDE 3
+
+Results: bulk EOS convergence
+
+
+
+B0 vs energy cutoff (plotting scripts:/OFDFT/ploting_scripts)
+B0 vs high-k mesh (20-80) (plotting scripts:/OFDFT/ploting_scripts) 
+Reference             a0 (Å)       B0 (GPa)
+Experiment           ~4.05             ~76
+QE 40×40×40      4.039825       77.991
+QE 80×80×80      4.039865       77.963
+Difference           0.000040        0.028
+Data at /OFDFT/convergence_test
+
+SLIDE 4
+
+Results : QE vacancy convergence and Gillan benchmark
+
+
+Structure inspection
+
+QE dense-k table at 600 eV
+k-mesh
+Ef_vac (eV)
+note
+1x1x1
+-1.113
+unphysical
+2x2x2
+0.735
+reference
+3x3x3
+0.945
+high
+4x4x4
+0.648
+near exp 0.66
+5x5x5
+0.573
+near Gillan 0.56
+6x6x6
+0.615
+moderate
+
+- Primitive 4×4×4 fcc Al
+- Pristine: 64 atoms
+- Vacancy: 63 atoms
+- Removed atom: center site
+- Volume: 1054.9 Å³
+
+Formula:  𝐸fvac=𝐸vac𝑁−1−𝑁−1𝑁𝐸perfect𝑁
+ 
+Cutoff convergence at 2×2×2
+300 eV  0.7324 eV
+400 eV  0.7345 eV
+500 eV  0.7346 eV
+600 eV  0.7347 eV
+
+Dense-k cutoff check at 5×5×5
+400 eV  0.572389 eV
+500 eV  0.572440 eV
+600 eV  0.572529 eV
+
+Cutoff effect is negligible above 400 eV.
+Data :/OFDFT/convergence_test/qe_vacancy_all_recursive_summary.csv
+Data ://OFDFT/convergence_test/QE_ecut_scan
+
+SLIDE 5
+
+Results: DFTpy vacancy formation energy
+
+
+DFTpy / OFDFT setup
+
+- KEDF: TFvW- Pseudopotential: BLPS local Al recpot- XC: PBE-GGA- Geometry: primitive FCC supercells- Lattice constant fixed to QE a0 for direct comparison- Vacancy: one central Al atom removed- Relaxation target: fmax < 0.02 eV/Å
+spacing Å
+ecut analogue eV
+Ef_vac eV
+0.30
+418
+2.9366
+0.25
+602
+2.9332
+0.22
+777
+2.9329
+0.20
+940
+2.9371
+0.18
+1161
+2.9371
+Size scan remains around 2.89–2.95 eV.
+Therefore, the high DFTpy value is not caused by insufficient supercell size.
+DFTpy / TFvW gives a numerically stable but systematically higher vacancy formation energy:
+DFTpy ≈ 2.9–3.2 eV, while QE ≈ 0.57–0.62 eV and literature / experiment ≈ 0.56–0.66 eV.
+Data :/OFDFT/convergence_test/DFTpy_ecut_spacing scan/spacing_scan
+
+SLIDE 6
+
+Interpretation / discussion
+
+What is already defensible
+Bulk Convergence: 80×80×80 k-mesh validates that 40×40×40 is sufficient.
+Vacancy Formation (QE): 0.5725 eV, closely matching Gillan 1989 (0.56 eV).
+DFTpy Stability: Vacancy energy is stable at ~2.94 eV across both grid spacing and supercell size scans (up to 14×14×14).
+Key Insight: Discrepancy is attributed to functional limitations (TFvW) rather than numerical parameters (spacing/size).

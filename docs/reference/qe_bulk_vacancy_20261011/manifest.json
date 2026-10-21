@@ -1,0 +1,26 @@
+{
+  "qe_bulk_vacancy.pptx": {
+    "sha256": "e95c93a0c6404ddb166a791566f7393e65dc8b4c28ffdd11cc8e1dbba96ec73f",
+    "bytes": 236355
+  },
+  "source_slide3_image1.png": {
+    "sha256": "cf534f56803eb29d93efcdb18ee2aae0758e954dae7db7c2a36eeed9bcf0f51a",
+    "bytes": 112951
+  },
+  "source_slide3_image2.png": {
+    "sha256": "194ffab86a32f7a34ae20263d1b344b75e5757f54fe2cc5b18cd69a3da115230",
+    "bytes": 71988
+  },
+  "source_slides_text.json": {
+    "sha256": "a86f3f39eb4c80c327d74caf133f9473a5de1f85e8d0b0e49eb28f474c2a7793",
+    "bytes": 5051
+  },
+  "source_slides_text.txt": {
+    "sha256": "fdd69c404be405b34f35d790ac45e6fe6adbcca314bc5ecc1fcf8aa3d2497d90",
+    "bytes": 3646
+  },
+  "vacancy_formation_combined_summary.csv": {
+    "sha256": "b84f2ce97edc933da3cb5f532739339874d6d57da581c62476213e0ac730879c",
+    "bytes": 1365
+  }
+}

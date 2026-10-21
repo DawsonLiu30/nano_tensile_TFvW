@@ -1,0 +1,203 @@
+{
+  "scope": "Independent source and log review only; no DFT, SSH, submission or physical acceptance changes",
+  "case": "R13_0V",
+  "job": "2252172",
+  "accepted": false,
+  "verified": {
+    "electronic_calls": 102,
+    "electronic_successes": 101,
+    "electronic_failure": {
+      "evaluation": 102,
+      "utc": "2026-10-17T07:04:51.671381+00:00",
+      "converged_flag": 1,
+      "flag_meaning": "0 converged; 1 failed line search; 2 max iterations",
+      "effective_econv_Ha_total": 7.6e-08,
+      "density_integral_electrons": 227.99999999999977,
+      "grid_shape": [
+        140,
+        140,
+        96
+      ],
+      "energy_Ha": -174.92970631521916,
+      "cell_A": [
+        [
+          20.263429469800002,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          20.263429469800002,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          13.431287361524449
+        ]
+      ],
+      "accepted": false,
+      "error": "RuntimeError('Electronic minimization failed; forces and stress rejected')",
+      "elapsed_s": 19.802448384463787
+    },
+    "completed_ionic_states": 101,
+    "completed_ionic_last_step": 100,
+    "force_initial_eV_A": 0.0059632935465631365,
+    "force_last_eV_A": 0.0039031327538669143,
+    "force_min_eV_A": 0.001865808364269558,
+    "force_target_eV_A": 0.001,
+    "min_force_step": 14,
+    "energy_change_meV": -0.7028101726973546,
+    "last20_energy_span_meV": 0.0004215580702293664,
+    "last_stress_zz_GPa": -0.006843516193682064,
+    "wall_seconds": 1747.845869295299,
+    "peak_rss_MiB": 4726.0546875,
+    "last_electronic_printed_rows": [
+      {
+        "step": 0,
+        "energy_Ha_printed": -174.9297063152,
+        "dE_Ha_printed": -174.9297,
+        "residual_squared_norm_printed": 2.207616e-10,
+        "Ndirection": 1,
+        "Nlinesearch": 1
+      },
+      {
+        "step": 1,
+        "energy_Ha_printed": -174.9297063152,
+        "dE_Ha_printed": -1.693934e-11,
+        "residual_squared_norm_printed": 8.110177e-11,
+        "Ndirection": 1,
+        "Nlinesearch": 2
+      },
+      {
+        "step": 2,
+        "energy_Ha_printed": -174.9297063152,
+        "dE_Ha_printed": -8.071765e-12,
+        "residual_squared_norm_printed": 8.806561e-11,
+        "Ndirection": 1,
+        "Nlinesearch": 4
+      }
+    ],
+    "last_coherent_checkpoint_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+    "config_OPT": {
+      "method": "LBFGS",
+      "algorithm": "EMM",
+      "vector": "Orthogonalization",
+      "c1": 0.0001,
+      "c2": 0.2,
+      "maxls": 50,
+      "econv": 1e-09,
+      "maxfun": 100,
+      "maxiter": 1000,
+      "xtol": 1e-12,
+      "h0": 1,
+      "ncheck": 3
+    },
+    "versions": {
+      "dftpy": "2.1.2",
+      "ase": "3.25.0",
+      "numpy": "1.26.4",
+      "scipy": "1.10.1"
+    },
+    "runtime_probe": {
+      "scope": "Read-only runtime introspection; process-local import only, no DFT or installed-file edits",
+      "python": "3.11.13 (main, Jun  5 2025, 13:12:00) [GCC 11.2.0]",
+      "dftpy": "2.1.2",
+      "scipy": "1.10.1",
+      "scipy_dcsrch_module_available": true,
+      "engine_sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+      "compat_flag_after_engine_import": true,
+      "before": {
+        "module": "dftpy.math_utils",
+        "name": "LineSearchDcsrch2",
+        "file": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/dftpy/math_utils.py",
+        "sha256": "79ec29195c7c9d5b95da769e12b47e2dcbce845a30a097549e325084c74d3122",
+        "source": "def LineSearchDcsrch2(func, alpha0=None, func0=None, c1=1e-4, c2=0.9, amax=1.0, amin=0.0, xtol=1e-14, maxiter=100):\n    isave = np.zeros((2,), np.intc)\n    dsave = np.zeros((13,), float)\n    task = b\"START\"\n\n    if alpha0 is None:\n        alpha0 = 0.0\n        func0 = func(alpha0)\n\n    alpha1 = alpha0\n    x1 = func0[0]\n    g1 = func0[1]\n    alists = [alpha1]\n    func1 = func0\n\n    for i in range(maxiter):\n        alpha1, x1, g1, task = minpack2.dcsrch(alpha1, x1, g1, c1, c2, xtol, task, amin, amax, isave, dsave)\n        alists.append(alpha1)\n        if task[:2] == b\"FG\":\n            func1 = func(alpha1)\n            x1 = func1[0]\n            g1 = func1[1]\n        else:\n            break\n    else:\n        alpha1 = None\n\n    if task[:5] == b\"ERROR\" or task[:4] == b\"WARN\":\n        alpha1 = None  # failed\n    # return alpha1, x1, g1, task, i, func1[2], func1[3]\n    return alpha1, x1, g1, task, i, func1\n"
+      },
+      "after": {
+        "module": "frozen_engine_probe",
+        "name": "_line_search_scalar",
+        "file": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_002_smallstep/inputs/dft_engine.py",
+        "sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+        "source": "    def _line_search_scalar(func, alpha0=None, func0=None, c1=1e-4, c2=0.9, amax=1.0, amin=0.0, xtol=1e-14, maxiter=100):\n        cache: dict[float, object] = {}\n        eval_count = 0\n\n        def evaluate(alpha: float):\n            nonlocal eval_count\n            key = float(alpha)\n            if key not in cache:\n                cache[key] = func(key)\n                eval_count += 1\n            return cache[key]\n\n        if func0 is None:\n            func0 = evaluate(0.0)\n        else:\n            cache[0.0] = func0\n\n        if alpha0 is None:\n            alpha0 = 0.0\n        alpha1 = _coerce_start_step(alpha0, amin=amin, amax=amax)\n\n        search = DCSRCH(\n            lambda a: float(evaluate(a)[0]),\n            lambda a: float(evaluate(a)[1]),\n            c1,\n            c2,\n            xtol,\n            amin,\n            amax,\n        )\n        alpha_out, _, _, task = search(\n            alpha1,\n            phi0=float(func0[0]),\n            derphi0=float(func0[1]),\n            maxiter=int(maxiter),\n        )\n        if alpha_out is None:\n            return None, float(func0[0]), float(func0[1]), task, eval_count, func0\n\n        func1 = evaluate(alpha_out)\n        if task[:5] == b\"ERROR\" or task[:4] == b\"WARN\":\n            return None, float(func1[0]), float(func1[1]), task, eval_count, func1\n        return alpha_out, float(func1[0]), float(func1[1]), task, eval_count, func1\n"
+      }
+    }
+  },
+  "confirmed_mechanism": [
+    "Electronic minimizer returned flag 1 (line-search failure); runner rejected downstream forces/stress and stopped.",
+    "Only two electronic updates were printed in failed evaluation; ncheck=3 requires three earlier energies against latest before declaring energy convergence.",
+    "Last coherent checkpoint is step 100 and its force still exceeds target. Failed evaluation 102 is not a valid physical endpoint.",
+    "Ionic small-step LBFGS and electronic LBFGS are separate algorithms despite identical short name.",
+    "Root-agent read-only runtime probe of the same remote environment confirms scipy.optimize._dcsrch is available despite reported SciPy 1.10.1. Importing the exact frozen engine enables the compat flag and replaces LineSearchDcsrch2 with its _line_search_scalar. Runtime evidence takes precedence over version-only inference."
+  ],
+  "hypotheses": [
+    "Tiny electronic dE and residual are consistent with near-flat line-search difficulty, but task/alpha/derivative details were not logged, so numerical roundoff versus search-direction/step failure cannot be distinguished.",
+    "Exact failing line-search task was not logged, so confirmed compatibility-layer activation does not identify the underlying reason for search failure."
+  ],
+  "historical_electronic_fallback": {
+    "method": "TN",
+    "input": "C:\\OFDFT\\AL_DEFECTS_USB_HANDOFF_20260717\\02_ACTIVE_DFTPY_ISERVICE_LAMMU_RAW\\03_RAW_CASES\\03_runs\\tfvw_lam0p9_mu0p1\\dftpy_pristine_input.ini",
+    "status": {
+      "setting": "tfvw_lam0p9_mu0p1",
+      "task_id": "80",
+      "case": "/work/dawson666/dftpy_project/relax/dftpy45/results/Al_defects/01_calibration/single_vacancy/dftpy_tfvw_lambda_mu/coarse_10x10_vacancy_formation/03_runs/tfvw_lam0p9_mu0p1",
+      "timestamp": "2026-06-23T17:25:08.271874",
+      "python_or_timeout_rc": 0,
+      "result_json": "/work/dawson666/dftpy_project/relax/dftpy45/results/Al_defects/01_calibration/single_vacancy/dftpy_tfvw_lambda_mu/coarse_10x10_vacancy_formation/03_runs/tfvw_lam0p9_mu0p1/result.json",
+      "qualified": true,
+      "status": "completed_qualified",
+      "has_result_json": true,
+      "vacancy_formation_energy_eV": 0.6616607457190185,
+      "vacancy_formation_kedf_energy_eV": -2.791795323093538,
+      "lattice_constant_A": 3.9545804060131293,
+      "pristine_final_fmax_eV_A": 0.0035071887614863515,
+      "vacancy_final_fmax_eV_A": 0.004428910924948874,
+      "fmax_target_eV_A": 0.01,
+      "missing_required_fields": [],
+      "pristine_converged_to_target": true,
+      "vacancy_converged_to_target": true
+    },
+    "scope": "Historical successful bulk TF=.9/vW=.1 calculation at econv=1e-6, force=.01, different grid. Evidence of executed optimizer family only, not current nano/.001/econv1e-9 validation.",
+    "CG_HS": "Existing bulk-scan preparation script and explanatory document found; no matching accepted raw CG-HS case established in this targeted search."
+  },
+  "recommended_minimum_test": [
+    "Start from coherent step100 checkpoint, preserve model/PP/grid/stress candidate and force=.001, axial stress=.05 GPa acceptance.",
+    "At fixed checkpoint geometry first compare existing electronic LBFGS with TN at identical econv=1e-9 Ha/atom, ncheck=3, maxiter=1000/maxls=50; do not move ions until a clean electronic result is available.",
+    "Preserve verified callable provenance and record task/alpha/direction derivative on failure, optimizer identity, energy history, residual, charge integral and finite density.",
+    "Compare energy, all atomic force vectors and axial stress between successful fixed-geometry solutions. If force sensitivity is comparable to .001 eV/A, add a tighter-electronic-tolerance diagnostic rather than declare geometric convergence.",
+    "Only after fixed-geometry check passes, resume the preserved small-step ionic LBFGS workflow with explicitly recorded electronic fallback; keep original failure evidence immutable.",
+    "TN still uses line search and is not guaranteed to cure the event. If it fails, inspect recorded task before testing a bounded CG-HS alternative. Do not launch another blind 1000-step LBFGS-only attempt."
+  ],
+  "prohibited_shortcuts": [
+    "ncheck=1",
+    "looser econv",
+    "looser ionic force criterion",
+    "accept failed density using its tiny energy change",
+    "claim historical FIRE success",
+    "change functional/grid/PP to hide optimizer problem"
+  ],
+  "official_sources": [
+    "https://raw.githubusercontent.com/Quantum-MultiScale/DFTpy/v2.1.2/src/dftpy/optimization/optimization.py",
+    "https://raw.githubusercontent.com/Quantum-MultiScale/DFTpy/v2.1.2/src/dftpy/math_utils.py",
+    "https://raw.githubusercontent.com/Quantum-MultiScale/DFTpy/v2.1.2/src/dftpy/interface.py",
+    "https://dftpy.rutgers.edu/tutorials/config.html",
+    "https://raw.githubusercontent.com/scipy/scipy/v1.10.1/scipy/optimize/_linesearch.py",
+    "https://dftpy.rutgers.edu/releases.html"
+  ],
+  "source_hashes": {
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\result.json": "45fc08cf8cbeb527428f9e2495868d3033dc452eed8737432784549cd46731f3",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\config.json": "1a7cd66f222d4bf9a5d4f308a7f3e8b30c21b0cc8143534b4ca82a01b986d0f7",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\checkpoint.json": "4e7fb340ca689fa71ae03c15bff78e4099c68957e1b2c097f5114dcec067543b",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\electronic_evaluations.jsonl": "86604ce9ef513e69014190fe850a03ddc28e178650d152bbc11a1a121da9c060",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\ionic_evaluations.jsonl": "2e4bf772aa0e9ce1632b6a14bf53616063895ff8b9c15f7322ce152be9578b3f",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\dftpy_full_stdout.log": "6c675e01f18148c0bac8fc58a28e3ca04aeea341dfc0aec2a2ed3857536608b5",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\inputs\\dft_engine.py": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\inputs\\recovery_runner.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\FOLLOWUP_RESULTS\\DFTPY_R13\\provenance.json": "36006c9608ab315d8a7b1d6be960b53436936539d2fb850106bc21a3735f1df3",
+    "C:\\OFDFT\\AL_DEFECTS_USB_HANDOFF_20260717\\02_ACTIVE_DFTPY_ISERVICE_LAMMU_RAW\\03_RAW_CASES\\03_runs\\tfvw_lam0p9_mu0p1\\dftpy_pristine_input.ini": "d23faee97e0058479b0dcfc2cdac23e67f44ba0ee7a9c85d29445f5194880fe7",
+    "C:\\OFDFT\\AL_DEFECTS_USB_HANDOFF_20260717\\02_ACTIVE_DFTPY_ISERVICE_LAMMU_RAW\\03_RAW_CASES\\03_runs\\tfvw_lam0p9_mu0p1\\dftpy_vacancy_input.ini": "f4c777bd1400d7fef9cc7adbd506b3c25d7f444d65fe8b20618465ef54cf2897",
+    "C:\\OFDFT\\AL_DEFECTS_USB_HANDOFF_20260717\\02_ACTIVE_DFTPY_ISERVICE_LAMMU_RAW\\03_RAW_CASES\\03_runs\\tfvw_lam0p9_mu0p1\\run_status_job1575772_task80.json": "d087a24e76df510641cf718c8a5f15f34c3405d69c436c2bff8e51387ef17ff7",
+    "C:\\OFDFT\\AL_DEFECTS_USB_HANDOFF_20260717\\02_ACTIVE_DFTPY_ISERVICE_LAMMU_RAW\\03_RAW_CASES\\03_runs\\tfvw_lam0p9_mu0p1\\result.json": "74e1d7ead5e4384681dfa9f37169ab3dd9bd382acd6417b4c09d2d5376a73d97",
+    "C:\\Users\\m1331\\Documents\\Codex\\2026-09-24\\g\\work\\followup_results_20261017\\runtime_probe.json": "68aee2470ab1b5312023865f4d9ef947d466a73e0fdd59492ec892ae2613ac09"
+  }
+}

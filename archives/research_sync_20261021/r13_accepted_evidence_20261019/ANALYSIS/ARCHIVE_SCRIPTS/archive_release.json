@@ -1,0 +1,18 @@
+{
+  "approved_to_finalize": true,
+  "pair_review_complete": true,
+  "basis": "Root coordination message after independent endpoint QA596/596 and pair QA195/195; no new DFT submission.",
+  "R13_pair_review": {
+    "formation_energy_eV": 0.616366216319,
+    "mu_Al_OF_eV": -62.94385754462274,
+    "nonaffine_pair_rms_A": 0.029941559741141578,
+    "nonaffine_pair_max_A": 0.1053177080734351,
+    "vacancy_parent_site_id": 33,
+    "nearest_parent_empty_count": 1,
+    "scope": "The two endpoints support similar rearranged structures; the missing parent site remains empty. Both pass the force/stress endpoint gates. This is not a global-minimum or complete numerical-transfer certification.",
+    "electronic_precision_note": "Same physical functional, pseudopotential and grid; new 0V uses TN/econv1e-11 while original accepted 1V uses LBFGS/econv1e-9. Formation-energy electronic-precision sensitivity is not separately completed."
+  },
+  "five_size_interpretation": "Five numerical endpoint pairs are now available. R13 Ef is greater than R15 Ef, so the results are not strictly monotonic in size. R11 and R13 include significant rearrangement; structure matching and numerical sensitivity remain part of interpretation.",
+  "summary_ZH": "這次能量下降約0.951 eV，伴隨明顯的原子重排。R13完整柱與含空缺柱相對原始理想柱的位移都很大；但把兩個鬆弛終態逐原子對齊、扣掉晶胞形變後，RMS差只有0.02994 Å，最大差0.10532 Å。這支持它們具有相似的重排後結構，缺格仍留在原本的parent_site_id 33。",
+  "pair_scope_ZH": "五組數據可用來比較已達力／應力門檻的端點，但不能寫成單純的『半徑越大，形成能越高』：R13形成能高於R15。小柱的整體結構重排與空缺造成的額外反應需分開說明。結晶相分類、全域最低能與網格／真空／電子精度對形成能的敏感度，仍各有待驗證的範圍。"
+}

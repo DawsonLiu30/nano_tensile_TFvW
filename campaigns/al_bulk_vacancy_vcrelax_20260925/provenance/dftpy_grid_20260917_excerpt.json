@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "evidence_role": "historical_numerical_provenance_only",
+  "original_source_path": "C:\\OFDFT\\RESEARCH_UPDATES\\LUDER_RESPONSE_20260917\\controlled\\grid_check.json",
+  "original_source_sha256": "3419eaeb38247af58606622acf34dc66a7045833739f634d404b91d55346dede",
+  "original_source_bytes": 3191,
+  "study": "Vertical grid refinement at fixed strict78 geometry",
+  "pairs": [
+    {
+      "label": "2V_D310_r1",
+      "Eb78_meV": 1.93810626569757,
+      "Eb96_meV": 1.9395375493331812,
+      "delta_Eb_meV": 0.0014312836356111802,
+      "delta_Ef2_meV": -0.04655023258237634,
+      "fmax96_eV_A": 0.0008211378979730071
+    },
+    {
+      "label": "2V_D111_r1",
+      "Eb78_meV": -4.451077147678006,
+      "Eb96_meV": -4.457607848053158,
+      "delta_Eb_meV": -0.006530700375151355,
+      "delta_Ef2_meV": -0.038588248571613804,
+      "fmax96_eV_A": 0.0011176029158973138
+    },
+    {
+      "label": "2V_D110_r2",
+      "Eb78_meV": -3.9868515468697296,
+      "Eb96_meV": -3.988125024079636,
+      "delta_Eb_meV": -0.0012734772099065594,
+      "delta_Ef2_meV": -0.0438454717368586,
+      "fmax96_eV_A": 0.0008241481104936358
+    },
+    {
+      "label": "2V_D110_r3",
+      "Eb78_meV": -6.865500877211161,
+      "Eb96_meV": -6.872856984955433,
+      "delta_Eb_meV": -0.007356107744271867,
+      "delta_Ef2_meV": -0.03776284120249329,
+      "fmax96_eV_A": 0.0008879696628849676
+    }
+  ],
+  "max_abs_binding_change_meV": 0.007356107744271867,
+  "forces_all_below_001": false,
+  "fine_grid_111_relaxation": {
+    "result_sha256": "f93cb2788a9cfbf89cae20cb87a74b2b66cade1435ab588efc6a0e2ed3394131",
+    "ionic_steps": 1,
+    "fmax_eV_A": 0.0004973142098932204,
+    "Eb_meV": -4.456962106814899,
+    "change_from_vertical_meV": 0.000645741238258779,
+    "change_from_grid78_meV": -0.005884959136892576
+  },
+  "scope": "Historical 78-to-96 vertical single points at fixed strict-78 relaxed geometries; only [111] additionally relaxed for one step. Not all full variable-cell reoptimizations."
+}

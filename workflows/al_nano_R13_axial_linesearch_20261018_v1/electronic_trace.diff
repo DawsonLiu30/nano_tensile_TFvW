@@ -1,0 +1,54 @@
+--- previous/electronic_trace.py
++++ current/electronic_trace.py
+@@ -33,11 +33,20 @@
+     return out
+ 
+ class ElectronicTrace:
+-    def __init__(self,out,n,grid,cell,allow_retry=True):
++    def __init__(self,out,n,grid,cell,allow_retry=True,geometry_provider=None,max_logical_calls=120):
+         self.out=Path(out);self.n=n;self.grid=list(grid);self.cell=np.asarray(cell).copy()
+         self.allow_retry=allow_retry;self.label='production';self.initial_mode='warm'
++        self.geometry_provider=geometry_provider;self.max_logical_calls=max_logical_calls
+         self.logical_count=0;self.physical_count=0;self.failed_physical=0;self.retry_count=0
+         self.current={};self.records=[]
++    def target_cell(self):
++        if self.geometry_provider is None:return self.cell.copy()
++        geometry=self.geometry_provider();cell=np.asarray(geometry['cell_A'],dtype=float)
++        if not np.all(geometry['pbc']):raise ValueError('Calculator lost full PBC')
++        if cell.shape!=(3,3) or not np.isfinite(cell).all() or np.diag(cell).min()<10:raise ValueError('Calculator cell invalid or image separation <10 A')
++        frozen=np.ones((3,3),dtype=bool);frozen[2,2]=False
++        if not np.allclose(cell[frozen],self.cell[frozen],atol=1e-8,rtol=0):raise ValueError('Calculator transverse cell or tilt changed')
++        return cell.copy()
+     def append(self,name,row):
+         self.out.mkdir(parents=True,exist_ok=True)
+         with (self.out/name).open('a',encoding='utf8') as f:f.write(json.dumps(clean(row),allow_nan=False)+'\n')
+@@ -72,21 +81,26 @@
+         def traced_opt(opt,*args,**kw):
+             if len(args)>1 or set(kw)-{'guess_rho'} or (args and 'guess_rho' in kw):
+                 raise ValueError('This bounded wrapper supports only one guess_rho argument')
++            if self.logical_count>=self.max_logical_calls:
++                from recovery_base import BudgetExpired
++                raise BudgetExpired('Logical electronic call budget exhausted')
++            target_cell=self.target_cell()
+             self.logical_count+=1;logical=self.logical_count
+             guess=kw.get('guess_rho',args[0] if args else None)
+             if guess is None:guess=opt.rho
+-            validate_density(guess,self.n,self.grid,self.cell)
++            validate_density(guess,self.n,self.grid,target_cell)
+             mode=self.initial_mode
+             for attempt in (1,2):
+                 self.physical_count+=1;self.current={'logical_call':logical,'label':self.label,'physical_attempt':attempt,'initial_density':mode,'electronic_method':opt.optimization_method}
+-                row={**self.current,'effective_econv_Ha_total':float(opt.optimization_options['econv']),'ncheck':opt.optimization_options['ncheck']}
++                row={**self.current,'effective_econv_Ha_total':float(opt.optimization_options['econv']),'ncheck':opt.optimization_options['ncheck'],'calculator_cell_A':target_cell.tolist()}
+                 started=time.monotonic();native_flag=None;rho=None;error=None
+                 try:
+                     # Native optimization initializes its direction history each call.
+                     rho=old_opt(opt,guess_rho=guess)
+                     native_flag=int(opt.converged);row['native_converged_flag']=native_flag
+                     row['energy_Ha']=float(opt.functional.energy)
+-                    row.update(validate_density(rho,self.n,self.grid,self.cell))
++                    row.update(validate_density(rho,self.n,self.grid,target_cell))
++                    if not np.allclose(self.target_cell(),target_cell,atol=1e-12,rtol=0):raise ValueError('Calculator cell changed during one electronic solve')
+                     if not np.isfinite(row['energy_Ha']):raise ValueError('Nonfinite electronic energy')
+                     if native_flag!=0:raise RuntimeError('Native electronic failure flag='+str(native_flag))
+                     row['accepted']=True

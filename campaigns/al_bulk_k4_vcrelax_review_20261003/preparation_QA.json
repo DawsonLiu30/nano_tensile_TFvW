@@ -1,0 +1,612 @@
+{
+  "scope": "Local provenance/input/geometry checks only; no QE run, no convergence certification",
+  "passed": true,
+  "check_count": 117,
+  "checks": [
+    {
+      "check": "protocol_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "five_selected_cases_only",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: input_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: parent_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: pseudo_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: all_cards_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: only_allowlisted_namelist_changes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: cards_match_independent_parser",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: atom_count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: full_pbc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: species",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: geometry_matches_parent_exactly",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: cell_matches_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_abs_A": 4.831672382398107e-16
+      }
+    },
+    {
+      "check": "0V: positions_match_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_MIC_A": 9.739636741317752e-15
+      }
+    },
+    {
+      "check": "0V: kmesh_4x4x4_unshifted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: shared_protocol",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: manifest_protocol_matches_input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: nonzero_cell",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: parent_is_accepted_SCF_diagnostic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0V: exported_structure_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: input_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: parent_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: pseudo_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: all_cards_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: only_allowlisted_namelist_changes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: cards_match_independent_parser",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: atom_count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: full_pbc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: species",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: geometry_matches_parent_exactly",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: cell_matches_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_abs_A": 4.169975018903134e-16
+      }
+    },
+    {
+      "check": "1V: positions_match_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_MIC_A": 1.03578512786223e-14
+      }
+    },
+    {
+      "check": "1V: kmesh_4x4x4_unshifted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: shared_protocol",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: manifest_protocol_matches_input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: nonzero_cell",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: parent_is_accepted_SCF_diagnostic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "1V: exported_structure_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: input_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: parent_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: pseudo_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: all_cards_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: only_allowlisted_namelist_changes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: cards_match_independent_parser",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: atom_count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: full_pbc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: species",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: geometry_matches_parent_exactly",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: cell_matches_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_abs_A": 4.2414087918434195e-16
+      }
+    },
+    {
+      "check": "2V_1NN_D110: positions_match_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_MIC_A": 9.423171209520716e-15
+      }
+    },
+    {
+      "check": "2V_1NN_D110: kmesh_4x4x4_unshifted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: shared_protocol",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: manifest_protocol_matches_input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: nonzero_cell",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: parent_is_accepted_SCF_diagnostic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_1NN_D110: exported_structure_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: input_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: parent_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: pseudo_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: all_cards_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: only_allowlisted_namelist_changes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: cards_match_independent_parser",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: atom_count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: full_pbc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: species",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: geometry_matches_parent_exactly",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: cell_matches_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_abs_A": 4.655085883841851e-16
+      }
+    },
+    {
+      "check": "2V_2NN_D100: positions_match_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_MIC_A": 9.930136612989094e-15
+      }
+    },
+    {
+      "check": "2V_2NN_D100: kmesh_4x4x4_unshifted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: shared_protocol",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: manifest_protocol_matches_input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: nonzero_cell",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: parent_is_accepted_SCF_diagnostic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_2NN_D100: exported_structure_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: input_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: parent_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: pseudo_hash",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: all_cards_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: only_allowlisted_namelist_changes",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: cards_match_independent_parser",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: atom_count",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: full_pbc",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: species",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: geometry_matches_parent_exactly",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: cell_matches_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_abs_A": 3.7759216206128595e-16
+      }
+    },
+    {
+      "check": "2V_5NN_D310: positions_match_decoded_k3_endpoint",
+      "passed": true,
+      "detail": {
+        "max_MIC_A": 1.003140415008065e-14
+      }
+    },
+    {
+      "check": "2V_5NN_D310: kmesh_4x4x4_unshifted",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: shared_protocol",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: manifest_protocol_matches_input",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: nonzero_cell",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: parent_is_accepted_SCF_diagnostic",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "2V_5NN_D310: exported_structure_roundtrip",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/0V/provenance.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/0V/pw.in",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/0V/pw.out",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/0V/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/1V/provenance.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/1V/pw.in",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/1V/pw.out",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/1V/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_1NN_D110/provenance.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_1NN_D110/pw.in",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_1NN_D110/pw.out",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_1NN_D110/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_2NN_D100/provenance.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_2NN_D100/pw.in",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_2NN_D100/pw.out",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_2NN_D100/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_5NN_D310/provenance.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_5NN_D310/pw.in",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_5NN_D310/pw.out",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/2V_5NN_D310/result.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/QE_PARAMETER_BASELINES_20260925.md",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/independently_decoded_endpoints.json",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "source:sources/run_bulk_vacancy_qe_1v_repair_20260928.py",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "no_submission_script",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "no_production_result",
+      "passed": true,
+      "detail": null
+    }
+  ]
+}

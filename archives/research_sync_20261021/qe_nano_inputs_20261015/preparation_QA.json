@@ -1,0 +1,86 @@
+{
+  "passed": 10,
+  "failed": 0,
+  "checks": [
+    {
+      "case": "nano_R11_0V_k3_20261015",
+      "atom_count": 52,
+      "parsed_position_max_difference_A": 0.0,
+      "axial_period_A": 14.000944652448164,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R11_1V_k3_20261015",
+      "atom_count": 51,
+      "parsed_position_max_difference_A": 0.0,
+      "axial_period_A": 14.000944652448164,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R13_0V_k3_20261015",
+      "atom_count": 76,
+      "parsed_position_max_difference_A": 0.0,
+      "axial_period_A": 14.000944652448164,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R13_1V_k3_20261015",
+      "atom_count": 75,
+      "parsed_position_max_difference_A": 0.0,
+      "axial_period_A": 14.000944652448164,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R17_0V_k3_20261015",
+      "atom_count": 128,
+      "parsed_position_max_difference_A": 0.0,
+      "axial_period_A": 14.000944652448164,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R17_1V_k3_20261015",
+      "atom_count": 127,
+      "parsed_position_max_difference_A": 0.0,
+      "axial_period_A": 14.000944652448164,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R15_0V_k5_SCF_20261015",
+      "atom_count": 96,
+      "parsed_position_max_difference_A": 4.973799150320701e-14,
+      "axial_period_A": 13.613147372656538,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R15_1V_k5_SCF_20261015",
+      "atom_count": 95,
+      "parsed_position_max_difference_A": 4.796163466380676e-14,
+      "axial_period_A": 13.623480680042777,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R15_0V_k7_SCF_20261015",
+      "atom_count": 96,
+      "parsed_position_max_difference_A": 4.973799150320701e-14,
+      "axial_period_A": 13.613147372656538,
+      "PBC": true,
+      "pass": true
+    },
+    {
+      "case": "nano_R15_1V_k7_SCF_20261015",
+      "atom_count": 95,
+      "parsed_position_max_difference_A": 4.796163466380676e-14,
+      "axial_period_A": 13.623480680042777,
+      "PBC": true,
+      "pass": true
+    }
+  ]
+}

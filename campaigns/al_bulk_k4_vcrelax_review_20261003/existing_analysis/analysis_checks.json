@@ -1,0 +1,1239 @@
+{
+  "count": 308,
+  "all_passed": true,
+  "checks": [
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/pseudo/Al_PAW_PBE.UPF",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/pw.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/pw.stderr",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/qe_manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/result.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_0V/attempt_001/scratch/nano_R15_0V.save/data-file-schema.xml",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/pseudo/Al_PAW_PBE.UPF",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/pw.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/pw.stderr",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/qe_manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/result.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash completed_qe/nano_R15_1V/attempt_001/scratch/nano_R15_1V.save/data-file-schema.xml",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/pseudo/Al_PAW_PBE.UPF",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/pw.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/pw.stderr",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/qe_manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_0V/attempt_001/scratch/nano_R20_0V.save/data-file-schema.xml",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/provenance.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/pseudo/Al_PAW_PBE.UPF",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/pw.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/pw.stderr",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/qe_manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash running_snapshot/nano_R20_1V/attempt_001/scratch/nano_R20_1V.save/data-file-schema.xml",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R15-2180070_0.err",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R15-2180070_0.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R15-2180070_1.err",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R15-2180070_1.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R20-2180073_2.err",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R20-2180073_2.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R20-2180073_3.err",
+      "passed": true
+    },
+    {
+      "check": "archive hash slurm-logs/al-qe-nano-recover-R20-2180073_3.out",
+      "passed": true
+    },
+    {
+      "check": "archive hash receipts/submission_R15.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash receipts/submission_R20.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/SOURCE_MANIFEST.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/dftpy_cases.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/nano_geometry.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/pseudo/Al_PAW_PBE.UPF",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/pseudo/al.lda.recpot",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_0V_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_1V_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_1NN_D110_k3/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_1NN_D110_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_2NN_D100_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_3NN_D211_k3/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_3NN_D211_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_4NN_D110_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_5NN_D310_k3/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_5NN_D310_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/bulk_2V_6NN_D111_k4/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/nano_R15_0V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/nano_R15_1V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/nano_R20_0V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe/nano_R20_1V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/qe_manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R15_0V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R15_0V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R15_1V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R15_1V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R20_0V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R20_0V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R20_1V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/DFTpy/R20_1V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R15_0V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R15_0V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R15_1V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R15_1V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R20_0V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R20_0V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R20_1V.extxyz",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_luder_validation_nano_20260930/structures/QE/R20_1V.vasp",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_nano_qe_memory_recovery_20261001/pseudo/Al_PAW_PBE.UPF",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_nano_qe_memory_recovery_20261001/qe/nano_R15_0V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_nano_qe_memory_recovery_20261001/qe/nano_R15_1V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_nano_qe_memory_recovery_20261001/qe/nano_R20_0V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_nano_qe_memory_recovery_20261001/qe/nano_R20_1V/pw.in",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/campaigns/al_nano_qe_memory_recovery_20261001/qe_manifest.json",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/hpc/nano_qe_memory_recovery_20261001.sbatch",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/scripts/run_luder_qe_20260930.py",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/scripts/run_nano_qe_memory_recovery_20261001.py",
+      "passed": true
+    },
+    {
+      "check": "archive hash source_snapshot/tests/test_nano_qe_recovery_20261001.py",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 0",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 1",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 2",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 3",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 4",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 5",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 6",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 7",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 8",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 9",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 10",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 11",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 12",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 13",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 14",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 15",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 16",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 17",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 18",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 19",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 20",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 21",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 22",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 23",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 24",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 25",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 26",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 27",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 28",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 29",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 30",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 31",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 32",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 33",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 34",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 35",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 36",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 37",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 38",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 39",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 40",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 41",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 42",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 43",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 44",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 45",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 46",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 47",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 48",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 49",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 50",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 51",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 52",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 53",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 54",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 55",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 56",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 57",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 58",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total-force table 59",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V frozen inspector accepted",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V saved zero exit",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V result reproduces XML energy",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V printed energy vs XML",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V total forces text vs XML",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_0V original input identity",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 0",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 1",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 2",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 3",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 4",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 5",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 6",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 7",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 8",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 9",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 10",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 11",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 12",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 13",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 14",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 15",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 16",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 17",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 18",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 19",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 20",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 21",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 22",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 23",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 24",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 25",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 26",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 27",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 28",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 29",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 30",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 31",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 32",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 33",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 34",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 35",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 36",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 37",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 38",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 39",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 40",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 41",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 42",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 43",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 44",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 45",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 46",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 47",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 48",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 49",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 50",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 51",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 52",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 53",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 54",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 55",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 56",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 57",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 58",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 59",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 60",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 61",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 62",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 63",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 64",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 65",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 66",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 67",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 68",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 69",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 70",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 71",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 72",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 73",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 74",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 75",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 76",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total-force table 77",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V frozen inspector accepted",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V saved zero exit",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V result reproduces XML energy",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V printed energy vs XML",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V total forces text vs XML",
+      "passed": true
+    },
+    {
+      "check": "nano_R15_1V original input identity",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 0",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 1",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 2",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 3",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 4",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 5",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 6",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 7",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 8",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 9",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 10",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 11",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 12",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 13",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 14",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 15",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 16",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 17",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 18",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 19",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 20",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 21",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 22",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 23",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 24",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 25",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 26",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 27",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 28",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 29",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 30",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 31",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 32",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_0V total-force table 33",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 0",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 1",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 2",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 3",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 4",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 5",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 6",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 7",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 8",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 9",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 10",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 11",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 12",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 13",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 14",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 15",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 16",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 17",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 18",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 19",
+      "passed": true
+    },
+    {
+      "check": "nano_R20_1V total-force table 20",
+      "passed": true
+    },
+    {
+      "check": "QE_R15_0V parent assignment unchanged",
+      "passed": true
+    },
+    {
+      "check": "QE_R15_0V no double occupancy",
+      "passed": true
+    },
+    {
+      "check": "QE_R15_1V parent assignment unchanged",
+      "passed": true
+    },
+    {
+      "check": "QE_R15_1V no double occupancy",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R15_0V parent assignment unchanged",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R15_0V no double occupancy",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R15_1V parent assignment unchanged",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R15_1V no double occupancy",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R20_0V parent assignment unchanged",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R20_0V no double occupancy",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R20_1V parent assignment unchanged",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R20_1V no double occupancy",
+      "passed": true
+    },
+    {
+      "check": "QE_R15_1V exactly one missing parent",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R15_1V exactly one missing parent",
+      "passed": true
+    },
+    {
+      "check": "DFTpy_R20_1V exactly one missing parent",
+      "passed": true
+    },
+    {
+      "check": "35 records in consolidated ledger",
+      "passed": true
+    }
+  ],
+  "scope": "Hashes, parsers, arithmetic and structure consistency; not numerical-parameter convergence tests"
+}

@@ -1,0 +1,1247 @@
+{
+  "snapshot_date": "2026-10-21",
+  "purpose": "Preserve existing execution sources, small inputs and accepted-result evidence without modifying originals. This is not a new calculation or a complete restart backup.",
+  "source_roots": {
+    "frozen_sources_20261015": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015",
+    "qe_nano_inputs_20261015": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式",
+    "dftpy_nano_inputs_20261015": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式",
+    "qe_bulk_accepted_20261017/0V": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V",
+    "qe_bulk_accepted_20261017/1V": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V",
+    "r13_accepted_evidence_20261019": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS"
+  },
+  "files": [
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/app/__init__.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\app\\__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/app/dft_engine.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\app\\dft_engine.py",
+      "bytes": 15933,
+      "sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/MANIFEST.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\MANIFEST.json",
+      "bytes": 4428,
+      "sha256": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/production.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\production.sbatch",
+      "bytes": 846,
+      "sha256": "b887fa843e0aea7537b5a18a34a3508db3f71bf67d7d2dda58c43fd04a19475b"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/scripts/base_runner.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\scripts\\base_runner.py",
+      "bytes": 26054,
+      "sha256": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/scripts/gated_nano.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\scripts\\gated_nano.py",
+      "bytes": 15059,
+      "sha256": "2b37135067438c4cd3b678877e16c9b93e6fdf309302d981e0764fcca82609f4"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/scripts/stress_candidate.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\scripts\\stress_candidate.py",
+      "bytes": 1041,
+      "sha256": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/scripts/validate_saved_total.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\scripts\\validate_saved_total.py",
+      "bytes": 3799,
+      "sha256": "daa46b356acce7c91d084eb9f5174f466c9b0078e29a144cad3b08bf8470733f"
+    },
+    {
+      "path": "frozen_sources_20261015/DFTPY_NANO/validate.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\DFTPY_NANO\\validate.sbatch",
+      "bytes": 631,
+      "sha256": "8cfb734bf763035556ad2bd1d68f413bfbced41869541a3999dbaabe1c2cf091"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/deployment_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\deployment_manifest.json",
+      "bytes": 5213,
+      "sha256": "ec2cf1d50a6c80fa9a72392d09e61036a7a71815f55b76b652769a47502663ec"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/hpc/bulk_k4_validation.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\hpc\\bulk_k4_validation.sbatch",
+      "bytes": 1032,
+      "sha256": "c1c9424013cea3a4d46c107a1f55181e20e49e18cb2a7709646ac4d656c03702"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/protocol.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\protocol.json",
+      "bytes": 3962,
+      "sha256": "1adf260e2dddb5d94b6fef9aabb584b61ccc6dcb4f8f454cf9090ace5fd9d470"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/qe_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\qe_manifest.json",
+      "bytes": 64437,
+      "sha256": "233402020921b344c34e40c18e46fd044cae58cd400935a5ccd9db4461641ebb"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/scripts/run_bulk_k4_validation_20261015.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\scripts\\run_bulk_k4_validation_20261015.py",
+      "bytes": 9639,
+      "sha256": "5381676c98ca1bb8724be47f31623ab99074405edf9f51f51c3c3b3807391a92"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/scripts/run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\scripts\\run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "bytes": 50564,
+      "sha256": "f2af3ddf891e7f34fd38c0ccb7238e301eaff816faf230ee957842ed2a2ad62b"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/scripts/run_luder_qe_20260930.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\scripts\\run_luder_qe_20260930.py",
+      "bytes": 7481,
+      "sha256": "6b6c687b91776586f48fe530d9b1cf2d1a22931b0a9b6109f6d4ab6c8d0abdb2"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_BULK/scripts/run_nano_qe_memory_recovery_20261001.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_BULK\\scripts\\run_nano_qe_memory_recovery_20261001.py",
+      "bytes": 5141,
+      "sha256": "4cd11690f179f406e2646fdbf4330705ce94b2118b55fbc91543afebd9a956b0"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/deployment_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\deployment_manifest.json",
+      "bytes": 9013,
+      "sha256": "21addb3e0548cbb4e11bdd907ade75350907261fbda04bafc064aeafd34ba1c1"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/hpc/nano_gate.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\hpc\\nano_gate.sbatch",
+      "bytes": 584,
+      "sha256": "4dc0ee6a9605f16e1e2c5eda3b14ccf1bbea2722d1b2a7cbb6be4744cda2c12e"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/hpc/nano_stage.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\hpc\\nano_stage.sbatch",
+      "bytes": 1082,
+      "sha256": "92a401089b3d0c237cf22b3021c663787f03fcafe1ab5e04e2dee463e01ba506"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/protocol.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\protocol.json",
+      "bytes": 3774,
+      "sha256": "11a54da3d1af9a1f2992bada678f419c478d3eebf2f47b77be9fd99ea7264b6b"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/qe_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\qe_manifest.json",
+      "bytes": 126111,
+      "sha256": "e9dc308ff030410f72930e92d317163f308e5ab536721a4313dedf15bf931374"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/scripts/run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\scripts\\run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "bytes": 50564,
+      "sha256": "f2af3ddf891e7f34fd38c0ccb7238e301eaff816faf230ee957842ed2a2ad62b"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/scripts/run_luder_qe_20260930.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\scripts\\run_luder_qe_20260930.py",
+      "bytes": 7481,
+      "sha256": "6b6c687b91776586f48fe530d9b1cf2d1a22931b0a9b6109f6d4ab6c8d0abdb2"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/scripts/run_nano_gated_20261015.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\scripts\\run_nano_gated_20261015.py",
+      "bytes": 16503,
+      "sha256": "2884d10a7f88ecdd090b9a367bab01c15efabdeae7ceef7aab957d649cc8f014"
+    },
+    {
+      "path": "frozen_sources_20261015/QE_NANO/scripts/run_nano_qe_memory_recovery_20261001.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\EXECUTION_SOURCE_FROZEN_20261015\\QE_NANO\\scripts\\run_nano_qe_memory_recovery_20261001.py",
+      "bytes": 5141,
+      "sha256": "4cd11690f179f406e2646fdbf4330705ce94b2118b55fbc91543afebd9a956b0"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/case_inventory.csv",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\case_inventory.csv",
+      "bytes": 2039,
+      "sha256": "5db3f4e4737cf4a86302fdfd9b71ef4c86196c172c6f49664c1c9c0e8b44c80c"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/deployment_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\deployment_manifest.json",
+      "bytes": 9013,
+      "sha256": "21addb3e0548cbb4e11bdd907ade75350907261fbda04bafc064aeafd34ba1c1"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/DEPLOYMENT_ZH.txt",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\DEPLOYMENT_ZH.txt",
+      "bytes": 3010,
+      "sha256": "7b2393d620f65cdf7c5a60aa76ec8d0bf34527af8bbc4b41247ef7a91610f147"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/finalize_package.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\finalize_package.py",
+      "bytes": 2826,
+      "sha256": "289c86cf6b2f48f80cfff9f97fabe9b25d81db0bfd21668ffc5fb45cfc4dbae3"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/hpc/nano_gate.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\hpc\\nano_gate.sbatch",
+      "bytes": 584,
+      "sha256": "4dc0ee6a9605f16e1e2c5eda3b14ccf1bbea2722d1b2a7cbb6be4744cda2c12e"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/hpc/nano_stage.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\hpc\\nano_stage.sbatch",
+      "bytes": 1082,
+      "sha256": "92a401089b3d0c237cf22b3021c663787f03fcafe1ab5e04e2dee463e01ba506"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R11_0V_k3_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R11_0V_k3_20261015\\initial.extxyz",
+      "bytes": 1983,
+      "sha256": "3587eb45b74c619820c7105607bafd8625208408bc514049e0ccd4461c10fb5b"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R11_0V_k3_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R11_0V_k3_20261015\\pw.in",
+      "bytes": 3098,
+      "sha256": "55a8acb9ec0c774ea82c75e23c7b098a1aec243df4b403930810e711848de62a"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R11_1V_k3_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R11_1V_k3_20261015\\initial.extxyz",
+      "bytes": 1945,
+      "sha256": "de131fae03467242452fa23ecaf6b5f4c1522e3dc842500aca56a522f24108ee"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R11_1V_k3_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R11_1V_k3_20261015\\pw.in",
+      "bytes": 3060,
+      "sha256": "ea86c71f42a3b8ed39d09e39e03cb0618d28a2bc27f8591ac7c3c05e3a967756"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R13_0V_k3_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R13_0V_k3_20261015\\initial.extxyz",
+      "bytes": 2871,
+      "sha256": "f5a5e923beaef05d5b5fa5337422dfdd74e13ad974f12b0d9d812fb3ed7aefe9"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R13_0V_k3_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R13_0V_k3_20261015\\pw.in",
+      "bytes": 3987,
+      "sha256": "aa3901807cdb5c5a98620e4fe6181e902ecbff8778353835696193a5d6bc36d7"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R13_1V_k3_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R13_1V_k3_20261015\\initial.extxyz",
+      "bytes": 2832,
+      "sha256": "913d5f8fb3c0ad2e270ba2eb9cdc14d6f4c0a8dec12684420cc65aa1adbe6125"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R13_1V_k3_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R13_1V_k3_20261015\\pw.in",
+      "bytes": 3948,
+      "sha256": "0ee264623efdce2f2335d20ac976fe43c5231d04f4263a008a4c324d770e0552"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_0V_k5_SCF_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_0V_k5_SCF_20261015\\initial.extxyz",
+      "bytes": 5406,
+      "sha256": "e27cf98bd1ca582fc0162ea7c317b15d32f4ee6959867f40a5297453eef77900"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_0V_k5_SCF_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_0V_k5_SCF_20261015\\pw.in",
+      "bytes": 6359,
+      "sha256": "910ec809232042a3c15d0446d2fe024a5dd335d23ad2a89fd3dbcb3d5d53431c"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_0V_k7_SCF_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_0V_k7_SCF_20261015\\initial.extxyz",
+      "bytes": 5406,
+      "sha256": "e27cf98bd1ca582fc0162ea7c317b15d32f4ee6959867f40a5297453eef77900"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_0V_k7_SCF_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_0V_k7_SCF_20261015\\pw.in",
+      "bytes": 6359,
+      "sha256": "1daa5ede72959a393f8fa16dc24f987fd9c619ffd2b3be0a83f13339a5d8015d"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_1V_k5_SCF_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_1V_k5_SCF_20261015\\initial.extxyz",
+      "bytes": 5346,
+      "sha256": "16bbd1da1a687d423e2caa5f1bb5ce28b8183b3aa8b9ce16f98154e6040c8d96"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_1V_k5_SCF_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_1V_k5_SCF_20261015\\pw.in",
+      "bytes": 6299,
+      "sha256": "f6562ca62d490d7cab330933b88b33703a1036ad3bacfa70b323e9878d58ce6d"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_1V_k7_SCF_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_1V_k7_SCF_20261015\\initial.extxyz",
+      "bytes": 5346,
+      "sha256": "16bbd1da1a687d423e2caa5f1bb5ce28b8183b3aa8b9ce16f98154e6040c8d96"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R15_1V_k7_SCF_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R15_1V_k7_SCF_20261015\\pw.in",
+      "bytes": 6299,
+      "sha256": "fc8d18910d72ed9f213b67b0d6a1b959f231a6e1bae2df09813f77420193f603"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R17_0V_k3_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R17_0V_k3_20261015\\initial.extxyz",
+      "bytes": 4816,
+      "sha256": "7e3cbae43bcb19787605600f13702ace4470991a0ececd886c991be3f462539d"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R17_0V_k3_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R17_0V_k3_20261015\\pw.in",
+      "bytes": 5932,
+      "sha256": "aa7a2feeb364e633f1089b7dcf0178d97292486a155e43e491e27e5adbef4076"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R17_1V_k3_20261015/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R17_1V_k3_20261015\\initial.extxyz",
+      "bytes": 4777,
+      "sha256": "21d7151ef541d546a1ece184c88b83b33e33d4d84294e0346941d82a6b6b37cd"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/inputs/nano_R17_1V_k3_20261015/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\inputs\\nano_R17_1V_k3_20261015\\pw.in",
+      "bytes": 5893,
+      "sha256": "68ef4fd963173b081035ab2d1ddac78f8bf1bfb5283abaade5c37e09b7d45132"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/memory_planning.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\memory_planning.json",
+      "bytes": 1112,
+      "sha256": "0c97bb2cf739deec1fc64527a3bfe2409eb598770481a088f8e6373a25c8a85f"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/preparation_QA.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\preparation_QA.json",
+      "bytes": 2298,
+      "sha256": "25a1c3b787e3b94b60f9e40302fdc3acd4facd9dbe94e24607018b048d2e95f1"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/prepare_campaign.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\prepare_campaign.py",
+      "bytes": 9623,
+      "sha256": "dec29c512194b7058f0ee6bc17ec1139fb7f87a805da58a30e02780749c2bf58"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/protocol.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\protocol.json",
+      "bytes": 3774,
+      "sha256": "11a54da3d1af9a1f2992bada678f419c478d3eebf2f47b77be9fd99ea7264b6b"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/pseudo/Al_PAW_PBE.UPF",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\pseudo\\Al_PAW_PBE.UPF",
+      "bytes": 1678298,
+      "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/qe_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\qe_manifest.json",
+      "bytes": 126111,
+      "sha256": "e9dc308ff030410f72930e92d317163f308e5ab536721a4313dedf15bf931374"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/reference/CONVERGENCE_BASELINES.md",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\reference\\CONVERGENCE_BASELINES.md",
+      "bytes": 11599,
+      "sha256": "990979bffed6a16f353262f4bd3fc60ad469c68d7ea95f9f0588e4460056fcee"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/reference/convergence_baselines_20261011.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\reference\\convergence_baselines_20261011.json",
+      "bytes": 12373,
+      "sha256": "27ddd1af20b1f8db255f59dc4058eccfa3885a19407c7953fc346de84993c4f4"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/reference/k3_baseline.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\reference\\k3_baseline.json",
+      "bytes": 20803,
+      "sha256": "495b3f3d618b6e33d7a664dd6247551ede1ccbba6eeee98a2d90a722b70408c7"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/reference/R15_0V_k3_result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\reference\\R15_0V_k3_result.json",
+      "bytes": 19715,
+      "sha256": "8f09819992dcce1fa4ae846048209a83e584af9ecc0b4b69f593f5df0bff940e"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/reference/R15_1V_k3_result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\reference\\R15_1V_k3_result.json",
+      "bytes": 19486,
+      "sha256": "fb02284faf0d223fe070765bb057449bfe643b3f30be933cfc99808c608ac603"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/remote_payload_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\remote_payload_manifest.json",
+      "bytes": 7818,
+      "sha256": "ea1df784e05af0ee7f8b38646d17b92862cb6b99f763a7a27b2d26f1d1d8ea78"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/runner_tests.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\runner_tests.json",
+      "bytes": 180,
+      "sha256": "f3e25e47adcb079533db79110341e2589e401d4841779eead053905ff1aab893"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/scripts/run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\scripts\\run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "bytes": 50564,
+      "sha256": "f2af3ddf891e7f34fd38c0ccb7238e301eaff816faf230ee957842ed2a2ad62b"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/scripts/run_luder_qe_20260930.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\scripts\\run_luder_qe_20260930.py",
+      "bytes": 7481,
+      "sha256": "6b6c687b91776586f48fe530d9b1cf2d1a22931b0a9b6109f6d4ab6c8d0abdb2"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/scripts/run_nano_gated_20261015.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\scripts\\run_nano_gated_20261015.py",
+      "bytes": 16503,
+      "sha256": "2884d10a7f88ecdd090b9a367bab01c15efabdeae7ceef7aab957d649cc8f014"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/scripts/run_nano_qe_memory_recovery_20261001.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\scripts\\run_nano_qe_memory_recovery_20261001.py",
+      "bytes": 5141,
+      "sha256": "4cd11690f179f406e2646fdbf4330705ce94b2118b55fbc91543afebd9a956b0"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/source_index.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\source_index.json",
+      "bytes": 7359,
+      "sha256": "ab18a224ef5c4742e453c110e20b55da96a9cf20ca35aafc24e85d757741eb8d"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/source_unchanged_QA.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\source_unchanged_QA.json",
+      "bytes": 4295,
+      "sha256": "58b9181057e509ee682559ca0df46096ba801a0159fd6ec663d6bb46bcf7bd20"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\manifest.json",
+      "bytes": 2579,
+      "sha256": "734279dc381c82df8348088b720967b65bac836bc66ef70a6bf50b0198ea4502"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/R15_0V_data-file-schema.xml.gz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\R15_0V_data-file-schema.xml.gz",
+      "bytes": 332966,
+      "sha256": "2b9082e3fa848f1eb38ad1883663a41a32f77a8f0c59e4b72be2095b138c2e51"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/R15_0V_pw.in.gz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\R15_0V_pw.in.gz",
+      "bytes": 1257,
+      "sha256": "277570a62c0a63980b96a3f1032c9a8678674787c82f419a7eb1ae8d1a229830"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/R15_0V_pw.out.gz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\R15_0V_pw.out.gz",
+      "bytes": 718154,
+      "sha256": "fa0cc31d78b0dff87d3c99ffd3487d6ead2f327c501b14e8df3209599111edd1"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/R15_1V_data-file-schema.xml.gz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\R15_1V_data-file-schema.xml.gz",
+      "bytes": 444123,
+      "sha256": "299da74636ec96751cf1a94904ba1e8bd8ca895453eb6e8c8b89a5078ab1a4eb"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/R15_1V_pw.in.gz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\R15_1V_pw.in.gz",
+      "bytes": 1254,
+      "sha256": "7ca4e065a038d9588da375f44695e4f4be5d073f5616851006b574c043c9590a"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/fixture/R15_1V_pw.out.gz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\fixture\\R15_1V_pw.out.gz",
+      "bytes": 1146110,
+      "sha256": "4ef57ba3b4105a6cb5e7e389fc200ce25a046eb2f3500111645015b0787a16b7"
+    },
+    {
+      "path": "qe_nano_inputs_20261015/tests/test_nano_gated.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\02_QE_輸入與程式\\tests\\test_nano_gated.py",
+      "bytes": 10376,
+      "sha256": "dd674ac48ca2e3a49b773a8a73b22944acdade8b91d882d5b5750dfb5abe21bb"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/app/__init__.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\app\\__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/app/dft_engine.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\app\\dft_engine.py",
+      "bytes": 15933,
+      "sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/dftpy_cases.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\dftpy_cases.json",
+      "bytes": 136435,
+      "sha256": "41e0b189b055751cf09d7ab991cd15767a4ac4c6da7c5e7b6c2c8037c25ce6be"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/gate.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\gate.json",
+      "bytes": 7556,
+      "sha256": "1e324e45830130cbcfbd5e418ae65400176e035ef87a85ec551395d8c094157c"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/pseudo/al.lda.recpot",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\pseudo\\al.lda.recpot",
+      "bytes": 492756,
+      "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_0V/config.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_0V\\config.json",
+      "bytes": 3641,
+      "sha256": "798e1cc5dbb5394e2e42026460e1d728073a6e65644944c28da2533ebd593c77"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_0V/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_0V\\final.extxyz",
+      "bytes": 11448,
+      "sha256": "0fc3366f3714e052bc2cf8de85d0a51dcaa6dcb72f191c8bccfd822f5e77dea2"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_0V/inputs/al.lda.recpot",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_0V\\inputs\\al.lda.recpot",
+      "bytes": 492756,
+      "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_0V/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_0V\\result.json",
+      "bytes": 5158,
+      "sha256": "0808efbb8e4f854109fc4f8c8312f5f368792b0a73433ba996f70854da0e53f1"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_1V/config.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_1V\\config.json",
+      "bytes": 3641,
+      "sha256": "1d0d63dae46ebe78eaab88713144be757377aa0e579ae7c909c9c70e10bd985a"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_1V/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_1V\\final.extxyz",
+      "bytes": 11337,
+      "sha256": "7b2b2b184e8fb7f65fe9a597123ec6a2be3e76e5d63a3c7c1eaa657d96c10408"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_1V/inputs/al.lda.recpot",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_1V\\inputs\\al.lda.recpot",
+      "bytes": 492756,
+      "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R15_1V/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R15_1V\\result.json",
+      "bytes": 5158,
+      "sha256": "4f271358f7e119d1256b31d2b747dcfda4f12776c254bb87c60a770a12072be2"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_0V/config.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_0V\\config.json",
+      "bytes": 3640,
+      "sha256": "51e6580978069f185b9cbbb9e770337a40bcea5dd118320de8c881b0983c8fcb"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_0V/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_0V\\final.extxyz",
+      "bytes": 20582,
+      "sha256": "00d6b57db7d42042733bce24a1f0cde3314c7752d3805460a2b6d5857788b015"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_0V/inputs/al.lda.recpot",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_0V\\inputs\\al.lda.recpot",
+      "bytes": 492756,
+      "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_0V/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_0V\\result.json",
+      "bytes": 5184,
+      "sha256": "d121d3327aa2ccd77f72092c00c78784a94304d07d3e278b4dd82c9a047f3f30"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_1V/config.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_1V\\config.json",
+      "bytes": 3640,
+      "sha256": "885079156f5200e3875dfa2d89b8f07e297d993ec3827c5b33835c45e4612b56"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_1V/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_1V\\final.extxyz",
+      "bytes": 20460,
+      "sha256": "2186483e27f1069f029ad1687c5df2409e922f91ba2b47c909a1f797268d4476"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_1V/inputs/al.lda.recpot",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_1V\\inputs\\al.lda.recpot",
+      "bytes": 492756,
+      "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/seeds/R20_1V/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\seeds\\R20_1V\\result.json",
+      "bytes": 5185,
+      "sha256": "6a2b14a1fc7aee699bef6d704b2d10bf2eea445204efd2965827d3aadec69778"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R11_0V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R11_0V\\structure.extxyz",
+      "bytes": 4206,
+      "sha256": "16194b72bfa626a515f93c7e74e705c973e76ac57f7c3229189babaee1c54550"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R11_1V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R11_1V\\structure.extxyz",
+      "bytes": 4134,
+      "sha256": "7d5822c7e495ee65ff6f33c2ae694fe91fa9cc8f8c87af2ff67cbd3262fa3ee1"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R13_0V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R13_0V\\structure.extxyz",
+      "bytes": 5945,
+      "sha256": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R13_1V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R13_1V\\structure.extxyz",
+      "bytes": 5873,
+      "sha256": "53ca20acfb9f7d423c1adc42fd3c4d1dddc75eabeba81dbe3046e0d3f0a53293"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R15_0V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R15_0V\\structure.extxyz",
+      "bytes": 11448,
+      "sha256": "0fc3366f3714e052bc2cf8de85d0a51dcaa6dcb72f191c8bccfd822f5e77dea2"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R15_1V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R15_1V\\structure.extxyz",
+      "bytes": 11337,
+      "sha256": "7b2b2b184e8fb7f65fe9a597123ec6a2be3e76e5d63a3c7c1eaa657d96c10408"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R17_0V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R17_0V\\structure.extxyz",
+      "bytes": 9690,
+      "sha256": "68fd4faee2737f2b1b2bb448843efc2a50a2a0d40a2d570a0d6d8b061cb166b5"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R17_1V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R17_1V\\structure.extxyz",
+      "bytes": 9618,
+      "sha256": "1faf0ba63c8538b3fa7dad6e0e74fe4939a35de3fc3d42f627ab042293ea1ebc"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R20_0V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R20_0V\\structure.extxyz",
+      "bytes": 20582,
+      "sha256": "00d6b57db7d42042733bce24a1f0cde3314c7752d3805460a2b6d5857788b015"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/campaign/structures/R20_1V/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\campaign\\structures\\R20_1V\\structure.extxyz",
+      "bytes": 20460,
+      "sha256": "2186483e27f1069f029ad1687c5df2409e922f91ba2b47c909a1f797268d4476"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/EXTERNAL_SEEDS.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\EXTERNAL_SEEDS.json",
+      "bytes": 1663,
+      "sha256": "80404597be9763ba0a7f6804c45480741652d5e06026a802dd847736ecf1f82f"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/MANIFEST.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\MANIFEST.json",
+      "bytes": 4428,
+      "sha256": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/production.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\production.sbatch",
+      "bytes": 846,
+      "sha256": "b887fa843e0aea7537b5a18a34a3508db3f71bf67d7d2dda58c43fd04a19475b"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/remote_extra_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\remote_extra_manifest.json",
+      "bytes": 185,
+      "sha256": "bb674681386477b4833baeecfd95b84aabf796046c1597e450adeb4600d9a986"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/scripts/base_runner.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\scripts\\base_runner.py",
+      "bytes": 26054,
+      "sha256": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/scripts/gated_nano.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\scripts\\gated_nano.py",
+      "bytes": 15059,
+      "sha256": "2b37135067438c4cd3b678877e16c9b93e6fdf309302d981e0764fcca82609f4"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/scripts/stress_candidate.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\scripts\\stress_candidate.py",
+      "bytes": 1041,
+      "sha256": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/scripts/validate_saved_total.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\scripts\\validate_saved_total.py",
+      "bytes": 3799,
+      "sha256": "daa46b356acce7c91d084eb9f5174f466c9b0078e29a144cad3b08bf8470733f"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/validate.sbatch",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\validate.sbatch",
+      "bytes": 631,
+      "sha256": "8cfb734bf763035556ad2bd1d68f413bfbced41869541a3999dbaabe1c2cf091"
+    },
+    {
+      "path": "dftpy_nano_inputs_20261015/種子密度來源.txt",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_NAS_UPDATE_20261015\\EXECUTION_20261015\\03_DFTpy_輸入與程式\\種子密度來源.txt",
+      "bytes": 380,
+      "sha256": "d5ff2ddc0ace5b199e445ff831b7f108182b54aa459588c30a6b13ffb00f294d"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\final.extxyz",
+      "bytes": 5975,
+      "sha256": "5327e18e587b1d5e256a62dbb990b836c5d15c3378912437aa06152b842bb7bf"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/final_geometry.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\final_geometry.json",
+      "bytes": 11148,
+      "sha256": "cac6b00bfbe7255acc48f817111aac4e9e42f8e7226814827520d9cfbd11740c"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/provenance.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\provenance.json",
+      "bytes": 13246,
+      "sha256": "1c30ec4533d768fc95fc683dd56c82b60d1e5655045300e2f8a0f0aec6faddf4"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\pw.in",
+      "bytes": 7522,
+      "sha256": "91febfb02fcbf5283b05ed3631bcd57d5cbdd0d60643d340a0a87f2cc592fd0e"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/pw.out",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\pw.out",
+      "bytes": 1694641,
+      "sha256": "ac0c324d995fd84912cd8fe86c9827770d64432211e2eb6dbfe25735ba08b81f"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/pw.stderr",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\pw.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/qe_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\qe_manifest.json",
+      "bytes": 64437,
+      "sha256": "233402020921b344c34e40c18e46fd044cae58cd400935a5ccd9db4461641ebb"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\result.json",
+      "bytes": 104328,
+      "sha256": "c5e52ae90ff99ddb85fe0aeb2211205533ee73047bb8e990201f80254593410d"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/scratch/bulk_0V_k4_vcr_20261015.save/data-file-schema.xml",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\scratch\\bulk_0V_k4_vcr_20261015.save\\data-file-schema.xml",
+      "bytes": 808441,
+      "sha256": "e4622b9f698c92377e96dbd2e6a3de6c605c15abf985409b3e38d2bbe16b103f"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/0V/attempt_001/trajectory.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\0V\\attempt_001\\trajectory.json",
+      "bytes": 62660,
+      "sha256": "48e6b98666e715bfba42a747209f866c58043d23c7343d8dec1af4ddfe4f9b13"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\final.extxyz",
+      "bytes": 5887,
+      "sha256": "2e9c34bbf97fef5f50c8243dcc26590c5d5007b672d91c07e484efe13daa5abb"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/final_geometry.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\final_geometry.json",
+      "bytes": 10940,
+      "sha256": "d03c15635bd86894f345955a7f3077326ca452941c8af81b3a39ff95fb4cb5c6"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/provenance.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\provenance.json",
+      "bytes": 13136,
+      "sha256": "555605951c4192d9839368fb87f14e2d590df07f3915bf87846f1a0d31266008"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/pw.in",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\pw.in",
+      "bytes": 7446,
+      "sha256": "39dd260968621e432f1b4941df53b08a182b086e279df1a5b2e9f9678e5778ce"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/pw.out",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\pw.out",
+      "bytes": 4619520,
+      "sha256": "ad93dc920ce572a11052f728b8820516b70d7d22a1dff2705c4d3a34ed7ede0f"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/pw.stderr",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\pw.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/qe_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\qe_manifest.json",
+      "bytes": 64437,
+      "sha256": "233402020921b344c34e40c18e46fd044cae58cd400935a5ccd9db4461641ebb"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\result.json",
+      "bytes": 226065,
+      "sha256": "a394fa41cafb81cde534d59f25283d80f959d402d7739641b0c89189d109189b"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/scratch/bulk_1V_k4_vcr_20261015.save/data-file-schema.xml",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\scratch\\bulk_1V_k4_vcr_20261015.save\\data-file-schema.xml",
+      "bytes": 998585,
+      "sha256": "afdad0fb85ea40807c7b1faa35acfa3f13403906b7dcf2a4b736c1faa0f1f18e"
+    },
+    {
+      "path": "qe_bulk_accepted_20261017/1V/attempt_001/trajectory.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RAW\\QE_BULK\\1V\\attempt_001\\trajectory.json",
+      "bytes": 172812,
+      "sha256": "5399a7125ff77bce18a593509909ecec1a76ee2cfc6189b736b56bd8c301e232"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ACCOUNTING/axial-continue-2255218.err",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ACCOUNTING\\axial-continue-2255218.err",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ACCOUNTING/axial-continue-2255218.out",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ACCOUNTING\\axial-continue-2255218.out",
+      "bytes": 1618,
+      "sha256": "d45572399f5bd803f3476db6f65d50a2a090beead9468e61cdfefbdf25a04e41"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ACCOUNTING/probe.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ACCOUNTING\\probe.json",
+      "bytes": 39302,
+      "sha256": "4d58688b4d821e88aac32b6095da2d5122336e6e08f33dfda9c99120b0a379b0"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/ARCHIVE_SCRIPTS/archive_release.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\ARCHIVE_SCRIPTS\\archive_release.json",
+      "bytes": 1951,
+      "sha256": "cc82d01dd83021b3e193b95edbe46b42f2b20acaef5107c4bafb35ac05aaa3e2"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/ARCHIVE_SCRIPTS/finalize_archive.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\ARCHIVE_SCRIPTS\\finalize_archive.py",
+      "bytes": 15091,
+      "sha256": "ada185559195bc1f160cdbb404da94fd363d89152c7a1994cb3595ccdc0ab612"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/ARCHIVE_SCRIPTS/post_download.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\ARCHIVE_SCRIPTS\\post_download.py",
+      "bytes": 4109,
+      "sha256": "9e1c0fb8949a11bd6ea98216c19efb83ebd283a43a59632a62d853fd196c6df8"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/ARCHIVE_SCRIPTS/post_download.sh",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\ARCHIVE_SCRIPTS\\post_download.sh",
+      "bytes": 2436,
+      "sha256": "a700d720a903e8d0f1698d01d5f24eb1f88b13e0956725cbc9a34d38bf7d83c3"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/ARCHIVE_SCRIPTS/prepare_references.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\ARCHIVE_SCRIPTS\\prepare_references.py",
+      "bytes": 2754,
+      "sha256": "d3d9aecf42a06042f89b19210bf7321a8bd3dfe0d21ac574c700eae1976bf2a9"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/ARCHIVE_SCRIPTS/probe.sh",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\ARCHIVE_SCRIPTS\\probe.sh",
+      "bytes": 1180,
+      "sha256": "f34893dfee4946f9c4a12278fa0c443fb8b525c9938d09ab31af360afdca033b"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/FIGURES/plot_relaxation.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\FIGURES\\plot_relaxation.py",
+      "bytes": 1729,
+      "sha256": "9597bfad7ca2ddb893859101f0733a0ebc46dde665dd5d028ed61c1098147feb"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/FIGURES/R13_convergence_2255218.png",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\FIGURES\\R13_convergence_2255218.png",
+      "bytes": 125960,
+      "sha256": "cdaa9b2a8bba077e18d41966e63d83d2dddb3c789fd0255271b6a7ab88dc1fac"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/FIGURES/R13_convergence_plot_data.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\FIGURES\\R13_convergence_plot_data.json",
+      "bytes": 3919,
+      "sha256": "cefc7a6a2b802fad1bd5e578b72e0ddc31c468cbc163c3c91fd0ea3c3b5c723e"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/__pycache__/ase.filters.cpython-311.pyc",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\__pycache__\\ase.filters.cpython-311.pyc",
+      "bytes": 42096,
+      "sha256": "302932f570868652f1fdb87423906fcb73987c936a4264753f8eaa57c43ad99e"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/ase.filters.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\ase.filters.py",
+      "bytes": 32898,
+      "sha256": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/audit_saved_results.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\audit_saved_results.py",
+      "bytes": 11908,
+      "sha256": "dce6c7b0b840b53658f3029e6e79cd18a4bc95a88e85e180efdf5247bc115e21"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/audit_summary.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\audit_summary.json",
+      "bytes": 7233,
+      "sha256": "1ce5959cb978a79ec22a720b326ae2bc1c6adddef21b3092a7a85c9017b998ca"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/completed_step_diagnostics.csv",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\completed_step_diagnostics.csv",
+      "bytes": 12413,
+      "sha256": "8c96dc21ea4575a29fb4513b4ef28b6b57b0378728bab640e59070629ba01cff"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/QA.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\QA.json",
+      "bytes": 42198,
+      "sha256": "d283df675cdd0b57c5983ddd8470c6e28d645d80381b3051e9748bf425385cf2"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/READ_ME.txt",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\READ_ME.txt",
+      "bytes": 2553,
+      "sha256": "eee57d7b1ba3d31cfd7f10c5baefd93550c5b56d838c6b427d15071883b71248"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/INDEPENDENT_R13/trajectory_metrics.csv",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13\\trajectory_metrics.csv",
+      "bytes": 7674,
+      "sha256": "5da5f2e40d137713c215c929783d6e1594a2a6ff0fdea1f64931712cadd46356"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/ANALYSIS/REPRODUCE.txt",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\REPRODUCE.txt",
+      "bytes": 666,
+      "sha256": "77d7a64a74f4dc5129af11d76702ae8bc64dbe689e9fbf5c8cc7dd15e0ef7c0f"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/DOWNLOAD_SCOPE.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\DOWNLOAD_SCOPE.json",
+      "bytes": 250,
+      "sha256": "d007ce6908db914bb64a278dee87738032d2b142f7ce67909c7ffe58cbd996cb"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/checkpoint.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\checkpoint.json",
+      "bytes": 1679,
+      "sha256": "42d8a1f3648b6cb8682d72d979cb0071002394c9e97491ca42d9b36575fa9f9a"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/checkpoint.traj",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\checkpoint.traj",
+      "bytes": 4889,
+      "sha256": "02f67aa599d3ad240ba4966e649a5d0b3b9115237555552a7d07c94bf267d84e"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/config.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\config.json",
+      "bytes": 3670,
+      "sha256": "e6493048fc13e6cbd69847d17f7726f5eb7c915f550e9143613dbd38a8ea80fd"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/dftpy_full_stdout.log",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\dftpy_full_stdout.log",
+      "bytes": 770618,
+      "sha256": "b7d71e50a640bf9acb1d6ad558bc8b560d884833340f824f3364200e7729f569"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/electronic_evaluations.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\electronic_evaluations.jsonl",
+      "bytes": 85536,
+      "sha256": "1d244a842006ab6a43330c7cc69b971e99be9f2a9fd041a552b6a6dfdb508c84"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/electronic_trace/directions.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\electronic_trace\\directions.jsonl",
+      "bytes": 604159,
+      "sha256": "2d60eaa9707a2a51438add6c5f7819c181d53a1620baebd389abdfefd18478f1"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/electronic_trace/line_search.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\electronic_trace\\line_search.jsonl",
+      "bytes": 1538631,
+      "sha256": "4db5b0da4550e94325b60b703d17ef892d302498e6a8519c4e1a5d66131cbf69"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/electronic_trace/physical_electronic_attempts.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\electronic_trace\\physical_electronic_attempts.jsonl",
+      "bytes": 98585,
+      "sha256": "f977d575a2d4794da1bb696ef975656d79bda1470cd2b889a51c248d9d96063f"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/final.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\final.extxyz",
+      "bytes": 9071,
+      "sha256": "82dfe2a0803a0cb3c5999f22fdfa2a8d2d255153f78cb9c052a5cc177dceb5cb"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/final.traj",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\final.traj",
+      "bytes": 4889,
+      "sha256": "02f67aa599d3ad240ba4966e649a5d0b3b9115237555552a7d07c94bf267d84e"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/final.vasp",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\final.vasp",
+      "bytes": 4880,
+      "sha256": "26ce97053f76bdd5658014d3bdcfecc8f880b1a7727ae1463be3e9586352ca37"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/initial.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\initial.extxyz",
+      "bytes": 4944,
+      "sha256": "60590932789f9368ffa9e557c3df89c3dae890510be0327e7d4258f92d783f47"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/initial.traj",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\initial.traj",
+      "bytes": 2768,
+      "sha256": "5df36df680f97b21a9a0775daab0c38421f86210ea58ffc7dc6bd631d17f0352"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/axial_recovery_entry.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\axial_recovery_entry.py",
+      "bytes": 14358,
+      "sha256": "b3890312aa0538e6a5eb1b5fc8e70465cd7a0a4ed47fd4c4a018a3a7ffd6333e"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/axial_revision_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\axial_revision_manifest.json",
+      "bytes": 3511,
+      "sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/dft_engine.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\dft_engine.py",
+      "bytes": 15933,
+      "sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/dftpy_cases.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\dftpy_cases.json",
+      "bytes": 136435,
+      "sha256": "41e0b189b055751cf09d7ab991cd15767a4ac4c6da7c5e7b6c2c8037c25ce6be"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/electronic_gate_pass.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\electronic_gate_pass.json",
+      "bytes": 3113,
+      "sha256": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/electronic_trace.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\electronic_trace.py",
+      "bytes": 8278,
+      "sha256": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/gate.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\gate.json",
+      "bytes": 7556,
+      "sha256": "1e324e45830130cbcfbd5e418ae65400176e035ef87a85ec551395d8c094157c"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/gated_nano.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\gated_nano.py",
+      "bytes": 15059,
+      "sha256": "2b37135067438c4cd3b678877e16c9b93e6fdf309302d981e0764fcca82609f4"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/package_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\package_manifest.json",
+      "bytes": 4428,
+      "sha256": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/parent_provenance.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\parent_provenance.json",
+      "bytes": 19798,
+      "sha256": "5c4eed227bfc7addf4d0c17feaf1a59fc5c77b70081bfad48c55f15be408c696"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/parent_result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\parent_result.json",
+      "bytes": 14200,
+      "sha256": "32bedd18ba54f078d9e7c17f0f8ae7cf73201608a90fe83da40d645853da36be"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/parent_revision_manifest.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\parent_revision_manifest.json",
+      "bytes": 3180,
+      "sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/recovery_runner.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\recovery_runner.py",
+      "bytes": 26109,
+      "sha256": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/runner.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\runner.py",
+      "bytes": 26054,
+      "sha256": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/staged_optimizer.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\staged_optimizer.py",
+      "bytes": 9706,
+      "sha256": "3ff5702912282ae3c0085c43925d7c3f7e1a3d99e0b551fc2eddfc22d7f495d7"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/stress_candidate.py",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\stress_candidate.py",
+      "bytes": 1041,
+      "sha256": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/inputs/structure.extxyz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\inputs\\structure.extxyz",
+      "bytes": 5945,
+      "sha256": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/ionic_evaluations.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\ionic_evaluations.jsonl",
+      "bytes": 62347,
+      "sha256": "80741c10b099125bff9c90987fa629927faa1075700ded2a5c6e36fccf527a06"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/ionic_line_search.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\ionic_line_search.jsonl",
+      "bytes": 1574665,
+      "sha256": "4dcf8c8fff74020707495c4de95a0f85b95e60b2441b2d6701142d1219bdb0eb"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/optimizer_events.jsonl",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\optimizer_events.jsonl",
+      "bytes": 34390,
+      "sha256": "949cde912e0c6230d2c759ecb611f7ba6354049b100dc19c1a4a214f4425a82a"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/optimizer_state.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\optimizer_state.json",
+      "bytes": 1639416,
+      "sha256": "98c072e5b486f706555e716bdbba5fe1d839cfdc479727afc8093e7e97e96276"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/provenance.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\provenance.json",
+      "bytes": 20459,
+      "sha256": "919e2718129fb2b9806c23b3173cf14a93ded2842f12b20e33611915f09c30de"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/relax.log",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\relax.log",
+      "bytes": 2737,
+      "sha256": "8b99676d368e865e8d13b5d4b5b137c3c806238052d731e97832ad85f3a68cca"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/relax.traj",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\relax.traj",
+      "bytes": 208894,
+      "sha256": "c45e3a6a0edca89b01f3c6da3d910396d93508b86b61ba394d32a6075f8c0cba"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/result.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\result.json",
+      "bytes": 8841,
+      "sha256": "11a02622642d1741563457ecf9ae05f51a2ac0cde70c1725ec4383f930ff56c6"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/REMOTE_FILE_MANIFEST.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\REMOTE_FILE_MANIFEST.json",
+      "bytes": 18942,
+      "sha256": "b51759fa726e1a15bffae2334a03a0363cc5de96375cb359841946eb7b37b9b6"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/REMOTE_REFERENCES.json",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\REMOTE_REFERENCES.json",
+      "bytes": 1960,
+      "sha256": "7defcf2d958f98d8e41d3aa6e3c7a658a039219e8d09c815962fcfdebfd84b5c"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/先讀我_2255218結果.txt",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\先讀我_2255218結果.txt",
+      "bytes": 3144,
+      "sha256": "c7e62d6c0407f5d22167c90535f033b0e1fff9d5d12a373cc1b034966d43a46f"
+    },
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/final_forces_eV_A.npy",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\final_forces_eV_A.npy",
+      "bytes": 1952,
+      "sha256": "8dc3cf9d43ea6ef7f4f4969a46dbf03beaeab89e8c7f47b74ea2fbbc05b70b2d"
+    }
+  ],
+  "external_payloads": [
+    {
+      "path": "r13_accepted_evidence_20261019/R13_0V/checkpoint_bundle.npz",
+      "source": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\R13_0V\\checkpoint_bundle.npz",
+      "bytes": 14321612,
+      "sha256": "620046a5f261ea5f62ad50109d1fcf4c58f85835b9f87a524e052219b7380a99",
+      "reason": "Large restart/density payload retained in the original local archive; referenced by hash."
+    }
+  ]
+}

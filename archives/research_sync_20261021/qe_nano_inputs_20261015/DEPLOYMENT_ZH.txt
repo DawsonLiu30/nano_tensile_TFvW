@@ -1,0 +1,31 @@
+目的：完成新 R11/R13/R17 各 0V/1V，共6個 QE axial vc-relax；先用已有 R15 的0V/1V終態做最小k3→k5檢查。
+目前只準備輸入；此資料夾的程式不呼叫 sbatch、不自動取消或重送。
+
+三階段（四個 Slurm job）：
+1. SCF array 6-7%2，29 ranks、192 GiB、72h，R15 k5固定已有final geometry。
+2. gate，1 rank、1 GiB、20分鐘，依賴 afterany:SCFarray。這樣即使上游失敗也能留下明確原因。
+3a. small array 0-3%4，R11/R13，29 ranks、128 GiB、72h，依賴 afterok:gate。
+3b. medium array 4-5%2，R17，29 ranks、192 GiB、72h，同樣 afterok:gate。
+請不要以 afterany 放行3a/3b，亦勿繞過runner的gate_release檔檢查。
+所有計算使用ct56 / mst114175；先查重複campaign與實際資源/額度、test-only，驗證payload hash後由主代理集中提交一次。
+
+必要環境：CAMPAIGN_SNAPSHOT=<本資料夾部署後的絕對路徑>，QE_RUN_ROOT=<新輸出資料夾，不能在Git內>。
+Slurm script使用根目錄的qe_manifest.json，沒有額外campaigns子層。
+譬如：sbatch --partition=ct56 --account=mst114175 --mem=192G --array=6-7%2 --export=ALL,CAMPAIGN_SNAPSHOT=...,QE_RUN_ROOT=... hpc/nano_stage.sbatch
+第二階段用 hpc/nano_gate.sbatch；第三階段仍用 hpc/nano_stage.sbatch，追加不同 --mem、--array、--dependency=afterok:<gateid>。
+Gate建議afterany可保存失敗資訊；其非零退出會讓第三階段保持 DependencyNeverSatisfied，沒有自動改參數或放行。
+
+本機/遠端驗證（無DFT）：
+python scripts/run_nano_gated_20261015.py verify --campaign .
+python tests/test_nano_gated.py
+tests/fixture包含壓縮過且核hash的歷史k3 raw，測試可在本機或遠端標準Python執行。測試中改成k5的fixture僅為驗收反例／模擬，不是新的DFT成果。請在可寫測試副本執行，避免runner_tests.json寫入已凍結snapshot。
+
+Gate同時要求：兩組final SCF<=1e-10 Ry、Fmax norm<=.001 eV/A、最大分量<=.0005 eV/A、|sigma_zz|<=.05 GPa，以及固定舊k3幾何下 (E1−E0)_k5−(E1−E0)_k3 的絕對值<=.005 eV。
+5 meV是這輪決定是否延續k3尺寸掃描的操作容許；不是通用收斂定律，也不能驗證所有半徑或smearing/vacuum/軸週期。
+Gate每次重新核原k3結果、input/PP/source hash和k5原始XML/輸出；下游再核release與上游結果hash。
+兩個k7檔index8/9已備妥，但runner拒絕自動執行；gate未通過時先看殘餘力和能量，再另建審查過的新快照。
+
+保留800eV / PAW-PBE / 原PP / MP .02Ry / 29 ranks / z-only cell BFGS，無放寬力與應力。
+R11/R13以成功R15的128GiB為保守上限；R17介於R15(印出>72.60GB)與R20(>156.45GB、實測約177.96GiB)之間，給192GiB。
+R15 k5增加取樣給192GiB。新尺寸/新k點的實際峰值尚未量到，這些配額不是充分記憶體保證。
+checkpoint保留於scratch，71h內部時間牆比Slurm72h早1h。若續跑要獨立核電子與BFGS記錄；不自動刪scratch、不從零重送。

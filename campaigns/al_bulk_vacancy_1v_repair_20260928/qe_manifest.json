@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "campaign_id": "al_bulk_vacancy_1v_repair_20260928",
+  "protocol": {
+    "calculation": "vc-relax",
+    "xc": "PBE",
+    "pseudopotential_type": "PAW",
+    "cell_dofree": "all",
+    "press_kbar": 0,
+    "press_conv_thr_kbar": 0.5,
+    "force_norm_target_eV_A": 0.001,
+    "ecutwfc_Ry": 58.798915481,
+    "ecutrho_Ry": 470.3913238484,
+    "ecutwfc_eV": 799.9999999993471,
+    "kmesh": [
+      3,
+      3,
+      3
+    ],
+    "koffset": [
+      0,
+      0,
+      0
+    ],
+    "smearing": "mp",
+    "degauss_Ry": 0.02,
+    "nbnd": 200,
+    "conv_thr_Ry": 1e-10,
+    "electron_maxstep": 300,
+    "mixing_beta": 0.2,
+    "mixing_ndim": 4,
+    "nstep": 200,
+    "max_seconds": 169200,
+    "ion_dynamics": "bfgs",
+    "cell_dynamics": "bfgs",
+    "etot_conv_thr_Ry": 1e-06,
+    "forc_conv_thr_Ry_bohr": 1.9446903811488877e-05,
+    "force_component_tolerance_eV_A": 0.0005,
+    "nosym": true,
+    "noinv": true,
+    "tstress": true,
+    "tprnfor": true,
+    "historical_source": "/home/dawson666/qe_divacancy_vcrelax_conv3x3x3_rscan_20260616/pair_scan/pair_01_r2p8566A/pristine_vcrelax/vc-relax.in",
+    "historical_source_sha256": "d22c3c847ba57ac7480ffbf6ebc10cca7ae2b3c0636a4250a9457894bc10c63c",
+    "provenance_note": "From verified last complete September26 1V SCF geometry; new BFGS. Only explicit trust_radius_min=1e-6 bohr and stricter conv_thr=1e-10 Ry differ numerically. No force/stress/energy stopping threshold relaxation.",
+    "convergence_scope": "800 eV is a PPT tested bulk EOS cutoff and the actual historical 108-site vc setting. This does not assert complete defect k-point or cell-size convergence.",
+    "optimizer_repair": {
+      "kind": "bfgs_small_step_with_tighter_scf",
+      "trust_radius_min_bohr": 1e-06,
+      "conv_thr_Ry": 1e-10,
+      "parent_conv_thr_Ry": 1e-08,
+      "rationale": "Allow observed ~2.3e-5 bohr descending steps without repeated minimum-radius reset; tighter initial SCF reduces force/energy inconsistency while retaining all physical parameters and force/stress stopping criteria."
+    }
+  },
+  "geometry_manifest": {
+    "file": "geometry.json",
+    "sha256": "27c05795906390d98dfcfb68725594ccd76d76e4ed33725e254381dd51c8e900"
+  },
+  "pseudo": {
+    "file": "pseudo/Al_PAW_PBE.UPF",
+    "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a"
+  },
+  "case_order": [
+    "1V"
+  ],
+  "cases": {
+    "1V": {
+      "input": "qe/inputs/1V/pw.in",
+      "sha256": "db6ad50de6cb13e6e7de019e671462bfbd00562982eeb26dd6b5a3ac20c65dac",
+      "nat": 107,
+      "q": 1,
+      "structure": "structures/1V/POSCAR",
+      "structure_sha256": "0006efddd8ee8f77cb5b8ac6f2854e5b3a5e383f537f455ce6b4c580a626287d",
+      "removed_parent_ids": [
+        43
+      ],
+      "cell_A": [
+        [
+          12.112720195,
+          -0.0,
+          -4e-09
+        ],
+        [
+          -0.0,
+          12.112719808,
+          -0.0
+        ],
+        [
+          -4e-09,
+          -0.0,
+          12.112720567
+        ]
+      ],
+      "continuation_sources": {
+        "parent_pw_in": {
+          "file": "sources/1V/parent_pw_in.in",
+          "sha256": "2ed73f86d65b3720fec46759ad9343f73a92b1dbbe967fd8b684bfaebf259537"
+        },
+        "parent_pw_out": {
+          "file": "sources/1V/parent_pw_out.out",
+          "sha256": "027d88a14293affb0b629faa06230c729cfa35376794a96334f5b4950c9b77c1"
+        },
+        "parent_attempt": {
+          "file": "sources/1V/parent_attempt.json",
+          "sha256": "6033d679e515435f0afe6b476155183c5de3d08969cb3bab756c463242bdd9dd"
+        },
+        "parent_manifest": {
+          "file": "sources/1V/parent_manifest.json",
+          "sha256": "0f7e617a43eeef144b2b53a404d3f0f36e83e9900d60f21aa799af1d57885eb7"
+        },
+        "parent_source_input": {
+          "file": "sources/1V/parent_source_input.in",
+          "sha256": "a3f4b6131b91dd796682e97fd746f3d404dd72f7fd66f5a047653b31180e8035"
+        },
+        "parent_geometry": {
+          "file": "sources/1V/parent_geometry.json",
+          "sha256": "2ea99cde25f7b42711f9c5bf5def7527a6db7d3868bd69261155fafad3d933b4"
+        },
+        "aligned_step": {
+          "file": "sources/1V/aligned_step.json",
+          "sha256": "3962250f3d29388bc014ba471233af9b76f3dac4239d815a525e1db4a36df258"
+        }
+      },
+      "parent_attempt_name": "20260926T095414Z-fe12f4e8a6d94ea086cd7609d62b6945",
+      "completed_geometry_sha256": "1649f8e92add560900089b2eec56cfdaa212a6f3df5ba9fe0763e252e44c8bd3"
+    }
+  },
+  "continuation_semantics": "Fresh electronic and BFGS state; no checkpoint/history reuse; unchanged physical Hamiltonian, k mesh, smearing and force/stress targets."
+}

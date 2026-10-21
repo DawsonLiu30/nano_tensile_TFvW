@@ -1,0 +1,56 @@
+[
+  {
+    "kind": "parent_result",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/POST_STOP/R13_0V/result.json",
+    "bytes": 12476,
+    "sha256": "23cc9d706ad609edf1e9df4213f10d5a6fd79662e7a2a979ed67e57bb0777e8f"
+  },
+  {
+    "kind": "parent_bundle",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/POST_STOP/R13_0V/checkpoint_bundle.npz",
+    "bytes": 14288770,
+    "sha256": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799"
+  },
+  {
+    "kind": "electronic_gate",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/DFTPY/R13_ELECTRONIC_GATE/gate_pass.json",
+    "bytes": 3113,
+    "sha256": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2"
+  },
+  {
+    "kind": "electronic_revision",
+    "path": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_electronic_20261017_v1/REVISION_MANIFEST.json",
+    "bytes": 3089,
+    "sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223"
+  },
+  {
+    "kind": "original_manifest",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_NAS_UPDATE_20261015/EXECUTION_20261015/03_DFTpy_輸入與程式/MANIFEST.json",
+    "bytes": 4428,
+    "sha256": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674"
+  },
+  {
+    "kind": "parent_checkpoint.json",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/POST_STOP/R13_0V/checkpoint.json",
+    "bytes": 1679,
+    "sha256": "09b0976bfc87c0dc9cbdef8b0037e5c843931df169ab1d15be39d763242996b1"
+  },
+  {
+    "kind": "parent_config.json",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/POST_STOP/R13_0V/config.json",
+    "bytes": 3656,
+    "sha256": "67abc10c1febcba2b653e63bca221a42c9946fb12930bdb3d8a74ee29995e9e1"
+  },
+  {
+    "kind": "parent_provenance.json",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/POST_STOP/R13_0V/provenance.json",
+    "bytes": 19512,
+    "sha256": "560983ddc11efef0c8ed0468362220feea575e3d9bb71f1dbcd7921b543cbbee"
+  },
+  {
+    "kind": "parent_initial.extxyz",
+    "path": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/POST_STOP/R13_0V/initial.extxyz",
+    "bytes": 4944,
+    "sha256": "085b2fe0943d2545a666564e3e76eb54624bfd9776e029097fdbf373d2253bf9"
+  }
+]

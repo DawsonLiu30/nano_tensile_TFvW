@@ -30,3 +30,16 @@
 
 # Scientific snapshots carry SHA-256 identities. Preserve exact bytes on all OSes.
 campaigns/qe_divacancy_20260923/** -text -whitespace
+campaigns/al_bulk_vacancy_relax_20260924/** -text -whitespace
+campaigns/al_bulk_vacancy_vcrelax_20260925/** -text -whitespace
+
+# Preserve every frozen research payload byte-for-byte across Windows and Linux.
+campaigns/** -text -whitespace
+workflows/** -text -whitespace
+archives/** -text -whitespace
+docs/reference/** -text -whitespace
+docs/validated_workflow_evidence/** -text -whitespace
+docs/git_sync_20261021/** -text -whitespace
+# Existing provenance documents and registries also retain their original bytes.
+docs/** -text -whitespace
+AGENTS.md -text -whitespace

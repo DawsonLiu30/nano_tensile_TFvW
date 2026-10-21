@@ -1,0 +1,44 @@
+[
+  {
+    "file": "R15_0V_pw.in.gz",
+    "uncompressed_sha256": "f5e9660c51bbf77731f41d7e1248954318264e592fc25dce2e54e9abef841bae",
+    "compressed_sha256": "277570a62c0a63980b96a3f1032c9a8678674787c82f419a7eb1ae8d1a229830",
+    "source": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/pw.in",
+    "scope": "historical k3 test fixture only; never a new k5 calculation"
+  },
+  {
+    "file": "R15_0V_pw.out.gz",
+    "uncompressed_sha256": "e1c99391a164eb452b89dc7365fa3c52e0ad6a0206d76df537361c2309e2d2a0",
+    "compressed_sha256": "fa0cc31d78b0dff87d3c99ffd3487d6ead2f327c501b14e8df3209599111edd1",
+    "source": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/pw.out",
+    "scope": "historical k3 test fixture only; never a new k5 calculation"
+  },
+  {
+    "file": "R15_0V_data-file-schema.xml.gz",
+    "uncompressed_sha256": "f245ad1e77efefb7e8a339e408cf5dbe80d48a114c7b4c07ae68662628b55716",
+    "compressed_sha256": "2b9082e3fa848f1eb38ad1883663a41a32f77a8f0c59e4b72be2095b138c2e51",
+    "source": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/scratch/nano_R15_0V.save/data-file-schema.xml",
+    "scope": "historical k3 test fixture only; never a new k5 calculation"
+  },
+  {
+    "file": "R15_1V_pw.in.gz",
+    "uncompressed_sha256": "eb43df5bd0012f4a1bb748d8350ae18220908074b9bdf84db88d06e55f1b2816",
+    "compressed_sha256": "7ca4e065a038d9588da375f44695e4f4be5d073f5616851006b574c043c9590a",
+    "source": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/pw.in",
+    "scope": "historical k3 test fixture only; never a new k5 calculation"
+  },
+  {
+    "file": "R15_1V_pw.out.gz",
+    "uncompressed_sha256": "a5ae1d886179e1d2b25430c71af1d537a724716a01d551d38e575873c32f230b",
+    "compressed_sha256": "4ef57ba3b4105a6cb5e7e389fc200ce25a046eb2f3500111645015b0787a16b7",
+    "source": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/pw.out",
+    "scope": "historical k3 test fixture only; never a new k5 calculation"
+  },
+  {
+    "file": "R15_1V_data-file-schema.xml.gz",
+    "uncompressed_sha256": "8d8b468cd84d53a2aa638700a7176490bd16afa189b72e29699fd0dd14207571",
+    "compressed_sha256": "299da74636ec96751cf1a94904ba1e8bd8ca895453eb6e8c8b89a5078ab1a4eb",
+    "source": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/scratch/nano_R15_1V.save/data-file-schema.xml",
+    "scope": "historical k3 test fixture only; never a new k5 calculation"
+  }
+]

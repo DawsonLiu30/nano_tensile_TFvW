@@ -1,0 +1,48 @@
+{
+  "snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1",
+  "payload_hashes": {
+    "run_reviewed_k9.py": "f8c73977d7071397164d126a894b7ce5e97c20714d6997bb63fd57db07866eba",
+    "submit_k9.sbatch": "47ccc990a508a880b4cf0aee01028485fdd264e458149fdaf08e0d3cfb5637b7",
+    "overlay_manifest.json": "fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a",
+    "test_k9_overlay.py": "3406e9a7be1932cd0d1b0cfab724ff1deb6c6373a502682790ed3b516dcef9c3",
+    "prepare_overlay.py": "f648fa19a72fbb86b7640c13a7a0e536ae5837f9b712f2001a56721e5608e65a",
+    "inputs/nano_R15_0V_k9_SCF_20261017/initial.extxyz": "e27cf98bd1ca582fc0162ea7c317b15d32f4ee6959867f40a5297453eef77900",
+    "inputs/nano_R15_0V_k9_SCF_20261017/pw.in": "a8c3bd49a4cd63a8fa43cafab238b098c3f3f0888a3993fabcb4a8e5eaab542e",
+    "inputs/nano_R15_1V_k9_SCF_20261017/initial.extxyz": "16bbd1da1a687d423e2caa5f1bb5ce28b8183b3aa8b9ce16f98154e6040c8d96",
+    "inputs/nano_R15_1V_k9_SCF_20261017/pw.in": "14411adc92d29f1b54516f3a6d15bf764fb34cb81e8c9e3eee07664588d0c73f"
+  },
+  "tests": {
+    "command": [
+      "/home/dawson666/miniconda3/bin/python3",
+      "-B",
+      "test_k9_overlay.py",
+      "--parent-snapshot",
+      "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z",
+      "--root",
+      "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "--k7-entry",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1/run_reviewed_k7.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\"tests_run\": 14, \"failures\": 0, \"errors\": 0, \"success\": true, \"scope\": \"No DFT. Original frozen inspector reused with explicitly synthetic k9 XML fixtures and actual hash/input/stageproof checks.\", \"overlay_manifest_sha256\": \"fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a\"}\n",
+    "stderr": "test01_all_parent_and_stageproof_hashes_verify (__main__.Tests.test01_all_parent_and_stageproof_hashes_verify) ... ok\ntest02_only_two_diagnostics (__main__.Tests.test02_only_two_diagnostics) ... ok\ntest03_exact_input_equivalence_and_structure (__main__.Tests.test03_exact_input_equivalence_and_structure) ... ok\ntest04_rehashed_overlay_physics_mutation_rejected (__main__.Tests.test04_rehashed_overlay_physics_mutation_rejected) ... ok\ntest05_actualmesh9_synthetic_fixture_accepted (__main__.Tests.test05_actualmesh9_synthetic_fixture_accepted) ... ok\ntest06_mesh7_cannot_be_mislabelled9 (__main__.Tests.test06_mesh7_cannot_be_mislabelled9) ... ok\ntest07_prefix_mismatch_rejected (__main__.Tests.test07_prefix_mismatch_rejected) ... ok\ntest08_unconverged_or_nonzero_exit_rejected (__main__.Tests.test08_unconverged_or_nonzero_exit_rejected) ... ok\ntest09_changed_fixed_geometry_rejected (__main__.Tests.test09_changed_fixed_geometry_rejected) ... ok\ntest10_cutoff_mismatch_rejected (__main__.Tests.test10_cutoff_mismatch_rejected) ... ok\ntest11_high_force_is_only_diagnostic (__main__.Tests.test11_high_force_is_only_diagnostic) ... ok\ntest12_allocation_guard (__main__.Tests.test12_allocation_guard) ... ok\ntest13_no_new_size_release (__main__.Tests.test13_no_new_size_release) ... ok\ntest14_parent_guard_still_present (__main__.Tests.test14_parent_guard_still_present) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 6.094s\n\nOK\n"
+  },
+  "verify": {
+    "command": [
+      "/home/dawson666/miniconda3/bin/python3",
+      "-B",
+      "run_reviewed_k9.py",
+      "verify",
+      "--parent-snapshot",
+      "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z",
+      "--root",
+      "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "--k7-entry",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1/run_reviewed_k7.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\n  \"accepted\": true,\n  \"mode\": \"verify_no_calculation\",\n  \"cases\": [\n    \"nano_R15_0V_k9_SCF_20261017\",\n    \"nano_R15_1V_k9_SCF_20261017\"\n  ],\n  \"parent_runner_and_inspector\": \"unchanged\",\n  \"overlay_manifest_sha256\": \"fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a\",\n  \"no_size_cases_released\": true\n}\n",
+    "stderr": ""
+  },
+  "no_DFT_executed": true
+}

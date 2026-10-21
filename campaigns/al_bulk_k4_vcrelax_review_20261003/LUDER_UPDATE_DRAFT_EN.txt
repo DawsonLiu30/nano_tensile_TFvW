@@ -1,0 +1,7 @@
+The QE small-column pristine and single-vacancy endpoints pass the present relaxation acceptance criteria. Under the current protocols, the vacancy formation energies are 0.747 eV (QE) and 0.598 eV (OF pilot). Their axial responses have opposite signs: +0.076% and −0.147%, respectively.
+
+Using atom-matched relaxed-pristine references, the maximum vacancy-associated displacements are 0.134 Å (QE) and 0.145 Å (OF). OF has approximately 27% higher RMS and 28% higher 95th-percentile displacement. This analysis removes the pristine baseline but retains vacancy-induced surface response. It does not overturn the separate bulk displacement measurements or establish a cause for the energy difference.
+
+The old bulk QE pair ordering remains unvalidated: several binding energies change by more than 0.2 eV between k3 and k4 at fixed geometry. Five k4 variable-cell inputs (0V, 1V, 1NN, 2NN and 5NN) are prepared for review, with all existing results preserved. They have not been submitted. Any subsequent k5 checks must use the newly accepted k4 geometries.
+
+Both the nanocolumn sampling and the OF stress pipeline still require validation. The methods also use different exchange-correlation functionals and pseudopotentials, and their topology-matched columns have slightly different physical radii. The present differences should therefore be reported as observations, without assigning a mechanism yet.

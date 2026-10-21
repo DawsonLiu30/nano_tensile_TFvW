@@ -1,0 +1,14 @@
+R13 axial line-search candidate, 2026-10-18
+
+Restart ONLY the intentionally interrupted attempt_003_TNsmallstep completed step483 coherent bundle. Use ASE BFGSLineSearch on the original zero-pressure FrechetCellFilter with mask=[0,0,1,0,0,0], exp_cell_factor=76. Restore actual axial cell freedom; transverse cell and tilts remain fixed. Existing base runner is byte-identical. This is a short unvalidated ionic-method trial, not a production-success claim.
+
+Keep LDA/local, TF=.9/vW=.1, integer grid140x140x96, TN1e-11 Ha/atom, ncheck3, one HEG retry only after TN warm native flag1. Every accepted density must be finite, strictly positive, charge228, same grid, and match the ACTUAL calculator cell for that call. DFTpy run_config creates a new grid when the cell changes; its native ConfigParser copies density samples with field2distrib and renormalizes charge. No custom density interpolation or changed package files. Trace compares external calculator geometry before/after each electronic solve, plus fixed transverse/PBC/minperiod>=10A.
+
+ASE maxstep=.005 is the generalized-coordinate line-search trial-increment parameter. It does not guarantee an entire accepted outer step moves every atom by <=.005A. Record actual atomic displacements, generalized displacements and deltaLz. Only original task CONVERGENCE is accepted; WARNING/ERROR/FG(no_update) stops explicitly. Log each ionic trial energy/gradient/coordinates and line-search task. Only accepted outer states produce checkpoint bundles; mid-trial failures preserve the previous completed geometry+density.
+
+Bounded trial: ctest2h/24GiB/1CPU, process6600s, <=60 ionic steps and <=120 logical electronic calls (each at most2 native attempts). Independent stops for repeated2/4-step cycles after3 periods with same-phase coordinate differences<=1e-4A and energy differences<=1e-6eV and <5% force improvement. Cycle detection runs after the coherent checkpoint callback. No queued continuation, monitor, automatic repeated submissions or weaker force gates.
+
+Final acceptance: atomic and filter force <=.001eV/A, abs sigma_zz<=.05GPa, full PBC, fixed transverse cell, shortest actual periodic translation>=10A, all logical densities supplying results accepted. Actual mode is written as atoms_and_axial_zz_FrechetCellFilter_zero_pressure in running/final provenance and result. Physical electron failures remain in separate trace; logical acceptance is not claimed as all native attempts converged.
+
+Entry: recover_axial.py verify|execute --original-snapshot ORIGINAL --electronic-snapshot PRIOR_TN --runroot ORIGINAL_RUNROOT --parent-attempt ORIGINAL_RUNROOT/R13_0V/attempt_003_TNsmallstep --attempt attempt_004_axial_linesearch --max-runtime-s6600.
+Unique attempt directory, pinned source/gate/result/checkpoint hashes, same case lock, refusal of any already-accepted endpoint. trial.sbatch only prepares execution, never submits itself. Root handles a single reviewed submission and receipt.

@@ -1,0 +1,752 @@
+{
+  "updated": "2026-10-21",
+  "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_smallstep_20261017_v1\\recover_nano.py",
+  "manifest": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_smallstep_20261017_v1\\REVISION_MANIFEST.json",
+  "scope": "Case-identity-guarded R13 continuation; reuse the preserved scientific core and finishing module. New case manifests require review, not rewriting the core.",
+  "evidence": {
+    "revision": "al_nano_smallstep_20261017_v1",
+    "status": "finished_failed_electronic_line_search",
+    "job_id": "2252172",
+    "submission_utc": "2026-10-17T06:35:44.692083+00:00",
+    "last_queue_snapshot": {
+      "command": [
+        "squeue",
+        "-h",
+        "-j",
+        "2252172",
+        "-o",
+        "%i|%T|%M|%l|%R"
+      ],
+      "returncode": 0,
+      "stdout": "2252172|PENDING|0:00|1-00:00:00|(None)\n",
+      "stderr": ""
+    },
+    "case": "R13_0V",
+    "attempt": "attempt_002_smallstep",
+    "method": "fixed-cell atomic LBFGS finish after parent axial relaxation",
+    "maxstep_A": 0.01,
+    "force_target_eV_A": 0.001,
+    "filter_force_target_eV_A": 0.001,
+    "sigma_zz_target_GPa": 0.05,
+    "old_parent_attempt": "attempt_001",
+    "source_bundle_sha256": "7fb7e3a9b8419a10b84314a234448dc2cf1d175cec289fde79242cb9a4971254",
+    "revision_manifest_sha256": "fff9270f92d11dbdd820150675196eb14ed75dc9c6eb5890febeb8ec0e05c0e1",
+    "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_smallstep_20261017_v1",
+    "remote_runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+    "local_workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_smallstep_20261017_v1",
+    "local_archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RECOVERY_R13_SMALLSTEP",
+    "FIRE_submitted": false,
+    "program_tests": {
+      "local": 16,
+      "remote_ASE_3_25": 16,
+      "passed": true,
+      "is_DFT_convergence_evidence": false
+    },
+    "physical_settings_unchanged": true,
+    "automatic_monitoring": false,
+    "latest_result": {
+      "job_id": "2252172",
+      "slurm_status": "FAILED",
+      "accepted": false,
+      "cause": "Electronic minimization line-search failed at electronic evaluation 102; no timeout or OOM.",
+      "last_completed_ionic_step": 100,
+      "next_proposed_ionic_step": 101,
+      "last_checkpoint_fmax_eV_A": 0.0039031327538669143,
+      "last_checkpoint_sigma_zz_GPa": -0.006843516193682064,
+      "minimum_completed_fmax_eV_A": 0.001865808364269558,
+      "minimum_force_step": 14,
+      "checkpoint_bundle_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+      "Ef_pair_available": false,
+      "physical_validation": "not accepted; previous four successful OF pairs unchanged"
+    }
+  },
+  "historical_method_evidence": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\ANALYSIS\\DFTPY\\historical_ionic_optimizer_audit.json",
+  "qe_k7_reviewed_entrypoint": {
+    "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R15_k7_review_20261017_v1\\run_reviewed_k7.py",
+    "evidence": {
+      "revision": "al_nano_R15_k7_review_20261017_v1",
+      "status": "finished_accepted_scf_diagnostics_sampling_not_converged",
+      "job_id": "2252206",
+      "array_indices": [
+        8,
+        9
+      ],
+      "submission_utc": "2026-10-17T06:45:24.467934+00:00",
+      "last_queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2252206",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2252206_[8-9%2]|PENDING|0:00|3-00:00:00|(None)\n",
+        "stderr": ""
+      },
+      "scope": "R15 0V/1V k7 fixed-geometry SCF diagnostics only; not relaxation or convergence certification",
+      "parent_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z",
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1",
+      "remote_runroot": "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "local_workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R15_k7_review_20261017_v1",
+      "local_archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\QE_R15_K7_REVIEW",
+      "parent_52_files_unchanged": true,
+      "review_manifest_sha256": "aded6060f90242d7450054c56600c6e9973a0f6e67722144c02771f010c38662",
+      "program_tests": {
+        "local": 12,
+        "remote": 12,
+        "passed": true,
+        "is_physical_validation": false
+      },
+      "six_new_size_relaxations_released": false,
+      "resources_per_task": {
+        "partition": "ct56",
+        "ranks": 29,
+        "memory_GiB": 256,
+        "time_hours": 72
+      },
+      "automatic_monitoring": false,
+      "latest_result": {
+        "job_ids": [
+          "2252206_8",
+          "2252206_9"
+        ],
+        "slurm_status": "COMPLETED",
+        "accepted_scf_diagnostics": true,
+        "accepted_relaxed_geometries": false,
+        "fmax_eV_A": [
+          0.034336575745508406,
+          0.03599405501814174
+        ],
+        "sigma_zz_GPa": [
+          -0.012108041653613436,
+          -0.05892631075731143
+        ],
+        "final_scf_accuracy_Ry": [
+          4.892213378896446e-11,
+          3.847484678381638e-11
+        ],
+        "release_new_sizes": false
+      }
+    }
+  },
+  "qe_k9_reviewed_entrypoint": {
+    "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R15_k9_review_20261017_v1\\run_reviewed_k9.py",
+    "evidence": {
+      "status": "completed_scf_diagnostics_energy_pair_check_passed_force_sampling_pending",
+      "job_id": "2253295",
+      "indices": [
+        0,
+        1
+      ],
+      "submission_utc": "2026-10-17T16:00:17.772064+00:00",
+      "scope": "R15 0V/1V fixed-geometry k9 SCF; sampling check only, not relaxed endpoints",
+      "last_queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2253295",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2253295_[0-1%2]|PENDING|0:00|3-00:00:00|(None)\n",
+        "stderr": ""
+      },
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1",
+      "remote_runroot": "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "manifest_sha256": "fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a",
+      "new_size_release": false,
+      "program_checks": {
+        "local_pass": 14,
+        "remote_pass": 14,
+        "physical_validation": "pending"
+      },
+      "receipt": "QE_R15_K9_REVIEW/submission_receipt.json",
+      "result_audit": {
+        "job_ids": [
+          "2253295_0",
+          "2253295_1"
+        ],
+        "slurm_state": "COMPLETED",
+        "accepted_scf_diagnostics": true,
+        "accepted_relaxed_endpoints": false,
+        "energy_eV": [
+          -51563.225307869354,
+          -51024.97445348419
+        ],
+        "Fmax_eV_A": [
+          0.046689341600464694,
+          0.03382423752612098
+        ],
+        "sigma_zz_GPa": [
+          -0.05553008351076801,
+          -0.03638700102318318
+        ],
+        "k7_to_k9_paired_energy_change_meV": -1.215520707773976,
+        "paired_scalar_5meV_check": true,
+        "maximum_force_vector_changes_eV_A": [
+          0.018339244,
+          0.005628653
+        ],
+        "release_new_sizes": false,
+        "next_minimum": "Two same-geometry k11 SCFs to assess remaining force/energy sensitivity, then choose representative R15 re-relaxation sampling; not submitted in this audit"
+      }
+    }
+  },
+  "r13_electronic_recovery": {
+    "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R13_electronic_20261017_v1\\recover_electronic.py",
+    "evidence": {
+      "status": "gate_passed_relaxation_intentionally_interrupted_stagnation",
+      "case": "R13_0V",
+      "diagnostic_job_id": "2253353",
+      "continuation_job_id": "2253354",
+      "revision_manifest_sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1",
+      "remote_runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+      "parent_completed_ionic_step": 100,
+      "parent_bundle_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+      "electronic_method": "TN",
+      "electronic_econv_Ha_per_atom": 1e-11,
+      "ionic_method": "fixed-cell atomic LBFGS",
+      "ionic_maxstep_A": 0.01,
+      "acceptance": {
+        "fmax_eV_A": 0.001,
+        "filter_fmax_eV_A": 0.001,
+        "abs_sigma_zz_GPa": 0.05
+      },
+      "diagnostic_limits": {
+        "logical_SCF": 8,
+        "native_attempts": 14,
+        "time_s": 6600
+      },
+      "production_limits": {
+        "time_s": 79200,
+        "ionic_steps": 1000
+      },
+      "program_checks": {
+        "local_pass": 25,
+        "remote_pass": 25,
+        "independent_review_pass": 16,
+        "physical_validation": "pending"
+      },
+      "new_attempt": "attempt_003_TNsmallstep",
+      "diagnostic_directory": "diagnostics_003_electronic",
+      "scientific_release": "Required native electronic convergence, independent HEG repeat and two force FD steps; afterok plus runtime content/hash verification",
+      "submitted_receipt": "RECOVERY_R13_ELECTRONIC/submission_receipt.json",
+      "submission_utc": "2026-10-17T16:14:01.920515+00:00",
+      "last_queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2253353,2253354",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2253354|PENDING|0:00|1-00:00:00|(Dependency)\n2253353|PENDING|0:00|2:00:00|(None)\n",
+        "stderr": ""
+      },
+      "dependency": "afterok:2253353",
+      "gate": {
+        "job_id": "2253353",
+        "status": "passed",
+        "elapsed_s": 745.2539590708911,
+        "maximum_force_FD_error_eV_A": 8.821427056981794e-07,
+        "repeat_force_difference_eV_A": 1.8158673045072723e-05,
+        "scope": "Checkpoint-specific self-consistent force spot gate; not a global surface/functional validation",
+        "physical_attempts": {
+          "logical_calls": 8,
+          "physical_attempts": 10,
+          "failed_physical_attempts": 3,
+          "HEG_retries": 2,
+          "all_physical_attempts_converged": false,
+          "retry_policy": "Only TN warm native flag=1 permits one HEG attempt; no other failure is retried."
+        }
+      },
+      "relaxation": {
+        "job_id": "2253354",
+        "status": "intentionally_interrupted_after_ionic_stagnation",
+        "slurm_state": "FAILED",
+        "termination_cause": "Deliberate SIGTERM caught by runner; not spontaneous electronic failure, OOM or time limit",
+        "accepted": false,
+        "last_completed_ionic_step": 483,
+        "interrupted_proposed_step": 484,
+        "last_fmax_eV_A": 0.0036242870975847336,
+        "last_filter_fmax_eV_A": 0.010078513948577809,
+        "last_sigma_zz_GPa": -0.022252404431343596,
+        "coherent_bundle_sha256": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799",
+        "next_minimum": "Reuse TN electronic method and coherent checkpoint; restore axial freedom and test a bounded ionic method with stagnation detection. No new optimizer is validated by this audit."
+      }
+    }
+  },
+  "r13_axial_linesearch_reviewed_entrypoint": {
+    "entry": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_linesearch_20261018_v1/recover_axial.py",
+    "manifest": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_linesearch_20261018_v1/REVISION_MANIFEST.json",
+    "evidence": {
+      "revision": "R13_axial_BFGSLineSearch_20261018_v1",
+      "job_id": "2254539",
+      "status": "bounded_trial_finished_budget_exhausted_not_accepted",
+      "submission_utc": "2026-10-18T05:15:56.446020+00:00",
+      "submission_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2254539",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2254539|PENDING|0:00|2:00:00|(None)\n",
+        "stderr": ""
+      },
+      "optimizer": "BFGSLineSearch",
+      "cell_freedom": "atoms and z-only FrechetCellFilter; x/y fixed",
+      "electronic_optimizer": "TN",
+      "electronic_econv_Ha_per_atom": 1e-11,
+      "force_target_eV_A": 0.001,
+      "filter_force_target_eV_A": 0.001,
+      "sigma_zz_target_GPa": 0.05,
+      "maximum_ionic_steps": 60,
+      "maximum_logical_scf": 120,
+      "internal_runtime_limit_s": 6600,
+      "slurm_resources": {
+        "partition": "ctest",
+        "walltime": "02:00:00",
+        "requested_memory_GiB": 24,
+        "tasks": 1
+      },
+      "parent_completed_ionic_step": 483,
+      "parent_checkpoint_sha256": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799",
+      "revision_manifest_sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+      "submission_receipt_sha256": "aa12dd65eb338fde074fbc32a6b5916973ffed9dfde7054d7184de8b4c5ab818",
+      "program_tests": {
+        "local_passed": 7,
+        "remote_passed": 7,
+        "physical_success": false
+      },
+      "physical_accepted": false,
+      "automatic_continuation": false,
+      "automatic_monitoring": false,
+      "local_workflow": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_linesearch_20261018_v1",
+      "local_archive": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/RECOVERY_R13_AXIAL_LINESEARCH",
+      "scope": "Single bounded R13 trial; no new accepted endpoint or formation energy; original scientific core and physical model retained.",
+      "initial_run_observation": {
+        "utc": "2026-10-18T05:16:28.951071+00:00",
+        "slurm_state": "RUNNING",
+        "node": "cpn3001",
+        "electronic_iteration_seen": 1,
+        "scope": "One startup check; no ionic convergence assessment",
+        "non_atomic_probe_note": "Attempt directory was created while probe was running; subsequent log read confirms electronic iteration."
+      },
+      "result": {
+        "job_id": "2254539",
+        "accepted": false,
+        "stop_reason": "Internal 6600 second trial limit; no OOM or spontaneous electronic failure",
+        "completed_ionic_steps": 12,
+        "completed_frames": 13,
+        "completed_electronic_calls": 111,
+        "budget_interrupted_electronic_call": 112,
+        "initial": {
+          "energy_eV": -4760.081272844127,
+          "fmax_eV_A": 0.003625855631559897,
+          "filter_fmax_eV_A": 0.010078475416518035,
+          "cell_A": [
+            [
+              20.263429469800002,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              20.263429469800002,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              13.431287361524449
+            ]
+          ],
+          "stress_GPa": [
+            [
+              0.006940510098696243,
+              6.310454515344164e-07,
+              7.910353805141724e-06
+            ],
+            [
+              6.310454515344164e-07,
+              0.0009738014068092309,
+              -0.0018392979853884255
+            ],
+            [
+              7.910353805141724e-06,
+              -0.0018392979853884255,
+              -0.02225231935620434
+            ]
+          ]
+        },
+        "last_completed": {
+          "ionic_step": 12,
+          "energy_eV": -4760.08441323968,
+          "fmax_eV_A": 0.01317624208885212,
+          "filter_fmax_eV_A": 0.013240575207100935,
+          "cell_A": [
+            [
+              20.263429469800002,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              20.263429469800002,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              13.497656993075676
+            ]
+          ],
+          "stress_GPa": [
+            [
+              -0.0008588799234382516,
+              -1.0867654186936324e-05,
+              -1.0302375430852045e-05
+            ],
+            [
+              -1.0867654186936324e-05,
+              0.02020919753953262,
+              -0.011037093032237107
+            ],
+            [
+              -1.0302375430852045e-05,
+              -0.011037093032237107,
+              0.008534206375717139
+            ]
+          ]
+        },
+        "energy_change_meV": -3.1403955526911886,
+        "length_change_A": 0.06636963155122722,
+        "length_change_percent": 0.4941419967035454,
+        "minimum_completed_fmax_eV_A": 0.0032285914116204476,
+        "minimum_completed_filter_fmax_eV_A": 0.00777486308975781,
+        "electron_count": 227.9999999999999,
+        "density_min": 9.651238419087333e-27,
+        "minimum_pair_distance_A": 2.662155972113311,
+        "transverse_atom_center_gaps_A": [
+          11.855888920649349,
+          10.852855972167216
+        ],
+        "checkpoint_bundle_sha256": "d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f",
+        "last_evaluated_line_search_trial": {
+          "ionic_step": 12,
+          "energy_eV": -4760.085230121756,
+          "Lz_A": 13.518985917257885,
+          "scope": "An evaluated trial, not a completed accepted ionic step; no coherent density bundle was saved for this point"
+        },
+        "canonical_OF_pairs": 4,
+        "canonical_OF_accepted_endpoints": 9,
+        "R13_formation_energy_available": false,
+        "case": "R13_0V",
+        "n_atoms": 76,
+        "vacancy_count": 0,
+        "status": "bounded_trial_finished_budget_exhausted_not_accepted",
+        "slurm_state": "FAILED",
+        "slurm_exit_code": "1:0",
+        "finished_utc": "2026-10-18T07:06:10.174006+00:00",
+        "finished_Taiwan": "2026-10-18T15:06:10+08:00",
+        "elapsed_s": 6600.30433353968,
+        "slurm_MaxRSS_KiB": 19604080,
+        "slurm_MaxRSS_GiB": 18.695907592773438,
+        "requested_memory_GiB": 24,
+        "remote_hash_verified_files": 35,
+        "data_checks": {
+          "passed": 158,
+          "total": 158
+        },
+        "independent_path_consistency": {
+          "completed_native_linesearch_convergence": 12,
+          "completed_steps_Wolfe_checks_passed": 12,
+          "max_trapezoid_energy_residual_meV": 0.0008458228416248839,
+          "scope": "Existing mixed atomic/axial path consistency; not a new finite-difference or global stress validation."
+        },
+        "latest_restart_local": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/R13_AXIAL_TRIAL_RESULTS/R13_0V/checkpoint_bundle.npz",
+        "checkpoint_scope": "Last completed ionic step 12; later line-search trial evaluations are not coherent restart checkpoints.",
+        "raw_scope_label_note": "The immutable result scientific_scope text is generic and mentions a vacancy; actual case/n_atoms/vacancy_count establish a pristine 0V column.",
+        "physical_endpoint_validated": false,
+        "next_action": "Prepare one bounded same-method continuation; submission is recorded separately only after an actual receipt."
+      },
+      "actual_trial_completed": true,
+      "validated_physical_endpoint": false
+    }
+  },
+  "r13_axial_continuation_reviewed_entrypoint": {
+    "entry": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_continue_20261018_v2/recover_axial.py",
+    "manifest": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_continue_20261018_v2/REVISION_MANIFEST.json",
+    "evidence": {
+      "job_id": "2255218",
+      "status": "completed_independently_accepted_R13_0V",
+      "revision": "R13_axial_BFGSLineSearch_continue_20261018_v2",
+      "revision_manifest_sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+      "submission_receipt_utc": "2026-10-18T10:19:52.002122+00:00",
+      "scheduler_submit_Taiwan": "2026-10-18T18:19:55+08:00",
+      "submission_receipt_sha256": "f965d186efd8730d4bbf7de0f8ab97c3c87192d32a9da34d10f2c6a1026dd611",
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2",
+      "remote_runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+      "attempt": "attempt_005_axial_linesearch_continue",
+      "queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2255218",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2255218|PENDING|0:00|6:00:00|(None)\n",
+        "stderr": ""
+      },
+      "slurm_resources": {
+        "partition": "ct56",
+        "walltime": "06:00:00",
+        "requested_memory_GiB": 24,
+        "requested_tasks": 1,
+        "requested_cpus": 1,
+        "scontrol_NumCPUs": 2,
+        "scontrol_CPUsPerTask": 2,
+        "AllocTRES_at_submission": null,
+        "note": "Receipt is PENDING. Request is cpu=1; scontrol records NumCPUs=2. No running allocation inferred."
+      },
+      "maximum_internal_time_s": 21000,
+      "maximum_ionic_steps": 120,
+      "maximum_logical_scf": 360,
+      "optimizer": "ASE BFGSLineSearch with z-only FrechetCellFilter",
+      "trial_increment_generalized_A": 0.02,
+      "trial_increment_note": "Trial-search increment parameter, not a full outer ionic-step displacement cap.",
+      "optimizer_state": "Fresh inverse Hessian; parent Hessian not loaded or reconstructed. New state saved after each coherent checkpoint.",
+      "native_line_search_required": "CONVERGENCE; WARNING/no_update fallback not accepted",
+      "parent_job": "2254539",
+      "parent_complete_ionic_step": 12,
+      "parent_bundle_sha256": "d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f",
+      "physical_model": {
+        "xc": "LDA/local",
+        "TF": 0.9,
+        "vW": 0.1,
+        "grid": [
+          140,
+          140,
+          96
+        ],
+        "electron_count": 228,
+        "pbc": [
+          true,
+          true,
+          true
+        ],
+        "cell_mask": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "electronic_method": "TN",
+      "electronic_econv_Ha_per_atom": 1e-11,
+      "electronic_ncheck": 3,
+      "acceptance": {
+        "fmax_eV_A": 0.001,
+        "filter_fmax_eV_A": 0.001,
+        "abs_sigma_zz_GPa": 0.05
+      },
+      "program_tests": {
+        "local_passed": 11,
+        "remote_passed": 11,
+        "api_smoke_passed": true,
+        "actual_checkpoint_preflight_passed": true
+      },
+      "physical_endpoint_accepted": true,
+      "automatic_monitoring": false,
+      "automatic_followup": false,
+      "local_workflow": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_continue_20261018_v2",
+      "local_archive": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/RECOVERY_R13_AXIAL_CONTINUATION",
+      "superseded_preflight": {
+        "version": "v1",
+        "status": "test_only_rejected_CRLF",
+        "job_submitted": false,
+        "evidence": "REJECTED_V1/source/last_submission_transport.json",
+        "v2_change": "LF scheduler line endings and snapshot/package naming; scientific source identical."
+      },
+      "scope": "Successful R13_0V case using saved coherent checkpoint, z-only BFGSLineSearch and electronic TN. Reuse the frozen scientific core with a reviewed new case manifest; not a guarantee for all columns or a certified global minimum.",
+      "latest_result": {
+        "updated_utc": "2026-10-18T16:53:00.845331+00:00",
+        "job_id": "2255218",
+        "case": "R13_0V",
+        "attempt": "attempt_005_axial_linesearch_continue",
+        "status": "accepted_numerical_endpoint_for_this_case",
+        "slurm_state": "COMPLETED",
+        "finished_Taiwan": "2026-10-18T22:21:11+08:00",
+        "elapsed_slurm": "04:01:12",
+        "physical_endpoint_accepted": true,
+        "scientific_scope": "Strict numerical endpoint acceptance under the recorded model; not evidence of retained FCC morphology, k/grid/vacuum convergence, or a global minimum",
+        "result_archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS",
+        "result_sha256": "11a02622642d1741563457ecf9ae05f51a2ac0cde70c1725ec4383f930ff56c6",
+        "workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R13_axial_continue_20261018_v2",
+        "revision_manifest_sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+        "checkpoint_bundle_sha256": "620046a5f261ea5f62ad50109d1fcf4c58f85835b9f87a524e052219b7380a99",
+        "optimizer_state_sha256": "98c072e5b486f706555e716bdbba5fe1d839cfdc479727afc8093e7e97e96276",
+        "energy_eV": -4761.035407359499,
+        "atomic_fmax_eV_A": 0.0009765340429975084,
+        "filter_fmax_eV_A": 0.00097667952148547,
+        "sigma_zz_GPa": 4.08520859265529e-05,
+        "Lz_A": 13.73993716301678,
+        "ionic_steps": 46,
+        "electronic_calls": 185,
+        "electronic_attempt_summary": {
+          "logical_calls": 185,
+          "physical_attempts": 185,
+          "failed_physical_attempts": 0,
+          "HEG_retries": 0,
+          "all_physical_attempts_converged": true,
+          "retry_policy": "Only TN warm native flag=1 permits one HEG attempt; no other failure is retried."
+        },
+        "acceptance": {
+          "atomic_force_eV_A": 0.001,
+          "filter_force_eV_A": 0.001,
+          "abs_sigma_zz_GPa": 0.05
+        },
+        "saved_data_QA": {
+          "passed": 596,
+          "total": 596,
+          "archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261019\\R13_AXIAL_CONTINUATION_RESULTS\\ANALYSIS\\INDEPENDENT_R13"
+        },
+        "reuse_scope": "Successful R13_0V case using saved coherent checkpoint, z-only BFGSLineSearch and electronic TN. Reuse the frozen scientific core with a reviewed new case manifest; not a guarantee for all columns or a certified global minimum.",
+        "frozen_source_policy": "Original manifests and snapshot contents remain unchanged; this evidence record supplies the later acceptance status.",
+        "electronic_method": "TN; econv=1e-11 Ha/atom; ncheck=3",
+        "ionic_method": "ASE BFGSLineSearch; z-only FrechetCellFilter; maxstep trial increment 0.02 (not an outer-step displacement cap)",
+        "fresh_Hessian_at_continuation_start": true,
+        "paired_optimizer_checkpoint_saved": true,
+        "R13_pair_review": {
+          "formation_energy_eV": 0.616366216319,
+          "mu_Al_OF_eV": -62.94385754462274,
+          "nonaffine_pair_rms_A": 0.029941559741141578,
+          "nonaffine_pair_max_A": 0.1053177080734351,
+          "vacancy_parent_site_id": 33,
+          "nearest_parent_empty_count": 1,
+          "scope": "The two endpoints support similar rearranged structures; the missing parent site remains empty. Both pass the force/stress endpoint gates. This is not a global-minimum or complete numerical-transfer certification.",
+          "electronic_precision_note": "Same physical functional, pseudopotential and grid; new 0V uses TN/econv1e-11 while original accepted 1V uses LBFGS/econv1e-9. Formation-energy electronic-precision sensitivity is not separately completed."
+        }
+      },
+      "acceptance_evidence_file": "C:\\OFDFT\\nano_tensile_TFvW\\docs\\validated_workflow_evidence\\R13_axial_continue_2255218_20261019.json"
+    }
+  },
+  "latest_accepted_workflow_key": "r13_axial_continuation_reviewed_entrypoint",
+  "reuse_guidance": "For compatible atomic-plus-axial recovery, consult the accepted R13 BFGSLineSearch/TN case and its HOW_TO_REUSE_R13_ZH.txt first. Existing top-level smallstep entry is a historical failed case; do not treat it as the current preferred successful method.",
+  "qe_bulk_reference_resume_k5_20261021": {
+    "date": "2026-10-21",
+    "status": "superseded_restart_atomic_guess_warning; v1 three resumes stopped; reference k5 retained",
+    "source_manifest_sha256": "776bd036ddd43814d604debd50a90ae80bb98f63ed25f41b38a646318774e72a",
+    "source_files": 22,
+    "parent_checkpoint_files_verified": 357,
+    "program_tests": {
+      "restart_adapter": 12,
+      "k5_diagnostics": 11,
+      "passed": true,
+      "is_new_DFT_evidence": false
+    },
+    "reused_frozen_scientific_files": [
+      "run_bulk_k4_validation_20261015.py",
+      "run_bulk_vacancy_qe_vcrelax_20260925.py",
+      "run_luder_qe_20260930.py",
+      "run_nano_qe_memory_recovery_20261001.py",
+      "run_nano_qe_restart_20261004.py"
+    ],
+    "changed_parts": "Case-bound first-SCF restart validation and k5 input/diagnostic orchestration; frozen scientific parsers unchanged.",
+    "force_norm_eV_A": 0.001,
+    "force_component_eV_A": 0.0005,
+    "full_stress_GPa": 0.05,
+    "jobs": [
+      {
+        "label": "Resume 1NN/2NN/5NN k4, parallel3",
+        "job_id": "2285948"
+      },
+      {
+        "label": "Matched 0V/1V k5 diagnostics",
+        "job_id": "2285949"
+      },
+      {
+        "label": "1NN k5 after accepted k4",
+        "job_id": "2285950"
+      },
+      {
+        "label": "2NN k5 after accepted k4",
+        "job_id": "2285951"
+      },
+      {
+        "label": "5NN k5 after accepted k4",
+        "job_id": "2285952"
+      },
+      {
+        "label": "One-off matched energy/force/stress evaluation; no resubmission",
+        "job_id": "2285953"
+      }
+    ],
+    "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_bulk_reference_resume_k5_20261021_v1",
+    "run_root": "/work/dawson666/qe_cases/qe_runs/AL_BULK_REFERENCE_RESUME_K5_20261021",
+    "local_workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_bulk_reference_resume_k5_20261021_v1",
+    "archive": "C:\\OFDFT\\NAS_SHARE\\QE_REFERENCE_EXECUTION_20261021",
+    "monitoring": false,
+    "new_accepted_endpoints": 0
+  },
+  "qe_bulk_reference_resume_k5_20261021_v2": {
+    "status": "startup_verified_actual_saved_density_and_wavefunction_read_SCF_iteration16; physical_endpoints_pending",
+    "source_manifest_sha256": "d42f9fff5f3542f91873f3a52426864f3e8bfd8a9f0e7831d477fc1c57a6f482",
+    "local_workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_bulk_reference_resume_k5_20261021_v2",
+    "archive": "C:\\OFDFT\\NAS_SHARE\\QE_REFERENCE_EXECUTION_20261021",
+    "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_bulk_reference_resume_k5_20261021_v2",
+    "run_root": "/work/dawson666/qe_cases/qe_runs/AL_BULK_REFERENCE_RESUME_K5_20261021_V2",
+    "jobs": [
+      {
+        "label": "Resume original checkpoint with startingpot/wfc=file, parallel3",
+        "job_id": "2286031"
+      },
+      {
+        "label": "1NN k5 after accepted k4",
+        "job_id": "2286032"
+      },
+      {
+        "label": "2NN k5 after accepted k4",
+        "job_id": "2286033"
+      },
+      {
+        "label": "5NN k5 after accepted k4",
+        "job_id": "2286034"
+      },
+      {
+        "label": "One-off matched energy/force/stress evaluation; no resubmission",
+        "job_id": "2286038"
+      }
+    ],
+    "retained_reference_diagnostics": "2285949_0/1",
+    "force_norm_eV_A": 0.001,
+    "program_checks": 27,
+    "new_accepted_relaxed_endpoints": 0,
+    "restart_requirements": [
+      "same 29 MPI ranks/decomposition",
+      "same binary and physics",
+      "original119 files/case with hashes",
+      "restart_mode restart + startingpot file + startingwfc file",
+      "actual density/wfc file read and no fallback"
+    ],
+    "monitoring": false,
+    "startup_evidence": "C:\\OFDFT\\NAS_SHARE\\QE_REFERENCE_EXECUTION_20261021\\05_V2_SUBMISSION_AND_STARTUP\\verified_startup.json",
+    "startup_utc": "2026-10-21T13:33:44.267653+00:00"
+  }
+}

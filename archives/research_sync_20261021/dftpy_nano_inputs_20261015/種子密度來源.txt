@@ -1,0 +1,3 @@
+四個 final_density.npz 已在既有 Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT，增量包不重複保存。
+EXTERNAL_SEEDS.json 逐檔列出來源、SHA-256 與應還原的相對位置。MANIFEST.json 是包含這四檔的完整遠端執行快照；本機增量包須還原四檔後才可重現完整驗證。
+遠端提交前四檔已由原始計算位置複製並驗證。

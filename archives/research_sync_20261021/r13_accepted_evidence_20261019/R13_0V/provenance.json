@@ -1,0 +1,911 @@
+{
+  "status": "execution_inputs_frozen",
+  "case": "R13_0V",
+  "n_atoms": 76,
+  "vacancy_count": 0,
+  "expected_electrons": 228,
+  "protocol": {
+    "schema_version": 1,
+    "campaign_id": "al_nano_five_radii_corrected_20261015",
+    "xc": "LDA",
+    "pseudo": {
+      "file": "pseudo/al.lda.recpot",
+      "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+    },
+    "grid": [
+      140,
+      140,
+      96
+    ],
+    "lambda_tf": 0.9,
+    "mu_vw": 0.1,
+    "electronic": {
+      "method": "TN",
+      "econv_Ha_per_atom": 1e-11,
+      "ncheck": 3,
+      "maxiter": 1000,
+      "maxls": 50,
+      "maxfun": 100,
+      "densityini": "heg",
+      "reuse": true
+    },
+    "ionic": {
+      "optimizer": "BFGSLineSearch_axial",
+      "fmax_eV_A": 0.001,
+      "filter_fmax_eV_A": 0.001,
+      "max_steps": 120,
+      "maxstep_A": 0.02,
+      "optimizer_policy": {
+        "revision": "R13_axial_BFGSLineSearch_continue_20261018_v1",
+        "optimizer": "BFGSLineSearch",
+        "maxstep_generalized_A": 0.02,
+        "cell_mask": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        "exp_cell_factor": "n_atoms",
+        "c1": 0.23,
+        "c2": 0.46,
+        "alpha": 10.0,
+        "stpmax": 50.0,
+        "max_ionic_steps": 120,
+        "max_logical_scf": 360,
+        "cycle_periods": [
+          2,
+          4
+        ],
+        "cycle_windows": 3,
+        "cycle_position_tolerance_A": 0.0001,
+        "cycle_energy_tolerance_eV": 1e-06,
+        "cycle_force_relative_improvement": 0.05,
+        "electronic_method": "TN",
+        "econv_Ha_per_atom": 1e-11,
+        "ncheck": 3,
+        "scope": "Bounded continuation; fresh inverse Hessian, no parent optimizer history loaded"
+      }
+    },
+    "cell": {
+      "filter": "FrechetCellFilter",
+      "scalar_pressure_GPa": 0,
+      "hydrostatic_strain": false,
+      "constant_volume": false,
+      "stress_max_abs_GPa": 0.05,
+      "exp_cell_factor": "n_atoms",
+      "mask": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "stress_gate": "zz only; lateral stresses recorded, not relaxed"
+    },
+    "runtime": {
+      "max_walltime_s": 79200
+    },
+    "numerical_provenance": "September15 LDA/local lambda=.9,mu=.1 grid test: 60 to 78 changes Eb(1NN) by -0.1705 meV and Eb(2NN) by -0.0759 meV; September16 EOS 78 vs96 gives da0=4.97e-6 A and dB0=0.000627 GPa. Fixed point count retained through variable-cell trajectory; actual spacing recorded. OF density grid is not QE wavefunction cutoff. Nano grid selected at <=0.15 A initial spacing; this is a pilot, not a completed vacuum-grid convergence test. New radius grids retain <=.15 A initial spacing and Nz=96; this is transfer of the pilot spacing, not convergence certification.",
+    "comparison_scope": "User explicitly retains different XC/pseudopotentials: QE PAW/PBE versus OF local/LDA. Compare within-method formation/binding energies and structures, never subtract raw absolute total energies across methods.",
+    "restart_density": "fresh_HEG",
+    "stress_candidate": "spectral Hessian of sqrt(rho), no smoothing, process-local only"
+  },
+  "geometry_case": {
+    "case": "R13_0V",
+    "n_atoms": 76,
+    "vacancy_count": 0,
+    "vacancy_parent_CN": 12,
+    "cell_A": [
+      [
+        20.263429469800002,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        20.263429469800002,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        13.674447155071773
+      ]
+    ],
+    "positions_A": [
+      [
+        5.94478748,
+        8.52016568,
+        4.55814905
+      ],
+      [
+        7.3404299,
+        6.1028421,
+        4.55814905
+      ],
+      [
+        7.3404299,
+        7.71439116,
+        0.0
+      ],
+      [
+        7.3404299,
+        9.32594021,
+        2.27907453
+      ],
+      [
+        5.94478748,
+        8.52016568,
+        11.39537263
+      ],
+      [
+        7.3404299,
+        6.1028421,
+        11.39537263
+      ],
+      [
+        7.3404299,
+        7.71439116,
+        6.83722358
+      ],
+      [
+        7.3404299,
+        9.32594021,
+        9.1162981
+      ],
+      [
+        5.94478748,
+        10.13171473,
+        0.0
+      ],
+      [
+        5.94478748,
+        11.74326379,
+        2.27907453
+      ],
+      [
+        7.3404299,
+        10.93748926,
+        4.55814905
+      ],
+      [
+        7.3404299,
+        12.54903831,
+        0.0
+      ],
+      [
+        7.3404299,
+        14.16058737,
+        2.27907453
+      ],
+      [
+        5.94478748,
+        10.13171473,
+        6.83722358
+      ],
+      [
+        5.94478748,
+        11.74326379,
+        9.1162981
+      ],
+      [
+        7.3404299,
+        10.93748926,
+        11.39537263
+      ],
+      [
+        7.3404299,
+        12.54903831,
+        6.83722358
+      ],
+      [
+        7.3404299,
+        14.16058737,
+        9.1162981
+      ],
+      [
+        8.73607232,
+        5.29706758,
+        0.0
+      ],
+      [
+        8.73607232,
+        6.90861663,
+        2.27907453
+      ],
+      [
+        8.73607232,
+        8.52016568,
+        4.55814905
+      ],
+      [
+        10.13171473,
+        6.1028421,
+        4.55814905
+      ],
+      [
+        10.13171473,
+        7.71439116,
+        0.0
+      ],
+      [
+        10.13171473,
+        9.32594021,
+        2.27907453
+      ],
+      [
+        8.73607232,
+        5.29706758,
+        6.83722358
+      ],
+      [
+        8.73607232,
+        6.90861663,
+        9.1162981
+      ],
+      [
+        8.73607232,
+        8.52016568,
+        11.39537263
+      ],
+      [
+        10.13171473,
+        6.1028421,
+        11.39537263
+      ],
+      [
+        10.13171473,
+        7.71439116,
+        6.83722358
+      ],
+      [
+        10.13171473,
+        9.32594021,
+        9.1162981
+      ],
+      [
+        8.73607232,
+        10.13171473,
+        0.0
+      ],
+      [
+        8.73607232,
+        11.74326379,
+        2.27907453
+      ],
+      [
+        8.73607232,
+        13.35481284,
+        4.55814905
+      ],
+      [
+        10.13171473,
+        10.93748926,
+        4.55814905
+      ],
+      [
+        10.13171473,
+        12.54903831,
+        0.0
+      ],
+      [
+        10.13171473,
+        14.16058737,
+        2.27907453
+      ],
+      [
+        8.73607232,
+        10.13171473,
+        6.83722358
+      ],
+      [
+        8.73607232,
+        11.74326379,
+        9.1162981
+      ],
+      [
+        8.73607232,
+        13.35481284,
+        11.39537263
+      ],
+      [
+        10.13171473,
+        10.93748926,
+        11.39537263
+      ],
+      [
+        10.13171473,
+        12.54903831,
+        6.83722358
+      ],
+      [
+        10.13171473,
+        14.16058737,
+        9.1162981
+      ],
+      [
+        8.73607232,
+        14.96636189,
+        0.0
+      ],
+      [
+        8.73607232,
+        14.96636189,
+        6.83722358
+      ],
+      [
+        11.52735715,
+        5.29706758,
+        0.0
+      ],
+      [
+        11.52735715,
+        6.90861663,
+        2.27907453
+      ],
+      [
+        11.52735715,
+        8.52016568,
+        4.55814905
+      ],
+      [
+        12.92299957,
+        6.1028421,
+        4.55814905
+      ],
+      [
+        12.92299957,
+        7.71439116,
+        0.0
+      ],
+      [
+        12.92299957,
+        9.32594021,
+        2.27907453
+      ],
+      [
+        11.52735715,
+        5.29706758,
+        6.83722358
+      ],
+      [
+        11.52735715,
+        6.90861663,
+        9.1162981
+      ],
+      [
+        11.52735715,
+        8.52016568,
+        11.39537263
+      ],
+      [
+        12.92299957,
+        6.1028421,
+        11.39537263
+      ],
+      [
+        12.92299957,
+        7.71439116,
+        6.83722358
+      ],
+      [
+        12.92299957,
+        9.32594021,
+        9.1162981
+      ],
+      [
+        11.52735715,
+        10.13171473,
+        0.0
+      ],
+      [
+        11.52735715,
+        11.74326379,
+        2.27907453
+      ],
+      [
+        11.52735715,
+        13.35481284,
+        4.55814905
+      ],
+      [
+        12.92299957,
+        10.93748926,
+        4.55814905
+      ],
+      [
+        12.92299957,
+        12.54903831,
+        0.0
+      ],
+      [
+        12.92299957,
+        14.16058737,
+        2.27907453
+      ],
+      [
+        11.52735715,
+        10.13171473,
+        6.83722358
+      ],
+      [
+        11.52735715,
+        11.74326379,
+        9.1162981
+      ],
+      [
+        11.52735715,
+        13.35481284,
+        11.39537263
+      ],
+      [
+        12.92299957,
+        10.93748926,
+        11.39537263
+      ],
+      [
+        12.92299957,
+        12.54903831,
+        6.83722358
+      ],
+      [
+        12.92299957,
+        14.16058737,
+        9.1162981
+      ],
+      [
+        11.52735715,
+        14.96636189,
+        0.0
+      ],
+      [
+        11.52735715,
+        14.96636189,
+        6.83722358
+      ],
+      [
+        14.31864199,
+        8.52016568,
+        4.55814905
+      ],
+      [
+        14.31864199,
+        8.52016568,
+        11.39537263
+      ],
+      [
+        14.31864199,
+        10.13171473,
+        0.0
+      ],
+      [
+        14.31864199,
+        11.74326379,
+        2.27907453
+      ],
+      [
+        14.31864199,
+        10.13171473,
+        6.83722358
+      ],
+      [
+        14.31864199,
+        11.74326379,
+        9.1162981
+      ]
+    ],
+    "remaining_parent_ids": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75
+    ],
+    "minimum_axis_projected_image_gaps_A": [
+      11.889574959800001,
+      10.594135159800002
+    ],
+    "structure_file": "structures/R13_0V/structure.extxyz",
+    "structure_sha256": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7",
+    "a0_A": 3.947472873,
+    "radius_over_a0": 1.3,
+    "radius_cut_A": 5.1317147349,
+    "orientation": "[111]",
+    "initial_geometry_source": "same-phase R20 mother crystal circular cut",
+    "source_sha256": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7"
+  },
+  "input_sha256": {
+    "dftpy_cases.json": "41e0b189b055751cf09d7ab991cd15767a4ac4c6da7c5e7b6c2c8037c25ce6be",
+    "structure.extxyz": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7",
+    "al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803",
+    "runner.py": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253",
+    "dft_engine.py": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+    "stress_candidate.py": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb",
+    "gated_nano.py": "2b37135067438c4cd3b678877e16c9b93e6fdf309302d981e0764fcca82609f4",
+    "gate.json": "1e324e45830130cbcfbd5e418ae65400176e035ef87a85ec551395d8c094157c",
+    "package_manifest.json": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+    "axial_recovery_entry.py": "b3890312aa0538e6a5eb1b5fc8e70465cd7a0a4ed47fd4c4a018a3a7ffd6333e",
+    "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "recovery_runner.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "staged_optimizer.py": "3ff5702912282ae3c0085c43925d7c3f7e1a3d99e0b551fc2eddfc22d7f495d7",
+    "axial_revision_manifest.json": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+    "initial_checkpoint_bundle.npz": "d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f",
+    "parent_result.json": "32bedd18ba54f078d9e7c17f0f8ae7cf73201608a90fe83da40d645853da36be",
+    "parent_provenance.json": "5c4eed227bfc7addf4d0c17feaf1a59fc5c77b70081bfad48c55f15be408c696",
+    "parent_revision_manifest.json": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+    "electronic_gate_pass.json": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2"
+  },
+  "initial_grid_spacing_A": [
+    0.14473878192714287,
+    0.14473878192714287,
+    0.14060059367787162
+  ],
+  "grid_points": 1881600,
+  "scientific_scope": "Pristine R13 nanocolumn (0V), axial periodic relaxation; numerical transfer tests incomplete",
+  "stress_override": "process-local positive-density sigma=None discrete vW derivative",
+  "package_manifest_sha256": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+  "optimizer_policy": {
+    "revision": "R13_axial_BFGSLineSearch_continue_20261018_v1",
+    "optimizer": "BFGSLineSearch",
+    "maxstep_generalized_A": 0.02,
+    "cell_mask": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "exp_cell_factor": "n_atoms",
+    "c1": 0.23,
+    "c2": 0.46,
+    "alpha": 10.0,
+    "stpmax": 50.0,
+    "max_ionic_steps": 120,
+    "max_logical_scf": 360,
+    "cycle_periods": [
+      2,
+      4
+    ],
+    "cycle_windows": 3,
+    "cycle_position_tolerance_A": 0.0001,
+    "cycle_energy_tolerance_eV": 1e-06,
+    "cycle_force_relative_improvement": 0.05,
+    "electronic_method": "TN",
+    "econv_Ha_per_atom": 1e-11,
+    "ncheck": 3,
+    "scope": "Bounded continuation; fresh inverse Hessian, no parent optimizer history loaded"
+  },
+  "recovery_revision_manifest_sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+  "ionic_stage": "atoms_and_axial_zz_linesearch",
+  "ionic_optimizer": "BFGSLineSearch",
+  "parent_checkpoint": {
+    "bundle_sha256": "d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f",
+    "completed_step": 12,
+    "parent_result_sha256": "32bedd18ba54f078d9e7c17f0f8ae7cf73201608a90fe83da40d645853da36be",
+    "parent_provenance_sha256": "5c4eed227bfc7addf4d0c17feaf1a59fc5c77b70081bfad48c55f15be408c696",
+    "parent_revision_sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e"
+  },
+  "density_initialization": "coherent completed trial step12 density; native DFTpy cell remap and charge normalization",
+  "optimizer_initialization": "fresh inverse Hessian; no optimizer history was saved by parent trial",
+  "electronic_gate_sha256": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2",
+  "relaxation_mode": "atoms_and_axial_zz_FrechetCellFilter_zero_pressure",
+  "started_utc": "2026-10-18T10:20:04.721945+00:00",
+  "python": "3.11.13 (main, Jun  5 2025, 13:12:00) [GCC 11.2.0]",
+  "executable": "/home/dawson666/miniconda3/envs/dftpy-env/bin/python",
+  "packages": {
+    "dftpy": "2.1.2",
+    "ase": "3.25.0",
+    "numpy": "1.26.4",
+    "scipy": "1.10.1"
+  },
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "source_repo": "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_of_20261015_20261015T124450Z",
+  "campaign": "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_of_20261015_20261015T124450Z/campaign",
+  "command": [
+    "recover_axial.py",
+    "execute",
+    "--original-snapshot",
+    "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_of_20261015_20261015T124450Z",
+    "--electronic-snapshot",
+    "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1",
+    "--axial-snapshot",
+    "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_linesearch_20261018_v1",
+    "--runroot",
+    "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+    "--parent-attempt",
+    "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_004_axial_linesearch",
+    "--attempt",
+    "attempt_005_axial_linesearch_continue",
+    "--max-runtime-s",
+    "21000"
+  ],
+  "resolved_config": {
+    "JOB": {
+      "task": "Optdensity",
+      "calctype": [
+        "Energy",
+        "Force",
+        "Stress"
+      ]
+    },
+    "PATH": {
+      "pppath": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue/inputs",
+      "cellpath": "./"
+    },
+    "MATH": {
+      "linearii": true,
+      "linearie": true,
+      "twostep": false,
+      "multistep": 1,
+      "reuse": true
+    },
+    "PP": {
+      "Al": "al.lda.recpot"
+    },
+    "CELL": {
+      "cellfile": "POSCAR",
+      "elename": null,
+      "zval": null,
+      "format": null
+    },
+    "GRID": {
+      "ecut": 1794.9520506179742,
+      "spacing": 0.14473878192714287,
+      "gfull": false,
+      "nr": [
+        140,
+        140,
+        96
+      ],
+      "maxprime": 13,
+      "scale": 0.99,
+      "cplx": false
+    },
+    "DENSITY": {
+      "nspin": 1,
+      "magmom": 0,
+      "densityini": "heg",
+      "densityfile": null,
+      "densityoutput": null
+    },
+    "EXC": {
+      "xc": "LDA",
+      "libxc": [
+        "lda_x",
+        "lda_c_pz"
+      ],
+      "x_str": null,
+      "c_str": null
+    },
+    "KEDF": {
+      "kedf": "TFVW",
+      "x": 0.9,
+      "y": 0.1,
+      "alpha": null,
+      "beta": null,
+      "sigma": null,
+      "nsp": null,
+      "interp": "hermite",
+      "kerneltype": null,
+      "symmetrization": null,
+      "lumpfactor": null,
+      "neta": 50000,
+      "etamax": 50,
+      "order": 3,
+      "ratio": 1.15,
+      "maxpoints": 1000,
+      "delta": null,
+      "kdd": 3,
+      "rho0": null,
+      "k_str": null,
+      "params": null,
+      "kfmin": null,
+      "kfmax": null,
+      "rhomax": null,
+      "ldw": null,
+      "temperature": null,
+      "temperature0": null
+    },
+    "KEDF2": {
+      "active": false,
+      "x": 0,
+      "y": 0,
+      "kedf": "WT",
+      "alpha": null,
+      "beta": null,
+      "sigma": null,
+      "nsp": null,
+      "interp": "hermite",
+      "kerneltype": null,
+      "symmetrization": null,
+      "lumpfactor": null,
+      "neta": 50000,
+      "etamax": 50,
+      "order": 3,
+      "ratio": 1.15,
+      "maxpoints": 1000,
+      "delta": null,
+      "kdd": 3,
+      "rho0": null,
+      "k_str": null,
+      "params": null,
+      "kfmin": null,
+      "kfmax": null,
+      "rhomax": null,
+      "ldw": null,
+      "temperature": null,
+      "temperature0": null
+    },
+    "OUTPUT": {
+      "time": true,
+      "stress": true,
+      "electrostatic_potential": null
+    },
+    "OPT": {
+      "method": "TN",
+      "algorithm": "EMM",
+      "vector": "Orthogonalization",
+      "c1": 0.0001,
+      "c2": 0.2,
+      "maxls": 50,
+      "econv": 1e-11,
+      "maxfun": 100,
+      "maxiter": 1000,
+      "xtol": 1e-12,
+      "h0": 1,
+      "ncheck": 3
+    },
+    "MIX": {
+      "scheme": "pulay",
+      "predtype": "kerker",
+      "predcoef": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "predecut": null,
+      "maxm": 7,
+      "coef": 0.7,
+      "delay": 2,
+      "restarted": false,
+      "kf": "auto"
+    },
+    "PROPAGATOR": {
+      "propagator": "crank-nicholson",
+      "order": 20,
+      "linearsolver": "cg",
+      "tol": 1e-10,
+      "maxiter": 100,
+      "atol": null
+    },
+    "TD": {
+      "outfile": "td_out",
+      "timestep": 0.001,
+      "tmax": 1,
+      "max_pc": 2,
+      "tol_pc": 1e-08,
+      "atol_pc": 1e-10,
+      "direc": 0,
+      "strength": 0.001,
+      "max_runtime": 0,
+      "restart": false,
+      "restart_input": "restart_data.npy",
+      "save_interval": 1000,
+      "correction": false,
+      "vector_potential": false,
+      "propagate_vector_potential": true,
+      "omega": 0,
+      "z_split": 0
+    },
+    "CASIDA": {
+      "numeig": null,
+      "diagonalize": true,
+      "tda": false
+    },
+    "NONADIABATIC": {
+      "nonadiabatic": null,
+      "cutoff": 0.01,
+      "rho_cutoff": 0.001,
+      "k": 2
+    },
+    "NONADIABATIC2": {
+      "active": false,
+      "nonadiabatic": null,
+      "cutoff": 0.01,
+      "rho_cutoff": 0.001,
+      "k": 2
+    },
+    "INVERSION": {
+      "rho_in": null,
+      "v_out": null
+    }
+  },
+  "config_sha256": "e6493048fc13e6cbd69847d17f7726f5eb7c915f550e9143613dbd38a8ea80fd",
+  "effective_runtime_budget_s": 21000.0,
+  "units": {
+    "Hartree_eV": 27.211386024367243,
+    "Bohr_A": 0.5291772105638411,
+    "eV_A3_to_GPa": 160.21766208
+  }
+}

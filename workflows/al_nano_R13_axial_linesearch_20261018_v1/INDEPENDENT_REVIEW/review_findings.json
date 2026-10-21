@@ -1,0 +1,194 @@
+{
+  "status": "PASS_INDEPENDENT_PROGRAM_REVIEW_PHYSICAL_ACCEPTANCE_PENDING",
+  "blocking_findings": [],
+  "resolved_findings": [
+    "Reject explicit ASE WARNING/ERROR/non-CONVERGENCE despite a nonempty alpha",
+    "Use actual current calculator cell for density validation, not fixed initial cell",
+    "Correct inherited fixed-cell result wording and record actual atom/cell increments"
+  ],
+  "limits": [
+    "Local API/adapter tests use ASE3.29; root remote ASE3.25 preflight required",
+    "Analytic and mock tests are not real Al DFT acceptance",
+    "R13 checkpoint force gate covers one component and one starting geometry, not the full new path"
+  ],
+  "source_sha256": {
+    "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "recover_axial.py": "553aa958d1684538a3a5715da6d7fcc4385aa12e68c742dee75986f9b8192880",
+    "staged_optimizer.py": "455d7fe2bb7c1892bb1371e788eeb4c49d5a510a18950740d82865519f3eb439"
+  },
+  "actual_runtime_sources": [
+    {
+      "module": "ase.optimize.bfgslinesearch",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/optimize/bfgslinesearch.py",
+      "archive": "ase.optimize.bfgslinesearch.py",
+      "sha256": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a"
+    },
+    {
+      "module": "ase.optimize.optimize",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/optimize/optimize.py",
+      "archive": "ase.optimize.optimize.py",
+      "sha256": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e"
+    },
+    {
+      "module": "ase.filters",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/filters.py",
+      "archive": "ase.filters.py",
+      "sha256": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb"
+    },
+    {
+      "module": "ase.utils.linesearch",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/utils/linesearch.py",
+      "archive": "ase.utils.linesearch.py",
+      "sha256": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c"
+    },
+    {
+      "module": "dftpy.utils",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/dftpy/utils/__init__.py",
+      "archive": "dftpy.utils.py",
+      "sha256": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8"
+    }
+  ],
+  "test_results": {
+    "api_smoke_results.json": {
+      "scope": "Analytic calculator and density remapping only; no DFT/Al physical acceptance.",
+      "ASE_version": "3.29.0",
+      "free_energy_missing_fallback": true,
+      "filter_zz_force_derivative_error": 6.046968481498993e-13,
+      "analytic_optimizer_converged": true,
+      "outer_steps": 7,
+      "last_analytic_fmax": 1.1435718873008245e-06,
+      "initial_cell_A": [
+        [
+          6.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          7.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.03
+        ]
+      ],
+      "final_cell_A": [
+        [
+          6.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          7.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          5.000000571785976
+        ]
+      ],
+      "energy_nonincreasing": true,
+      "remap_before_normalization_electrons": 228.228,
+      "remap_after_normalization_electrons": 227.99999999999997,
+      "same_nr_mapping": "same fractional indices, then volume normalization"
+    },
+    "control_flow_results.json": {
+      "scope": "Mock optimize_rho only; no DFT, force calculation, or physical validation.",
+      "passed": 10,
+      "checks": [
+        {
+          "name": "valid",
+          "passed": true,
+          "physical_calls": 1,
+          "error": null
+        },
+        {
+          "name": "retry",
+          "passed": true,
+          "physical_calls": 2,
+          "error": null
+        },
+        {
+          "name": "second_failure",
+          "passed": true,
+          "physical_calls": 2,
+          "error": "RuntimeError"
+        },
+        {
+          "name": "no_retry_flag2",
+          "passed": true,
+          "physical_calls": 1,
+          "error": "RuntimeError"
+        },
+        {
+          "name": "stale_density",
+          "passed": true,
+          "physical_calls": 0,
+          "error": "ValueError"
+        },
+        {
+          "name": "transverse",
+          "passed": true,
+          "physical_calls": 0,
+          "error": "ValueError"
+        },
+        {
+          "name": "bad_pbc",
+          "passed": true,
+          "physical_calls": 0,
+          "error": "ValueError"
+        },
+        {
+          "name": "bad_charge",
+          "passed": true,
+          "physical_calls": 0,
+          "error": "ValueError"
+        },
+        {
+          "name": "cell_changed_during_solve",
+          "passed": true,
+          "physical_calls": 1,
+          "error": "ValueError"
+        },
+        {
+          "name": "budget",
+          "passed": true,
+          "physical_calls": 1,
+          "error": "BudgetExpired"
+        }
+      ],
+      "source_sha256": {
+        "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+        "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+      }
+    },
+    "adapter_results.json": {
+      "scope": "Analytic/mocked tests only; no DFT physical validation",
+      "ASE_version": "3.29.0",
+      "checks": [
+        {
+          "name": "real_adapter_analytic_convergence_no_free_energy",
+          "passed": true,
+          "steps": 5,
+          "checkpoint_callbacks": 6
+        },
+        {
+          "name": "warning_trial_rejected_and_prior_completed_observer_state_retained",
+          "passed": true,
+          "checkpoint_callbacks": 1
+        },
+        {
+          "name": "cycle_stop_does_not_replace_force_acceptance",
+          "passed": true
+        }
+      ],
+      "passed": 3,
+      "source_sha256": "455d7fe2bb7c1892bb1371e788eeb4c49d5a510a18950740d82865519f3eb439"
+    }
+  }
+}

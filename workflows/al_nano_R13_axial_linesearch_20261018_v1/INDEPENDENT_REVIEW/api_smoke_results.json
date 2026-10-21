@@ -1,0 +1,47 @@
+{
+  "scope": "Analytic calculator and density remapping only; no DFT/Al physical acceptance.",
+  "ASE_version": "3.29.0",
+  "free_energy_missing_fallback": true,
+  "filter_zz_force_derivative_error": 6.046968481498993e-13,
+  "analytic_optimizer_converged": true,
+  "outer_steps": 7,
+  "last_analytic_fmax": 1.1435718873008245e-06,
+  "initial_cell_A": [
+    [
+      6.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      7.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      5.03
+    ]
+  ],
+  "final_cell_A": [
+    [
+      6.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      7.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      5.000000571785976
+    ]
+  ],
+  "energy_nonincreasing": true,
+  "remap_before_normalization_electrons": 228.228,
+  "remap_after_normalization_electrons": 227.99999999999997,
+  "same_nr_mapping": "same fractional indices, then volume normalization"
+}

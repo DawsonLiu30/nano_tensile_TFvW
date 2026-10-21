@@ -1,0 +1,13 @@
+{
+  "tests": 25,
+  "passed": 25,
+  "errors": 0,
+  "failures": 0,
+  "scope": "Synthetic native retry / caller state / physical failure preservation / deadlines / density invariants / force gates; no DFT",
+  "actual_parent_preflight": "PASS; 76 Al, step100, 228 electrons, grid140x140x96, frozen source and parent gate hashes",
+  "manifest_sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+  "source_manifest_frozen": true,
+  "production_submitted_by_this_agent": false,
+  "sbatch_syntax": "diagnose.sbatch and continue.sbatch separately bash -n PASS",
+  "payload": "11 manifest-listed files plus REVISION_MANIFEST.json; exclude __pycache__"
+}

@@ -1,0 +1,78 @@
+{
+  "scope": "No DFT: mocked density retry control-flow, analytic FD-gate fixture, source identity",
+  "checks": [
+    {
+      "name": "Gate accepts analytic linear-energy fixture",
+      "passed": true
+    },
+    {
+      "name": "Gate rejects wrong force derivative",
+      "passed": true
+    },
+    {
+      "name": "Gate rejects extra displaced atom",
+      "passed": true
+    },
+    {
+      "name": "Gate rejects native failure despite accepted label",
+      "passed": true
+    },
+    {
+      "name": "Gate requires independent HEG centre",
+      "passed": true
+    },
+    {
+      "name": "Gate rejects weakened ncheck",
+      "passed": true
+    },
+    {
+      "name": "Gate rejects weakened candidate tolerance",
+      "passed": true
+    },
+    {
+      "name": "Gate rejects nonfinite charge",
+      "passed": true
+    },
+    {
+      "name": "Warm TN flag1 recovers once from charge-normalized HEG with original native0",
+      "passed": true
+    },
+    {
+      "name": "Second native failure stops without third attempt",
+      "passed": true
+    },
+    {
+      "name": "Flag2 never retried",
+      "passed": true
+    },
+    {
+      "name": "LBFGS failure never retried",
+      "passed": true
+    },
+    {
+      "name": "Initial HEG failure never retried",
+      "passed": true
+    },
+    {
+      "name": "Unrelated exception never retried",
+      "passed": true
+    },
+    {
+      "name": "Invalid returned density never retried",
+      "passed": true
+    },
+    {
+      "name": "Scientific base runner is byte-identical to submitted smallstep source",
+      "passed": true
+    }
+  ],
+  "passed": 16,
+  "failed": 0,
+  "source_sha256": {
+    "electronic_trace.py": "48487869f688977da955cf83d380d86add1de2b2bc3f3f7105626b2abe526160",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "recover_electronic.py": "c62fc261a410c97aa9e771d3179754f876b20ceaddbc1b1837d94509aefc68d9",
+    "staged_optimizer.py": "467a766e1678de1f2e202a8d6a907dca40d786e12ff231ddb499f13cd988ee84",
+    "test_recovery.py": "ee6dda793f549f6729c68f1a32408a83c8db103fb96f32d41160db996b7c99db"
+  }
+}

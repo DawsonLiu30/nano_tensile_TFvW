@@ -1,0 +1,16 @@
+test_cycles_stop_after_checkpoint_observer (__main__.Tests.test_cycles_stop_after_checkpoint_observer) ... ok
+test_filter_gradient_matches_energy_difference (__main__.Tests.test_filter_gradient_matches_energy_difference) ... ok
+test_fresh_optimizer_history_initialization (__main__.Tests.test_fresh_optimizer_history_initialization) ... ok
+test_limit_and_acceptance_unchanged (__main__.Tests.test_limit_and_acceptance_unchanged) ... ok
+test_native_axial_filter_compatible_and_descends (__main__.Tests.test_native_axial_filter_compatible_and_descends) ... ok
+test_native_boundary_warning_is_rejected (__main__.Tests.test_native_boundary_warning_is_rejected) ... ok
+test_optimizer_state_rejects_changed_geometry (__main__.Tests.test_optimizer_state_rejects_changed_geometry) ... ok
+test_optimizer_state_rejects_mismatched_checkpoint (__main__.Tests.test_optimizer_state_rejects_mismatched_checkpoint) ... ok
+test_repeated_four_cycle_detected (__main__.Tests.test_repeated_four_cycle_detected) ... ok
+test_unconverged_FG_not_accepted (__main__.Tests.test_unconverged_FG_not_accepted) ... ok
+test_warning_not_accepted_even_nonnull_step (__main__.Tests.test_warning_not_accepted_even_nonnull_step) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.459s
+
+OK

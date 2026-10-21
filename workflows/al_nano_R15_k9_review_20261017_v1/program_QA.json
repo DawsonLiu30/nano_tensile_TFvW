@@ -1,0 +1,8 @@
+{
+  "tests_run": 14,
+  "failures": 0,
+  "errors": 0,
+  "success": true,
+  "scope": "No DFT. Original frozen inspector reused with explicitly synthetic k9 XML fixtures and actual hash/input/stageproof checks.",
+  "overlay_manifest_sha256": "fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a"
+}

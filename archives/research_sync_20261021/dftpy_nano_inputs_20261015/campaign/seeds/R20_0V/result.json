@@ -1,0 +1,152 @@
+{
+  "case": "R20_0V",
+  "attempt": "attempt_001",
+  "status": "converged",
+  "accepted": true,
+  "n_atoms": 176,
+  "vacancy_count": 0,
+  "started_utc": "2026-09-30T19:51:31.947217+00:00",
+  "initial_cell_A": [
+    [
+      25.789891492000002,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      25.789891492000002,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      13.674447155071773
+    ]
+  ],
+  "target_pressure_GPa": 0.0,
+  "relaxation_mode": "atoms_and_axial_zz_FrechetCellFilter_zero_pressure",
+  "effective_runtime_budget_s": 84600.0,
+  "scientific_scope": "Single core vacancy in axial periodic nanocolumn; pilot, not vacuum/grid/axial-period converged; zz strain only",
+  "energy_eV": -11041.907920620888,
+  "fmax_eV_A": 0.0007406620134762221,
+  "filter_fmax_eV_A": 0.0007324251816076589,
+  "stress_max_abs_GPa": 21980.238659558,
+  "stress_eV_A3": [
+    [
+      -0.3449323713101084,
+      1.7999683826502664e-07,
+      -1.1702731613957932e-07
+    ],
+    [
+      1.7999683826502664e-07,
+      -137.18986018272324,
+      1.1878147197644582e-05
+    ],
+    [
+      -1.1702731613957932e-07,
+      1.1878147197644582e-05,
+      2.544261546190331e-06
+    ]
+  ],
+  "stress_GPa": [
+    [
+      -55.26425810701603,
+      2.8838672608614452e-05,
+      -1.874984299138045e-05
+    ],
+    [
+      2.8838672608614452e-05,
+      -21980.238659558,
+      0.0019030889738487185
+    ],
+    [
+      -1.874984299138045e-05,
+      0.0019030889738487185,
+      0.00040763563665066073
+    ]
+  ],
+  "cell_A": [
+    [
+      25.789891492000002,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      25.789891492000002,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      13.485563331577781
+    ]
+  ],
+  "volume_A3": 8969.497697491583,
+  "cell_lengths_A": [
+    25.789891492000002,
+    25.789891492000002,
+    13.485563331577781
+  ],
+  "cell_angles_deg": [
+    90.0,
+    90.0,
+    90.0
+  ],
+  "grid_spacing_along_cell_vectors_A": [
+    0.1473708085257143,
+    0.1473708085257143,
+    0.14047461803726854
+  ],
+  "ionic_converged": true,
+  "ionic_steps": 108,
+  "final_fmax_eV_A": 0.0007406620134762221,
+  "final_filter_fmax_eV_A": 0.0007324251816076589,
+  "energy_components_eV": {
+    "TOTAL": -11041.907920620888,
+    "KEDF-TF": 3665.4367221041302,
+    "KEDF-VW": 267.9109400004069,
+    "XC": -3943.0694138234644,
+    "HARTREE": 77014.21613229213,
+    "PSEUDO": -155396.11157510916,
+    "II": 67349.70927391505,
+    "KEDF": 3933.347662104537
+  },
+  "kinetic_energy_eV": 3933.347662104537,
+  "tf_energy_eV": 3665.4367221041302,
+  "vw_energy_eV": 267.9109400004069,
+  "energy_Ha": -405.7826349136749,
+  "energy_conversion_eV_per_Ha": 27.211386024367243,
+  "all_electronic_calls_converged": true,
+  "density_integral_electrons": 527.9999999999992,
+  "stress_convention": "ASE tensile-positive; axial zz stress gated; transverse stress recorded but cell frozen; stress uses vacuum-containing box volume",
+  "finished_utc": "2026-09-30T21:18:55.812228+00:00",
+  "elapsed_s": 5243.865046583,
+  "electronic_calls": 109,
+  "peak_rss_MiB": 15151.515625,
+  "artifact_sha256": {
+    "checkpoint.json": "9b4b1b69d34dbb5ba760711595abeddcf486277b1effceb4774097976f3e5741",
+    "checkpoint.traj": "fc8f62bb30c78fbb558f4eef02638c4515ef3014f36b10e1be67a3d8d43f4588",
+    "checkpoint_bundle.npz": "7afdf6b9210d271e3575e709c71b82c8bbc81a88cd4b2195e0fabf5a79194706",
+    "checkpoint_density.npz": "3b998d1218e20acbba2c0c1d695af42ef52d6a5db0dd9f4e262eed70885739f7",
+    "config.json": "51e6580978069f185b9cbbb9e770337a40bcea5dd118320de8c881b0983c8fcb",
+    "dftpy_full_stdout.log": "ddabd371d273b551cdd84ff948c4ad89b8744f440976f39a31f8b401528af467",
+    "electronic_evaluations.jsonl": "e9402f91b0127bb98d1bfbccf6c6b6f042f7edf94ce11964c18ca6eae30a5751",
+    "final.extxyz": "00d6b57db7d42042733bce24a1f0cde3314c7752d3805460a2b6d5857788b015",
+    "final.traj": "fc8f62bb30c78fbb558f4eef02638c4515ef3014f36b10e1be67a3d8d43f4588",
+    "final.vasp": "3d1b7d1f46d77120b84b78d667daa9c239f405aa930304eb1c508d77d7624644",
+    "final_density.npz": "3b998d1218e20acbba2c0c1d695af42ef52d6a5db0dd9f4e262eed70885739f7",
+    "final_forces_eV_A.npy": "d4a721d5816e2483f185c5faf9e0439806d60aa7c607039bb7bcf49a9f9169da",
+    "initial.extxyz": "c9ee33a3c90f1973febc3cc873a21b42f0dbced4382dd8bbf4be8b03d80c4855",
+    "initial.traj": "0aeb60df2d3262cda1739564f964cb0258742f34b9c28770d9df8198864f6562",
+    "inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803",
+    "inputs/dft_engine.py": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+    "inputs/dftpy_cases.json": "00b013cc898a75017ea9c29f5f6f40423ea73f5b0285b428e5d401078d54ade0",
+    "inputs/runner.py": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253",
+    "inputs/structure.extxyz": "c9ee33a3c90f1973febc3cc873a21b42f0dbced4382dd8bbf4be8b03d80c4855",
+    "ionic_evaluations.jsonl": "39cc84c5699c9d252a9f900df175803f124315ece2067c2eca33f22b25354861",
+    "provenance.json": "cc50ae1d0672b9d12132e7d59a46edf3b16476e45ba0cffaa080725af288f866",
+    "relax.log": "52d55f4c4596eb5aee5dba7551fa55302eef3f6498110a4cdbc141f91db1d951",
+    "relax.traj": "87e715e8af80f06aa9c1638058cf9d81d67916f8ff8045b5da7b9bf8e4d6785a"
+  }
+}

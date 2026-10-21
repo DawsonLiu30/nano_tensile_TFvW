@@ -1,0 +1,108 @@
+{
+  "archive_kind": "submitted_frozen_workflow_with_evidence",
+  "archived_utc": "2026-10-17T16:06:39.499951+00:00",
+  "job_id": "2253295",
+  "array_indices": [
+    0,
+    1
+  ],
+  "receipt_submit_utc": "2026-10-17T16:00:17.772064+00:00",
+  "source_directory": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/qe_R15_k9_recovery_20261017",
+  "archive_directories": [
+    "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R15_k9_review_20261017_v1",
+    "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261017/QE_R15_K9_REVIEW"
+  ],
+  "overlay_manifest_sha256": "fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a",
+  "scientific_status": "Submitted diagnostics; no resulting physical endpoint is included; no remote query during this archive.",
+  "historical_readme_note": "The source README is unchanged pre-submission preparation history. submission_receipt.json records actual submission.",
+  "file_count": 17,
+  "total_bytes": 121816,
+  "copy_hash_mismatches": 0,
+  "files": [
+    {
+      "path": "deploy_review.py",
+      "bytes": 3196,
+      "sha256": "41577093a055c6df56dc24132674c66a7e64f6dca5022b0670f1675352f5bdbf"
+    },
+    {
+      "path": "deploy_review.sh",
+      "bytes": 31292,
+      "sha256": "20c24fea6629c2e5ff0129847f92eb8e60003b81ad102b288394791319ad88c9"
+    },
+    {
+      "path": "inputs/nano_R15_0V_k9_SCF_20261017/initial.extxyz",
+      "bytes": 5406,
+      "sha256": "e27cf98bd1ca582fc0162ea7c317b15d32f4ee6959867f40a5297453eef77900"
+    },
+    {
+      "path": "inputs/nano_R15_0V_k9_SCF_20261017/pw.in",
+      "bytes": 6212,
+      "sha256": "a8c3bd49a4cd63a8fa43cafab238b098c3f3f0888a3993fabcb4a8e5eaab542e"
+    },
+    {
+      "path": "inputs/nano_R15_1V_k9_SCF_20261017/initial.extxyz",
+      "bytes": 5346,
+      "sha256": "16bbd1da1a687d423e2caa5f1bb5ce28b8183b3aa8b9ce16f98154e6040c8d96"
+    },
+    {
+      "path": "inputs/nano_R15_1V_k9_SCF_20261017/pw.in",
+      "bytes": 6153,
+      "sha256": "14411adc92d29f1b54516f3a6d15bf764fb34cb81e8c9e3eee07664588d0c73f"
+    },
+    {
+      "path": "overlay_manifest.json",
+      "bytes": 29340,
+      "sha256": "fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a"
+    },
+    {
+      "path": "prepare_overlay.py",
+      "bytes": 4429,
+      "sha256": "f648fa19a72fbb86b7640c13a7a0e536ae5837f9b712f2001a56721e5608e65a"
+    },
+    {
+      "path": "program_QA.json",
+      "bytes": 308,
+      "sha256": "6091b8075518ce1ee6f04ea5df684bc625112fa35ecaa89bd9218ec94708a648"
+    },
+    {
+      "path": "README_REVIEW_ZH.txt",
+      "bytes": 2648,
+      "sha256": "587db162a790940bba20916b982220e93f7d4e8ddd991d986e528e390f7781ec"
+    },
+    {
+      "path": "remote_preflight.json",
+      "bytes": 4314,
+      "sha256": "fab4338fcceaa8d31618cf874d6b5baee8539be9ebb01cd65c2263434c8e907f"
+    },
+    {
+      "path": "remote_preflight.stderr",
+      "bytes": 27,
+      "sha256": "c099a8e8ffde7fe2f204892ca29388153d305c76b33352c7f0c3aad13c91bcc9"
+    },
+    {
+      "path": "run_reviewed_k9.py",
+      "bytes": 8435,
+      "sha256": "f8c73977d7071397164d126a894b7ce5e97c20714d6997bb63fd57db07866eba"
+    },
+    {
+      "path": "submission_receipt.json",
+      "bytes": 5226,
+      "sha256": "c00cacf8376f7c24a84aaf6681369112516d1df261c1b4d6e6265f278cc39c71"
+    },
+    {
+      "path": "submit_k9.sbatch",
+      "bytes": 1112,
+      "sha256": "47ccc990a508a880b4cf0aee01028485fdd264e458149fdaf08e0d3cfb5637b7"
+    },
+    {
+      "path": "submit_reviewed.sh",
+      "bytes": 2617,
+      "sha256": "844749ade26e17d363553d256023df2e9ef134713125d8e0b7da455c97830657"
+    },
+    {
+      "path": "test_k9_overlay.py",
+      "bytes": 5755,
+      "sha256": "3406e9a7be1932cd0d1b0cfab724ff1deb6c6373a502682790ed3b516dcef9c3"
+    }
+  ]
+}

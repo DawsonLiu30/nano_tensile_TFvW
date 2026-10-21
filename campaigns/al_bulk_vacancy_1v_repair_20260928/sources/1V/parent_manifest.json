@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "campaign_id": "al_bulk_vacancy_vcrelax_continue_20260926",
+  "protocol": {
+    "calculation": "vc-relax",
+    "xc": "PBE",
+    "pseudopotential_type": "PAW",
+    "cell_dofree": "all",
+    "press_kbar": 0,
+    "press_conv_thr_kbar": 0.5,
+    "force_norm_target_eV_A": 0.001,
+    "ecutwfc_Ry": 58.798915481,
+    "ecutrho_Ry": 470.3913238484,
+    "ecutwfc_eV": 799.9999999993471,
+    "kmesh": [
+      3,
+      3,
+      3
+    ],
+    "koffset": [
+      0,
+      0,
+      0
+    ],
+    "smearing": "mp",
+    "degauss_Ry": 0.02,
+    "nbnd": 200,
+    "conv_thr_Ry": 1e-08,
+    "electron_maxstep": 300,
+    "mixing_beta": 0.2,
+    "mixing_ndim": 4,
+    "nstep": 200,
+    "max_seconds": 169200,
+    "ion_dynamics": "bfgs",
+    "cell_dynamics": "bfgs",
+    "etot_conv_thr_Ry": 1e-06,
+    "forc_conv_thr_Ry_bohr": 1.9446903811488877e-05,
+    "force_component_tolerance_eV_A": 0.0005,
+    "nosym": true,
+    "noinv": true,
+    "tstress": true,
+    "tprnfor": true,
+    "historical_source": "/home/dawson666/qe_divacancy_vcrelax_conv3x3x3_rscan_20260616/pair_scan/pair_01_r2p8566A/pristine_vcrelax/vc-relax.in",
+    "historical_source_sha256": "d22c3c847ba57ac7480ffbf6ebc10cca7ae2b3c0636a4250a9457894bc10c63c",
+    "provenance_note": "Continuation of verified completed SCF geometries from September25 attempts. Scientific settings unchanged; new BFGS and fresh electronic initialization. Operational QE limit increased to 47h within 48h Slurm.",
+    "convergence_scope": "800 eV is a PPT tested bulk EOS cutoff and the actual historical 108-site vc setting. This does not assert complete defect k-point or cell-size convergence."
+  },
+  "geometry_manifest": {
+    "file": "geometry.json",
+    "sha256": "2ea99cde25f7b42711f9c5bf5def7527a6db7d3868bd69261155fafad3d933b4"
+  },
+  "pseudo": {
+    "file": "pseudo/Al_PAW_PBE.UPF",
+    "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a"
+  },
+  "case_order": [
+    "1V",
+    "2V_1NN_D110",
+    "2V_3NN_D211",
+    "2V_5NN_D310"
+  ],
+  "cases": {
+    "1V": {
+      "input": "qe/inputs/1V/pw.in",
+      "sha256": "a3f4b6131b91dd796682e97fd746f3d404dd72f7fd66f5a047653b31180e8035",
+      "nat": 107,
+      "q": 1,
+      "structure": "structures/1V/POSCAR",
+      "structure_sha256": "22cdf30877f399cae283fbe9d39fa358f71db36e72cfbfc37b932c6afa43e61f",
+      "removed_parent_ids": [
+        43
+      ],
+      "cell_A": [
+        [
+          12.112734026,
+          2e-09,
+          -8e-09
+        ],
+        [
+          2e-09,
+          12.112733789,
+          4e-09
+        ],
+        [
+          -8e-09,
+          4e-09,
+          12.112734464
+        ]
+      ],
+      "continuation_sources": {
+        "parent_pw_in": {
+          "file": "sources/1V/parent_pw_in.in",
+          "sha256": "bf47424d2b00c15fa51db76362ea6f05f7a64f2dc0bc61d8bfdbed2febef9acb"
+        },
+        "parent_pw_out": {
+          "file": "sources/1V/parent_pw_out.out",
+          "sha256": "cbeb8a19b41b73e703b0c45749d4bdf7ef071a78ffb8952d348e0012bfc96adb"
+        },
+        "parent_attempt": {
+          "file": "sources/1V/parent_attempt.json",
+          "sha256": "831835da41aff41cc93c14474d473b7867a777d2d645e70e2951e9c9a99049f3"
+        },
+        "parent_manifest": {
+          "file": "sources/1V/parent_manifest.json",
+          "sha256": "7f034f85416dd96e4a566a81dda40c6e7ec2a05be9e3ec54f66a88a269fcf274"
+        },
+        "parent_source_input": {
+          "file": "sources/1V/parent_source_input.in",
+          "sha256": "8611c537db6ffb187b6362222c7c92e20444d48170076d1b2882be8f6bb1bc26"
+        },
+        "parent_geometry": {
+          "file": "sources/1V/parent_geometry.json",
+          "sha256": "5fc90ca8d32ed444597c1b98c431980ffd4b5cbe400474ad2976b9b408cd8732"
+        },
+        "aligned_step": {
+          "file": "sources/1V/aligned_step.json",
+          "sha256": "5bf660afd12a821687dab9f83f49a35df8f086dff2db04768ae537126f542c06"
+        }
+      },
+      "parent_attempt_name": "20260925T142752Z-3ffc1fb9995d4d97950b49bc6ee153c4",
+      "completed_geometry_sha256": "08272b47bdb3a039d3076d6331b7e323a1077c176c2ca9d1d6e3718c9c6f87d1"
+    },
+    "2V_1NN_D110": {
+      "input": "qe/inputs/2V_1NN_D110/pw.in",
+      "sha256": "ccce5538d831d1030ff5758da65c2bf3a9e98c5fa732f58e0e1d55cc6f91f9ed",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_1NN_D110/POSCAR",
+      "structure_sha256": "3ff5fb8ec8a97854eacfdb52009e6ac14dd2bb58d4dbcee87060f69fafefec05",
+      "removed_parent_ids": [
+        43,
+        64
+      ],
+      "cell_A": [
+        [
+          11.935922294,
+          0.004320528,
+          -3.06e-07
+        ],
+        [
+          0.004320534,
+          11.935925858,
+          -1.68e-07
+        ],
+        [
+          -3.08e-07,
+          -1.65e-07,
+          12.447894269
+        ]
+      ],
+      "continuation_sources": {
+        "parent_pw_in": {
+          "file": "sources/2V_1NN_D110/parent_pw_in.in",
+          "sha256": "f69490408cd80a54a71507c563ff994175426e27642c4f4c57395448f0b02388"
+        },
+        "parent_pw_out": {
+          "file": "sources/2V_1NN_D110/parent_pw_out.out",
+          "sha256": "f5c52d98241d37a7c1369529aac6bc9df9c08adb1de5c677881ef086f23b80b7"
+        },
+        "parent_attempt": {
+          "file": "sources/2V_1NN_D110/parent_attempt.json",
+          "sha256": "3b952dc27813e9a5ee6b7e3b090325c3143c6b1ae3ee772b40def1787156dc72"
+        },
+        "parent_manifest": {
+          "file": "sources/2V_1NN_D110/parent_manifest.json",
+          "sha256": "7f034f85416dd96e4a566a81dda40c6e7ec2a05be9e3ec54f66a88a269fcf274"
+        },
+        "parent_source_input": {
+          "file": "sources/2V_1NN_D110/parent_source_input.in",
+          "sha256": "0970f8a6eccbdba6a512f05fcefeb0f9ef19329325fdd338b1980f36a2f0aba7"
+        },
+        "parent_geometry": {
+          "file": "sources/2V_1NN_D110/parent_geometry.json",
+          "sha256": "5fc90ca8d32ed444597c1b98c431980ffd4b5cbe400474ad2976b9b408cd8732"
+        },
+        "aligned_step": {
+          "file": "sources/2V_1NN_D110/aligned_step.json",
+          "sha256": "f4359e81ca086add9de921a91f22d80339c2795edcb64d8c5d90e427ce1f1166"
+        }
+      },
+      "parent_attempt_name": "20260925T180754Z-6dc4b37033ca459f8b6b1d2089b09402",
+      "completed_geometry_sha256": "15ed2d970bf46fccd1f1c340a8274f1775cbe9ab9db8b5550673f431aee339d3"
+    },
+    "2V_3NN_D211": {
+      "input": "qe/inputs/2V_3NN_D211/pw.in",
+      "sha256": "959aff6676c95d5609403bf5e61ab31ead4f515d3405c1c6901a7c2d9a20032c",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_3NN_D211/POSCAR",
+      "structure_sha256": "37d3eae45f6c10fc741633c5e65ff3c7ec093028b9a4786138fd06b65141d67f",
+      "removed_parent_ids": [
+        43,
+        82
+      ],
+      "cell_A": [
+        [
+          12.163411517,
+          0.005370052,
+          0.005370033
+        ],
+        [
+          0.005333496,
+          12.0656361,
+          0.003254469
+        ],
+        [
+          0.005333477,
+          0.003254469,
+          12.065635964
+        ]
+      ],
+      "continuation_sources": {
+        "parent_pw_in": {
+          "file": "sources/2V_3NN_D211/parent_pw_in.in",
+          "sha256": "2209745ce320cfee61061b87749dde73fb49cbaf407369be6c8d27194d10c73b"
+        },
+        "parent_pw_out": {
+          "file": "sources/2V_3NN_D211/parent_pw_out.out",
+          "sha256": "1ecc890d37abd71998b5527278437fd84c0473631a190e96c0d09eefd085787e"
+        },
+        "parent_attempt": {
+          "file": "sources/2V_3NN_D211/parent_attempt.json",
+          "sha256": "199fbc6cd30aadf23f3253316e4f166022e0ea5c451b29f6766ec031b99b1b25"
+        },
+        "parent_manifest": {
+          "file": "sources/2V_3NN_D211/parent_manifest.json",
+          "sha256": "7f034f85416dd96e4a566a81dda40c6e7ec2a05be9e3ec54f66a88a269fcf274"
+        },
+        "parent_source_input": {
+          "file": "sources/2V_3NN_D211/parent_source_input.in",
+          "sha256": "b2286cbd3963ac602b3e290814d43b5048206ebe15ddb492d5bbcb54b1e5acce"
+        },
+        "parent_geometry": {
+          "file": "sources/2V_3NN_D211/parent_geometry.json",
+          "sha256": "5fc90ca8d32ed444597c1b98c431980ffd4b5cbe400474ad2976b9b408cd8732"
+        },
+        "aligned_step": {
+          "file": "sources/2V_3NN_D211/aligned_step.json",
+          "sha256": "1f2dc26fefdbd2a17ce5b9e08e9d0c563388c52e0fc3fac738e06b68875e0b51"
+        }
+      },
+      "parent_attempt_name": "20260925T180754Z-26f13fd58456410988446830df649391",
+      "completed_geometry_sha256": "5491576419fae016e5afc926958093381c313a313f5b880878f5ee0a39310f6b"
+    },
+    "2V_5NN_D310": {
+      "input": "qe/inputs/2V_5NN_D310/pw.in",
+      "sha256": "f7e56bce5df6c3edcbd2eddabcc5011772dba088b0483468444244a57924a09d",
+      "nat": 106,
+      "q": 2,
+      "structure": "structures/2V_5NN_D310/POSCAR",
+      "structure_sha256": "be13dd2aab3e10f94847baffb228972d3397a93a0f45e405a250905130c400fa",
+      "removed_parent_ids": [
+        43,
+        100
+      ],
+      "cell_A": [
+        [
+          12.444802828,
+          4.8e-08,
+          3.56e-07
+        ],
+        [
+          5.3e-08,
+          11.925391415,
+          -2.21e-07
+        ],
+        [
+          3.55e-07,
+          -2.2e-07,
+          11.937111948
+        ]
+      ],
+      "continuation_sources": {
+        "parent_pw_in": {
+          "file": "sources/2V_5NN_D310/parent_pw_in.in",
+          "sha256": "88de34881ba56160e1f6bed6d05a1fd320bb667ac9a8ad32bec291428636dc2d"
+        },
+        "parent_pw_out": {
+          "file": "sources/2V_5NN_D310/parent_pw_out.out",
+          "sha256": "b1b8909aa3917b62c40b036fac4b4c19b4a0480f328d55506cb6e4560d68ec2c"
+        },
+        "parent_attempt": {
+          "file": "sources/2V_5NN_D310/parent_attempt.json",
+          "sha256": "5a65174755bc44c38c5b028dc287340d81529ccb2801223b6056eb90456da710"
+        },
+        "parent_manifest": {
+          "file": "sources/2V_5NN_D310/parent_manifest.json",
+          "sha256": "7f034f85416dd96e4a566a81dda40c6e7ec2a05be9e3ec54f66a88a269fcf274"
+        },
+        "parent_source_input": {
+          "file": "sources/2V_5NN_D310/parent_source_input.in",
+          "sha256": "24e013dc55ba496a1271e2aa68b7b2404b939273927e04f7d31c539f28cca78c"
+        },
+        "parent_geometry": {
+          "file": "sources/2V_5NN_D310/parent_geometry.json",
+          "sha256": "5fc90ca8d32ed444597c1b98c431980ffd4b5cbe400474ad2976b9b408cd8732"
+        },
+        "aligned_step": {
+          "file": "sources/2V_5NN_D310/aligned_step.json",
+          "sha256": "6f206130c1f5c13c85cd81d3c9111001fc1cb3d70a915a8500346a38175c0a37"
+        }
+      },
+      "parent_attempt_name": "20260925T180754Z-c8859b1119b9464fa390bdd6258e468d",
+      "completed_geometry_sha256": "5b8e1cfc4dc5de6009827d78856956808ce6418a35efd9ff0bda61ab7dbe0037"
+    }
+  },
+  "continuation_semantics": "New BFGS and fresh electrons at each verified completed SCF geometry, not checkpoint restart",
+  "alignment_sha256": "18b8e74d9931e2ada5d7df4fa2cef82ee2213d23c41c8b534d942c2bb6c365df"
+}

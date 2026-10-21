@@ -1,0 +1,26 @@
+<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><title>五態 k4 輸入與評論核對</title>
+<style>body{max-width:1080px;margin:40px auto;padding:0 28px;color:#23313d;font:17px/1.65 'Microsoft JhengHei',sans-serif} h1{font-size:30px} h2{font-size:23px;margin-top:34px} table{border-collapse:collapse;width:100%}td,th{padding:10px;border-bottom:1px solid #ccd5df;text-align:left} .status{background:#eef4fa;border-left:5px solid #2476a7;padding:16px}img{max-width:100%}pre{white-space:pre-wrap;font:inherit}a{color:#135d92}</style>
+<h1>把差異拆清楚，再補關鍵驗證</h1><p class="status">五態輸入已準備，117 項本機查核通過；尚未提交。<br>本頁沿用 10/3 16:40 的歸檔資料，沒有查詢新的作業狀態。</p>
+<p>這份意見的主要方向可以採用：先看無空缺的柱子，再看空缺額外造成的變化，最後比較形成能。它們是三組互相對照的證據，還不是已證明的因果鏈。</p>
+<h2>小柱的差異已經清楚，原因還沒有定案</h2>
+<table><tr><th>R15 指標</th><th>QE</th><th>OF pilot</th></tr>
+<tr><td>單空缺形成能（eV）</td><td>0.747118</td><td>0.598151</td></tr>
+<tr><td>空缺造成的軸長變化</td><td>+0.0759%</td><td>-0.1470%</td></tr>
+<tr><td>配對位移最大值（Å）</td><td>0.1343</td><td>0.1450</td></tr>
+<tr><td>配對位移 RMS（Å）</td><td>0.04147</td><td>0.05252</td></tr></table>
+<p>位移以同尺寸、已鬆弛的無空缺柱為基準；扣掉均勻晶胞形變與共同平移。空缺引起的表面反應仍包含其中。原有 bulk「約兩倍最大位移」數字保留，但不能把它當成錯誤結合能的原因。</p>
+<img src="existing_analysis/paired_displacements.png" alt="以已鬆弛無空缺柱為基準的逐原子位移">
+<p>兩方法的 XC、偽勢、實際半徑不同；QE 柱子取樣與 OF stress 的驗證也未完成。因此，現在能說的是「能量和軸向反應都不同」，還不能說哪個機制已被證明。</p>
+<h2>五態 k4 的審查內容</h2><ul><li><a href="inputs/0V/pw.in">0V — pw.in</a></li><li><a href="inputs/1V/pw.in">1V — pw.in</a></li><li><a href="inputs/2V_1NN_D110/pw.in">2V_1NN_D110 — pw.in</a></li><li><a href="inputs/2V_2NN_D100/pw.in">2V_2NN_D100 — pw.in</a></li><li><a href="inputs/2V_5NN_D310/pw.in">2V_5NN_D310 — pw.in</a></li></ul>
+<p>保留 800 eV、PAW/PBE 與原門檻。三方向 PBC、全晶胞鬆弛；從各自舊終態出發。提案為每組 29 ranks／64 GiB、Slurm 72 小時，五組可並行。64 GiB 仍需實際記憶體查核。</p>
+<p>可比較單空缺形成能、三種配對結合能、1NN−2NN 與 5NN−1NN；不能認證六配對完整排序。後續 k5 輸入須等新的 k4 終態通過驗收後生成。</p>
+<p><a href="protocol.json">完整協定</a> · <a href="five_case_review.csv">五態條件表</a> · <a href="manifest.json">來源與 hashes</a> · <a href="preparation_QA.json">117 項查核</a></p>
+<h2>給 Luder 的簡短更新草稿</h2><pre lang="en">The QE small-column pristine and single-vacancy endpoints pass the present relaxation acceptance criteria. Under the current protocols, the vacancy formation energies are 0.747 eV (QE) and 0.598 eV (OF pilot). Their axial responses have opposite signs: +0.076% and −0.147%, respectively.
+
+Using atom-matched relaxed-pristine references, the maximum vacancy-associated displacements are 0.134 Å (QE) and 0.145 Å (OF). OF has approximately 27% higher RMS and 28% higher 95th-percentile displacement. This analysis removes the pristine baseline but retains vacancy-induced surface response. It does not overturn the separate bulk displacement measurements or establish a cause for the energy difference.
+
+The old bulk QE pair ordering remains unvalidated: several binding energies change by more than 0.2 eV between k3 and k4 at fixed geometry. Five k4 variable-cell inputs (0V, 1V, 1NN, 2NN and 5NN) are prepared for review, with all existing results preserved. They have not been submitted. Any subsequent k5 checks must use the newly accepted k4 geometries.
+
+Both the nanocolumn sampling and the OF stress pipeline still require validation. The methods also use different exchange-correlation functionals and pseudopotentials, and their topology-matched columns have slightly different physical radii. The present differences should therefore be reported as observations, without assigning a mechanism yet.
+</pre>
+<p><a href="README_ZH.txt">完整中文說明與承諾輸出</a> · <a href="LUDER_UPDATE_DRAFT_EN.txt">英文草稿</a> · <a href="existing_analysis/summary.json">本次引用的原分析數據</a></p></html>

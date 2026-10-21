@@ -1,0 +1,75 @@
+{
+  "updated_utc": "2026-10-18T05:03:51.347915+00:00",
+  "data_folder": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261018",
+  "QE_k9": {
+    "job_ids": [
+      "2253295_0",
+      "2253295_1"
+    ],
+    "slurm_state": "COMPLETED",
+    "accepted_scf_diagnostics": true,
+    "accepted_relaxed_endpoints": false,
+    "energy_eV": [
+      -51563.225307869354,
+      -51024.97445348419
+    ],
+    "Fmax_eV_A": [
+      0.046689341600464694,
+      0.03382423752612098
+    ],
+    "sigma_zz_GPa": [
+      -0.05553008351076801,
+      -0.03638700102318318
+    ],
+    "k7_to_k9_paired_energy_change_meV": -1.215520707773976,
+    "paired_scalar_5meV_check": true,
+    "maximum_force_vector_changes_eV_A": [
+      0.018339244,
+      0.005628653
+    ],
+    "release_new_sizes": false,
+    "next_minimum": "Two same-geometry k11 SCFs to assess remaining force/energy sensitivity, then choose representative R15 re-relaxation sampling; not submitted in this audit"
+  },
+  "R13_gate": {
+    "job_id": "2253353",
+    "status": "passed",
+    "elapsed_s": 745.2539590708911,
+    "maximum_force_FD_error_eV_A": 8.821427056981794e-07,
+    "repeat_force_difference_eV_A": 1.8158673045072723e-05,
+    "scope": "Checkpoint-specific self-consistent force spot gate; not a global surface/functional validation",
+    "physical_attempts": {
+      "logical_calls": 8,
+      "physical_attempts": 10,
+      "failed_physical_attempts": 3,
+      "HEG_retries": 2,
+      "all_physical_attempts_converged": false,
+      "retry_policy": "Only TN warm native flag=1 permits one HEG attempt; no other failure is retried."
+    }
+  },
+  "R13_relaxation": {
+    "job_id": "2253354",
+    "status": "intentionally_interrupted_after_ionic_stagnation",
+    "slurm_state": "FAILED",
+    "termination_cause": "Deliberate SIGTERM caught by runner; not spontaneous electronic failure, OOM or time limit",
+    "accepted": false,
+    "last_completed_ionic_step": 483,
+    "interrupted_proposed_step": 484,
+    "last_fmax_eV_A": 0.0036242870975847336,
+    "last_filter_fmax_eV_A": 0.010078513948577809,
+    "last_sigma_zz_GPa": -0.022252404431343596,
+    "coherent_bundle_sha256": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799",
+    "next_minimum": "Reuse TN electronic method and coherent checkpoint; restore axial freedom and test a bounded ionic method with stagnation detection. No new optimizer is validated by this audit."
+  },
+  "accepted_OF_pairs_unchanged": [
+    "R11",
+    "R15",
+    "R17",
+    "R20"
+  ],
+  "OF_accepted_endpoints": 9,
+  "OF_total_endpoints": 10,
+  "new_submissions": [],
+  "automatic_monitoring": false,
+  "NAS_uploaded": false,
+  "canonical_energy_tables_modified": false
+}

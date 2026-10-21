@@ -1,0 +1,66 @@
+{
+  "scope": "Two R15 k9 fixed-geometry SCF diagnostics; new-size relaxations remain pending sampling validation",
+  "utc": "2026-10-17T16:00:17.772064+00:00",
+  "snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1",
+  "runroot": "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+  "parent_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z",
+  "k7_review_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1",
+  "indices": [
+    0,
+    1
+  ],
+  "preflight_passed": true,
+  "test_only": {
+    "command": [
+      "sbatch",
+      "--test-only",
+      "--parsable",
+      "--export=ALL,REVIEW_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1,PARENT_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z,K7_REVIEW_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1,QE_RUN_ROOT=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "--output=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-%A_%a.out",
+      "--error=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-%A_%a.err",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1/submit_k9.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1318.966 remaining.\nsbatch: Job 2253294 to start at 2026-10-18T00:01:20 a using 29 processors on nodes cpn3044 in partition ct56\n"
+  },
+  "status": "submitted",
+  "submission": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--export=ALL,REVIEW_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1,PARENT_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z,K7_REVIEW_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1,QE_RUN_ROOT=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "--output=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-%A_%a.out",
+      "--error=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-%A_%a.err",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1/submit_k9.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "2253295\n",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1318.966 remaining.\n"
+  },
+  "job_id": "2253295",
+  "job_details": {
+    "command": [
+      "scontrol",
+      "show",
+      "job",
+      "2253295"
+    ],
+    "returncode": 0,
+    "stdout": "JobId=2253295 ArrayJobId=2253295 ArrayTaskId=0-1%2 ArrayTaskThrottle=2 JobName=al-qe-R15-k9\n   UserId=dawson666(38507) GroupId=MST114175(103796) MCS_label=N/A\n   Priority=20001 Nice=0 Account=mst114175 QOS=normal\n   JobState=PENDING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=3-00:00:00 TimeMin=N/A\n   SubmitTime=2026-10-18T00:00:21 EligibleTime=Unknown\n   AccrueTime=Unknown\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-18T00:00:21 Scheduler=Main\n   Partition=ct56 AllocNode:Sid=lgn301:679446\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=29 NumTasks=29 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=29,mem=256G,node=1,billing=29\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=29 MinMemoryNode=256G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1/submit_k9.sbatch\n   SubmitLine=sbatch --parsable --export=ALL,REVIEW_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1,PARENT_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z,K7_REVIEW_SNAPSHOT=/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1,QE_RUN_ROOT=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015 --output=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-%A_%a.out --error=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-%A_%a.err /work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1/submit_k9.sbatch\n   WorkDir=/home/dawson666\n   StdErr=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-2253295_4294967294.err\n   StdIn=/dev/null\n   StdOut=/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015/slurm-R15-k9-2253295_4294967294.out\n   TresPerTask=cpu=1\n\n",
+    "stderr": ""
+  },
+  "queue_snapshot": {
+    "command": [
+      "squeue",
+      "-h",
+      "-j",
+      "2253295",
+      "-o",
+      "%i|%T|%M|%l|%R"
+    ],
+    "returncode": 0,
+    "stdout": "2253295_[0-1%2]|PENDING|0:00|3-00:00:00|(None)\n",
+    "stderr": ""
+  }
+}

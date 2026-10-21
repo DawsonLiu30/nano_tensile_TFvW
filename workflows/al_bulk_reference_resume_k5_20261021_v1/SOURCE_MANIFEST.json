@@ -1,0 +1,26 @@
+{
+  "files": {
+    "campaign.json": "6fa6458e27185974351c74553eb2f2e21ff7c0ab97e96a7ac6cb2b86ee86464c",
+    "frozen_bulk/inputs/0V/pw.in": "91febfb02fcbf5283b05ed3631bcd57d5cbdd0d60643d340a0a87f2cc592fd0e",
+    "frozen_bulk/inputs/1V/pw.in": "39dd260968621e432f1b4941df53b08a182b086e279df1a5b2e9f9678e5778ce",
+    "frozen_bulk/inputs/2V_1NN_D110/pw.in": "6a5a9cae4832549ea5978432273183db4754179cc38f87c7b2d45f9c9512ca64",
+    "frozen_bulk/inputs/2V_2NN_D100/pw.in": "729d8e4fd78f4ca4739439e7c389080363e5cf6e779733752cc4fb06ac1bbde3",
+    "frozen_bulk/inputs/2V_5NN_D310/pw.in": "f46da1173d3ed8aa83ff19659a9d7e322f008b1af421f174b9e622e514acb039",
+    "frozen_bulk/protocol.json": "1adf260e2dddb5d94b6fef9aabb584b61ccc6dcb4f8f454cf9090ace5fd9d470",
+    "frozen_bulk/pseudo/Al_PAW_PBE.UPF": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+    "frozen_bulk/qe_manifest.json": "233402020921b344c34e40c18e46fd044cae58cd400935a5ccd9db4461641ebb",
+    "hpc/evaluate.sbatch": "e8a9cce2c5475f2936f27aa0dacd72d32b33b23e0a9eec59bd4663095875354d",
+    "hpc/run.sbatch": "06543230627963c66e9faafa0e5eb11550b26018946da8309cec850d1e8ca231",
+    "restart_inputs/2V_1NN_D110/pw.in": "28c4b7a53345680b46b99d6ba6f6f4934f8c477081482d32047f66ec8fbb7ead",
+    "restart_inputs/2V_2NN_D100/pw.in": "84a28cd761c075c7715d7d6d4d6438748d3286c46ba99f34cc0a1ae9eb82b326",
+    "restart_inputs/2V_5NN_D310/pw.in": "49bddee868d65f85dd8ab6b33a52ee20fd0aaf4bd679fc4bf5efff39a7e155f6",
+    "scripts/k5_diagnostics.py": "cf87c0857e9d70edcf09a828db3b79e0dfaf1b438b4c8795bde0bd56de5fbc28",
+    "scripts/restart_adapter.py": "098b7af14976b50090a7be5ff378cdb955559983987f206133711588213f1b07",
+    "scripts/run_bulk_k4_validation_20261015.py": "5381676c98ca1bb8724be47f31623ab99074405edf9f51f51c3c3b3807391a92",
+    "scripts/run_bulk_reference.py": "46ad0131c2518e14b10bcd126fec559d510a045d4a227af2cbf55b4ca628f5de",
+    "scripts/run_bulk_vacancy_qe_vcrelax_20260925.py": "f2af3ddf891e7f34fd38c0ccb7238e301eaff816faf230ee957842ed2a2ad62b",
+    "scripts/run_luder_qe_20260930.py": "6b6c687b91776586f48fe530d9b1cf2d1a22931b0a9b6109f6d4ab6c8d0abdb2",
+    "scripts/run_nano_qe_memory_recovery_20261001.py": "4cd11690f179f406e2646fdbf4330705ce94b2118b55fbc91543afebd9a956b0",
+    "scripts/run_nano_qe_restart_20261004.py": "2e2d496d529d6e8dd924e767da1e5f1f7a4ed506a866c59ae337422095856ec1"
+  }
+}

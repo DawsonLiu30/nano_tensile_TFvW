@@ -1,0 +1,71 @@
+{
+  "accepted": true,
+  "scope": "preflight only, no DFT",
+  "revision_manifest_sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+  "parent_bundle_sha256": "d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f",
+  "completed_ionic_step": 12,
+  "n_atoms": 76,
+  "electrons": 228,
+  "grid": [
+    140,
+    140,
+    96
+  ],
+  "cell_A": [
+    [
+      20.263429469800002,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      20.263429469800002,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      13.497656993075676
+    ]
+  ],
+  "optimizer_policy": {
+    "revision": "R13_axial_BFGSLineSearch_continue_20261018_v1",
+    "optimizer": "BFGSLineSearch",
+    "maxstep_generalized_A": 0.02,
+    "cell_mask": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "exp_cell_factor": "n_atoms",
+    "c1": 0.23,
+    "c2": 0.46,
+    "alpha": 10.0,
+    "stpmax": 50.0,
+    "max_ionic_steps": 120,
+    "max_logical_scf": 360,
+    "cycle_periods": [
+      2,
+      4
+    ],
+    "cycle_windows": 3,
+    "cycle_position_tolerance_A": 0.0001,
+    "cycle_energy_tolerance_eV": 1e-06,
+    "cycle_force_relative_improvement": 0.05,
+    "electronic_method": "TN",
+    "econv_Ha_per_atom": 1e-11,
+    "ncheck": 3,
+    "scope": "Bounded continuation; fresh inverse Hessian, no parent optimizer history loaded"
+  },
+  "force_target_eV_A": 0.001,
+  "stress_target_GPa": 0.05
+}
+{
+  "case": "R13_0V",
+  "status": "converged",
+  "attempt_dir": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_005_axial_linesearch_continue",
+  "elapsed_s": 14465.497798958793
+}

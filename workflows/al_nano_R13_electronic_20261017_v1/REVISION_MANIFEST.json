@@ -1,0 +1,59 @@
+{
+  "revision": "R13_bounded_TN_force_gate_20261017_v1",
+  "expected": {
+    "case": "R13_0V",
+    "parent_manifest": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+    "parent_gate": "b1ddc3cb06fed8e341eaf2197e9436c5841e25f6f34236a056ca70527374acd0",
+    "smallstep_revision": "fff9270f92d11dbdd820150675196eb14ed75dc9c6eb5890febeb8ec0e05c0e1",
+    "parent_result": "45fc08cf8cbeb527428f9e2495868d3033dc452eed8737432784549cd46731f3",
+    "bundle": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+    "stress_candidate": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb"
+  },
+  "settings": {
+    "candidate_method": "TN",
+    "candidate_econv_Ha_per_atom": 1e-11,
+    "ncheck": 3,
+    "repeat_energy_max_eV": 1e-05,
+    "repeat_force_max_eV_A": 0.0001,
+    "repeat_sigma_zz_max_GPa": 0.001,
+    "force_fd_error_max_eV_A": 0.0001,
+    "force_fd_step_difference_max_eV_A": 5e-05,
+    "force_fd_steps_A": [
+      0.001,
+      0.0005
+    ],
+    "force_parent_site_id": 58,
+    "force_axis": 2,
+    "logical_scf_max": 8,
+    "physical_scf_max": 14,
+    "diagnostic_seconds_max": 6600,
+    "ionic_steps_max": 1000,
+    "ionic_seconds_max": 79200,
+    "force_target_eV_A": 0.001,
+    "sigma_zz_target_GPa": 0.05,
+    "retry_policy": "TN warm native flag=1 -> at most one independent HEG attempt; all other failures stop"
+  },
+  "ionic_policy": {
+    "revision": "fixed_cell_smallstep_LBFGS_gated_TN_20261017_v1",
+    "optimizer": "LBFGS",
+    "maxstep_A": 0.01,
+    "cell_degrees_of_freedom_during_finish": "none; cell fixed at coherent parent checkpoint",
+    "filter_role": "original z-only FrechetCellFilter retained for final force/stress acceptance",
+    "electronic_optimizer": "TN econv 1e-11 Ha/atom; independent force gate required",
+    "scope": "same smallstep ionic family; electronic candidate must pass independent checkpoint force gate"
+  },
+  "files": {
+    "recover_electronic.py": "c62fc261a410c97aa9e771d3179754f876b20ceaddbc1b1837d94509aefc68d9",
+    "electronic_trace.py": "48487869f688977da955cf83d380d86add1de2b2bc3f3f7105626b2abe526160",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "staged_optimizer.py": "467a766e1678de1f2e202a8d6a907dca40d786e12ff231ddb499f13cd988ee84",
+    "test_recovery.py": "570a2900d01b562205c01a78d505045ad39945785cb9019e0948aaf86c31ad6e",
+    "freeze_revision.py": "d9a6295a3681fe3f9cd8e135f4c6b6e8c8154a9c6dc83b31ad81d4a3854d5b61",
+    "staged_optimizer.diff": "5e0aedc0aba60984a9577a6aa83b5a547ab5488fda4d8256613b6b62ecf11e2b",
+    "README.txt": "401e80917f1509ca10301f58176fb72edfee1b6309852e774a09c62aa3d49f71",
+    "diagnose.sbatch": "40d5dcfa7fb4455c21ba560d61ec5463e0b546665c538b835121e8c8c50b0250",
+    "continue.sbatch": "2abe1b91c7093ca7dfab243f7da6ba5ca0a6efbf11067b0154cf86d110b04199",
+    "submission_metadata.json": "531b953f756096f9262f97e2900aec2d290bb9835aeb0a931c1f7e0ff2a73adb"
+  },
+  "scope": "Bounded checkpoint electronic/force diagnosis, optional guarded smallstep continuation; no submission in these scripts"
+}

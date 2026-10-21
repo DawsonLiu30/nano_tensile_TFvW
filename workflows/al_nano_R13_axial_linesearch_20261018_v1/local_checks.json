@@ -1,0 +1,30 @@
+{
+  "scope": "Local no-DFT synthetic verification; remote ASE3.25 source/API preflight and physical trial still required",
+  "synthetic_tests": {
+    "passed": 7,
+    "total": 7
+  },
+  "api_smoke_local_ASE": "3.29.0 PASS",
+  "shell_bash_n": "PASS",
+  "trial_sbatch_LF": "PASS",
+  "frozen_file_hashes": {
+    "recover_axial.py": true,
+    "recovery_base.py": true,
+    "electronic_trace.py": true,
+    "electronic_trace.diff": true,
+    "staged_optimizer.py": true,
+    "test_recovery.py": true,
+    "freeze_revision.py": true,
+    "trial.sbatch": true,
+    "README.txt": true,
+    "api_smoke.py": true,
+    "runtime_sources/ase.filters.py": true,
+    "runtime_sources/ase.optimize.bfgslinesearch.py": true,
+    "runtime_sources/ase.optimize.optimize.py": true,
+    "runtime_sources/ase.utils.linesearch.py": true,
+    "runtime_sources/dftpy.utils.py": true,
+    "runtime_sources/manifest.json": true
+  },
+  "manifest_sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+  "base_unchanged": true
+}

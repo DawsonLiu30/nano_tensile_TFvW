@@ -1,0 +1,64 @@
+{
+  "revision": "R13_axial_BFGSLineSearch_20261018_v1",
+  "expected": {
+    "case": "R13_0V",
+    "original_manifest": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+    "electronic_revision": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+    "parent_result": "23cc9d706ad609edf1e9df4213f10d5a6fd79662e7a2a979ed67e57bb0777e8f",
+    "parent_bundle": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799",
+    "electronic_gate": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2",
+    "original_stress_gate": "b1ddc3cb06fed8e341eaf2197e9436c5841e25f6f34236a056ca70527374acd0",
+    "base_runner": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+  },
+  "optimizer_policy": {
+    "revision": "R13_axial_BFGSLineSearch_20261018_v1",
+    "optimizer": "BFGSLineSearch",
+    "maxstep_generalized_A": 0.005,
+    "cell_mask": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "exp_cell_factor": "n_atoms",
+    "c1": 0.23,
+    "c2": 0.46,
+    "alpha": 10.0,
+    "stpmax": 50.0,
+    "max_ionic_steps": 60,
+    "max_logical_scf": 120,
+    "cycle_periods": [
+      2,
+      4
+    ],
+    "cycle_windows": 3,
+    "cycle_position_tolerance_A": 0.0001,
+    "cycle_energy_tolerance_eV": 1e-06,
+    "cycle_force_relative_improvement": 0.05,
+    "electronic_method": "TN",
+    "econv_Ha_per_atom": 1e-11,
+    "ncheck": 3,
+    "scope": "Short candidate trial; not yet a physically accepted optimizer workflow"
+  },
+  "files": {
+    "recover_axial.py": "553aa958d1684538a3a5715da6d7fcc4385aa12e68c742dee75986f9b8192880",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "electronic_trace.diff": "3378b7ed207ec439746bc3f8b42f88b6061dda134492907ba0a0cb66e7b0e7b2",
+    "staged_optimizer.py": "455d7fe2bb7c1892bb1371e788eeb4c49d5a510a18950740d82865519f3eb439",
+    "test_recovery.py": "16d40b1d490b3afd3ee24ca60b135b53124ed07c7ee5d9fa39b3948ac766dcbe",
+    "freeze_revision.py": "fdf0e2d916f42ff4394b55b9ad78d79afaffcb580dca9cbad80a9566c43bd498",
+    "trial.sbatch": "aa8d1ef40191bde7f6ce48f29f0c337c84048d1a05cf45b8b3b9b08c9e095139",
+    "README.txt": "2614717953b7a1b70fa8656d199207c0f9e0211fd809c82d10a7ba7088ca708c",
+    "api_smoke.py": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418",
+    "runtime_sources/ase.filters.py": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb",
+    "runtime_sources/ase.optimize.bfgslinesearch.py": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a",
+    "runtime_sources/ase.optimize.optimize.py": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e",
+    "runtime_sources/ase.utils.linesearch.py": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c",
+    "runtime_sources/dftpy.utils.py": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8",
+    "runtime_sources/manifest.json": "ea698b01e8e788eb592d33873eba05f7b4a845144288d856fd1e93999709b2af"
+  },
+  "scope": "Single bounded ctest candidate, not yet physically accepted"
+}

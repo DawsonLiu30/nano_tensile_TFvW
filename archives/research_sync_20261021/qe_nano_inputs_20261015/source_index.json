@@ -1,0 +1,152 @@
+[
+  {
+    "path": "C:/OFDFT/nano_tensile_TFvW/campaigns/al_nano_qe_memory_recovery_20261001/qe_manifest.json",
+    "sha256": "fa8150de7b9d3bd549b276d33decec60a536088a6387ecd1cc4718d9ffc0d370",
+    "bytes": 64606,
+    "purpose": "verified predecessor protocol, binary and PP"
+  },
+  {
+    "path": "C:/OFDFT/nano_tensile_TFvW/campaigns/al_nano_qe_memory_recovery_20261001/qe/nano_R15_0V/pw.in",
+    "sha256": "f5e9660c51bbf77731f41d7e1248954318264e592fc25dce2e54e9abef841bae",
+    "bytes": 6754,
+    "purpose": "scientific namelists predecessor"
+  },
+  {
+    "path": "C:/OFDFT/nano_tensile_TFvW/campaigns/al_nano_qe_memory_recovery_20261001/pseudo/Al_PAW_PBE.UPF",
+    "sha256": "450c947cbbf30c33a5a77685bbe9a270947816f8a93837c02c749d0ee4e3ab4a",
+    "bytes": 1678298,
+    "purpose": "unchanged PBE PAW"
+  },
+  {
+    "path": "C:/OFDFT/nano_tensile_TFvW/docs/CONVERGENCE_BASELINES.md",
+    "sha256": "990979bffed6a16f353262f4bd3fc60ad469c68d7ea95f9f0588e4460056fcee",
+    "bytes": 11599,
+    "purpose": "required calibration"
+  },
+  {
+    "path": "C:/OFDFT/nano_tensile_TFvW/docs/convergence_baselines_20261011.json",
+    "sha256": "27ddd1af20b1f8db255f59dc4058eccfa3885a19407c7953fc346de84993c4f4",
+    "bytes": 12373,
+    "purpose": "required calibration"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R11_0V/geometry.json",
+    "sha256": "59ecbc316f1da3064ae853ad498493ea376978abbc030e0a81265361ea9dbaa8",
+    "bytes": 2096,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R11_0V/structure.extxyz",
+    "sha256": "3e5bd68de51317a07946bb74c56fe045269e9f97f4add09b20eb98ae98d9ffdd",
+    "bytes": 4204,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R11_1V/geometry.json",
+    "sha256": "bbde40134a4aa48a5a8055d8866e17dc635d8ea570a253377878eb5d9b2d3384",
+    "bytes": 2151,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R11_1V/structure.extxyz",
+    "sha256": "1d2f687f519240c3db285641fdac065da48e4d56a0e8506365e9dd56087b376d",
+    "bytes": 4132,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R13_0V/geometry.json",
+    "sha256": "09b7570ed2feefa691894f162fdc7901bdbbeedb82e82d5c3b872e5a68d07e62",
+    "bytes": 2287,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R13_0V/structure.extxyz",
+    "sha256": "1b08981a29f036e6e0352ce918261549ac492ae15ee7c63382a3dcc1bd199791",
+    "bytes": 5932,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R13_1V/geometry.json",
+    "sha256": "105fc8edec9faafe65a61150c7602c8eed46e22f22c0d4b738259fec92045c04",
+    "bytes": 2343,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R13_1V/structure.extxyz",
+    "sha256": "0eb7e6ff4c51401b304db7c011c175cae42c52a062e4e200de643e99d8072105",
+    "bytes": 5860,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R17_0V/geometry.json",
+    "sha256": "53106ad3818932c93987f4f64ed14cabd447b267da7307f8f4d42147af9c63d8",
+    "bytes": 2738,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R17_0V/structure.extxyz",
+    "sha256": "8d861b42975f0b97904120b031f993afe9f55a17e5d6e76dfccf21b8adfbe724",
+    "bytes": 9688,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R17_1V/geometry.json",
+    "sha256": "8dafc5a85b47eddd604ba54a05a4c624339b144366d4ccdbca4092abda28d669",
+    "bytes": 2794,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/QE/R17_1V/structure.extxyz",
+    "sha256": "e175f5b2b00b6eaac3b0003af0336f5f8523e7d85682d03535c1728c41a3308a",
+    "bytes": 9616,
+    "purpose": "frozen candidate geometry"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/result.json",
+    "sha256": "8f09819992dcce1fa4ae846048209a83e584af9ecc0b4b69f593f5df0bff940e",
+    "bytes": 19715,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/pw.in",
+    "sha256": "f5e9660c51bbf77731f41d7e1248954318264e592fc25dce2e54e9abef841bae",
+    "bytes": 6754,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/pw.out",
+    "sha256": "e1c99391a164eb452b89dc7365fa3c52e0ad6a0206d76df537361c2309e2d2a0",
+    "bytes": 5344506,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_0V/scratch/nano_R15_0V.save/data-file-schema.xml",
+    "sha256": "f245ad1e77efefb7e8a339e408cf5dbe80d48a114c7b4c07ae68662628b55716",
+    "bytes": 1218408,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/result.json",
+    "sha256": "fb02284faf0d223fe070765bb057449bfe643b3f30be933cfc99808c608ac603",
+    "bytes": 19486,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/pw.in",
+    "sha256": "eb43df5bd0012f4a1bb748d8350ae18220908074b9bdf84db88d06e55f1b2816",
+    "bytes": 6697,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/pw.out",
+    "sha256": "a5ae1d886179e1d2b25430c71af1d537a724716a01d551d38e575873c32f230b",
+    "bytes": 6873801,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  },
+  {
+    "path": "C:/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/QE/03_Nanocolumn_R15_relaxed/nano_R15_1V/scratch/nano_R15_1V.save/data-file-schema.xml",
+    "sha256": "8d8b468cd84d53a2aa638700a7176490bd16afa189b72e29699fd0dd14207571",
+    "bytes": 1548601,
+    "purpose": "accepted R15 k3 baseline for same-geometry k5 test"
+  }
+]

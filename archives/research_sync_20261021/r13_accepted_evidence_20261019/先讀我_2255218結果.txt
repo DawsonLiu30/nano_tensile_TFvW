@@ -1,0 +1,37 @@
+2026-10-19 最新計算資料與分析
+
+R13 完整柱已通過原定門檻。
+作業2255218正常完成，用時4小時1分12秒；完成46個離子步、185次電子計算。
+最大原子力0.000976534 eV/Å，軸向應力0.000040852 GPa。
+獨立核查596/596項通過。這些是現有資料的檢查項目，不是另外跑596組DFT。
+
+本次真正補上的結果
+OF現在有R11、R13、R15、R17、R20共五組完整的0V/1V數值合格端點。
+使用各自OF總能與OF bulk μAl計算，R13空缺形成能為0.616366216 eV。
+五組形成能為：R11 0.424814871、R13 0.616366216、R15 0.598150394、R17 0.628738683、R20 0.631826061 eV。
+
+如何解讀
+這次能量下降約0.951 eV，伴隨明顯的原子重排。R13完整柱與含空缺柱相對原始理想柱的位移都很大；但把兩個鬆弛終態逐原子對齊、扣掉晶胞形變後，RMS差只有0.02994 Å，最大差0.10532 Å。這支持它們具有相似的重排後結構，缺格仍留在原本的parent_site_id 33。
+五組數據可用來比較已達力／應力門檻的端點，但不能寫成單純的『半徑越大，形成能越高』：R13形成能高於R15。小柱的整體結構重排與空缺造成的額外反應需分開說明。結晶相分類、全域最低能與網格／真空／電子精度對形成能的敏感度，仍各有待驗證的範圍。
+R13_0V電子TN比舊R13_1V電子LBFGS使用更嚴精度；方法與來源差異已逐項記錄。
+QE最新仍是R15 k9固定幾何診斷；其力還高於鬆弛標準，六個新尺寸計算未放行。
+
+資料分類（本資料夾內）
+R13_AXIAL_CONTINUATION_RESULTS/R13_0V：原始result、能量分項、log、結構、trajectory、力、密度/結構bundle與optimizer state。
+  final.extxyz／final.vasp：最終結構；relax.traj：完整47幀含初始。
+  result.json：最終能量、力、應力與計算驗收。
+  inputs/：實際使用的程式與輸入副本，保持原檔。
+R13_AXIAL_CONTINUATION_RESULTS/ACCOUNTING：Slurm完成狀態與stdout/stderr。
+R13_AXIAL_CONTINUATION_RESULTS/ANALYSIS/INDEPENDENT_R13：596項查核、逐步診斷與可重跑腳本。
+ANALYSIS/PAIR：五尺寸能量／分項／結構表、逐原子配對位移與分析腳本。
+R13_AXIAL_CONTINUATION_RESULTS/ANALYSIS/FIGURES：本次收斂圖、繪圖數據與腳本。
+CURRENT_STATUS.json：本輪完整狀態，QE沿用10/18已核對結果。
+WORKFLOW_ACCEPTANCE_2255218.json：本次成功流程及版本證據。
+HOW_TO_REUSE_ZH.txt：為何這次成功、與歷史方法的差異，以及下次如何複用。
+SOURCE_REFERENCES.json：10/17、10/18與Al_QE_DFTpy_DATA來源位置和hash。
+
+保存與使用
+這是增量資料包；請與既有LUDER_RESULTS_20261017、LUDER_RESULTS_20261018及Al_QE_DFTpy_DATA並列保存。
+先前資料與凍結腳本沒有覆寫。原有大密度、PP及父checkpoint以位置+SHA引用，避免重複占空間。
+新端點完整電子密度已包含在checkpoint_bundle.npz；遠端final_density/checkpoint_density兩份同內容檔未重複下載。
+本輪沒有提交新DFT、定時監控、上傳NAS或寄信。

@@ -1,0 +1,464 @@
+{
+  "schema_version": 1,
+  "baseline_id": "AL_CONVERGENCE_BASELINES_20261011",
+  "review_date": "2026-10-11",
+  "not_a_new_DFT_calculation": true,
+  "source": {
+    "path": "C:\\Users\\m1331\\Downloads\\qe_bulk_vacancy.pptx",
+    "preserved_copy": "C:\\OFDFT\\nano_tensile_TFvW\\docs\\reference\\qe_bulk_vacancy_20261011\\qe_bulk_vacancy.pptx",
+    "sha256": "e95c93a0c6404ddb166a791566f7393e65dc8b4c28ffdd11cc8e1dbba96ec73f",
+    "slides": 6,
+    "native_charts": 0,
+    "numeric_precision_rule": "Display-rounded numbers are preserved at the displayed precision; CSV precision is stored separately. No unlabeled curve is digitized into claimed exact data."
+  },
+  "QE_bulk_EOS": {
+    "source_slides": [
+      2,
+      3,
+      6
+    ],
+    "cell": "one-atom primitive FCC Al",
+    "EOS_a0_A": [
+      4.0,
+      4.01,
+      4.02,
+      4.03,
+      4.04,
+      4.05,
+      4.06,
+      4.07,
+      4.08
+    ],
+    "ecut_scan_eV": [
+      300,
+      400,
+      500,
+      600,
+      800,
+      1000
+    ],
+    "ecut_scan_kmesh": [
+      16,
+      16,
+      16
+    ],
+    "ecut_scan_B0_exact_GPa": null,
+    "ecut_plot_original": "source_slide3_image1.png",
+    "ecut_plot_observation": "800 and 1000 eV lie near a plateau; exact point values are not printed.",
+    "kmesh_scan": [
+      {
+        "n": 20,
+        "B0_GPa_displayed": 76.87
+      },
+      {
+        "n": 24,
+        "B0_GPa_displayed": 77.4
+      },
+      {
+        "n": 30,
+        "B0_GPa_displayed": 77.91
+      },
+      {
+        "n": 40,
+        "B0_GPa_displayed": 77.99
+      },
+      {
+        "n": 60,
+        "B0_GPa_displayed": 77.97
+      },
+      {
+        "n": 80,
+        "B0_GPa_displayed": 77.96
+      }
+    ],
+    "k40": {
+      "a0_A": 4.039825,
+      "B0_GPa": 77.991
+    },
+    "k80": {
+      "a0_A": 4.039865,
+      "B0_GPa": 77.963
+    },
+    "absolute_delta": {
+      "a0_A": 4e-05,
+      "B0_GPa": 0.028
+    },
+    "adopted_kmesh_for_this_reference_cell": [
+      40,
+      40,
+      40
+    ],
+    "validation_kmesh": [
+      80,
+      80,
+      80
+    ],
+    "high_k_actual_ecut_eV": null,
+    "PP_XC_ecutrho_smearing_not_specified_in_PPT": true,
+    "scope": "Practical historical a0/B0 reference; not a k-point convergence certificate for a different defect or nanocolumn cell."
+  },
+  "QE_primitive_4x4x4_single_vacancy": {
+    "source_slides": [
+      2,
+      4,
+      6
+    ],
+    "pristine_atoms": 64,
+    "defect_atoms": 63,
+    "lattice_vector_length_A_approx": 11.43,
+    "volume_A3_approx": 1054.9,
+    "orthogonal_cubic": false,
+    "removed_site": "central",
+    "ecut_scan_at_k2": [
+      {
+        "ecut_eV": 300,
+        "Ef_eV_displayed": 0.7324
+      },
+      {
+        "ecut_eV": 400,
+        "Ef_eV_displayed": 0.7345
+      },
+      {
+        "ecut_eV": 500,
+        "Ef_eV_displayed": 0.7346
+      },
+      {
+        "ecut_eV": 600,
+        "Ef_eV_displayed": 0.7347
+      }
+    ],
+    "ecut_scan_at_k5": [
+      {
+        "ecut_eV": 400,
+        "Ef_eV_displayed": 0.572389
+      },
+      {
+        "ecut_eV": 500,
+        "Ef_eV_displayed": 0.57244
+      },
+      {
+        "ecut_eV": 600,
+        "Ef_eV_displayed": 0.572529
+      }
+    ],
+    "k_scan_ecut_eV": 600,
+    "k_scan": [
+      {
+        "n": 1,
+        "Ef_eV_displayed": -1.113,
+        "source_slide": 4
+      },
+      {
+        "n": 2,
+        "Ef_eV_displayed": 0.735,
+        "source_slide": 4
+      },
+      {
+        "n": 3,
+        "Ef_eV_displayed": 0.945,
+        "source_slide": 4
+      },
+      {
+        "n": 4,
+        "Ef_eV_displayed": 0.648,
+        "source_slide": 4
+      },
+      {
+        "n": 5,
+        "Ef_eV_displayed": 0.573,
+        "source_slide": 4
+      },
+      {
+        "n": 6,
+        "Ef_eV_displayed": 0.615,
+        "source_slide": 4
+      }
+    ],
+    "adopted_on_original_slide": {
+      "ecut_eV": 600,
+      "kmesh": [
+        5,
+        5,
+        5
+      ],
+      "Ef_eV_summary": 0.5725
+    },
+    "k5_to_k6_delta_meV_from_displayed_table": 42.0,
+    "k5_to_k6_delta_status": "approximate: k6 is known here only to 0.001 eV",
+    "kpoint_convergence_status": "not demonstrated by this series at meV precision",
+    "dense_cutoff_delta_meV_from_displayed_table": 0.14
+  },
+  "DFTpy_historical_PBE": {
+    "source_slides": [
+      2,
+      5,
+      6
+    ],
+    "functional": "TFvW; weights not stated in PPT",
+    "XC": "PBE-GGA",
+    "pseudopotential": "BLPS local Al recpot; file/hash absent from PPT",
+    "cell": "primitive FCC supercells",
+    "lattice_constant": "fixed to QE a0 for displayed spacing series",
+    "fmax_target_eV_A": 0.02,
+    "spacing_scan": [
+      {
+        "spacing_A": 0.3,
+        "ecut_analogue_eV_displayed": 418,
+        "Ef_eV_displayed": 2.9366
+      },
+      {
+        "spacing_A": 0.25,
+        "ecut_analogue_eV_displayed": 602,
+        "Ef_eV_displayed": 2.9332
+      },
+      {
+        "spacing_A": 0.22,
+        "ecut_analogue_eV_displayed": 777,
+        "Ef_eV_displayed": 2.9329
+      },
+      {
+        "spacing_A": 0.2,
+        "ecut_analogue_eV_displayed": 940,
+        "Ef_eV_displayed": 2.9371
+      },
+      {
+        "spacing_A": 0.18,
+        "ecut_analogue_eV_displayed": 1161,
+        "Ef_eV_displayed": 2.9371
+      }
+    ],
+    "primitive_repeat_scan": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+    ],
+    "Ef_size_range_eV_approx": [
+      2.89,
+      2.95
+    ],
+    "reported_overall_range_eV_approx": [
+      2.9,
+      3.2
+    ],
+    "transfer_to_current_LDA": "not automatic; keep distinct from current LDA/local TF=.9 vW=.1 data"
+  },
+  "current_DFTpy_LDA_grid_evidence": {
+    "source": "C:\\OFDFT\\nano_tensile_TFvW\\campaigns\\al_bulk_vacancy_vcrelax_20260925\\provenance\\dftpy_eos_20260916_excerpt.json",
+    "grid": [
+      78,
+      96
+    ],
+    "fits": [
+      {
+        "grid_n": 78,
+        "a0_A": 3.9474267098341196,
+        "B0_GPa": 50.191325962434284
+      },
+      {
+        "grid_n": 96,
+        "a0_A": 3.947421740305936,
+        "B0_GPa": 50.191952709878564
+      }
+    ],
+    "adopted_bulk_grid": [
+      78,
+      78,
+      78
+    ],
+    "scope": "108-site LDA/local TF=.9 vW=.1 bulk; nano vacuum and stress require their own checks"
+  },
+  "current_execution_baseline": {
+    "QE_XC": "PBE",
+    "QE_PP_type": "PAW",
+    "ecutwfc_Ry": 58.798915481,
+    "ecutwfc_eV_approx": 800,
+    "ecutrho_Ry": 470.3913238484,
+    "ecutrho_multiplier": 8,
+    "smearing": "MP",
+    "degauss_Ry": 0.02,
+    "bulk_kmesh_used": [
+      3,
+      3,
+      3
+    ],
+    "bulk_k4_role": "diagnostic/prepared re-relaxation, not demonstrated convergence",
+    "nano_kmesh_used": [
+      1,
+      1,
+      3
+    ],
+    "parameter_source": "June16 actual 108-site input recorded in docs/AL_BULK_VACANCY_VCRELAX_20260925.md",
+    "failure_in_workflow": "Historical bulk EOS calibration was documented on Sept25 but transfer validation was not made a precondition for new 108-site production."
+  },
+  "required_future_rules": [
+    "Read this baseline and CONVERGENCE_BASELINES.md before any Al QE/DFTpy parameter preparation, production submission, report or presentation.",
+    "Reuse validated settings within matching XC/PP/cell/observable scope; do not substitute common defaults or old scripts without convergence evidence.",
+    "A changed cell requires an explicit reciprocal-cell mesh transfer assessment and target-observable validation. Never label 108-site k3 or k4, or nano 1x1x3, converged because primitive bulk 40^3 was calibrated.",
+    "Do not blindly run 40^3 in a 108-site or vacuum cell. Do not guess a replacement converged mesh.",
+    "Preserve immutable prior attempts. Convergence diagnostics are explicitly labeled and do not become final production baselines merely by terminating normally.",
+    "Reports and talks introduce the historical cutoff/k/DFTpy-grid calibration before presenting vacancy energetics, with its applicable scope."
+  ],
+  "slide_literature_numbers_recorded_not_revalidated": {
+    "Gillan_1989_relaxed_Ef_eV_approx": 0.56,
+    "experiment_Ef_eV_approx": 0.66,
+    "experiment_a0_A_approx": 4.05,
+    "experiment_B0_GPa_approx": 76
+  },
+  "supporting_CSV_exact_rows": [
+    {
+      "source": "QE kmesh",
+      "setting": "1x1x1",
+      "x": 1.0,
+      "Ef_vac_eV": -1.1132604439173823
+    },
+    {
+      "source": "QE kmesh",
+      "setting": "2x2x2",
+      "x": 2.0,
+      "Ef_vac_eV": 0.7347058512282308
+    },
+    {
+      "source": "QE kmesh",
+      "setting": "3x3x3",
+      "x": 3.0,
+      "Ef_vac_eV": 0.945387209444544
+    },
+    {
+      "source": "QE kmesh",
+      "setting": "4x4x4",
+      "x": 4.0,
+      "Ef_vac_eV": 0.6481331171349475
+    },
+    {
+      "source": "QE kmesh",
+      "setting": "5x5x5",
+      "x": 5.0,
+      "Ef_vac_eV": 0.5725285891686487
+    },
+    {
+      "source": "QE dense k=5 ecut",
+      "setting": "400 eV",
+      "x": 400.0,
+      "Ef_vac_eV": 0.5723885440701522
+    },
+    {
+      "source": "QE dense k=5 ecut",
+      "setting": "500 eV",
+      "x": 500.0,
+      "Ef_vac_eV": 0.5724400139742858
+    },
+    {
+      "source": "QE dense k=5 ecut",
+      "setting": "600 eV",
+      "x": 600.0,
+      "Ef_vac_eV": 0.5725285891686487
+    },
+    {
+      "source": "DFTpy fixed QE-a0",
+      "setting": "spacing_0p30A",
+      "x": 0.3,
+      "Ef_vac_eV": 2.936612551309281
+    },
+    {
+      "source": "DFTpy fixed QE-a0",
+      "setting": "spacing_0p25A",
+      "x": 0.25,
+      "Ef_vac_eV": 2.933222220223797
+    },
+    {
+      "source": "DFTpy fixed QE-a0",
+      "setting": "spacing_0p22A",
+      "x": 0.22,
+      "Ef_vac_eV": 2.932902790360913
+    },
+    {
+      "source": "DFTpy fixed QE-a0",
+      "setting": "spacing_0p20A",
+      "x": 0.2,
+      "Ef_vac_eV": 2.9370607212244977
+    },
+    {
+      "source": "DFTpy fixed QE-a0",
+      "setting": "spacing_0p18A",
+      "x": 0.18,
+      "Ef_vac_eV": 2.937107230689435
+    },
+    {
+      "source": "DFTpy own-a0",
+      "setting": "spacing_0p30A",
+      "x": 0.3,
+      "Ef_vac_eV": 3.223578855096548
+    },
+    {
+      "source": "DFTpy own-a0",
+      "setting": "spacing_0p25A",
+      "x": 0.25,
+      "Ef_vac_eV": 3.224266821166111
+    },
+    {
+      "source": "DFTpy own-a0",
+      "setting": "spacing_0p22A",
+      "x": 0.22,
+      "Ef_vac_eV": 3.2223608045474066
+    },
+    {
+      "source": "DFTpy own-a0",
+      "setting": "spacing_0p20A",
+      "x": 0.2,
+      "Ef_vac_eV": 3.2215297472484963
+    },
+    {
+      "source": "DFTpy own-a0",
+      "setting": "spacing_0p18A",
+      "x": 0.18,
+      "Ef_vac_eV": 3.220916153065445
+    },
+    {
+      "source": "DFTpy size fixed QE-a0 spacing=0.20 A",
+      "setting": "prim_04x04x04",
+      "x": 4.0,
+      "Ef_vac_eV": 2.937152759460787
+    },
+    {
+      "source": "DFTpy size fixed QE-a0 spacing=0.20 A",
+      "setting": "prim_06x06x06",
+      "x": 6.0,
+      "Ef_vac_eV": 2.9026716157786723
+    },
+    {
+      "source": "DFTpy size fixed QE-a0 spacing=0.20 A",
+      "setting": "prim_08x08x08",
+      "x": 8.0,
+      "Ef_vac_eV": 2.912507568627916
+    },
+    {
+      "source": "DFTpy size fixed QE-a0 spacing=0.20 A",
+      "setting": "prim_10x10x10",
+      "x": 10.0,
+      "Ef_vac_eV": 2.886483255540952
+    },
+    {
+      "source": "DFTpy size fixed QE-a0 spacing=0.20 A",
+      "setting": "prim_12x12x12",
+      "x": 12.0,
+      "Ef_vac_eV": 2.9499751675029984
+    },
+    {
+      "source": "DFTpy size fixed QE-a0 spacing=0.20 A",
+      "setting": "prim_14x14x14",
+      "x": 14.0,
+      "Ef_vac_eV": 2.900601129338611
+    }
+  ],
+  "official_QE_grid_definition": "https://www.quantum-espresso.org/Doc/INPUT_PW.html#K_POINTS",
+  "unresolved_original_raw": [
+    "qe_bulk_ecut_fit_summary.csv",
+    "qe_bulk_high_kmesh_fit_summary_with_k20.csv",
+    "primitive k6 exact Ef/raw input",
+    "actual high-k EOS cutoff, PP/hash, ecutrho and smearing"
+  ],
+  "source_warning": "May27 speaker notes include a later conventional 2x2x4 vacancy dataset (~0.601 eV); do not merge it with this PPT primitive 4x4x4 (~0.5725 eV)."
+}

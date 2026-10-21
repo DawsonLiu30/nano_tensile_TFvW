@@ -1,0 +1,76 @@
+{
+  "accepted": true,
+  "repeat_delta_energy_eV": 8.194547262974083e-10,
+  "repeat_max_force_difference_eV_A": 1.8158673045072723e-05,
+  "repeat_sigma_zz_difference_GPa": 1.5234701998571507e-06,
+  "fd_rows": [
+    {
+      "step_A": 0.001,
+      "parent_site_id": 58,
+      "atom_index": 58,
+      "axis": 2,
+      "analytic_force_eV_A": 0.0034088980772482747,
+      "finite_difference_force_eV_A": 0.0034096333365596365,
+      "abs_error_eV_A": 7.352593113618515e-07
+    },
+    {
+      "step_A": 0.0005,
+      "parent_site_id": 58,
+      "atom_index": 58,
+      "axis": 2,
+      "analytic_force_eV_A": 0.0034088980772482747,
+      "finite_difference_force_eV_A": 0.003409780219953973,
+      "abs_error_eV_A": 8.821427056981794e-07
+    }
+  ],
+  "fd_step_difference_eV_A": 1.468833943363279e-07,
+  "TN_loose_to_tight_energy_difference_eV": -1.8168066162616014e-08,
+  "TN_loose_to_tight_max_force_difference_eV_A": 8.02641642526127e-05,
+  "revision_manifest_sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+  "parent_bundle_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+  "settings": {
+    "candidate_method": "TN",
+    "candidate_econv_Ha_per_atom": 1e-11,
+    "ncheck": 3,
+    "repeat_energy_max_eV": 1e-05,
+    "repeat_force_max_eV_A": 0.0001,
+    "repeat_sigma_zz_max_GPa": 0.001,
+    "force_fd_error_max_eV_A": 0.0001,
+    "force_fd_step_difference_max_eV_A": 5e-05,
+    "force_fd_steps_A": [
+      0.001,
+      0.0005
+    ],
+    "force_parent_site_id": 58,
+    "force_axis": 2,
+    "logical_scf_max": 8,
+    "physical_scf_max": 14,
+    "diagnostic_seconds_max": 6600,
+    "ionic_steps_max": 1000,
+    "ionic_seconds_max": 79200,
+    "force_target_eV_A": 0.001,
+    "sigma_zz_target_GPa": 0.05,
+    "retry_policy": "TN warm native flag=1 -> at most one independent HEG attempt; all other failures stop"
+  },
+  "center_density_sha256": "b18de7a4bc9d6434780bd286017b3ae4b4a3996089d3240e7e0aa30afffb29fd",
+  "record_sha256": {
+    "LBFGS_reference": "c71f021a5991c9ddc417e9ca2f8ca169d118411e9a24ff233ec46b0236dd7037",
+    "TN_reference": "d3b849babfbaa70e5dd135f5f760d31006d27ef3b151ff8365ffbfb7b1e3c388",
+    "TN_tight_center": "e610386fc793ce4f59beae9d62dbefe996b98c423b4145300317c21b4ae8d5a7",
+    "TN_tight_HEG": "69c737ee78bbcc24366642394998fc25cc7e45151a75ae264bbe32aaf2c69e07",
+    "FD_m1000": "fec7c4a90db43686f99af547109867da8426808f6b162af40d23ca201cd33b4f",
+    "FD_p1000": "1d8dc5f2561731d4df4dab1f511fc1eb3a9f56008ea41493e61659eb35eed6c6",
+    "FD_m0500": "315acb3a77aac11823a48a0a2e4d4051ff62c7be8fe3f71c096059a6273b0281",
+    "FD_p0500": "83a1d4af89a658430dd9d499267413e275f742063d8b3c6549d841fb2d965ec2"
+  },
+  "trace_summary": {
+    "logical_calls": 8,
+    "physical_attempts": 10,
+    "failed_physical_attempts": 3,
+    "HEG_retries": 2,
+    "all_physical_attempts_converged": false,
+    "retry_policy": "Only TN warm native flag=1 permits one HEG attempt; no other failure is retried."
+  },
+  "elapsed_s": 745.2539590708911,
+  "scope": "Checkpoint-specific self-consistent force spot gate; not a global surface/functional validation"
+}

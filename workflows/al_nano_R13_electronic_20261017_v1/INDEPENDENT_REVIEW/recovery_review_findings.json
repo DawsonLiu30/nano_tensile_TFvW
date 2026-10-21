@@ -1,0 +1,56 @@
+{
+  "review_status": "PASS_PROGRAM_REVIEW_NO_PHYSICAL_ACCEPTANCE",
+  "review_scope": "Independent R13 TN high-accuracy diagnostic gate and preserved small-step ionic continuation; no DFT, SSH or submission by reviewer",
+  "unresolved_blockers": [],
+  "resolved_findings": [
+    {
+      "priority": "P1",
+      "file": "recover_electronic.py",
+      "finding": "The initial broad exception handler around LBFGS_reference could catch the one-shot SIGALRM BudgetExpired exception and continue diagnostics beyond the 110-minute budget.",
+      "resolution": "Handler now continues only for exact native electronic flag 1/2 RuntimeError messages; time-budget and all other exceptions propagate to the enclosing failure handler.",
+      "status": "Verified in current source"
+    }
+  ],
+  "verified_design": [
+    "Only a TN warm-start native flag 1 may trigger exactly one independent HEG retry; no retry for flag 2, already-HEG attempt, invalid density, unrelated exception, timeout or non-TN method.",
+    "Every failed physical attempt remains in the trace. Native optimize_rho must subsequently return flag 0 and finite positive charge-normalized density before forces/stress are evaluated.",
+    "HEG initialization uses 3N/grid.volume in atomic units and preserves lattice and integer grid; density input is copied.",
+    "The final caller sees the native successful retry object's rho, functional, mu and flag, rather than a manually altered success flag.",
+    "The diagnostic consists of 8 logical calls with at most 14 native calls; all use fixed original checkpoint geometry except four explicit +/- force displacements.",
+    "Self-consistent central force finite differences at 0.001 and 0.0005 Angstrom must each match the analytic selected force component within 0.0001 eV/Angstrom and each other within 0.00005 eV/Angstrom.",
+    "Independent HEG versus warm centre must reproduce total energy, all force vectors and axial stress before release. These are checkpoint-specific diagnostics, not validation of all nanocolumn geometries.",
+    "Parent result, coherent checkpoint, original stress gate, frozen scientific model, PP, grid, and source manifests are verified before computation.",
+    "Production rehashes and reevaluates gate records, validates the accepted density against checkpoint geometry, and requires exact gate path and a fresh attempt name.",
+    "Scientific recovery_base.py is byte-identical to the submitted small-step runner (SHA256 dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72). Ionic method stays fixed-cell LBFGS maxstep 0.01 Angstrom with current 0.001 atomic/filter force and 0.05 GPa axial stress acceptance.",
+    "Existing nonblocking case lock, accepted-prior refusal, fresh-attempt directory, coherent geometry/density checkpoints and signal-based budget guard are retained. Frozen old source and outputs are not overwritten."
+  ],
+  "numerical_rationale": {
+    "current_econv_Ha_per_atom": 1e-9,
+    "candidate_econv_Ha_per_atom": 1e-11,
+    "atoms": 76,
+    "current_total_energy_tolerance_eV_approx": 2.06806535e-6,
+    "candidate_total_energy_tolerance_eV_approx": 2.06806535e-8,
+    "target_force_times_0p001A_eV": 1e-6,
+    "interpretation": "The candidate's tighter stopping scale is useful for the finite-difference force diagnostic. An energy-history threshold is not an error bound; actual FD and independent-start comparisons still control release."
+  },
+  "tests": {
+    "independent_mock_and_FD_checks": 16,
+    "candidate_test_suite_checks": 24,
+    "failures": 0,
+    "runtime": "Local WSL Python with DFTpy imported; mock optimizer and analytic synthetic energy only, no electronic DFT calculation",
+    "details": "review_test_results.json and test_recovery.py console result"
+  },
+  "physical_limits": [
+    "TN also uses the same scalar line search; success is conditional on the newly submitted diagnostic, not promised.",
+    "Warm and HEG starts could find different density minima; the strict agreement gate must reject such disagreement.",
+    "The force finite-difference gate samples one previously large force component at this checkpoint, not every force component throughout the trajectory.",
+    "Actual R13 physical acceptance remains pending until the resumed calculation satisfies final native electronic, atomic force, filter force and axial stress checks."
+  ],
+  "source_evidence": [
+    "work/followup_results_20261017/runtime_sources/manifest.json",
+    "work/followup_results_20261017/runtime_sources/dftpy.interface.py: OptimizeDensityConf creates Optimization and scales econv by nat",
+    "work/followup_results_20261017/runtime_sources/dftpy.optimization.optimization.py: optimize_rho initializes history each call; check_converge preserves ncheck",
+    "work/followup_results_20261017/runtime_sources/dftpy.api.api4ase.py: density reuse and force/stress evaluation after OptimizeDensityConf",
+    "work/followup_results_20261017/runtime_probe.json: actual compatibility layer activation"
+  ]
+}

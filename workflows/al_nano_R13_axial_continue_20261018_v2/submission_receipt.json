@@ -1,0 +1,72 @@
+{
+  "utc": "2026-10-18T10:19:52.002122+00:00",
+  "scope": "One bounded R13_0V continuation after completed trial step12; 6h maximum, fresh Hessian, line-search trial increment .02; no automatic follow-up",
+  "snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2",
+  "runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+  "revision_manifest_sha256": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf",
+  "preflight_passed": true,
+  "force_target_eV_A": 0.001,
+  "filter_force_target_eV_A": 0.001,
+  "sigma_zz_target_GPa": 0.05,
+  "automatic_monitoring": false,
+  "queue_before_submission": {
+    "command": [
+      "squeue",
+      "-h",
+      "-u",
+      "dawson666",
+      "-o",
+      "%i|%j|%T"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "test_only": {
+    "command": [
+      "sbatch",
+      "--test-only",
+      "--parsable",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2/continue.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1311.1175 remaining.\nsbatch: Job 2255217 to start at 2026-10-18T18:27:54 a using 1 processors on nodes cpn3130 in partition ct56\n"
+  },
+  "status": "continuation_submitted",
+  "submission": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2/continue.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "2255218\n",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1311.1175 remaining.\n"
+  },
+  "job_id": "2255218",
+  "job_details": {
+    "command": [
+      "scontrol",
+      "show",
+      "job",
+      "2255218"
+    ],
+    "returncode": 0,
+    "stdout": "JobId=2255218 JobName=al-of-R13-axC\n   UserId=dawson666(38507) GroupId=MST114175(103796) MCS_label=N/A\n   Priority=20000 Nice=0 Account=mst114175 QOS=normal\n   JobState=PENDING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=06:00:00 TimeMin=N/A\n   SubmitTime=2026-10-18T18:19:55 EligibleTime=2026-10-18T18:19:55\n   AccrueTime=Unknown\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-18T18:19:55 Scheduler=Main\n   Partition=ct56 AllocNode:Sid=lgn301:3130281\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=2 NumTasks=1 CPUs/Task=2 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=24G,node=1,billing=1\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=2 MinMemoryNode=24G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2/continue.sbatch\n   SubmitLine=sbatch --parsable /work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2/continue.sbatch\n   WorkDir=/home/dawson666\n   StdErr=/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/axial-continue-2255218.err\n   StdIn=/dev/null\n   StdOut=/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/axial-continue-2255218.out\n   TresPerTask=cpu=1\n\n",
+    "stderr": ""
+  },
+  "queue_snapshot": {
+    "command": [
+      "squeue",
+      "-h",
+      "-j",
+      "2255218",
+      "-o",
+      "%i|%T|%M|%l|%R"
+    ],
+    "returncode": 0,
+    "stdout": "2255218|PENDING|0:00|6:00:00|(None)\n",
+    "stderr": ""
+  }
+}

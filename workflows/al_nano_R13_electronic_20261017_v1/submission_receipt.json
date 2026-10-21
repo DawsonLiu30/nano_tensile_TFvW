@@ -1,0 +1,97 @@
+{
+  "utc": "2026-10-17T16:14:01.920515+00:00",
+  "scope": "R13_0V bounded electronic/force diagnostic, followed only on scientific success by same-checkpoint smallstep ionic completion",
+  "snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1",
+  "runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+  "revision_manifest_sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+  "preflight_passed": true,
+  "force_target_eV_A": 0.001,
+  "filter_force_target_eV_A": 0.001,
+  "sigma_zz_target_GPa": 0.05,
+  "automatic_monitoring": false,
+  "diagnostic_test_only": {
+    "command": [
+      "sbatch",
+      "--test-only",
+      "--parsable",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/diagnose.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1318.966 remaining.\nsbatch: Job 2253350 to start at 2026-10-18T00:14:05 a using 1 processors on nodes cpn3018 in partition ctest\n"
+  },
+  "continuation_test_only": {
+    "command": [
+      "sbatch",
+      "--test-only",
+      "--parsable",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/continue.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1318.966 remaining.\nsbatch: Job 2253352 to start at 2026-10-18T00:15:06 a using 1 processors on nodes cpn3018 in partition ct56\n"
+  },
+  "status": "both_submitted",
+  "diagnostic": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/diagnose.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "2253353\n",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1318.966 remaining.\n"
+  },
+  "diagnostic_job_id": "2253353",
+  "required_dependency": "afterok:2253353",
+  "continuation": {
+    "command": [
+      "sbatch",
+      "--parsable",
+      "--dependency=afterok:2253353",
+      "--kill-on-invalid-dep=yes",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/continue.sbatch"
+    ],
+    "returncode": 0,
+    "stdout": "2253354\n",
+    "stderr": "sbatch:  User dawson666 Account mst114175 wallet has 1318.966 remaining.\n"
+  },
+  "continuation_job_id": "2253354",
+  "job_details": {
+    "diagnostic": {
+      "command": [
+        "scontrol",
+        "show",
+        "job",
+        "2253353"
+      ],
+      "returncode": 0,
+      "stdout": "JobId=2253353 JobName=al-of-R13-egate\n   UserId=dawson666(38507) GroupId=MST114175(103796) MCS_label=N/A\n   Priority=11805 Nice=0 Account=mst114175 QOS=normal\n   JobState=PENDING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=02:00:00 TimeMin=N/A\n   SubmitTime=2026-10-18T00:14:08 EligibleTime=2026-10-18T00:14:08\n   AccrueTime=Unknown\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-18T00:14:08 Scheduler=Main\n   Partition=ctest AllocNode:Sid=lgn301:710184\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=24G,node=1,billing=1\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryNode=24G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/diagnose.sbatch\n   SubmitLine=sbatch --parsable /work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/diagnose.sbatch\n   WorkDir=/home/dawson666\n   StdErr=/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/electronic-gate-2253353.err\n   StdIn=/dev/null\n   StdOut=/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/electronic-gate-2253353.out\n   TresPerTask=cpu=1\n\n",
+      "stderr": ""
+    },
+    "continuation": {
+      "command": [
+        "scontrol",
+        "show",
+        "job",
+        "2253354"
+      ],
+      "returncode": 0,
+      "stdout": "JobId=2253354 JobName=al-of-R13-TNfinish\n   UserId=dawson666(38507) GroupId=MST114175(103796) MCS_label=N/A\n   Priority=11805 Nice=0 Account=mst114175 QOS=normal\n   JobState=PENDING Reason=Dependency Dependency=afterok:2253353(unfulfilled)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=1-00:00:00 TimeMin=N/A\n   SubmitTime=2026-10-18T00:14:10 EligibleTime=Unknown\n   AccrueTime=Unknown\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-18T00:14:10 Scheduler=Main\n   Partition=ct56 AllocNode:Sid=lgn301:710184\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=2 NumTasks=1 CPUs/Task=2 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=24G,node=1,billing=1\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=2 MinMemoryNode=24G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=OK Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/continue.sbatch\n   SubmitLine=sbatch --parsable --dependency=afterok:2253353 --kill-on-invalid-dep=yes /work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1/continue.sbatch\n   WorkDir=/home/dawson666\n   StdErr=/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/electronic-finish-2253354.err\n   StdIn=/dev/null\n   StdOut=/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/electronic-finish-2253354.out\n   KillOnInvalidDependent=Yes\n   TresPerTask=cpu=1\n\n",
+      "stderr": ""
+    }
+  },
+  "queue_snapshot": {
+    "command": [
+      "squeue",
+      "-h",
+      "-j",
+      "2253353,2253354",
+      "-o",
+      "%i|%T|%M|%l|%R"
+    ],
+    "returncode": 0,
+    "stdout": "2253354|PENDING|0:00|1-00:00:00|(Dependency)\n2253353|PENDING|0:00|2:00:00|(None)\n",
+    "stderr": ""
+  }
+}

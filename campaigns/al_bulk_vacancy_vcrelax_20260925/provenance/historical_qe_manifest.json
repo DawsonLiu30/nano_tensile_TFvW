@@ -1,0 +1,19 @@
+{
+  "workflow": "qe_pbe_al_divacancy_pair_rscan",
+  "root": "/mnt/c/Users/dawso/Desktop/QE_DIVACANCY_RSCAN_UPLOAD_20260616",
+  "pair_count": 5,
+  "cell_lengths_A": [
+    12.119544000000001,
+    12.119544000000001,
+    12.119544000000001
+  ],
+  "all_cell_lengths_exceed_10_A": true,
+  "settings": [
+    "pair_scan/pair_01_r2p8566A",
+    "pair_scan/pair_02_r4p0398A",
+    "pair_scan/pair_03_r5p7132A",
+    "pair_scan/pair_04_r6p3876A",
+    "pair_scan/pair_05_r8p5698A"
+  ],
+  "submit_command": "cd /mnt/c/Users/dawso/Desktop/QE_DIVACANCY_RSCAN_UPLOAD_20260616 && sbatch submit_qe_divacancy_pair_array.sh"
+}

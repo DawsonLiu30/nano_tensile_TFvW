@@ -1,0 +1,23 @@
+{
+  "scope": "Analytic/mocked tests only; no DFT physical validation",
+  "ASE_version": "3.29.0",
+  "checks": [
+    {
+      "name": "real_adapter_analytic_convergence_no_free_energy",
+      "passed": true,
+      "steps": 5,
+      "checkpoint_callbacks": 6
+    },
+    {
+      "name": "warning_trial_rejected_and_prior_completed_observer_state_retained",
+      "passed": true,
+      "checkpoint_callbacks": 1
+    },
+    {
+      "name": "cycle_stop_does_not_replace_force_acceptance",
+      "passed": true
+    }
+  ],
+  "passed": 3,
+  "source_sha256": "455d7fe2bb7c1892bb1371e788eeb4c49d5a510a18950740d82865519f3eb439"
+}

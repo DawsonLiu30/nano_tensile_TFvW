@@ -1,0 +1,201 @@
+{
+  "JOB": {
+    "task": "Optdensity",
+    "calctype": [
+      "Energy",
+      "Force",
+      "Stress"
+    ]
+  },
+  "PATH": {
+    "pppath": "/work/dawson666/dftpy_project/relax/AL_NANO_SINGLE_VACANCY_20260930/R20_1V/attempt_001/inputs",
+    "cellpath": "./"
+  },
+  "MATH": {
+    "linearii": true,
+    "linearie": true,
+    "twostep": false,
+    "multistep": 1,
+    "reuse": true
+  },
+  "PP": {
+    "Al": "al.lda.recpot"
+  },
+  "CELL": {
+    "cellfile": "POSCAR",
+    "elename": null,
+    "zval": null,
+    "format": null
+  },
+  "GRID": {
+    "ecut": 1731.4093002483341,
+    "spacing": 0.1473708085257143,
+    "gfull": false,
+    "nr": [
+      175,
+      175,
+      96
+    ],
+    "maxprime": 13,
+    "scale": 0.99,
+    "cplx": false
+  },
+  "DENSITY": {
+    "nspin": 1,
+    "magmom": 0,
+    "densityini": "heg",
+    "densityfile": null,
+    "densityoutput": null
+  },
+  "EXC": {
+    "xc": "LDA",
+    "libxc": [
+      "lda_x",
+      "lda_c_pz"
+    ],
+    "x_str": null,
+    "c_str": null
+  },
+  "KEDF": {
+    "kedf": "TFVW",
+    "x": 0.9,
+    "y": 0.1,
+    "alpha": null,
+    "beta": null,
+    "sigma": null,
+    "nsp": null,
+    "interp": "hermite",
+    "kerneltype": null,
+    "symmetrization": null,
+    "lumpfactor": null,
+    "neta": 50000,
+    "etamax": 50,
+    "order": 3,
+    "ratio": 1.15,
+    "maxpoints": 1000,
+    "delta": null,
+    "kdd": 3,
+    "rho0": null,
+    "k_str": null,
+    "params": null,
+    "kfmin": null,
+    "kfmax": null,
+    "rhomax": null,
+    "ldw": null,
+    "temperature": null,
+    "temperature0": null
+  },
+  "KEDF2": {
+    "active": false,
+    "x": 0,
+    "y": 0,
+    "kedf": "WT",
+    "alpha": null,
+    "beta": null,
+    "sigma": null,
+    "nsp": null,
+    "interp": "hermite",
+    "kerneltype": null,
+    "symmetrization": null,
+    "lumpfactor": null,
+    "neta": 50000,
+    "etamax": 50,
+    "order": 3,
+    "ratio": 1.15,
+    "maxpoints": 1000,
+    "delta": null,
+    "kdd": 3,
+    "rho0": null,
+    "k_str": null,
+    "params": null,
+    "kfmin": null,
+    "kfmax": null,
+    "rhomax": null,
+    "ldw": null,
+    "temperature": null,
+    "temperature0": null
+  },
+  "OUTPUT": {
+    "time": true,
+    "stress": true,
+    "electrostatic_potential": null
+  },
+  "OPT": {
+    "method": "LBFGS",
+    "algorithm": "EMM",
+    "vector": "Orthogonalization",
+    "c1": 0.0001,
+    "c2": 0.2,
+    "maxls": 50,
+    "econv": 1e-09,
+    "maxfun": 100,
+    "maxiter": 1000,
+    "xtol": 1e-12,
+    "h0": 1,
+    "ncheck": 3
+  },
+  "MIX": {
+    "scheme": "pulay",
+    "predtype": "kerker",
+    "predcoef": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "predecut": null,
+    "maxm": 7,
+    "coef": 0.7,
+    "delay": 2,
+    "restarted": false,
+    "kf": "auto"
+  },
+  "PROPAGATOR": {
+    "propagator": "crank-nicholson",
+    "order": 20,
+    "linearsolver": "cg",
+    "tol": 1e-10,
+    "maxiter": 100,
+    "atol": null
+  },
+  "TD": {
+    "outfile": "td_out",
+    "timestep": 0.001,
+    "tmax": 1,
+    "max_pc": 2,
+    "tol_pc": 1e-08,
+    "atol_pc": 1e-10,
+    "direc": 0,
+    "strength": 0.001,
+    "max_runtime": 0,
+    "restart": false,
+    "restart_input": "restart_data.npy",
+    "save_interval": 1000,
+    "correction": false,
+    "vector_potential": false,
+    "propagate_vector_potential": true,
+    "omega": 0,
+    "z_split": 0
+  },
+  "CASIDA": {
+    "numeig": null,
+    "diagonalize": true,
+    "tda": false
+  },
+  "NONADIABATIC": {
+    "nonadiabatic": null,
+    "cutoff": 0.01,
+    "rho_cutoff": 0.001,
+    "k": 2
+  },
+  "NONADIABATIC2": {
+    "active": false,
+    "nonadiabatic": null,
+    "cutoff": 0.01,
+    "rho_cutoff": 0.001,
+    "k": 2
+  },
+  "INVERSION": {
+    "rho_in": null,
+    "v_out": null
+  }
+}

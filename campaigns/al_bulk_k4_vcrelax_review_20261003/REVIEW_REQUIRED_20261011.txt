@@ -1,0 +1,7 @@
+提交前重審提醒｜2026-10-11
+
+這五態k4仍為10/3的待審草案，不是已收斂的正式設定。
+使用者要求以原qe_bulk_vacancy.pptx的校準為研究起點。
+先讀docs/CONVERGENCE_BASELINES.md與docs/ISERVICE_CALIBRATION_AUDIT_20261011.md，完成原胞→108格點的晶胞/倒空間取樣/PP/XC/smearing/目標量對照。
+原胞40³/80³已有EOS測試；108格點3³未通過轉用驗證，4³只有固定幾何敏感性診斷。不得直接將4³宣稱為已收斂。
+本提醒不更改原始inputs、manifest、hash或結果，也不授權自行擴張計算矩陣。現役兩個R20續跑不是這五態bulk計算。

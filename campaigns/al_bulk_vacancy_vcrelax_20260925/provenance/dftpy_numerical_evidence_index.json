@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "campaign_id": "al_bulk_vacancy_vcrelax_20260925",
+  "entries": [
+    {
+      "file": "provenance/dftpy_grid_20260915_excerpt.json",
+      "sha256": "96c43aa6f58867be0ab7682b727b41bf8d704847002751258d04e3213c9bd493",
+      "original_source_path": "C:\\OFDFT\\RESEARCH_UPDATES\\VACANCY_CONDENSATION_20260915\\analysis\\local_calculations\\summary.json",
+      "original_source_sha256": "b66f7cc579106e708044e07c45b804d12e1ca5d04ed7f6596365e0585c05b13c"
+    },
+    {
+      "file": "provenance/dftpy_eos_20260916_excerpt.json",
+      "sha256": "65cfc6a36b72929402468f04ba43b12550c40f368605be069105872c5f8a401a",
+      "original_source_path": "C:\\OFDFT\\RESEARCH_UPDATES\\VALIDATION_20260916\\analysis\\eos\\eos_analysis.json",
+      "original_source_sha256": "1f74a695ba54ff7b2b92c0a790282c63f23716de9271fccd815c038498f032c7"
+    },
+    {
+      "file": "provenance/dftpy_grid_20260917_excerpt.json",
+      "sha256": "a5da8555e04a8de61d8f15fd66d5950e48a3d55ece3e494dc0d163f3d40ea912",
+      "original_source_path": "C:\\OFDFT\\RESEARCH_UPDATES\\LUDER_RESPONSE_20260917\\controlled\\grid_check.json",
+      "original_source_sha256": "3419eaeb38247af58606622acf34dc66a7045833739f634d404b91d55346dede"
+    }
+  ],
+  "interpretation": "Historical local-LDA TFvW grid evidence supports using 78^3 as a starting protocol; check new endpoints with 96^3 and assess finite-size convergence separately. OF density-grid spacing is not QE wavefunction cutoff.",
+  "new_campaign_calculation_results_included": false
+}

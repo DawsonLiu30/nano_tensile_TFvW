@@ -1,0 +1,3 @@
+現行研究報告與完整資料統一在：
+C:\OFDFT\NAS_SHARE\Al_vacancy_CURRENT
+先開 00_START_HERE.html。舊路徑已整併，原始證據可由 04_RAW/evidence_index.json 查回。

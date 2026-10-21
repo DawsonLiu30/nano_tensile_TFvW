@@ -1,0 +1,353 @@
+{
+  "archive_kind": "submitted_program_tested_bounded_trial",
+  "archived_utc": "2026-10-18T05:16:09.556855+00:00",
+  "submitted": true,
+  "job_id": "2254539",
+  "physical_accepted": false,
+  "revision_manifest_sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+  "submission_receipt_sha256": "aa12dd65eb338fde074fbc32a6b5916973ffed9dfde7054d7184de8b4c5ab818",
+  "source_directory": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018",
+  "scope": "Program tests and deployment/checkpoint preflight passed. Bounded physical trial submitted; physical outcome not yet assessed.",
+  "file_count": 48,
+  "copy_hash_mismatches": 0,
+  "files": [
+    {
+      "path": "api_smoke.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/api_smoke.py",
+      "bytes": 3396,
+      "sha256": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418"
+    },
+    {
+      "path": "api_smoke_results.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/api_smoke_results.json",
+      "bytes": 886,
+      "sha256": "5b0d6088218a6db0acea6766cc7306f445c098a08840cf5e7f3db0fce97cf875"
+    },
+    {
+      "path": "deploy_review.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/deploy_review.py",
+      "bytes": 4043,
+      "sha256": "2eb10fa44eec32c41d5d6a547eac7f5232661a482ace29fa4a8e241b10efa95f"
+    },
+    {
+      "path": "deploy_review.sh",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/deploy_review.sh",
+      "bytes": 57228,
+      "sha256": "ed4c217c2c8ec85911dd4af581d677a1fa22207bda8a12af0e9d93d4491f8c19"
+    },
+    {
+      "path": "electronic_trace.diff",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/electronic_trace.diff",
+      "bytes": 3924,
+      "sha256": "3378b7ed207ec439746bc3f8b42f88b6061dda134492907ba0a0cb66e7b0e7b2"
+    },
+    {
+      "path": "electronic_trace.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/electronic_trace.py",
+      "bytes": 8278,
+      "sha256": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9"
+    },
+    {
+      "path": "freeze_revision.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/freeze_revision.py",
+      "bytes": 1429,
+      "sha256": "fdf0e2d916f42ff4394b55b9ad78d79afaffcb580dca9cbad80a9566c43bd498"
+    },
+    {
+      "path": "last_submission_transport.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/last_submission_transport.json",
+      "bytes": 3983,
+      "sha256": "50991b4309fe02edd43db13d3024a6ff6134c62f63be8eb8b7d0d47aed3bef90"
+    },
+    {
+      "path": "local_checks.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/local_checks.json",
+      "bytes": 1021,
+      "sha256": "8a82310f7eef74be2f6d0c0606ca3edb4813f3e68ac0a252e8aee42f278bf3eb"
+    },
+    {
+      "path": "local_tests.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/local_tests.json",
+      "bytes": 119,
+      "sha256": "facd5be6835cd2387144efa78e30262f53c2b167e7b829cd3ee595074c4d352f"
+    },
+    {
+      "path": "local_tests.stderr",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/local_tests.stderr",
+      "bytes": 838,
+      "sha256": "3ee917706125fa42c6a631cc89cebf20ca8c008e813a68b255b7c8bd16ec85aa"
+    },
+    {
+      "path": "local_tests.stdout",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/local_tests.stdout",
+      "bytes": 89,
+      "sha256": "e2b4942448a55e2fba47bb328935ccd63ea35e554887f1ff2db4a75b00792b2c"
+    },
+    {
+      "path": "README.txt",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/README.txt",
+      "bytes": 2960,
+      "sha256": "2614717953b7a1b70fa8656d199207c0f9e0211fd809c82d10a7ba7088ca708c"
+    },
+    {
+      "path": "recover_axial.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/recover_axial.py",
+      "bytes": 12704,
+      "sha256": "553aa958d1684538a3a5715da6d7fcc4385aa12e68c742dee75986f9b8192880"
+    },
+    {
+      "path": "recovery_base.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/recovery_base.py",
+      "bytes": 26109,
+      "sha256": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+    },
+    {
+      "path": "remote_preflight.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/remote_preflight.json",
+      "bytes": 8132,
+      "sha256": "dc20bd5a0ca789577edf7a3a36ae18ba9773e815adc65b50c3285242c283e9a4"
+    },
+    {
+      "path": "remote_preflight.stderr",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/remote_preflight.stderr",
+      "bytes": 27,
+      "sha256": "ecb8b7007ebaba48b6518d61bc9a943ab5a6d31abeea5047e3b0dd3e6a80cd24"
+    },
+    {
+      "path": "REVISION_MANIFEST.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/REVISION_MANIFEST.json",
+      "bytes": 3180,
+      "sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e"
+    },
+    {
+      "path": "runtime_sources/ase.filters.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources/ase.filters.py",
+      "bytes": 32898,
+      "sha256": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb"
+    },
+    {
+      "path": "runtime_sources/ase.optimize.bfgslinesearch.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources/ase.optimize.bfgslinesearch.py",
+      "bytes": 7803,
+      "sha256": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a"
+    },
+    {
+      "path": "runtime_sources/ase.optimize.optimize.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources/ase.optimize.optimize.py",
+      "bytes": 14862,
+      "sha256": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e"
+    },
+    {
+      "path": "runtime_sources/ase.utils.linesearch.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources/ase.utils.linesearch.py",
+      "bytes": 14550,
+      "sha256": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c"
+    },
+    {
+      "path": "runtime_sources/dftpy.utils.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources/dftpy.utils.py",
+      "bytes": 1703,
+      "sha256": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8"
+    },
+    {
+      "path": "runtime_sources/manifest.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources/manifest.json",
+      "bytes": 1391,
+      "sha256": "ea698b01e8e788eb592d33873eba05f7b4a845144288d856fd1e93999709b2af"
+    },
+    {
+      "path": "runtime_sources.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources.py",
+      "bytes": 1883,
+      "sha256": "06602b8977e3fd5c07de96cbcad6a8c7bbe43fd7e25e255d9a4a60e405044456"
+    },
+    {
+      "path": "runtime_sources.sh",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/runtime_sources.sh",
+      "bytes": 878,
+      "sha256": "3828c06a4582d71f2bb376d8ac894e061c3cb9bca4b60bfa82515cfce42d84e5"
+    },
+    {
+      "path": "staged_optimizer.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/staged_optimizer.py",
+      "bytes": 6740,
+      "sha256": "455d7fe2bb7c1892bb1371e788eeb4c49d5a510a18950740d82865519f3eb439"
+    },
+    {
+      "path": "submission_receipt.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/submission_receipt.json",
+      "bytes": 3664,
+      "sha256": "aa12dd65eb338fde074fbc32a6b5916973ffed9dfde7054d7184de8b4c5ab818"
+    },
+    {
+      "path": "submit_reviewed.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/submit_reviewed.py",
+      "bytes": 1033,
+      "sha256": "ae6ebb0c31a67c2f28d128c67a4621d39b8ce9c27b962fc16504577c97a09492"
+    },
+    {
+      "path": "submit_reviewed.sh",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/submit_reviewed.sh",
+      "bytes": 3150,
+      "sha256": "e63df5c012e29f994a7d48f87eb11f414614414c56cd9eaf0ed32e64d05dfd50"
+    },
+    {
+      "path": "test_recovery.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/test_recovery.py",
+      "bytes": 6009,
+      "sha256": "16d40b1d490b3afd3ee24ca60b135b53124ed07c7ee5d9fa39b3948ac766dcbe"
+    },
+    {
+      "path": "trial.sbatch",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_recovery_20261018/trial.sbatch",
+      "bytes": 1315,
+      "sha256": "aa8d1ef40191bde7f6ce48f29f0c337c84048d1a05cf45b8b3b9b08c9e095139"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/adapter_results.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/adapter_results.json",
+      "bytes": 617,
+      "sha256": "4173ac787aa5cae216a60cc5da74ad1c4f519b5a27db3f56f149f68e3912c3cf"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/api_smoke.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/api_smoke.py",
+      "bytes": 3396,
+      "sha256": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/api_smoke_results.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/api_smoke_results.json",
+      "bytes": 886,
+      "sha256": "5b0d6088218a6db0acea6766cc7306f445c098a08840cf5e7f3db0fce97cf875"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/control_flow_results.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/control_flow_results.json",
+      "bytes": 1518,
+      "sha256": "f5c5b3a76b95c7c4f0e52bfdeb58d7b08c37c913b1ba0e253a8e43e4cf64cca4"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/review_adapter.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/review_adapter.py",
+      "bytes": 3772,
+      "sha256": "5904cb09a36f6ce8c33b258580a542fc9f10b1b9f71f7120c949913d4180b267"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/review_control_flow.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/review_control_flow.py",
+      "bytes": 3489,
+      "sha256": "bcb9eb4c32b6daaf949928b90f233afaae0fa9207f7a596a5666f176c687a7f8"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/review_findings.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/review_findings.json",
+      "bytes": 6424,
+      "sha256": "3f8e7f20b15eaf5363b3061d8f4051de08cc6eabab37b583e8da92a689a9e2b2"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/REVIEW_ZH.txt",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_linesearch_review_20261018/REVIEW_ZH.txt",
+      "bytes": 5159,
+      "sha256": "ee5566213998dd8f0c61d304e2b74039d2a34696b72a052d64f22324242b9ebb"
+    },
+    {
+      "path": "ARCHIVE_UPDATER.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/archive_r13_axial_trial_20261018.py",
+      "bytes": 13689,
+      "sha256": "c7f0cf5be685db1ea7fcf23eb92204fd9ee2be53ceb26a764f4028320f5d4ffe"
+    },
+    {
+      "path": "MEMORY_BEFORE/00_AGENTS.md",
+      "source": "generated archive evidence",
+      "bytes": 75782,
+      "sha256": "7f2be7c555825ff06ec27b2dd686465ebc455eacb0e861faa7f7e40b520befae"
+    },
+    {
+      "path": "MEMORY_BEFORE/01_VALIDATED_WORKFLOWS.md",
+      "source": "generated archive evidence",
+      "bytes": 10674,
+      "sha256": "adb69ea8ba47e1e5e3f84f1a81844336d23530cf3c01b5f5b4ba5a0c4b37d519"
+    },
+    {
+      "path": "MEMORY_BEFORE/02_validated_workflows.json",
+      "source": "generated archive evidence",
+      "bytes": 11716,
+      "sha256": "87c6d1136ffc6a833bbbbe9b4c9337f0a5e5e9393147a14ec3690864ade623e3"
+    },
+    {
+      "path": "MEMORY_BEFORE/03_CURRENT_STATUS.json",
+      "source": "generated archive evidence",
+      "bytes": 2740,
+      "sha256": "47393fbcc166d981c14d38a20330bc4a9da31801e3625ce5ce2dc2b1d854e332"
+    },
+    {
+      "path": "SOURCE_REFERENCES.json",
+      "source": "generated archive evidence",
+      "bytes": 2157,
+      "sha256": "d4d72cd4afab2a3d7f574f5136f61398bf573409a71690aa317a8116a99378a2"
+    },
+    {
+      "path": "INITIAL_RUN_CHECK/initial_status.sh",
+      "source": "C:\\Users\\m1331\\Documents\\Codex\\2026-09-24\\g\\work\\r13_linesearch_recovery_20261018\\initial_status.sh",
+      "bytes": 1025,
+      "sha256": "5636c4df368d3b56c31407b2a1d04d7dbc567b0ba0fd03cf66d5a83d4835eeb6"
+    },
+    {
+      "path": "INITIAL_RUN_CHECK/initial_status.json",
+      "source": "C:\\Users\\m1331\\Documents\\Codex\\2026-09-24\\g\\work\\r13_linesearch_recovery_20261018\\initial_status.json",
+      "bytes": 776,
+      "sha256": "271809745cafca15945cb40e6b74a05706a4fb055e1e37e198014e6788928f0f"
+    }
+  ],
+  "evidence": {
+    "revision": "R13_axial_BFGSLineSearch_20261018_v1",
+    "job_id": "2254539",
+    "status": "submitted_bounded_trial_physical_result_pending",
+    "submission_utc": "2026-10-18T05:15:56.446020+00:00",
+    "submission_snapshot": {
+      "command": [
+        "squeue",
+        "-h",
+        "-j",
+        "2254539",
+        "-o",
+        "%i|%T|%M|%l|%R"
+      ],
+      "returncode": 0,
+      "stdout": "2254539|PENDING|0:00|2:00:00|(None)\n",
+      "stderr": ""
+    },
+    "optimizer": "BFGSLineSearch",
+    "cell_freedom": "atoms and z-only FrechetCellFilter; x/y fixed",
+    "electronic_optimizer": "TN",
+    "electronic_econv_Ha_per_atom": 1e-11,
+    "force_target_eV_A": 0.001,
+    "filter_force_target_eV_A": 0.001,
+    "sigma_zz_target_GPa": 0.05,
+    "maximum_ionic_steps": 60,
+    "maximum_logical_scf": 120,
+    "internal_runtime_limit_s": 6600,
+    "slurm_resources": {
+      "partition": "ctest",
+      "walltime": "02:00:00",
+      "requested_memory_GiB": 24,
+      "tasks": 1
+    },
+    "parent_completed_ionic_step": 483,
+    "parent_checkpoint_sha256": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799",
+    "revision_manifest_sha256": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+    "submission_receipt_sha256": "aa12dd65eb338fde074fbc32a6b5916973ffed9dfde7054d7184de8b4c5ab818",
+    "program_tests": {
+      "local_passed": 7,
+      "remote_passed": 7,
+      "physical_success": false
+    },
+    "physical_accepted": false,
+    "automatic_continuation": false,
+    "automatic_monitoring": false,
+    "local_workflow": "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_linesearch_20261018_v1",
+    "local_archive": "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261018/RECOVERY_R13_AXIAL_LINESEARCH",
+    "scope": "Single bounded R13 trial; no new accepted endpoint or formation energy; original scientific core and physical model retained."
+  }
+}

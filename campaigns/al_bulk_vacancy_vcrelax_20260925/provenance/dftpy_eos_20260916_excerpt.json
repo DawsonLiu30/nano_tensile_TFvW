@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "evidence_role": "historical_numerical_provenance_only",
+  "original_source_path": "C:\\OFDFT\\RESEARCH_UPDATES\\VALIDATION_20260916\\analysis\\eos\\eos_analysis.json",
+  "original_source_sha256": "1f74a695ba54ff7b2b92c0a790282c63f23716de9271fccd815c038498f032c7",
+  "original_source_bytes": 19450,
+  "protocol": {
+    "purpose": "EOS of candidate TFvW lambda=.9 mu=.1, LDA, original local pseudopotential",
+    "a_ref_A": 3.9545804060131293,
+    "repeat": [
+      3,
+      3,
+      3
+    ],
+    "n_atoms": 108,
+    "volume_ratios": [
+      0.94,
+      0.96,
+      0.98,
+      1.0,
+      1.02,
+      1.04,
+      1.06
+    ],
+    "grids": [
+      78,
+      96
+    ],
+    "grid_protocol": "Fixed integer grid at all volumes in each series; real spacing varies smoothly with cell size; grid series compared separately.",
+    "econv_Ha_per_atom": 1e-09,
+    "ionic_protocol": "Ideal FCC bulk positions, no ionic or cell optimizer; scan imposed volumes.",
+    "pp_sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803",
+    "runner_sha256": "ed6741cca1b4fb844ba7f652bd532a33c949acc15a7a80b81f6dbdbaef9be2fa",
+    "engine_sha256": "1083ce291fc449c6053e856f8cef0bc45d44a0c5d9d4d19dcd2af0111644f371",
+    "packages": {
+      "dftpy": "2.1.2",
+      "ase": "3.29.0",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1"
+    },
+    "threads": 1
+  },
+  "source_reports_all_14_raw_points_verified": true,
+  "selection": "Seven-point Birch-Murnaghan fits at grids 78^3 and 96^3; alternate fits and raw points omitted.",
+  "fits": [
+    {
+      "grid_n": 78,
+      "model": "birchmurnaghan",
+      "fit_points": 7,
+      "a0_A": 3.9474267098341196,
+      "v0_A3_per_atom": 15.377376043028672,
+      "B0_GPa": 50.191325962434284,
+      "Bprime": 5.0023072566963735,
+      "E0_eV_per_atom": -62.943858603038855,
+      "rms_residual_microeV_atom": 0.7047091975906041,
+      "max_residual_microeV_atom": 1.0165225782276035,
+      "P_at_reference_from_fit_GPa": -0.2689512962880015,
+      "fit_parameters_offset_energy": [
+        -7.168410963031648e-05,
+        0.3132696190347149,
+        5.0023072566963735,
+        15.377376043028672
+      ],
+      "offset_eV_atom": -62.94378691892923
+    },
+    {
+      "grid_n": 96,
+      "model": "birchmurnaghan",
+      "fit_points": 7,
+      "a0_A": 3.947421740305936,
+      "v0_A3_per_atom": 15.377317966048617,
+      "B0_GPa": 50.191952709878564,
+      "Bprime": 5.0016749446696815,
+      "E0_eV_per_atom": -62.94385651578385,
+      "rms_residual_microeV_atom": 0.7125832884919241,
+      "max_residual_microeV_atom": 1.027406385332736,
+      "P_at_reference_from_fit_GPa": -0.2691395826707101,
+      "fit_parameters_offset_energy": [
+        -7.179397440604326e-05,
+        0.31327353088460796,
+        5.0016749446696815,
+        15.377317966048617
+      ],
+      "offset_eV_atom": -62.94378472180944
+    }
+  ],
+  "derived_a0_change_A_96_minus_78": -4.969528183629279e-06,
+  "derived_B0_change_GPa_96_minus_78": 0.0006267474442793741,
+  "tested_grid78_actual_spacing_range_A": [
+    0.14899430890496948,
+    0.15508234189502465
+  ],
+  "new_initial_grid78_spacing_A": 0.15537876923076924,
+  "scope": "Static ideal-FCC imposed-volume EOS; no ionic or variable-cell optimization. Not full convergence proof for the new vc-relax trajectory."
+}

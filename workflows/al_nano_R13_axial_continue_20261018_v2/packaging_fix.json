@@ -1,0 +1,25 @@
+{
+  "scope": "Packaging-only scheduler line-ending correction; no scientific code/policy changes",
+  "parent_manifest_sha256": "2e67fe5f489926780a8c930aa5ed733fd41b24ccadac2f540d73ee0ed1dfda00",
+  "v1_scheduler_status": "sbatch --test-only rejected DOS line endings; no job submitted",
+  "changed_submission_script": [
+    "CRLF to LF",
+    "snapshot path v1 to v2"
+  ],
+  "unchanged_scientific_files": {
+    "recover_axial.py": "b3890312aa0538e6a5eb1b5fc8e70465cd7a0a4ed47fd4c4a018a3a7ffd6333e",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "staged_optimizer.py": "3ff5702912282ae3c0085c43925d7c3f7e1a3d99e0b551fc2eddfc22d7f495d7",
+    "test_recovery.py": "bb861a17715c77103a59780df7aa2232564767faa20d7ac08f171cb75bd64fcb",
+    "api_smoke.py": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418"
+  },
+  "line_ending_check": {
+    "contains_CR": false,
+    "shebang_exact": true,
+    "LF_count": 25,
+    "old_CRLF_count": 25
+  },
+  "v1_sbatch_sha256": "d73f326015256d72255c84edd2f848ab39f505bd7f903cf53ce13fb09526c284",
+  "v2_sbatch_sha256": "dd67ce90b1933c2339bdea4ea4b1ed882efa676def2e62bc89fe4b8cd4f92c3a"
+}

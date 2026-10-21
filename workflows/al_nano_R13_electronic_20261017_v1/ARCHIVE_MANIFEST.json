@@ -1,0 +1,223 @@
+{
+  "archive_kind": "tested_deployed_revision_submitted",
+  "archived_utc": "2026-10-17T16:11:02.783347+00:00",
+  "revision": "R13_bounded_TN_force_gate_20261017_v1",
+  "revision_manifest_sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+  "source_directory": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017",
+  "independent_review_source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review",
+  "archive_directories": [
+    "C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_electronic_20261017_v1",
+    "C:/OFDFT/NAS_SHARE/LUDER_RESULTS_20261017/RECOVERY_R13_ELECTRONIC"
+  ],
+  "scope": "Program tested and deployment verified; diagnostic and guarded continuation submitted. Physical validation pending.",
+  "submitted": true,
+  "submission_status": "both_submitted",
+  "job_id": "2253354",
+  "new_physical_results_available": false,
+  "no_DFT_executed_in_revision_preflight": true,
+  "local_program_tests": {
+    "tests": 25,
+    "passed": 25
+  },
+  "remote_program_tests": {
+    "tests": 25,
+    "passed": 25
+  },
+  "remote_payload_files_hash_verified": 12,
+  "remote_checkpoint_preflight": {
+    "accepted": true,
+    "completed_ionic_step": 100,
+    "parent_bundle_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+    "scope": "Actual coherent parent checkpoint verified; no DFT"
+  },
+  "excluded": [
+    "__pycache__/",
+    "remote_preflight.stderr (auxiliary console stderr)"
+  ],
+  "historical_review_note": "Independent review files are preserved unchanged as preparation evidence, not as a claim of an accepted physical result.",
+  "file_count": 26,
+  "total_bytes": 188850,
+  "copy_hash_mismatches": 0,
+  "files": [
+    {
+      "path": "recover_electronic.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/recover_electronic.py",
+      "bytes": 22921,
+      "sha256": "c62fc261a410c97aa9e771d3179754f876b20ceaddbc1b1837d94509aefc68d9"
+    },
+    {
+      "path": "electronic_trace.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/electronic_trace.py",
+      "bytes": 7051,
+      "sha256": "48487869f688977da955cf83d380d86add1de2b2bc3f3f7105626b2abe526160"
+    },
+    {
+      "path": "recovery_base.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/recovery_base.py",
+      "bytes": 26109,
+      "sha256": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+    },
+    {
+      "path": "staged_optimizer.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/staged_optimizer.py",
+      "bytes": 2926,
+      "sha256": "467a766e1678de1f2e202a8d6a907dca40d786e12ff231ddb499f13cd988ee84"
+    },
+    {
+      "path": "test_recovery.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/test_recovery.py",
+      "bytes": 11471,
+      "sha256": "570a2900d01b562205c01a78d505045ad39945785cb9019e0948aaf86c31ad6e"
+    },
+    {
+      "path": "freeze_revision.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/freeze_revision.py",
+      "bytes": 1559,
+      "sha256": "d9a6295a3681fe3f9cd8e135f4c6b6e8c8154a9c6dc83b31ad81d4a3854d5b61"
+    },
+    {
+      "path": "staged_optimizer.diff",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/staged_optimizer.diff",
+      "bytes": 882,
+      "sha256": "5e0aedc0aba60984a9577a6aa83b5a547ab5488fda4d8256613b6b62ecf11e2b"
+    },
+    {
+      "path": "README.txt",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/README.txt",
+      "bytes": 4030,
+      "sha256": "401e80917f1509ca10301f58176fb72edfee1b6309852e774a09c62aa3d49f71"
+    },
+    {
+      "path": "diagnose.sbatch",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/diagnose.sbatch",
+      "bytes": 1196,
+      "sha256": "40d5dcfa7fb4455c21ba560d61ec5463e0b546665c538b835121e8c8c50b0250"
+    },
+    {
+      "path": "continue.sbatch",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/continue.sbatch",
+      "bytes": 1486,
+      "sha256": "2abe1b91c7093ca7dfab243f7da6ba5ca0a6efbf11067b0154cf86d110b04199"
+    },
+    {
+      "path": "submission_metadata.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/submission_metadata.json",
+      "bytes": 1969,
+      "sha256": "531b953f756096f9262f97e2900aec2d290bb9835aeb0a931c1f7e0ff2a73adb"
+    },
+    {
+      "path": "REVISION_MANIFEST.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/REVISION_MANIFEST.json",
+      "bytes": 3089,
+      "sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223"
+    },
+    {
+      "path": "local_checks.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/local_checks.json",
+      "bytes": 682,
+      "sha256": "cf321850d7c4d2240f40be3fc84317446b70492ceb14350142188bb2ad232197"
+    },
+    {
+      "path": "remote_preflight.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/remote_preflight.json",
+      "bytes": 6446,
+      "sha256": "3514209606901ee032694ce40bc1936672553c5d96a18262a9cc8c6c98ff32b9"
+    },
+    {
+      "path": "deploy_review.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/deploy_review.py",
+      "bytes": 3366,
+      "sha256": "eed896501a15fca4cf2f6d52f506d5d1c14ac90ef5fb5c8efec86ce67f9cff42"
+    },
+    {
+      "path": "deploy_review.sh",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/deploy_review.sh",
+      "bytes": 36946,
+      "sha256": "6a26ee2a48850cdcb7f44a20557871f3198e47d926255db683054233b054ddaf"
+    },
+    {
+      "path": "submit_reviewed.sh",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/r13_electronic_recovery_20261017/submit_reviewed.sh",
+      "bytes": 3435,
+      "sha256": "407aa1928dbdf6f01dd57eda66fa2138229b19fc82f29875314749ee3182529e"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/build_review.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review/build_review.py",
+      "bytes": 7457,
+      "sha256": "af97b3461c9b4c514e3997bb067add771cbb5807f13e44183e0da9c944edfc26"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/RECOMMENDATION_ZH.txt",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review/RECOMMENDATION_ZH.txt",
+      "bytes": 4452,
+      "sha256": "15eb9a252f6cb7f2a094ec9c7a71c3b631646a6d7a5b147ee6fe264dace8a9a8"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/recovery_review_findings.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review/recovery_review_findings.json",
+      "bytes": 5003,
+      "sha256": "77ea618b94996b97fc3cce7e602871075bd866bce557244875173f263edfd96d"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/review_test_results.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review/review_test_results.json",
+      "bytes": 2119,
+      "sha256": "103dd2a555b0408bec8d03c487f8f3139bf1e93e5731aecb52b658d435161a26"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/review_tests.py",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review/review_tests.py",
+      "bytes": 5887,
+      "sha256": "9c1b2388de493f8f662294a8dfcb1e5f915edba36a6c75d252a808208eb6d065"
+    },
+    {
+      "path": "INDEPENDENT_REVIEW/review.json",
+      "source": "C:/Users/m1331/Documents/Codex/2026-09-24/g/work/followup_results_20261017/electronic_review/review.json",
+      "bytes": 14126,
+      "sha256": "a072b62dc838f4e1340f1c27816f641286e84856a951c88482733530920367ca"
+    },
+    {
+      "path": "submission_receipt.json",
+      "source": "C:\\Users\\m1331\\Documents\\Codex\\2026-09-24\\g\\work\\r13_electronic_recovery_20261017\\submission_receipt.json",
+      "bytes": 6400,
+      "sha256": "4ae5aa49b9d8a48f349c03399f1082053f05f5d03b80abfa74487888ac36f644"
+    },
+    {
+      "path": "submit_reviewed.py",
+      "source": "C:\\Users\\m1331\\Documents\\Codex\\2026-09-24\\g\\work\\r13_electronic_recovery_20261017\\submit_reviewed.py",
+      "bytes": 1037,
+      "sha256": "257b69a2c0f2c04faf71b7295f78766e24449a0c1f52a2b7427dae07c4f8baca"
+    },
+    {
+      "path": "last_submission_transport.json",
+      "source": "C:\\Users\\m1331\\Documents\\Codex\\2026-09-24\\g\\work\\r13_electronic_recovery_20261017\\last_submission_transport.json",
+      "bytes": 6805,
+      "sha256": "35fd4b80b29f75cdccfab9de492e98f666559e260809f08d4ca51ef1847cd373"
+    }
+  ],
+  "initial_archive_state": {
+    "archive_kind": "tested_deployed_revision_pending_submission",
+    "scope": "Program tested; deployment verified; pending submission because the existing SSH connection expired before the submission helper connected.",
+    "submitted": false,
+    "submission_status": "pending_submission_ssh_disconnected",
+    "job_id": null,
+    "excluded": [
+      "submission_receipt.json (empty; no submission receipt exists)",
+      "__pycache__/",
+      "remote_preflight.stderr (auxiliary console stderr)"
+    ]
+  },
+  "diagnostic_job_id": "2253353",
+  "continuation_job_id": "2253354",
+  "submission_receipt": {
+    "path": "submission_receipt.json",
+    "sha256": "4ae5aa49b9d8a48f349c03399f1082053f05f5d03b80abfa74487888ac36f644",
+    "bytes": 6400
+  },
+  "current_submission_status": "both_submitted",
+  "job_ids": [
+    "2253353",
+    "2253354"
+  ]
+}

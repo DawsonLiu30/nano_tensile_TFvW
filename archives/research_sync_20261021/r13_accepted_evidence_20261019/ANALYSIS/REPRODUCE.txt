@@ -1,0 +1,6 @@
+分析重建（只讀現有資料，不執行DFT）
+INDEPENDENT_R13/audit_saved_results.py 與日期包根目錄ANALYSIS/PAIR的腳本使用Python/NumPy/ASE；各自README保留當次執行參數與來源。
+FIGURES/plot_relaxation.py --data <R13_0V目錄> --output <圖片輸出目錄> 重新繪製收斂圖。
+目前可用WSL Python：/var/tmp/al-defects-runtime-20260907/env/bin/python。
+如果搬到NAS，應保持三個日期資料包及Al_QE_DFTpy_DATA的並列關係，按各腳本README調整root參數；絕對路徑保留原始計算來源。
+SOURCE_REFERENCES.json位於此日期包根目錄。原始raw的遠端hash在REMOTE_FILE_MANIFEST.json。

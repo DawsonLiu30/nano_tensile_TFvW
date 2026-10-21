@@ -1,0 +1,286 @@
+{
+  "updated": "2026-10-18",
+  "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_smallstep_20261017_v1\\recover_nano.py",
+  "manifest": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_smallstep_20261017_v1\\REVISION_MANIFEST.json",
+  "scope": "Case-identity-guarded R13 continuation; reuse the preserved scientific core and finishing module. New case manifests require review, not rewriting the core.",
+  "evidence": {
+    "revision": "al_nano_smallstep_20261017_v1",
+    "status": "finished_failed_electronic_line_search",
+    "job_id": "2252172",
+    "submission_utc": "2026-10-17T06:35:44.692083+00:00",
+    "last_queue_snapshot": {
+      "command": [
+        "squeue",
+        "-h",
+        "-j",
+        "2252172",
+        "-o",
+        "%i|%T|%M|%l|%R"
+      ],
+      "returncode": 0,
+      "stdout": "2252172|PENDING|0:00|1-00:00:00|(None)\n",
+      "stderr": ""
+    },
+    "case": "R13_0V",
+    "attempt": "attempt_002_smallstep",
+    "method": "fixed-cell atomic LBFGS finish after parent axial relaxation",
+    "maxstep_A": 0.01,
+    "force_target_eV_A": 0.001,
+    "filter_force_target_eV_A": 0.001,
+    "sigma_zz_target_GPa": 0.05,
+    "old_parent_attempt": "attempt_001",
+    "source_bundle_sha256": "7fb7e3a9b8419a10b84314a234448dc2cf1d175cec289fde79242cb9a4971254",
+    "revision_manifest_sha256": "fff9270f92d11dbdd820150675196eb14ed75dc9c6eb5890febeb8ec0e05c0e1",
+    "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_smallstep_20261017_v1",
+    "remote_runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+    "local_workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_smallstep_20261017_v1",
+    "local_archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\RECOVERY_R13_SMALLSTEP",
+    "FIRE_submitted": false,
+    "program_tests": {
+      "local": 16,
+      "remote_ASE_3_25": 16,
+      "passed": true,
+      "is_DFT_convergence_evidence": false
+    },
+    "physical_settings_unchanged": true,
+    "automatic_monitoring": false,
+    "latest_result": {
+      "job_id": "2252172",
+      "slurm_status": "FAILED",
+      "accepted": false,
+      "cause": "Electronic minimization line-search failed at electronic evaluation 102; no timeout or OOM.",
+      "last_completed_ionic_step": 100,
+      "next_proposed_ionic_step": 101,
+      "last_checkpoint_fmax_eV_A": 0.0039031327538669143,
+      "last_checkpoint_sigma_zz_GPa": -0.006843516193682064,
+      "minimum_completed_fmax_eV_A": 0.001865808364269558,
+      "minimum_force_step": 14,
+      "checkpoint_bundle_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+      "Ef_pair_available": false,
+      "physical_validation": "not accepted; previous four successful OF pairs unchanged"
+    }
+  },
+  "historical_method_evidence": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\ANALYSIS\\DFTPY\\historical_ionic_optimizer_audit.json",
+  "qe_k7_reviewed_entrypoint": {
+    "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R15_k7_review_20261017_v1\\run_reviewed_k7.py",
+    "evidence": {
+      "revision": "al_nano_R15_k7_review_20261017_v1",
+      "status": "finished_accepted_scf_diagnostics_sampling_not_converged",
+      "job_id": "2252206",
+      "array_indices": [
+        8,
+        9
+      ],
+      "submission_utc": "2026-10-17T06:45:24.467934+00:00",
+      "last_queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2252206",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2252206_[8-9%2]|PENDING|0:00|3-00:00:00|(None)\n",
+        "stderr": ""
+      },
+      "scope": "R15 0V/1V k7 fixed-geometry SCF diagnostics only; not relaxation or convergence certification",
+      "parent_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_qe_20261015_20261015T123901Z",
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k7_review_20261017_v1",
+      "remote_runroot": "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "local_workflow": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R15_k7_review_20261017_v1",
+      "local_archive": "C:\\OFDFT\\NAS_SHARE\\LUDER_RESULTS_20261017\\QE_R15_K7_REVIEW",
+      "parent_52_files_unchanged": true,
+      "review_manifest_sha256": "aded6060f90242d7450054c56600c6e9973a0f6e67722144c02771f010c38662",
+      "program_tests": {
+        "local": 12,
+        "remote": 12,
+        "passed": true,
+        "is_physical_validation": false
+      },
+      "six_new_size_relaxations_released": false,
+      "resources_per_task": {
+        "partition": "ct56",
+        "ranks": 29,
+        "memory_GiB": 256,
+        "time_hours": 72
+      },
+      "automatic_monitoring": false,
+      "latest_result": {
+        "job_ids": [
+          "2252206_8",
+          "2252206_9"
+        ],
+        "slurm_status": "COMPLETED",
+        "accepted_scf_diagnostics": true,
+        "accepted_relaxed_geometries": false,
+        "fmax_eV_A": [
+          0.034336575745508406,
+          0.03599405501814174
+        ],
+        "sigma_zz_GPa": [
+          -0.012108041653613436,
+          -0.05892631075731143
+        ],
+        "final_scf_accuracy_Ry": [
+          4.892213378896446e-11,
+          3.847484678381638e-11
+        ],
+        "release_new_sizes": false
+      }
+    }
+  },
+  "qe_k9_reviewed_entrypoint": {
+    "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R15_k9_review_20261017_v1\\run_reviewed_k9.py",
+    "evidence": {
+      "status": "completed_scf_diagnostics_energy_pair_check_passed_force_sampling_pending",
+      "job_id": "2253295",
+      "indices": [
+        0,
+        1
+      ],
+      "submission_utc": "2026-10-17T16:00:17.772064+00:00",
+      "scope": "R15 0V/1V fixed-geometry k9 SCF; sampling check only, not relaxed endpoints",
+      "last_queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2253295",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2253295_[0-1%2]|PENDING|0:00|3-00:00:00|(None)\n",
+        "stderr": ""
+      },
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R15_k9_review_20261017_v1",
+      "remote_runroot": "/work/dawson666/qe_cases/qe_runs/AL_NANO_FIVE_RADII_QE_20261015",
+      "manifest_sha256": "fc36ca93d6fc4a25047f2c838b3f3330c013ba92045e75a35d1eddd538a5053a",
+      "new_size_release": false,
+      "program_checks": {
+        "local_pass": 14,
+        "remote_pass": 14,
+        "physical_validation": "pending"
+      },
+      "receipt": "QE_R15_K9_REVIEW/submission_receipt.json",
+      "result_audit": {
+        "job_ids": [
+          "2253295_0",
+          "2253295_1"
+        ],
+        "slurm_state": "COMPLETED",
+        "accepted_scf_diagnostics": true,
+        "accepted_relaxed_endpoints": false,
+        "energy_eV": [
+          -51563.225307869354,
+          -51024.97445348419
+        ],
+        "Fmax_eV_A": [
+          0.046689341600464694,
+          0.03382423752612098
+        ],
+        "sigma_zz_GPa": [
+          -0.05553008351076801,
+          -0.03638700102318318
+        ],
+        "k7_to_k9_paired_energy_change_meV": -1.215520707773976,
+        "paired_scalar_5meV_check": true,
+        "maximum_force_vector_changes_eV_A": [
+          0.018339244,
+          0.005628653
+        ],
+        "release_new_sizes": false,
+        "next_minimum": "Two same-geometry k11 SCFs to assess remaining force/energy sensitivity, then choose representative R15 re-relaxation sampling; not submitted in this audit"
+      }
+    }
+  },
+  "r13_electronic_recovery": {
+    "entry": "C:\\OFDFT\\nano_tensile_TFvW\\workflows\\al_nano_R13_electronic_20261017_v1\\recover_electronic.py",
+    "evidence": {
+      "status": "gate_passed_relaxation_intentionally_interrupted_stagnation",
+      "case": "R13_0V",
+      "diagnostic_job_id": "2253353",
+      "continuation_job_id": "2253354",
+      "revision_manifest_sha256": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+      "remote_snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1",
+      "remote_runroot": "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+      "parent_completed_ionic_step": 100,
+      "parent_bundle_sha256": "93398e09a8470c502a54d0f67053af3e50ed19ae03f8225826c533780c71631f",
+      "electronic_method": "TN",
+      "electronic_econv_Ha_per_atom": 1e-11,
+      "ionic_method": "fixed-cell atomic LBFGS",
+      "ionic_maxstep_A": 0.01,
+      "acceptance": {
+        "fmax_eV_A": 0.001,
+        "filter_fmax_eV_A": 0.001,
+        "abs_sigma_zz_GPa": 0.05
+      },
+      "diagnostic_limits": {
+        "logical_SCF": 8,
+        "native_attempts": 14,
+        "time_s": 6600
+      },
+      "production_limits": {
+        "time_s": 79200,
+        "ionic_steps": 1000
+      },
+      "program_checks": {
+        "local_pass": 25,
+        "remote_pass": 25,
+        "independent_review_pass": 16,
+        "physical_validation": "pending"
+      },
+      "new_attempt": "attempt_003_TNsmallstep",
+      "diagnostic_directory": "diagnostics_003_electronic",
+      "scientific_release": "Required native electronic convergence, independent HEG repeat and two force FD steps; afterok plus runtime content/hash verification",
+      "submitted_receipt": "RECOVERY_R13_ELECTRONIC/submission_receipt.json",
+      "submission_utc": "2026-10-17T16:14:01.920515+00:00",
+      "last_queue_snapshot": {
+        "command": [
+          "squeue",
+          "-h",
+          "-j",
+          "2253353,2253354",
+          "-o",
+          "%i|%T|%M|%l|%R"
+        ],
+        "returncode": 0,
+        "stdout": "2253354|PENDING|0:00|1-00:00:00|(Dependency)\n2253353|PENDING|0:00|2:00:00|(None)\n",
+        "stderr": ""
+      },
+      "dependency": "afterok:2253353",
+      "gate": {
+        "job_id": "2253353",
+        "status": "passed",
+        "elapsed_s": 745.2539590708911,
+        "maximum_force_FD_error_eV_A": 8.821427056981794e-07,
+        "repeat_force_difference_eV_A": 1.8158673045072723e-05,
+        "scope": "Checkpoint-specific self-consistent force spot gate; not a global surface/functional validation",
+        "physical_attempts": {
+          "logical_calls": 8,
+          "physical_attempts": 10,
+          "failed_physical_attempts": 3,
+          "HEG_retries": 2,
+          "all_physical_attempts_converged": false,
+          "retry_policy": "Only TN warm native flag=1 permits one HEG attempt; no other failure is retried."
+        }
+      },
+      "relaxation": {
+        "job_id": "2253354",
+        "status": "intentionally_interrupted_after_ionic_stagnation",
+        "slurm_state": "FAILED",
+        "termination_cause": "Deliberate SIGTERM caught by runner; not spontaneous electronic failure, OOM or time limit",
+        "accepted": false,
+        "last_completed_ionic_step": 483,
+        "interrupted_proposed_step": 484,
+        "last_fmax_eV_A": 0.0036242870975847336,
+        "last_filter_fmax_eV_A": 0.010078513948577809,
+        "last_sigma_zz_GPa": -0.022252404431343596,
+        "coherent_bundle_sha256": "11b4681bcdf6edbe1502c96015edd43fbbdeab87d6e0ccd05cad28ab6bb3f799",
+        "next_minimum": "Reuse TN electronic method and coherent checkpoint; restore axial freedom and test a bounded ionic method with stagnation detection. No new optimizer is validated by this audit."
+      }
+    }
+  }
+}

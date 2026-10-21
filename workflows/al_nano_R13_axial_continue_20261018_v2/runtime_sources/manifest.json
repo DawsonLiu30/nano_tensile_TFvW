@@ -1,0 +1,32 @@
+[
+  {
+    "module": "ase.optimize.bfgslinesearch",
+    "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/optimize/bfgslinesearch.py",
+    "archive": "ase.optimize.bfgslinesearch.py",
+    "sha256": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a"
+  },
+  {
+    "module": "ase.optimize.optimize",
+    "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/optimize/optimize.py",
+    "archive": "ase.optimize.optimize.py",
+    "sha256": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e"
+  },
+  {
+    "module": "ase.filters",
+    "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/filters.py",
+    "archive": "ase.filters.py",
+    "sha256": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb"
+  },
+  {
+    "module": "ase.utils.linesearch",
+    "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/utils/linesearch.py",
+    "archive": "ase.utils.linesearch.py",
+    "sha256": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c"
+  },
+  {
+    "module": "dftpy.utils",
+    "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/dftpy/utils/__init__.py",
+    "archive": "dftpy.utils.py",
+    "sha256": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8"
+  }
+]

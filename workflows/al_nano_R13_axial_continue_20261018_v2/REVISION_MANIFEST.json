@@ -1,0 +1,67 @@
+{
+  "revision": "R13_axial_BFGSLineSearch_continue_20261018_v2",
+  "expected": {
+    "case": "R13_0V",
+    "original_manifest": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+    "electronic_revision": "79009e0248878103f7b2ac86b390e03843100324866678008dc0e69881d8c223",
+    "parent_result": "32bedd18ba54f078d9e7c17f0f8ae7cf73201608a90fe83da40d645853da36be",
+    "axial_revision": "0c4cd1072d87fe1fbe3aff60bc0c45d72a10e29f5dc0096dca8278b3fd9ab01e",
+    "parent_provenance": "5c4eed227bfc7addf4d0c17feaf1a59fc5c77b70081bfad48c55f15be408c696",
+    "parent_bundle": "d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f",
+    "electronic_gate": "c6d9465abddc8e38671eee7c623b0962ed2f430889aabe1f28b3c0eb2345baf2",
+    "original_stress_gate": "b1ddc3cb06fed8e341eaf2197e9436c5841e25f6f34236a056ca70527374acd0",
+    "base_runner": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72"
+  },
+  "optimizer_policy": {
+    "revision": "R13_axial_BFGSLineSearch_continue_20261018_v1",
+    "optimizer": "BFGSLineSearch",
+    "maxstep_generalized_A": 0.02,
+    "cell_mask": [
+      0,
+      0,
+      1,
+      0,
+      0,
+      0
+    ],
+    "exp_cell_factor": "n_atoms",
+    "c1": 0.23,
+    "c2": 0.46,
+    "alpha": 10.0,
+    "stpmax": 50.0,
+    "max_ionic_steps": 120,
+    "max_logical_scf": 360,
+    "cycle_periods": [
+      2,
+      4
+    ],
+    "cycle_windows": 3,
+    "cycle_position_tolerance_A": 0.0001,
+    "cycle_energy_tolerance_eV": 1e-06,
+    "cycle_force_relative_improvement": 0.05,
+    "electronic_method": "TN",
+    "econv_Ha_per_atom": 1e-11,
+    "ncheck": 3,
+    "scope": "Bounded continuation; fresh inverse Hessian, no parent optimizer history loaded"
+  },
+  "files": {
+    "packaging_fix.json": "7923e69830383c433c9fb8c885f06e57a116bb3d2b30011b023e88e266c94b01",
+    "recover_axial.py": "b3890312aa0538e6a5eb1b5fc8e70465cd7a0a4ed47fd4c4a018a3a7ffd6333e",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "electronic_trace.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "staged_optimizer.py": "3ff5702912282ae3c0085c43925d7c3f7e1a3d99e0b551fc2eddfc22d7f495d7",
+    "test_recovery.py": "bb861a17715c77103a59780df7aa2232564767faa20d7ac08f171cb75bd64fcb",
+    "freeze_revision.py": "4ebc66a95331ddb360a4310d99a1912b228c15edcc84f42395bf00530e878c97",
+    "continue.sbatch": "dd67ce90b1933c2339bdea4ea4b1ed882efa676def2e62bc89fe4b8cd4f92c3a",
+    "README.txt": "640154ee52914659e914ff728bb87cdbc43cbcaf2ce56b968f4b6519c0fd842c",
+    "api_smoke.py": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418",
+    "runtime_sources/ase.filters.py": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb",
+    "runtime_sources/ase.optimize.bfgslinesearch.py": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a",
+    "runtime_sources/ase.optimize.optimize.py": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e",
+    "runtime_sources/ase.utils.linesearch.py": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c",
+    "runtime_sources/dftpy.utils.py": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8",
+    "runtime_sources/manifest.json": "ea698b01e8e788eb592d33873eba05f7b4a845144288d856fd1e93999709b2af"
+  },
+  "scope": "Single bounded ct56 continuation; no automatic followup; not yet physically accepted"
+}

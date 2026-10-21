@@ -1,0 +1,110 @@
+{
+  "campaign": "al_nano_five_radii_gated_20261015",
+  "status": "prepared_not_submitted",
+  "baseline_ids": [
+    "QE 800 eV cutoff retained",
+    "primitive 40^3/80^3 EOS supported in its own cell",
+    "nano k3 transfer checked here, not previously certified"
+  ],
+  "common_namelists": {
+    "control": {
+      "calculation": "vc-relax",
+      "tstress": true,
+      "tprnfor": true,
+      "nstep": 1000,
+      "etot_conv_thr": 1e-06,
+      "forc_conv_thr": 1.94469038114889e-05,
+      "pseudo_dir": "./pseudo",
+      "outdir": "./scratch",
+      "restart_mode": "from_scratch",
+      "max_seconds": 255600,
+      "disk_io": "low",
+      "verbosity": "high"
+    },
+    "system": {
+      "ibrav": 0.0,
+      "ntyp": 1.0,
+      "ecutwfc": 58.798915481,
+      "ecutrho": 470.3913238484,
+      "occupations": "smearing",
+      "smearing": "mp",
+      "degauss": 0.02,
+      "nspin": 1.0,
+      "tot_charge": 0.0,
+      "nosym": true,
+      "noinv": true
+    },
+    "electrons": {
+      "conv_thr": 1e-10,
+      "electron_maxstep": 300.0,
+      "scf_must_converge": true,
+      "mixing_mode": "plain",
+      "mixing_beta": 0.2,
+      "mixing_ndim": 4.0,
+      "diagonalization": "david",
+      "diago_david_ndim": 2.0,
+      "startingpot": "atomic",
+      "startingwfc": "atomic+random"
+    },
+    "ions": {
+      "ion_dynamics": "bfgs",
+      "trust_radius_min": 1e-06
+    },
+    "cell": {
+      "cell_dynamics": "bfgs",
+      "cell_dofree": "z",
+      "press": 0.0,
+      "press_conv_thr": 0.5
+    }
+  },
+  "acceptance": {
+    "force_norm_eV_A": 0.001,
+    "force_component_eV_A": 0.0005,
+    "axial_stress_GPa": 0.05,
+    "SCF_accuracy_Ry": 1e-10,
+    "require_BFGS_and_final_cell_SCF_for_relaxation": true,
+    "fixed_transverse_cell": true,
+    "minimum_vacancy_image_translation_A": 10
+  },
+  "k_gate": {
+    "stage1_cases": [
+      6,
+      7
+    ],
+    "stage2": "gate --run-root <root> --release <root>/gate_release.json",
+    "stage3_small_indices": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "stage3_medium_indices": [
+      4,
+      5
+    ],
+    "maximum_change_E1_minus_E0_eV": 0.005,
+    "delta_definition": "[(E1-E0)_k5 - (E1-E0)_k3] at each existing k3 equilibrium geometry; same bulk mu cancels",
+    "gate_requires_both_k5_final_SCF_and_force_and_axial_stress": true,
+    "component_threshold_eV_A": 0.0005,
+    "failure_action": "Fail gate job (nonzero); dependent six relaxations do not start. No automatic k7/re-relax/submission. Review the residual force and energy sensitivity.",
+    "conditional_k7_indices": [
+      8,
+      9
+    ],
+    "k7_status": "prepared_only_not_scheduled",
+    "scope": "Representative R15 check at old final geometries; 5 meV is this work practical decision threshold, not a universal convergence law. Does not certify all radii, smearing, vacuum or axial-length convergence."
+  },
+  "resources": {
+    "R11_R13_GiB": 128,
+    "R17_GiB": 192,
+    "R15_k5_GiB": 192,
+    "R15_k7_conditional_GiB": 256,
+    "ranks": 29,
+    "walltime_hours": 72,
+    "QE_internal_seconds": 255600,
+    "gate_memory_GiB": 1,
+    "gate_walltime_minutes": 20,
+    "memory_note": "R15 observed QE estimate >72.60/72.10 GB and successful 128 GiB allocations; R20 >156.45/155.76 GB and measured ~177.96 GiB/256 GiB. R17 allocation is a size-interpolated conservative request, not a measured peak. Denser-k R15 given extra headroom; QE estimates are lower bounds."
+  },
+  "checkpoint_policy": "Retain full scratch and .bfgs under unique attempt_001. Internal max_seconds stops 1h before allocation wall. No automatic restart; subsequent continuation must verify density/wfc/BFGS consistency and explicitly use startingpot/wfc=file."
+}

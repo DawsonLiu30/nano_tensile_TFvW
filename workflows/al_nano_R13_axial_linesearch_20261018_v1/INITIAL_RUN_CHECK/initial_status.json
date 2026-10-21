@@ -1,0 +1,13 @@
+{
+  "utc": "2026-10-18T05:16:28.951071+00:00",
+  "job_id": "2254539",
+  "queue": {
+    "returncode": 0,
+    "stdout": "2254539|RUNNING|0:23|2:00:00|cpn3001\n",
+    "stderr": ""
+  },
+  "attempt_exists": false,
+  "axial-linesearch-2254539.err": "",
+  "stdout_tail": "The final grid size is  [140 140  96]\nsetting key: Al -> /work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_004_axial_linesearch/inputs/al.lda.recpot\nStep    Energy(a.u.)            dE              dP              Nd      Nls     Time(s)         \n0       -1.749297617027E+02     -1.749298E+02   2.696825E-10    1       1       1.301522E+00    \n1       -1.749297617027E+02     -2.739853E-11   2.282199E-10    12      2       8.894606E+00    \n",
+  "stdout_bytes": 479
+}

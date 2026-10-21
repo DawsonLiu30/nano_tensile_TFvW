@@ -1,0 +1,30 @@
+{
+  "revision": "r13_smallstep_checkpoint_recovery_20261017_v1",
+  "parent": {
+    "case": "R13_0V",
+    "parent_manifest": "e2a78d9c360f5fbef8ec267a0565e2f74d17542e5641262071cf3bbb5fbe1674",
+    "parent_result": "d3d3078939c8cefaf439854af3fc22b4aa2e7f7306c069f3648c075be8022226",
+    "parent_gate": "b1ddc3cb06fed8e341eaf2197e9436c5841e25f6f34236a056ca70527374acd0",
+    "bundle": "7fb7e3a9b8419a10b84314a234448dc2cf1d175cec289fde79242cb9a4971254",
+    "stress_candidate": "06c86e2aa20408042746f0d457765991ca91afe1ebf20737562108928b0acfeb",
+    "parent_runner": "2870c1ff9136e43fb40c411bf045d26ba0fb8f10021d4c6b0a99cf64473b1253"
+  },
+  "optimizer_policy": {
+    "revision": "fixed_cell_smallstep_LBFGS_finish_20261017_v1",
+    "optimizer": "LBFGS",
+    "maxstep_A": 0.01,
+    "cell_degrees_of_freedom_during_finish": "none; cell fixed at coherent parent checkpoint",
+    "filter_role": "original z-only FrechetCellFilter retained for final force/stress acceptance",
+    "electronic_optimizer": "unchanged LBFGS",
+    "scope": "historical optimizer family; current stricter R13 physical endpoint still requires acceptance"
+  },
+  "files": {
+    "recover_nano.py": "8dc28a888d0827cc449b2036c20fd740fabb724ac1917aa5fc6abf0c55a8aa5f",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "staged_optimizer.py": "0648e4e074e1122c75fac9504b8c3f0b06d0c1c56e5b5ccf3dd0bf0bc56e2286",
+    "test_recovery.py": "d34367f28d54564c724a3e1c776505737b713f4d5d9318ab53082732c18b5b66",
+    "build_revision.py": "a49db1523b524cad74168b337bcefeee9cad2bb77ffa48ffa6c6f115e3fc2cc0",
+    "base_runner_minimal.diff": "41b1cbc30a407c8ce55134a63760de2cc5eca46ea3951e8c0f3eed2e25b11085"
+  },
+  "scope": "Only R13_0V actual execution; fixed-cell smallstep ionic LBFGS finish; atomic/filter/stress/electronic acceptance unchanged"
+}

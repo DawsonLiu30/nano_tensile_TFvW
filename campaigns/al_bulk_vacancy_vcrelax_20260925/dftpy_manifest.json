@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "campaign_id": "al_bulk_vacancy_vcrelax_20260925",
+  "geometry": {
+    "file": "geometry.json",
+    "sha256": "5fc90ca8d32ed444597c1b98c431980ffd4b5cbe400474ad2976b9b408cd8732"
+  },
+  "xc": "LDA",
+  "pseudo": {
+    "file": "pseudo/al.lda.recpot",
+    "sha256": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+  },
+  "grid": [
+    78,
+    78,
+    78
+  ],
+  "lambda_tf": 0.9,
+  "mu_vw": 0.1,
+  "electronic": {
+    "method": "LBFGS",
+    "econv_Ha_per_atom": 1e-09,
+    "ncheck": 3,
+    "maxiter": 1000,
+    "maxls": 50,
+    "maxfun": 100,
+    "densityini": "heg",
+    "reuse": true
+  },
+  "ionic": {
+    "optimizer": "LBFGS",
+    "fmax_eV_A": 0.001,
+    "filter_fmax_eV_A": 0.001,
+    "max_steps": 1000,
+    "maxstep_A": 0.15
+  },
+  "cell": {
+    "filter": "FrechetCellFilter",
+    "scalar_pressure_GPa": 0,
+    "hydrostatic_strain": false,
+    "constant_volume": false,
+    "stress_max_abs_GPa": 0.05,
+    "exp_cell_factor": "n_atoms"
+  },
+  "runtime": {
+    "max_walltime_s": 6600
+  },
+  "numerical_provenance": "September15 LDA/local lambda=.9,mu=.1 grid test: 60 to 78 changes Eb(1NN) by -0.1705 meV and Eb(2NN) by -0.0759 meV; September16 EOS 78 vs96 gives da0=4.97e-6 A and dB0=0.000627 GPa. Fixed point count retained through variable-cell trajectory; actual spacing recorded. OF density grid is not QE wavefunction cutoff.",
+  "comparison_scope": "User explicitly retains different XC/pseudopotentials: QE PAW/PBE versus OF local/LDA. Compare within-method formation/binding energies and structures, never subtract raw absolute total energies across methods."
+}

@@ -1,0 +1,44 @@
+DFTpy R13 成功案例：原因與後續複用
+更新：2026-10-19；作業2255218。
+
+一、這次成功在哪裡
+R13完整柱在原定門檻下完成：原子最大力0.000976534 eV/Å、filter最大力0.000976680 eV/Å、軸向應力0.000040852 GPa。
+本次用46個完整離子步、185次電子計算，耗時4小時1分12秒。電子計算均原生成功，沒有HEG重試；46步線搜尋皆正常收斂。
+這代表此物理模型及有限網格下，該結構達到已設定的數值靜止點。其整體能量最低性、所有尺寸的適用性與完整晶相分類是另外的問題。
+
+二、和前幾次有什麼不同
+1. 先把電子計算穩定下來：沿用已完成checkpoint診斷的TN方法，econv=1e-11 Ha/atom、ncheck=3。這是電子密度最佳化，與原子的移動方法不同。
+2. 原先固定晶胞的原子LBFGS在R13出現四步循環；同時仍以原z-only filter檢查終態，固定軸長也限制了可達到的平衡。繼續相同LBFGS只會重複走過同一段。
+3. 新方法讓原子與z軸長共同調整，使用BFGSLineSearch配合z-only FrechetCellFilter。每一個完成步都經過原生線搜尋CONVERGENCE；WARNING與未更新步不放行。保存路徑顯示能量持續下降，後來離開先前停滯區並發生明顯結構重排。
+4. 第一次短試的line-search maxstep參數是0.005：完成12步／111次電子計算後到內部時限。續算改為0.02，46步／185次電子計算後達標。平均每完成步的電子計算約由9.25降到4.02；兩段起點、Hessian歷史、路徑與可用時間也不同，所以不能把改善全部歸因於這一個參數。
+5. 這個0.02是線搜尋在廣義座標中的試探增量參數，不是整個離子步的最大原子位移。原生Wolfe條件與stpmax=50仍保留。
+
+三、保留哪些檔案
+已凍結的成功版本：
+C:/OFDFT/nano_tensile_TFvW/workflows/al_nano_R13_axial_continue_20261018_v2
+manifest SHA256：0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf
+
+該版本的原始程式、輸入、程式測試、執行前檢查與提交回執保持原樣。
+結果證據另存：docs/validated_workflow_evidence/R13_axial_continue_2255218_20261019.json。
+實際結果、trajectory、完整log、checkpoint bundle與optimizer_state保存在LUDER_RESULTS_20261019/R13_AXIAL_CONTINUATION_RESULTS/R13_0V。
+先前電子診斷、失敗案例與兩個日期來源仍保留，避免下次再重試已知失敗路徑。
+
+四、下次如何用
+先讀docs/VALIDATED_WORKFLOWS.md與docs/CONVERGENCE_BASELINES.md。
+現有recover_axial.py用case身分與父checkpoint hash綁定R13；不能換一個case名稱便直接執行同一CLI。
+新case應複用已保存的科學核心與optimizer模組，建立並審核新的case manifest和薄入口，記錄父版本及最小差異，另建凍結snapshot。
+
+必須保留並逐項核對：
+- XC、偽勢檔及SHA、TF/vW權重。現例為LDA/local、TF=0.9、vW=0.1。
+- 網格及晶胞。現例140×140×96僅屬此R13輸入；換尺寸要重新檢查轉用，不能直接稱同樣網格已收斂。
+- 晶胞自由度：固定x/y、只開zz；mask=[0,0,1,0,0,0]，完整三向PBC，保留橫向真空。
+- 電子檢查及重試規則；只用達到原生收斂的密度計算力。
+- Fmax≤0.001 eV/Å、filter force≤0.001 eV/Å、|sigma_zz|≤0.05 GPa，不因震盪而放寬。
+- coherent checkpoint的原子、晶胞、密度、電子數與hash必須對位。若載入optimizer歷史，Hessian、步數、廣義座標、bundle hash及filter定義必須一致。
+- 本次從父step12重新初始化Hessian；新state在每個完成checkpoint後另存。程式沒有自動載入舊state的通用功能，未對位的state不可冒充連續歷史。
+- 內部時間／步數／SCF預算、Slurm資源與止損檢查。24GiB足供本次約17.62GiB峰值，不能當所有尺寸的記憶體保證。
+- 新來源版本、測試、manifest、回執與accepted-result證據一起保存。程式測試通過與實際物理端點驗收分開登錄。
+
+五、目前能說的結論
+這套組合已在R13這一個困難案例成功，未放寬門檻。它是後續相容案例可優先複用的工作流程。
+本次沒有證明FIRE成功，也沒有證明BFGSLineSearch對所有DFTpy計算都最有效。後續若停滯，應先查看電子收斂、離子路徑與晶胞自由度，再決定最小必要修改。

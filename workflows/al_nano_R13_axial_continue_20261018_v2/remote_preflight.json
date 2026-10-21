@@ -1,0 +1,109 @@
+{
+  "snapshot": "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2",
+  "payload_hashes": {
+    "packaging_fix.json": "7923e69830383c433c9fb8c885f06e57a116bb3d2b30011b023e88e266c94b01",
+    "recover_axial.py": "b3890312aa0538e6a5eb1b5fc8e70465cd7a0a4ed47fd4c4a018a3a7ffd6333e",
+    "recovery_base.py": "dc36263b50496c3b03822cbc94e3b1d7fd153d38a78dc547fd2b717d0ffe5b72",
+    "electronic_trace.py": "51cb40c96a49033f87623e7a49587880b2986e487e90e3bdd3906412a4606df9",
+    "electronic_trace.diff": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "staged_optimizer.py": "3ff5702912282ae3c0085c43925d7c3f7e1a3d99e0b551fc2eddfc22d7f495d7",
+    "test_recovery.py": "bb861a17715c77103a59780df7aa2232564767faa20d7ac08f171cb75bd64fcb",
+    "freeze_revision.py": "4ebc66a95331ddb360a4310d99a1912b228c15edcc84f42395bf00530e878c97",
+    "continue.sbatch": "dd67ce90b1933c2339bdea4ea4b1ed882efa676def2e62bc89fe4b8cd4f92c3a",
+    "README.txt": "640154ee52914659e914ff728bb87cdbc43cbcaf2ce56b968f4b6519c0fd842c",
+    "api_smoke.py": "a94304ab87f9714deda35d249a95e4d8d582b506ba293e6f4a1813eb66ec8418",
+    "runtime_sources/ase.filters.py": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb",
+    "runtime_sources/ase.optimize.bfgslinesearch.py": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a",
+    "runtime_sources/ase.optimize.optimize.py": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e",
+    "runtime_sources/ase.utils.linesearch.py": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c",
+    "runtime_sources/dftpy.utils.py": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8",
+    "runtime_sources/manifest.json": "ea698b01e8e788eb592d33873eba05f7b4a845144288d856fd1e93999709b2af",
+    "REVISION_MANIFEST.json": "0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf"
+  },
+  "runtime_sources_verified": [
+    {
+      "module": "ase.optimize.bfgslinesearch",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/optimize/bfgslinesearch.py",
+      "archive": "ase.optimize.bfgslinesearch.py",
+      "sha256": "1d47b51b7309e45c3d208a123cbf56f34980286309b93bc7b131e7d67bb3908a"
+    },
+    {
+      "module": "ase.optimize.optimize",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/optimize/optimize.py",
+      "archive": "ase.optimize.optimize.py",
+      "sha256": "419d616a82dac2aa2475c7190c1161d1951d5d7c6f1810823edd27463069306e"
+    },
+    {
+      "module": "ase.filters",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/filters.py",
+      "archive": "ase.filters.py",
+      "sha256": "f0d53428723144cada8b25a7435adcff08053b5b75646dbcc9200420ef6921fb"
+    },
+    {
+      "module": "ase.utils.linesearch",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/ase/utils/linesearch.py",
+      "archive": "ase.utils.linesearch.py",
+      "sha256": "6e9a4e2932920b2a4e4a2d6b90b3c6fdb4da3f0636c256e02d54862672f35d2c"
+    },
+    {
+      "module": "dftpy.utils",
+      "source": "/home/dawson666/miniconda3/envs/dftpy-env/lib/python3.11/site-packages/dftpy/utils/__init__.py",
+      "archive": "dftpy.utils.py",
+      "sha256": "ec6144aa1c130f9ce8fd56ed8a88b4d8cba7e8032949278b5b037179cb176df8"
+    }
+  ],
+  "tests": {
+    "command": [
+      "/home/dawson666/miniconda3/envs/dftpy-env/bin/python",
+      "-B",
+      "test_recovery.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\"tests\": 11, \"passed\": 11, \"failures\": 0, \"errors\": 0, \"scope\": \"Synthetic only, no DFT\"}\n",
+    "stderr": "test_cycles_stop_after_checkpoint_observer (__main__.Tests.test_cycles_stop_after_checkpoint_observer) ... ok\ntest_filter_gradient_matches_energy_difference (__main__.Tests.test_filter_gradient_matches_energy_difference) ... ok\ntest_fresh_optimizer_history_initialization (__main__.Tests.test_fresh_optimizer_history_initialization) ... ok\ntest_limit_and_acceptance_unchanged (__main__.Tests.test_limit_and_acceptance_unchanged) ... ok\ntest_native_axial_filter_compatible_and_descends (__main__.Tests.test_native_axial_filter_compatible_and_descends) ... ok\ntest_native_boundary_warning_is_rejected (__main__.Tests.test_native_boundary_warning_is_rejected) ... ok\ntest_optimizer_state_rejects_changed_geometry (__main__.Tests.test_optimizer_state_rejects_changed_geometry) ... ok\ntest_optimizer_state_rejects_mismatched_checkpoint (__main__.Tests.test_optimizer_state_rejects_mismatched_checkpoint) ... ok\ntest_repeated_four_cycle_detected (__main__.Tests.test_repeated_four_cycle_detected) ... ok\ntest_unconverged_FG_not_accepted (__main__.Tests.test_unconverged_FG_not_accepted) ... ok\ntest_warning_not_accepted_even_nonnull_step (__main__.Tests.test_warning_not_accepted_even_nonnull_step) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.935s\n\nOK\n"
+  },
+  "api_smoke": {
+    "command": [
+      "/home/dawson666/miniconda3/envs/dftpy-env/bin/python",
+      "-B",
+      "api_smoke.py"
+    ],
+    "returncode": 0,
+    "stdout": "{\n  \"scope\": \"Analytic calculator and density remapping only; no DFT/Al physical acceptance.\",\n  \"ASE_version\": \"3.25.0\",\n  \"free_energy_missing_fallback\": true,\n  \"filter_zz_force_derivative_error\": 6.046968481498993e-13,\n  \"analytic_optimizer_converged\": true,\n  \"outer_steps\": 7,\n  \"last_analytic_fmax\": 1.1435718873008245e-06,\n  \"initial_cell_A\": [\n    [\n      6.0,\n      0.0,\n      0.0\n    ],\n    [\n      0.0,\n      7.0,\n      0.0\n    ],\n    [\n      0.0,\n      0.0,\n      5.03\n    ]\n  ],\n  \"final_cell_A\": [\n    [\n      6.0,\n      0.0,\n      0.0\n    ],\n    [\n      0.0,\n      7.0,\n      0.0\n    ],\n    [\n      0.0,\n      0.0,\n      5.000000571785976\n    ]\n  ],\n  \"energy_nonincreasing\": true,\n  \"remap_before_normalization_electrons\": 228.228,\n  \"remap_after_normalization_electrons\": 227.99999999999997,\n  \"same_nr_mapping\": \"same fractional indices, then volume normalization\"\n}\n",
+    "stderr": ""
+  },
+  "verify": {
+    "command": [
+      "/home/dawson666/miniconda3/envs/dftpy-env/bin/python",
+      "-B",
+      "recover_axial.py",
+      "verify",
+      "--original-snapshot",
+      "/work/dawson666/src/campaign_snapshots/al_nano_five_radii_of_20261015_20261015T124450Z",
+      "--electronic-snapshot",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_electronic_20261017_v1",
+      "--axial-snapshot",
+      "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_linesearch_20261018_v1",
+      "--runroot",
+      "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015",
+      "--parent-attempt",
+      "/work/dawson666/dftpy_project/relax/AL_NANO_FIVE_RADII_CORRECTED_20261015/R13_0V/attempt_004_axial_linesearch"
+    ],
+    "returncode": 0,
+    "stdout": "{\n  \"accepted\": true,\n  \"scope\": \"preflight only, no DFT\",\n  \"revision_manifest_sha256\": \"0873dc84e7e796fea4f743ab37e1f2dcc1a34dd86bee2cf9fef70cc7e3970bbf\",\n  \"parent_bundle_sha256\": \"d30d37f9c33e7ef7be05a5ac653232f348774304636eb6691163f5b508f5297f\",\n  \"completed_ionic_step\": 12,\n  \"n_atoms\": 76,\n  \"electrons\": 228,\n  \"grid\": [\n    140,\n    140,\n    96\n  ],\n  \"cell_A\": [\n    [\n      20.263429469800002,\n      0.0,\n      0.0\n    ],\n    [\n      0.0,\n      20.263429469800002,\n      0.0\n    ],\n    [\n      0.0,\n      0.0,\n      13.497656993075676\n    ]\n  ],\n  \"optimizer_policy\": {\n    \"revision\": \"R13_axial_BFGSLineSearch_continue_20261018_v1\",\n    \"optimizer\": \"BFGSLineSearch\",\n    \"maxstep_generalized_A\": 0.02,\n    \"cell_mask\": [\n      0,\n      0,\n      1,\n      0,\n      0,\n      0\n    ],\n    \"exp_cell_factor\": \"n_atoms\",\n    \"c1\": 0.23,\n    \"c2\": 0.46,\n    \"alpha\": 10.0,\n    \"stpmax\": 50.0,\n    \"max_ionic_steps\": 120,\n    \"max_logical_scf\": 360,\n    \"cycle_periods\": [\n      2,\n      4\n    ],\n    \"cycle_windows\": 3,\n    \"cycle_position_tolerance_A\": 0.0001,\n    \"cycle_energy_tolerance_eV\": 1e-06,\n    \"cycle_force_relative_improvement\": 0.05,\n    \"electronic_method\": \"TN\",\n    \"econv_Ha_per_atom\": 1e-11,\n    \"ncheck\": 3,\n    \"scope\": \"Bounded continuation; fresh inverse Hessian, no parent optimizer history loaded\"\n  },\n  \"force_target_eV_A\": 0.001,\n  \"stress_target_GPa\": 0.05\n}\n",
+    "stderr": ""
+  },
+  "shell_checks": {
+    "continue.sbatch": {
+      "command": [
+        "bash",
+        "-n",
+        "/work/dawson666/src/campaign_snapshots/al_nano_R13_axial_continue_20261018_v2/continue.sbatch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  "no_DFT_executed": true
+}

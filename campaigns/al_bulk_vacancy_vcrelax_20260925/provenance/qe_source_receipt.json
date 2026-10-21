@@ -1,0 +1,14 @@
+[
+  {
+    "file": "historical_qe_manifest.json",
+    "source_remote": "/home/dawson666/qe_divacancy_vcrelax_conv3x3x3_rscan_20260616/manifest.json",
+    "sha256": "d1aae3afc01cac671c301ce3cc9956d359adb7a96924e91545b55af46fef9d60",
+    "observed_utc": "2026-09-25T09:08:32.387621+00:00"
+  },
+  {
+    "file": "historical_qe_pristine_vcrelax.in",
+    "source_remote": "/home/dawson666/qe_divacancy_vcrelax_conv3x3x3_rscan_20260616/pair_scan/pair_01_r2p8566A/pristine_vcrelax/vc-relax.in",
+    "sha256": "d22c3c847ba57ac7480ffbf6ebc10cca7ae2b3c0636a4250a9457894bc10c63c",
+    "observed_utc": "2026-09-25T09:08:32.387621+00:00"
+  }
+]

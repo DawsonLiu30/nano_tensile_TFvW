@@ -1,0 +1,38 @@
+R13_0V 續算 2252172：電子失敗與離子停滯分開處理
+查核日期：2026-10-17（台灣）
+
+一、已證實的結果
+作業跑了約29分鐘，完成100個離子步（含起始狀態共101筆），接著第102次電子密度最佳化回傳 line-search failure。不是24小時用完，也沒有記憶體不足：記錄的峰值RSS約4.62 GiB。前101次電子最佳化通過；程式在失敗後拒絕力／應力，這個保護應保留。
+
+最後完整checkpoint的最大力為0.00390313 eV/Å，軸應力為−0.00684352 GPa；本輪最低力為第14步的0.00186581 eV/Å。整輪都沒有達到0.001 eV/Å。最後20個離子狀態能量範圍只有0.00042156 meV，但力仍超標；能量變化很小不能代替力驗收。
+
+失敗的電子呼叫只輸出step 0、1、2。最後兩次電子能量變化為−1.69×10⁻¹¹、−8.07×10⁻¹² Ha。DFTpy 2.1.2 的ncheck=3需要最新能量與前3個能量都比較；第三次更新尚未完成就遇到line-search失敗。converged=0代表通過，1代表line-search失敗，2代表步數用盡。這些定義已對照官方v2.1.2原始碼。[1]
+
+二、目前只能當作推測的部分
+極小的電子能量變化與殘差，符合接近能量平坦區時的搜尋困難；現有log沒有保留搜尋task、步長及方向導數，尚不能判定是浮點誤差、方向問題或步長搜尋耗盡。
+
+實際環境標示DFTpy 2.1.2／SciPy 1.10.1；主代理隨後對同一遠端環境做了唯讀runtime probe，確認scipy.optimize._dcsrch可用，而且匯入同hash凍結dft_engine後，compat_flag=true，LineSearchDcsrch2確實被替換為凍結程式的_line_search_scalar。這個實測優先於僅依官方版本樹推測的結果。官方SciPy 1.10.1原始碼使用_minpack2路徑，[2] 但版號本身不足以完整描述這個安裝環境。相容層啟用已確認；失敗task未記錄，根因仍待確認，不能直接斷言是API故障或相容層錯誤。
+
+三、最小修復與驗證順序
+1. 從本輪step100的成對結構＋密度checkpoint開始，保留LDA、同一local PP、TF=.9/vW=.1、140×140×96網格與修正stress；原子力0.001及軸應力0.05 GPa門檻保持。
+2. 先在固定幾何做電子方法比較：原LBFGS與TN，econv仍1e−9 Ha/atom、ncheck仍3。記錄實際搜尋函式、失敗task、能量歷史、電子殘差及電荷積分。這是修復前的最小診斷，尚未執行。
+3. 比較成功電子解的能量、每顆原子的力向量及軸應力。如果電子解差異已接近0.001 eV/Å，再做更嚴電子精度診斷；先確認力可信，再讓離子繼續移動。
+4. 電子測試通過後，續用已保存的maxstep=.01 Å離子LBFGS流程，明確記錄電子fallback。若力繼續停滯，檢查幾何上的力與能量有限差分；不要以另一個長時間同設定作業代替診斷。
+
+TN與CG是官方支援的電子方法。[3] 本機歷史已有TN的實際input、stdout及completed_qualified結果，來源如下。舊案例是bulk、econv=1e−6、力門檻0.01，僅證明這個方法曾成功執行，不能認證現在奈米柱的更嚴門檻。CG-HS目前找到的是bulk掃描準備腳本與說明，這次定向搜尋未找出對應的成功原始案例。TN也使用line search，不能預先保證一定修好；若仍失敗，再根據新記錄決定CG或搜尋層修訂。
+
+歷史TN案例：
+C:/OFDFT/AL_DEFECTS_USB_HANDOFF_20260717/02_ACTIVE_DFTPY_ISERVICE_LAMMU_RAW/03_RAW_CASES/03_runs/tfvw_lam0p9_mu0p1
+實際檔案：dftpy_pristine_input.ini、dftpy_vacancy_input.ini、run_status_job1575772_task80.json、result.json。
+
+不可當作修復的方法：將ncheck改成1、放寬電子或離子門檻、以很小的ΔE把flag1改判成功，或把這次電子失敗混稱為離子FIRE/LBFGS問題。
+
+來源
+[1] DFTpy官方v2.1.2 Optimization原始碼（optimize_rho與check_converge）：
+https://raw.githubusercontent.com/Quantum-MultiScale/DFTpy/v2.1.2/src/dftpy/optimization/optimization.py
+[2] SciPy官方v1.10.1 line search原始碼：
+https://raw.githubusercontent.com/scipy/scipy/v1.10.1/scipy/optimize/_linesearch.py
+[3] DFTpy官方OPT參數文件：
+https://dftpy.rutgers.edu/tutorials/config.html
+
+本獨立審查只讀資料、程式與官方文件，未執行新DFT或提交作業；同時納入主代理提供的唯讀遠端runtime probe。完整數值與來源hash見review.json；runtime_probe.json保存實測證據，可重現讀取腳本為build_review.py。

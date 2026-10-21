@@ -1,0 +1,100 @@
+{
+  "campaign_id": "al_nano_five_radii_corrected_20261015",
+  "R15_validation_cases": [
+    "R15_0V",
+    "R15_1V"
+  ],
+  "production_tasks": [
+    "R11_0V",
+    "R11_1V",
+    "R13_0V",
+    "R13_1V",
+    "R17_0V",
+    "R17_1V",
+    "R20_0V",
+    "R20_1V"
+  ],
+  "frozen_total_tolerance_GPa": 0.001,
+  "scf_axial_fd_tolerance_GPa": 0.002,
+  "scf_fd_step_stability_GPa": 0.001,
+  "scf_strains": [
+    0.001,
+    0.0005
+  ],
+  "force_fd_step_A": 0.001,
+  "force_fd_tolerance_eV_A": 0.0001,
+  "R15_pair_Ef_drift_max_eV": 0.003,
+  "R15_cell_drift_max_A": 0.005,
+  "R15_rms_position_drift_max_A": 0.005,
+  "note": "Diagnostic tolerances are separate from unchanged physical relax thresholds. Failure blocks dependent production; no automated retry.",
+  "seeds": {
+    "R15_0V": {
+      "path": "seeds/R15_0V",
+      "hashes": {
+        "config.json": "798e1cc5dbb5394e2e42026460e1d728073a6e65644944c28da2533ebd593c77",
+        "final.extxyz": "0fc3366f3714e052bc2cf8de85d0a51dcaa6dcb72f191c8bccfd822f5e77dea2",
+        "final_density.npz": "ec6c0402bcf20844987d6ad214fd939117ab0b812e43f0096b68f42db18a850e",
+        "result.json": "0808efbb8e4f854109fc4f8c8312f5f368792b0a73433ba996f70854da0e53f1",
+        "inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+      }
+    },
+    "R15_1V": {
+      "path": "seeds/R15_1V",
+      "hashes": {
+        "config.json": "1d0d63dae46ebe78eaab88713144be757377aa0e579ae7c909c9c70e10bd985a",
+        "final.extxyz": "7b2b2b184e8fb7f65fe9a597123ec6a2be3e76e5d63a3c7c1eaa657d96c10408",
+        "final_density.npz": "31c009bb15bbb78cbcb3c7d8feda9c58536284e59687310864a1016df72423f1",
+        "result.json": "4f271358f7e119d1256b31d2b747dcfda4f12776c254bb87c60a770a12072be2",
+        "inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+      }
+    },
+    "R20_0V": {
+      "path": "seeds/R20_0V",
+      "hashes": {
+        "config.json": "51e6580978069f185b9cbbb9e770337a40bcea5dd118320de8c881b0983c8fcb",
+        "final.extxyz": "00d6b57db7d42042733bce24a1f0cde3314c7752d3805460a2b6d5857788b015",
+        "final_density.npz": "3b998d1218e20acbba2c0c1d695af42ef52d6a5db0dd9f4e262eed70885739f7",
+        "result.json": "d121d3327aa2ccd77f72092c00c78784a94304d07d3e278b4dd82c9a047f3f30",
+        "inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+      }
+    },
+    "R20_1V": {
+      "path": "seeds/R20_1V",
+      "hashes": {
+        "config.json": "885079156f5200e3875dfa2d89b8f07e297d993ec3827c5b33835c45e4612b56",
+        "final.extxyz": "2186483e27f1069f029ad1687c5df2409e922f91ba2b47c909a1f797268d4476",
+        "final_density.npz": "de862e1470d2acaac9bdf37085c0787704fe4aedb0aae99fb534c5eac85d34f1",
+        "result.json": "6a2b14a1fc7aee699bef6d704b2d10bf2eea445204efd2965827d3aadec69778",
+        "inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+      }
+    }
+  },
+  "source_hashes": {
+    "/mnt/c/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/DFTpy/R11_0V/structure.extxyz": "16194b72bfa626a515f93c7e74e705c973e76ac57f7c3229189babaee1c54550",
+    "/mnt/c/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/DFTpy/R11_1V/structure.extxyz": "7d5822c7e495ee65ff6f33c2ae694fe91fa9cc8f8c87af2ff67cbd3262fa3ee1",
+    "/mnt/c/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/DFTpy/R13_0V/structure.extxyz": "62aa237a00840df40e0ceec2a1708af3c2f5192720f83035117f38867ede4ff7",
+    "/mnt/c/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/DFTpy/R13_1V/structure.extxyz": "53ca20acfb9f7d423c1adc42fd3c4d1dddc75eabeba81dbe3046e0d3f0a53293",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_0V/final.extxyz": "0fc3366f3714e052bc2cf8de85d0a51dcaa6dcb72f191c8bccfd822f5e77dea2",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_0V/final_density.npz": "ec6c0402bcf20844987d6ad214fd939117ab0b812e43f0096b68f42db18a850e",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_0V/config.json": "798e1cc5dbb5394e2e42026460e1d728073a6e65644944c28da2533ebd593c77",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_0V/result.json": "0808efbb8e4f854109fc4f8c8312f5f368792b0a73433ba996f70854da0e53f1",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_0V/inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_1V/final.extxyz": "7b2b2b184e8fb7f65fe9a597123ec6a2be3e76e5d63a3c7c1eaa657d96c10408",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_1V/final_density.npz": "31c009bb15bbb78cbcb3c7d8feda9c58536284e59687310864a1016df72423f1",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_1V/config.json": "1d0d63dae46ebe78eaab88713144be757377aa0e579ae7c909c9c70e10bd985a",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_1V/result.json": "4f271358f7e119d1256b31d2b747dcfda4f12776c254bb87c60a770a12072be2",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R15_1V/inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803",
+    "/mnt/c/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/DFTpy/R17_0V/structure.extxyz": "68fd4faee2737f2b1b2bb448843efc2a50a2a0d40a2d570a0d6d8b061cb166b5",
+    "/mnt/c/Users/m1331/Documents/Codex/2026-09-24/g/work/luder_response_20261015/geometry_audit/candidate_structures/DFTpy/R17_1V/structure.extxyz": "1faf0ba63c8538b3fa7dad6e0e74fe4939a35de3fc3d42f627ab042293ea1ebc",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_0V/final.extxyz": "00d6b57db7d42042733bce24a1f0cde3314c7752d3805460a2b6d5857788b015",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_0V/final_density.npz": "3b998d1218e20acbba2c0c1d695af42ef52d6a5db0dd9f4e262eed70885739f7",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_0V/config.json": "51e6580978069f185b9cbbb9e770337a40bcea5dd118320de8c881b0983c8fcb",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_0V/result.json": "d121d3327aa2ccd77f72092c00c78784a94304d07d3e278b4dd82c9a047f3f30",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_0V/inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_1V/final.extxyz": "2186483e27f1069f029ad1687c5df2409e922f91ba2b47c909a1f797268d4476",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_1V/final_density.npz": "de862e1470d2acaac9bdf37085c0787704fe4aedb0aae99fb534c5eac85d34f1",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_1V/config.json": "885079156f5200e3875dfa2d89b8f07e297d993ec3827c5b33835c45e4612b56",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_1V/result.json": "6a2b14a1fc7aee699bef6d704b2d10bf2eea445204efd2965827d3aadec69778",
+    "/mnt/c/OFDFT/NAS_SHARE/Al_QE_DFTpy_DATA/DFTpy/02_Nanocolumn_PILOT/R20_1V/inputs/al.lda.recpot": "c2fd4300aa39aa2466149a315e1c7cd87aac6615032db5ded8f237e9c40df803"
+  }
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "maxstep": 0.005,
+    "returncode": 0,
+    "stdout": "{\"accepted\": true, \"steps\": 6, \"function_calls\": 21, \"force_calls\": 15}\n",
+    "stderr": ""
+  },
+  {
+    "maxstep": 0.01,
+    "returncode": 0,
+    "stdout": "{\"accepted\": false, \"steps\": 4, \"error\": \"Ionic line-search rejected: WARNING: STP = maxstep\", \"function_calls\": 15, \"force_calls\": 10}\n",
+    "stderr": ""
+  },
+  {
+    "maxstep": 0.02,
+    "returncode": 0,
+    "stdout": "{\"accepted\": false, \"steps\": 4, \"error\": \"Ionic line-search rejected: WARNING: STP = maxstep\", \"function_calls\": 15, \"force_calls\": 10}\n",
+    "stderr": ""
+  }
+]
