@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import sys
 from pathlib import Path
@@ -15,6 +16,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from app.aluminum_defaults import AL_FCC_A0_TFVW_ANG
+from app.hex_111 import SELECTION_MODES, build_hex_111
 
 
 DEFAULT_CONFIG = {
@@ -312,7 +314,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--builder",
         default=DEFAULT_CONFIG["builder"],
-        choices=["periodic_prism", "paper_circular", "wulff_prism"],
+        choices=["periodic_prism", "paper_circular", "wulff_prism", "hex_111"],
         help="Geometry generator to use.",
     )
     parser.add_argument("--a0", type=float, default=DEFAULT_CONFIG["a0"])
@@ -341,14 +343,43 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--size", type=float, default=DEFAULT_CONFIG["size"])
     parser.add_argument("--gamma100", type=float, default=DEFAULT_CONFIG["gamma100"])
     parser.add_argument("--gamma110", type=float, default=DEFAULT_CONFIG["gamma110"])
-    parser.add_argument("--output", default="", help="Output VASP filename.")
-    return parser.parse_args()
+    parser.add_argument("--hex-selection-mode", choices=SELECTION_MODES, default="center_inside",
+                        help="Selection rule for the new hex_111 builder only.")
+    parser.add_argument("--hex-abc-repeats", type=int, default=2,
+                        help="Complete ABC periods for hex_111; replaces legacy --length-z.")
+    parser.add_argument("--output", default="", help="Output filename (hex_111 requires .extxyz).")
+    # Keep all old returned defaults, but distinguish explicit legacy-only
+    # options so the new builder never silently ignores a length/shape request.
+    legacy_only = {name: DEFAULT_CONFIG[name] for name in
+                   ("length_z", "cross_section_shape", "shape_rotation_deg", "size", "gamma100", "gamma110")}
+    parser.set_defaults(**dict.fromkeys(legacy_only, None))
+    args = parser.parse_args()
+    for name, default in legacy_only.items():
+        if getattr(args, name) is None:
+            setattr(args, name, default)
+        elif args.builder == "hex_111":
+            parser.error(f"--{name.replace('_', '-')} is not used by hex_111; use its explicit hex options.")
+    return args
 
 
 if __name__ == "__main__":
     args = parse_args()
 
-    if args.builder == "periodic_prism":
+    if args.builder == "hex_111":
+        if args.orientation != "111" or args.shape_rotation_deg != 0.0:
+            raise ValueError("hex_111 has fixed [111] axes and WS-aligned target; rotation is not configurable.")
+        atoms = build_hex_111(
+            a0=args.a0,
+            radius_A=_resolve_radius_A(None if args.radius_A is not None else args.diameter, args.radius_A),
+            selection_mode=args.hex_selection_mode,
+            abc_repeats=args.hex_abc_repeats,
+            vacuum=args.vacuum,
+        )
+        output = args.output or f"init_111_Al_hex_{args.hex_selection_mode}.extxyz"
+        if Path(output).suffix.lower() != ".extxyz":
+            raise ValueError("hex_111 output must use .extxyz to preserve lattice keys and generated IDs.")
+        print(f"[builder] hex_111 selection={args.hex_selection_mode} geometry_only=True")
+    elif args.builder == "periodic_prism":
         atoms = build_periodic_prism(
             a0=float(args.a0),
             diameter_nm=float(args.diameter) if args.radius_A is None else None,
@@ -399,5 +430,15 @@ if __name__ == "__main__":
     print(f"Cell (A): {atoms.get_cell().lengths()}")
     print(f"PBC: {atoms.get_pbc()}")
 
-    write(output, atoms, vasp5=True, direct=True)
+    if args.builder == "hex_111":
+        write(output, atoms, format="extxyz")
+        # JSON preserves full Python-float coordinates; ASE extxyz display
+        # precision may differ by version. This sidecar is the exact input record.
+        record = {"metadata": atoms.info, "positions_A": atoms.positions.tolist(),
+                  "cell_A": atoms.cell.array.tolist(), "pbc": atoms.pbc.tolist(),
+                  "arrays": {name: atoms.arrays[name].tolist() for name in
+                             ("generated_site_id", "lattice_i", "lattice_j", "layer_k", "hex_overlap_area_A2")}}
+        Path(output + ".json").write_text(json.dumps(record, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
+    else:
+        write(output, atoms, vasp5=True, direct=True)
     print(f"Written: {output}")
